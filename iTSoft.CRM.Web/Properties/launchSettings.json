@@ -1,9 +1,9 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:49591",
+      "applicationUrl": "http://localhost:49593",
       "sslPort": 44396
     }
   },
@@ -19,10 +19,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "CRM",
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

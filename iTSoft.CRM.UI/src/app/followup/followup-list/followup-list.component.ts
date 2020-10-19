@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TableColumnModel } from 'src/app/shared/table-layout/it-mat-table.component';
+import { TableColumnModel, TableDefaultSettings } from 'src/app/shared/table-layout/it-mat-table.component';
 
 @Component({
   selector: 'app-followup-list',
@@ -11,13 +11,25 @@ export class FollowupListComponent implements OnInit {
 
   followUpList: Array<any>;
   followUpTableSchema: Array<TableColumnModel> = [];
+  tableSettings : TableDefaultSettings;
   constructor() { }
 
   ngOnInit(): void {
        this.SetTableSchema();
   }
 
+  onAddFollowUpClick($event:any)
+  {
+    let e = 100;
+    
+  }
+
+  
+
   SetTableSchema() {
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+
     this.followUpTableSchema =
       [
         { ColumnField: "RequestType", ColumnHeader: "Request Type", Type: "text" },

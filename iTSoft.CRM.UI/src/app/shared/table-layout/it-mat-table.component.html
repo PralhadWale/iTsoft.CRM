@@ -1,12 +1,12 @@
-<mat-toolbar class="primary">
+<mat-toolbar class="primary" *ngIf="tableSettings.ShowToolBar == true">
     <mat-toolbar-row>
-      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e">
+      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" (click)="addClick($event)">
         <mat-icon>add</mat-icon>
       </button>
-      <button mat-mini-fab style="margin-right:10px; background-color:#a28b6e">
+      <button mat-mini-fab style="margin-right:10px; background-color:#a28b6e" (click)="searchClick($event)">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-mini-fab style="margin-right:10px; background-color:darkgray">
+      <button mat-mini-fab style="margin-right:10px; background-color:darkgray" (click)="refreshClick($event)">
         <mat-icon>refresh</mat-icon>
       </button>
 

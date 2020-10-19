@@ -8,19 +8,30 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 
 export class ITMatTableComponent implements OnInit {
-  // @Input() displayedColumns;
-  // @Input() dataSource;
-  // @Input() message;
+
+  @Input() tableSettings: TableDefaultSettings;
   @Input() dataSource: Array<any> = [];
   @Input() tableSchema: Array<TableColumnModel> = [];
   @Output() sqCellClick = new EventEmitter();
+  @Output() onAddClick = new EventEmitter();
+  @Output() onSearchClick = new EventEmitter();
+  @Output() onRefreshClick = new EventEmitter();
 
   displayedColumns: string[] = [];
   tableDataSource = new MatTableDataSource<any>();
 
   isNewRow: boolean = false;
 
-  constructor() { }
+  constructor() {
+
+    if (!this.tableSettings) {
+      this.tableSettings = new TableDefaultSettings();
+      this.tableSettings.ShowToolBar = false;
+      this.tableSettings.AllowEdit = false;
+
+    }
+
+  }
 
   ngOnInit(): void {
     this.tableSchema.forEach(element => {
@@ -111,6 +122,17 @@ export class ITMatTableComponent implements OnInit {
 
   }
 
+  addClick($event) {
+    this.onAddClick.emit($event);
+  }
+
+  searchClick($event) {
+    this.onSearchClick.emit($event);
+  }
+
+  refreshClick($event) {
+    this.onRefreshClick.emit($event);
+  }
 
   onMatCellClick(cellValue) {
     let value = cellValue;
@@ -124,6 +146,14 @@ export class TableColumnModel {
   AllowEdit?: boolean;
   DefaultValue?: string;
   itemSource?: Array<SelectListItem>;
+
+}
+
+export class TableDefaultSettings {
+
+  ShowToolBar: boolean = false;
+  AllowEdit: boolean = false;
+
 }
 
 export class SelectListItem {
