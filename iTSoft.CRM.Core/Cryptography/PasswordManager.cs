@@ -124,5 +124,6 @@ namespace iTSoft.CRM.Core.Cryptography
             return System.Text.Encoding.Unicode.GetString(decryptedData);
         }
         #endregion
+  
     }
 }
