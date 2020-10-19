@@ -1,1 +1,10 @@
-<p>followup-list works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="view-card-title">
+            <h1>{{pageTitle }}</h1>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <it-mat-table [dataSource]="followUpList" [tableSchema]="followUpTableSchema"></it-mat-table>
+    </mat-card-content>
+</mat-card>

@@ -37,9 +37,9 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
      
     },
     {
-      displayName: 'Todays Folloup',
+      displayName: 'Follow Up',
       iconName: 'account_tree',
-      route: 'todays-followup',
+      route: 'followup',
     },
     {
       displayName: 'Masters',
@@ -89,12 +89,6 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
       route: 'enquiries',
      
     },
-    {
-      displayName: 'Quotations',
-      iconName: 'account_tree',
-      route: 'quotations',
-    },
-    
     {
       displayName: 'Quotations',
       iconName: 'account_tree',

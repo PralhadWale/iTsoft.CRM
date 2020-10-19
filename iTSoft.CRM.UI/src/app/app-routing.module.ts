@@ -26,6 +26,12 @@ const routes: Routes = [
 
   },
   {
+    path: "followup",
+    loadChildren: () =>
+      import('./followup/followup.module').then(m => m.FollowupModule)
+    , canActivate: [AuthGuard]
+  },
+  {
     path: "about",
     component: AboutComponent
     , canActivate: [AuthGuard]

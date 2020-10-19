@@ -103,7 +103,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
        { ColumnField:"Date" , ColumnHeader:"Date" , Type:"date" },
        { ColumnField:"FollowUpDate" , ColumnHeader:"FollowUp Date" , Type:"date" },
        { ColumnField:"State" , ColumnHeader:"State" , Type:"text" },
-       { ColumnField:"DealStatus" , ColumnHeader:"Deal Status" , Type:"text" },
+       { ColumnField:"Status" , ColumnHeader:"Deal Status" , Type:"text" },
        { ColumnField:"Comment" , ColumnHeader:"Comment" , Type:"text" },
        { ColumnField:"Remark" , ColumnHeader:"Remark" , Type:"text" },
        { ColumnField:"EmployeeName" , ColumnHeader:"Employee Name" , Type:"text" },

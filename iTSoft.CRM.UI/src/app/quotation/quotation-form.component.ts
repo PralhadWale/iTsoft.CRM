@@ -14,6 +14,7 @@ import { QuotationService } from './quotation.service';
 import { NumberValidators } from '../shared/number.validator';
 import { GenericValidator } from '../shared/generic-validator';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { TableColumnModel } from '../shared/table-layout/it-mat-table.component';
 
 
 @Component({
@@ -59,12 +60,16 @@ export class QuotationFormComponent implements OnInit, AfterViewInit, OnDestroy 
       
     };
 
+    followUpList : Array<any>;
+    followUpTableSchema : Array<TableColumnModel> = [];
+
     constructor(private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private quotationService: QuotationService,
         private breakpointObserver: BreakpointObserver
     ) {
+        this.SetTableSchema();
         breakpointObserver.observe([
             Breakpoints.HandsetLandscape,
             Breakpoints.HandsetPortrait
@@ -99,6 +104,25 @@ export class QuotationFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         this.sub.add(null);
     }
+
+    SetTableSchema() {
+        this.followUpTableSchema =
+         [
+           { ColumnField:"Date" , ColumnHeader:"Date" , Type:"date" },
+           { ColumnField:"FollowUpDate" , ColumnHeader:"FollowUp Date" , Type:"date" },
+           { ColumnField:"State" , ColumnHeader:"State" , Type:"text" },
+           { ColumnField:"Status" , ColumnHeader:"Deal Status" , Type:"text" },
+           { ColumnField:"Comment" , ColumnHeader:"Comment" , Type:"text" },
+           { ColumnField:"Remark" , ColumnHeader:"Remark" , Type:"text" },
+           { ColumnField:"EmployeeName" , ColumnHeader:"Employee Name" , Type:"text" },
+           { ColumnField:"Attempt" , ColumnHeader:"Attempt" , Type:"text" },
+           { ColumnField:"ClientRating" , ColumnHeader:"Client Rating" , Type:"text" },
+           {ColumnField:"$$edit",ColumnHeader:"",Type:"text"}
+         ];
+    
+    
+         this.followUpList = [{Date:Date(),FollowUpDate:Date(),DealStatus:"Completed",EmployeeName:"Pralhad",Attempt:1,Comment:"",Remark:"",ClientRating:10}]
+      }
 
     ngOnDestroy(): void {
         //this.sub.unsubscribe();
