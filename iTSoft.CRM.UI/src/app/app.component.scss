@@ -21,29 +21,17 @@ a.active {
   overflow-x: hidden;
 }
 
-
-
 .main-content {
   margin: 20px;
-  /* display: flex; */
-  /* height: 100%;
-  align-items: center;
-  justify-content: center; */
 }
 
 #appnav{
-  // margin: 20px;
   min-width:18em;
 } 
 
 .profile-card {
   padding-bottom: 5px;
 }
-
-/* div.avatar {
-  background-image: url("/assets/img/avatar0.png");
-  background-size: cover;
-} */
 
 .avatar {
   background-image: url("/assets/img/avatar0.png");
@@ -93,32 +81,6 @@ a.active {
     flex: 1;
   }
 
-  // .toolbar {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   right: 0;
-  //   height: 60px;
-  //   display: flex;
-  //   align-items: center;
-  //   background-color: #1976d2;
-  //   color: white;
-  //   font-weight: 600;
-  // }
-
-  // .toolbar img {
-  //   margin: 0 16px;
-  // }
-
-  // .toolbar #twitter-logo {
-  //   height: 40px;
-  //   margin: 0 16px;
-  // }
-
-  // .toolbar #twitter-logo:hover {
-  //   opacity: 0.8;
-  // }
-
   .content {
     display: flex;
     margin: 82px auto 32px;
@@ -141,31 +103,31 @@ a.active {
 
 
   /* Responsive Styles */
-  // @media screen and (max-width: 767px) {
+  @media screen and (max-width: 767px) {
 
-  //   .card-container > *:not(.circle-link) ,
-  //   .terminal {
-  //     width: 100%;
-  //   }
+    .card-container > *:not(.circle-link) ,
+    .terminal {
+      width: 100%;
+    }
 
-  //   .card:not(.highlight-card) {
-  //     height: 16px;
-  //     margin: 8px 0;
-  //   }
+    .card:not(.highlight-card) {
+      height: 16px;
+      margin: 8px 0;
+    }
 
-  //   .card.highlight-card span {
-  //     margin-left: 72px;
-  //   }
+    .card.highlight-card span {
+      margin-left: 72px;
+    }
 
-  //   svg#rocket-smoke {
-  //     right: 120px;
-  //     transform: rotate(-5deg);
-  //   }
-  // }
+    svg#rocket-smoke {
+      right: 120px;
+      transform: rotate(-5deg);
+    }
+  }
 
-  // @media screen and (max-width: 575px) {
-  //   svg#rocket-smoke {
-  //     display: none;
-  //     visibility: hidden;
-  //   }
-  // }
+  @media screen and (max-width: 575px) {
+    svg#rocket-smoke {
+      display: none;
+      visibility: hidden;
+    }
+  }

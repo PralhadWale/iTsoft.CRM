@@ -19,6 +19,7 @@ import { ConfirmDialog } from './shared/dialog.component';
 import { LoadingComponent } from  './loading';
 import { AuthGuard } from './_guard';
 import { iTCRMLoaderService } from './core/services/ITSoftLoaderService';
+import { NavLayoutModule } from './_layout/layout-module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { iTCRMLoaderService } from './core/services/ITSoftLoaderService';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    NavLayoutModule,
     SharedModule,
     MaterialModule,
     HttpClientModule,

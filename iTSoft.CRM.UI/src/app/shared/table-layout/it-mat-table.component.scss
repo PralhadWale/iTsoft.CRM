@@ -1,0 +1,66 @@
+.message {
+    padding: 10px;
+    font-weight: bold;
+}
+
+th{
+    background-color: #1e88e5;
+    color: white;
+}
+        
+.mat-elevation-z8 {
+    table thead th {
+        color: white !important;
+        font-weight: 500 !important;
+        font-size: 15px !important;
+        background-color: #1e88e5;
+    }
+    
+    table tfoot tr {
+        font-weight: 1000 !important;
+        font-size: 15px !important;
+    }
+
+    mat-card-title {
+        text-align: left;
+        padding-left: 20px;
+        padding-top: 20px;
+    }
+    
+    mat-card-title hr {
+        background-color: #1e88e5;
+    }
+    
+    mat-card {
+        text-align: center;
+        margin: 0.5%;
+        border: 1px solid #1e88e5;
+    }
+
+    tbody {
+        text-align: left;
+    }
+
+    tfoot {
+        text-align: left;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .action-container{
+        flex-direction: initial;
+        text-align: center;
+        padding: 15px 0px;
+    }
+
+    mat-icon:hover{
+        cursor: pointer;
+    }
+    
+    // th.mat-header-cell {
+    //     text-align: center !important;
+    // }
+}

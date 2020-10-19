@@ -1,18 +1,22 @@
-import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Breakpoints, BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { AuthenticationService } from './_services';
 import { Observable } from 'rxjs';
 import { iTCRMLoaderService } from './core/services/ITSoftLoaderService';
 import { iTCRMAlertService } from './core/services/ITSoftAlertService';
+import { NavItem } from './_layout/models/nav-item';
+import { NavService } from './_layout/services/nav.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnChanges, OnDestroy {
-  title = 'ng crm';
+export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewInit {
+  @ViewChild('sidenav') appDrawer: ElementRef;
+  
+  title = 'taxblock crm';
   user: any = null;
   isMobile: boolean;
   mode = "side"
@@ -22,9 +26,75 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
 
   showLoader: boolean;
 
+
+  
+  version = 1.0;
+  navItems: NavItem[] = [
+    {
+      displayName: 'Dashboard',
+      iconName: 'insert_chart_outline',
+      route: 'dashboard',
+     
+    },
+    {
+      displayName: 'Masters',
+      iconName: 'videocam',
+      route: 'masters',
+      children: [
+        {
+          displayName: 'Service',
+          iconName: 'group',
+          route: 'masters/service',
+        },
+        {
+          displayName: 'Stage',
+          iconName: 'group',
+          route: 'masters/stage',
+        },
+        {
+          displayName: 'Status',
+          iconName: 'group',
+          route: 'masters/status',
+        },
+        {
+          displayName: 'Source',
+          iconName: 'group',
+          route: 'masters/source',
+        },
+        {
+          displayName: 'Designation',
+          iconName: 'group',
+          route: 'masters/designation',
+        },
+        {
+          displayName: 'Organization',
+          iconName: 'museum',
+          route: 'organizations',
+        },
+        {
+          displayName: 'Employee',
+          iconName: 'person_pin',
+          route: 'employees',
+        },
+      ]
+    },
+    {
+      displayName: 'Enquiries',
+      iconName: 'perm_phone_msg',
+      route: 'enquiries',
+     
+    },
+    {
+      displayName: 'Quotations',
+      iconName: 'account_tree',
+      route: 'quotations',
+    },
+  ];
+
   constructor(
     private loaderService: iTCRMLoaderService,
     private alertService: iTCRMAlertService,
+    private navService: NavService,
     // private loadingBar: SlimLoadingBarService,
     private router: Router,
     public authService: AuthenticationService,
@@ -80,6 +150,10 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy {
         }.bind(this), 200);
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.navService.appDrawer = this.appDrawer;
   }
 
   logout(): void {

@@ -27,6 +27,7 @@ import { EnquiryService } from "./enquiry.service";
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { TableColumnModel } from '../shared/table-layout/it-mat-table.component';
 
 @Component({
   selector: 'enquiry-form',
@@ -77,8 +78,8 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private sub: Subscription;
   private genericValidator: GenericValidator;
 
-
-
+  followUpList : Array<any>;
+  followUpTableSchema : Array<TableColumnModel> = [];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -86,6 +87,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private enquiryService: EnquiryService,
     private breakpointObserver: BreakpointObserver
   ) {
+    this.SetTableSchema();
     breakpointObserver.observe([
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait
@@ -94,6 +96,23 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.genericValidator = new GenericValidator(this.validationMessages);
+  }
+  SetTableSchema() {
+    this.followUpTableSchema =
+     [
+       { ColumnField:"Date" , ColumnHeader:"Date" , Type:"date" },
+       { ColumnField:"FollowUpDate" , ColumnHeader:"FollowUp Date" , Type:"date" },
+       { ColumnField:"DealStatus" , ColumnHeader:"Deal Status" , Type:"text" },
+       { ColumnField:"Comment" , ColumnHeader:"Comment" , Type:"text" },
+       { ColumnField:"Remark" , ColumnHeader:"Remark" , Type:"text" },
+       { ColumnField:"EmployeeName" , ColumnHeader:"Employee Name" , Type:"text" },
+       { ColumnField:"Attempt" , ColumnHeader:"Attempt" , Type:"text" },
+       { ColumnField:"ClientRating" , ColumnHeader:"Client Rating" , Type:"text" },
+       {ColumnField:"$$edit",ColumnHeader:"",Type:"text"}
+     ];
+
+
+     this.followUpList = [{Date:Date(),FollowUpDate:Date(),DealStatus:"Completed",EmployeeName:"Pralhad",Attempt:1,Comment:"",Remark:"",ClientRating:10}]
   }
 
   ngOnInit(): void {
