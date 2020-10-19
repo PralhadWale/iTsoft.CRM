@@ -1,0 +1,144 @@
+<form novalidate (ngSubmit)="saveOrganization()" [formGroup]="organizationForm">
+    <mat-card>
+
+        <mat-toolbar style="background-color: #FFF">
+            <mat-toolbar-row>
+                <span class="view-card-title"> {{pageTitle}}</span>
+                <span class="title-spacer"></span>
+                <mat-card-actions>
+                    <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray"
+                        type="submit" [disabled]='!organizationForm.valid'>
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/organizations']">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+        <mat-card-content style="margin: 5 0 5 10px;">
+            <!-- <mat-grid-list cols="12" rowHeight="120px">
+          <mat-grid-tile [colspan]="fieldColspan">
+            <span class="view-label"> 
+              <img mat-card-avatar *ngIf='customer.avatar' class="center-block img-responsive" [src]='customer.avatar'
+                [title]='customer.firstname | uppercase' [style.width.px]='imageWidth' [style.height.px]='imageWidth'  [style.margin.px]='imageMargin'>
+            </span>
+          </mat-grid-tile>
+        </mat-grid-list> -->
+            <div class="form-card">
+                <mat-grid-list cols="12" rowHeight="80px">
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <!-- colspan="4"> -->
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>OrganizationName</mat-label>
+                            <input matInput id="OrganizationNameId" type="text"
+                                placeholder="OrganizationName (required)" formControlName="OrganizationName" />
+                            <mat-error *ngIf="displayMessage.OrganizationName">
+                                {{displayMessage.OrganizationName}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>OrganizationCode</mat-label>
+                            <input matInput id="OrganizationCodeId" type="text" placeholder="OrganizationCode"
+                                formControlName="OrganizationCode" />
+                            <mat-error *ngIf="displayMessage.OrganizationCode">
+                                {{displayMessage.OrganizationCode}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Description</mat-label>
+                            <input matInput id="DescriptionId" type="text" placeholder="Description"
+                                formControlName="Description" />
+                            <mat-error *ngIf="displayMessage.Description">
+                                {{displayMessage.Description}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Website</mat-label>
+                            <input matInput id="Website" type="text" placeholder="Website" formControlName="Website" />
+                            <mat-error *ngIf="displayMessage.Website">
+                                {{displayMessage.Website}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput id="EmailId" type="EmailId" placeholder="Email "
+                                formControlName="EmailId" />
+                            <mat-error *ngIf="displayMessage.EmailId">
+                                {{displayMessage.EmailId}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>MobileNo</mat-label>
+                            <input matInput id="MobileNo" type="text" placeholder="MobileNo "
+                                formControlName="MobileNo" />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>PhoneNo</mat-label>
+                            <input matInput id="PhoneNo" type="text" placeholder="PhoneNo " formControlName="PhoneNo" />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <input matInput id="Address" type="text" placeholder="Address" formControlName="Address" />
+                            <mat-error *ngIf="displayMessage.Address">
+                                {{displayMessage.Address}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>District</mat-label>
+                            <input matInput id="District" type="text" placeholder="District"
+                                formControlName="District" />
+                            <mat-error *ngIf="displayMessage.District">
+                                {{displayMessage.District}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>State</mat-label>
+                            <input matInput id="State" type="text" placeholder="State" formControlName="State" />
+                            <mat-error *ngIf="displayMessage.State">
+                                {{displayMessage.State}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Pincode</mat-label>
+                            <input matInput id="Pincode" type="text" placeholder="Pincode " formControlName="Pincode" />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                </mat-grid-list>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

@@ -1,0 +1,380 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\**" />
+    <EmbeddedResource Remove="ClientApp\**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\.editorconfig" />
+    <None Remove="ClientApp\.gitignore" />
+    <None Remove="ClientApp\angular.json" />
+    <None Remove="ClientApp\e2e\protractor.conf.js" />
+    <None Remove="ClientApp\e2e\src\app.e2e-spec.ts" />
+    <None Remove="ClientApp\e2e\src\app.po.ts" />
+    <None Remove="ClientApp\e2e\tsconfig.json" />
+    <None Remove="ClientApp\karma.conf.js" />
+    <None Remove="ClientApp\package-lock.json" />
+    <None Remove="ClientApp\package.json" />
+    <None Remove="ClientApp\README.md" />
+    <None Remove="ClientApp\src\app\app-routing.module.ts" />
+    <None Remove="ClientApp\src\app\app.component.html" />
+    <None Remove="ClientApp\src\app\app.component.scss" />
+    <None Remove="ClientApp\src\app\app.component.spec.ts" />
+    <None Remove="ClientApp\src\app\app.component.ts" />
+    <None Remove="ClientApp\src\app\app.module.ts" />
+    <None Remove="ClientApp\src\app\core\components\nav-header\nav-header.component.html" />
+    <None Remove="ClientApp\src\app\core\components\nav-header\nav-header.component.scss" />
+    <None Remove="ClientApp\src\app\core\components\nav-header\nav-header.component.spec.ts" />
+    <None Remove="ClientApp\src\app\core\components\nav-header\nav-header.component.ts" />
+    <None Remove="ClientApp\src\app\core\components\nav-header\nav-header.module.ts" />
+    <None Remove="ClientApp\src\app\core\components\nav-sidebar\nav-sidebar.component.html" />
+    <None Remove="ClientApp\src\app\core\components\nav-sidebar\nav-sidebar.component.scss" />
+    <None Remove="ClientApp\src\app\core\components\nav-sidebar\nav-sidebar.component.spec.ts" />
+    <None Remove="ClientApp\src\app\core\components\nav-sidebar\nav-sidebar.component.ts" />
+    <None Remove="ClientApp\src\app\core\components\nav-sidebar\nav-sidebar.module.ts" />
+    <None Remove="ClientApp\src\app\demo-material-module.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\full\full.directive.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\full\full.directive.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\half\half.directive.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\half\half.directive.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\one-third\one-third.directive.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\directives\one-third\one-third.directive.ts" />
+    <None Remove="ClientApp\src\app\shared\models\link.model.ts" />
+    <None Remove="ClientApp\src\app\shared\models\menu.model.ts" />
+    <None Remove="ClientApp\src\app\shared\services\device-detector\device-detector.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\device-detector\device-detector.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\employee-menu\employee-menu.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\employee-menu\employee-menu.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\employer-menu\employer-menu.service.spec.ts" />
+    <None Remove="ClientApp\src\app\shared\services\employer-menu\employer-menu.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\menu-items\menu-items.ts" />
+    <None Remove="ClientApp\src\app\shared\shared.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employee-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employee.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\employee.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\employee.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employee.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employee.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\employeeMaster-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\employeeMaster.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\employeeMaster.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\employeeMaster.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\personal-details.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\personal-details.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\personal-details.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\view-salary.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\employeeMaster\view-salary.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\models\deduction-c.ts" />
+    <None Remove="ClientApp\src\app\views\employee\models\deduction-via.ts" />
+    <None Remove="ClientApp\src\app\views\employee\models\letout-property.ts" />
+    <None Remove="ClientApp\src\app\views\employee\models\other-income.ts" />
+    <None Remove="ClientApp\src\app\views\employee\models\self-occupied.ts" />
+    <None Remove="ClientApp\src\app\views\employee\models\taxecemption.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c-dialog.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c-dialog.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c-dialog.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-c\deduction-c.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-d\deduction-d.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-d\deduction-d.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-d\deduction-d.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-d\deduction-d.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via-dialog.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via-dialog.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via-dialog.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\deduction-via\deduction-via.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\income-from-house-property-preview\income-from-house-property-preview.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\income-from-house-property-preview\income-from-house-property-preview.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\income-from-house-property-preview\income-from-house-property-preview.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\income-from-house-property-preview\income-from-house-property-preview.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\incomeloss-house.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\incomeloss-house.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\incomeloss-house.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\incomeloss-house.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\letout-property-dialog.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\letout-property-dialog.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\letout-property-dialog.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\self-occupied-dialog.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\self-occupied-dialog.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\incomeloss-house\self-occupied-dialog.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\it-declaration-summary\it-declaration-summary.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\it-declaration-summary\it-declaration-summary.component.rar" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\it-declaration-summary\it-declaration-summary.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\it-declaration-summary\it-declaration-summary.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\it-declaration-summary\it-declaration-summary.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\my-it-declaration-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\my-it-declaration.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\my-it-declaration.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\my-it-declaration.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\my-it-declaration.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\my-it-declaration.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income-dialog.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income-dialog.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income-dialog.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\other-income\other-income.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\prev-sal\prev-sal.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\prev-sal\prev-sal.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\prev-sal\prev-sal.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\prev-sal\prev-sal.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\tax-computation\tax-computation.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\tax-computation\tax-computation.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\tax-computation\tax-computation.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\tax-computation\tax-computation.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-allowence.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-allowence.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-allowence.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-allowence.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-dialog.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-dialog.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\my-it-declaration\taxexempt-allowence\taxexempt-dialog.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-c\deduction-c.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-c\deduction-c.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-c\deduction-c.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-c\deduction-c.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-d\deduction-d.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-d\deduction-d.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-d\deduction-d.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-d\deduction-d.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-via\deduction-via.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-via\deduction-via.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-via\deduction-via.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\deduction-via\deduction-via.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\incomeloss-house\incomeloss-house.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\incomeloss-house\incomeloss-house.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\incomeloss-house\incomeloss-house.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\incomeloss-house\incomeloss-house.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\it-declaration-summary\it-declaration-summary.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\it-declaration-summary\it-declaration-summary.component.rar" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\it-declaration-summary\it-declaration-summary.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\it-declaration-summary\it-declaration-summary.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\it-declaration-summary\it-declaration-summary.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\other-income\other-income.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\other-income\other-income.component.scss" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\other-income\other-income.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\other-income\other-income.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\prev-sal\prev-sal.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\prev-sal\prev-sal.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\prev-sal\prev-sal.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\prev-sal\prev-sal.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\proof-of-investment-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\proof-of-investment.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\proof-of-investment.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\proof-of-investment.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\proof-of-investment.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\proof-of-investment.module.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\tax-computation\tax-computation.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\tax-computation\tax-computation.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\tax-computation\tax-computation.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\tax-computation\tax-computation.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\taxexempt-allowence\taxexempt-allowence.component.css" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\taxexempt-allowence\taxexempt-allowence.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\taxexempt-allowence\taxexempt-allowence.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\taxexempt-allowence\taxexempt-allowence.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\taxexempt-allowence\taxexempt-dialog-body.component.html" />
+    <None Remove="ClientApp\src\app\views\employee\proof-of-investment\taxexempt-allowence\taxexempt-dialog-body.component.ts" />
+    <None Remove="ClientApp\src\app\views\employee\services\DrawerService.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\add-employee-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\add-employee.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\add-employee.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\add-employee.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\add-employee.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\add-employee.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\manual-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\manual.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\manual.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\manual.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\manual.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\manual.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\personal-info\personal-info-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\personal-info\personal-info.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\personal-info\personal-info.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\personal-info\personal-info.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\personal-info\personal-info.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\personal-info\personal-info.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\deductions\deductions-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\deductions\deductions.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\deductions\deductions.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\deductions\deductions.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\deductions\deductions.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\deductions\deductions.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\earnings\earnings-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\earnings\earnings.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\earnings\earnings.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\earnings\earnings.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\earnings\earnings.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\earnings\earnings.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\salary-details-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\salary-details.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\salary-details.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\salary-details.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\salary-details.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\salary-details.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\view-salary-details\view-salary-details-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\view-salary-details\view-salary-details.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\view-salary-details\view-salary-details.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\view-salary-details\view-salary-details.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\view-salary-details\view-salary-details.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\manual\salary-details\view-salary-details\view-salary-details.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\upload\upload-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\upload\upload.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\upload\upload.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\upload\upload.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\upload\upload.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\add-employee\upload\upload.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\employer-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\employer.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\employer.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\employer.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\employer.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\employer.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\it-declaration\it-declaration-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\it-declaration\it-declaration.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\it-declaration\it-declaration.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\it-declaration\it-declaration.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\it-declaration\it-declaration.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\it-declaration\it-declaration.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\CRM-tracking\CRM-tracking-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\CRM-tracking\CRM-tracking.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\CRM-tracking\CRM-tracking.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\CRM-tracking\CRM-tracking.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\CRM-tracking\CRM-tracking.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\CRM-tracking\CRM-tracking.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\release-CRM\release-CRM-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\release-CRM\release-CRM.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\release-CRM\release-CRM.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\release-CRM\release-CRM.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\release-CRM\release-CRM.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\release-CRM\release-CRM.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\view-update-employee\view-update-employee-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\employer\view-update-employee\view-update-employee.component.html" />
+    <None Remove="ClientApp\src\app\views\employer\view-update-employee\view-update-employee.component.scss" />
+    <None Remove="ClientApp\src\app\views\employer\view-update-employee\view-update-employee.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\employer\view-update-employee\view-update-employee.component.ts" />
+    <None Remove="ClientApp\src\app\views\employer\view-update-employee\view-update-employee.module.ts" />
+    <None Remove="ClientApp\src\app\views\forgot-password\forgot-password-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\forgot-password\forgot-password.component.html" />
+    <None Remove="ClientApp\src\app\views\forgot-password\forgot-password.component.scss" />
+    <None Remove="ClientApp\src\app\views\forgot-password\forgot-password.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\forgot-password\forgot-password.component.ts" />
+    <None Remove="ClientApp\src\app\views\forgot-password\forgot-password.module.ts" />
+    <None Remove="ClientApp\src\app\views\login\login-routing.module.ts" />
+    <None Remove="ClientApp\src\app\views\login\login.component.html" />
+    <None Remove="ClientApp\src\app\views\login\login.component.scss" />
+    <None Remove="ClientApp\src\app\views\login\login.component.spec.ts" />
+    <None Remove="ClientApp\src\app\views\login\login.component.ts" />
+    <None Remove="ClientApp\src\app\views\login\login.module.ts" />
+    <None Remove="ClientApp\src\assets\.gitkeep" />
+    <None Remove="ClientApp\src\assets\client.jpg" />
+    <None Remove="ClientApp\src\assets\images\background\user-info.jpg" />
+    <None Remove="ClientApp\src\assets\images\logo_text1.jpg" />
+    <None Remove="ClientApp\src\assets\images\users\1.png" />
+    <None Remove="ClientApp\src\assets\styles\app.scss" />
+    <None Remove="ClientApp\src\assets\styles\header.scss" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\css\material-design-iconic-font.css" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\css\material-design-iconic-font.min.css" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\css\materialdesignicons.min.css" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\Material-Design-Iconic-Font.eot" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\Material-Design-Iconic-Font.svg" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\Material-Design-Iconic-Font.ttf" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\Material-Design-Iconic-Font.woff" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\Material-Design-Iconic-Font.woff2" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\materialdesignicons-webfont.eot" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\materialdesignicons-webfont.svg" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\materialdesignicons-webfont.ttf" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\materialdesignicons-webfont.woff" />
+    <None Remove="ClientApp\src\assets\styles\icons\material-design-iconic-font\fonts\materialdesignicons-webfont.woff2" />
+    <None Remove="ClientApp\src\assets\styles\pages.scss" />
+    <None Remove="ClientApp\src\assets\styles\responsive.scss" />
+    <None Remove="ClientApp\src\assets\styles\sidebar.scss" />
+    <None Remove="ClientApp\src\assets\styles\spinner.scss" />
+    <None Remove="ClientApp\src\assets\styles\style.scss" />
+    <None Remove="ClientApp\src\assets\styles\table.scss" />
+    <None Remove="ClientApp\src\assets\styles\variable.scss" />
+    <None Remove="ClientApp\src\assets\taxblock.jpg" />
+    <None Remove="ClientApp\src\environments\environment.prod.ts" />
+    <None Remove="ClientApp\src\environments\environment.ts" />
+    <None Remove="ClientApp\src\favicon.ico" />
+    <None Remove="ClientApp\src\index.html" />
+    <None Remove="ClientApp\src\main.ts" />
+    <None Remove="ClientApp\src\polyfills.ts" />
+    <None Remove="ClientApp\src\styles.scss" />
+    <None Remove="ClientApp\src\test.ts" />
+    <None Remove="ClientApp\tsconfig.app.json" />
+    <None Remove="ClientApp\tsconfig.json" />
+    <None Remove="ClientApp\tsconfig.spec.json" />
+    <None Remove="ClientApp\tslint.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\iTSoft.CRM.Data\iTSoft.CRM.Data.csproj" />
+    <ProjectReference Include="..\iTSoft.CRM.Domain\iTSoft.CRM.Domain.csproj" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

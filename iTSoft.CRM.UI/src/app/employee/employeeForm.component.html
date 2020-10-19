@@ -1,0 +1,152 @@
+<form novalidate (ngSubmit)="saveEmployee()" [formGroup]="employeeForm">
+    <mat-card>
+        <mat-toolbar style="background-color: #FFF">
+            <mat-toolbar-row>
+                <span class="view-card-title"> {{pageTitle}}</span>
+                <span class="title-spacer"></span>
+                <mat-card-actions>
+                    <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray"
+                        type="submit" [disabled]='!employeeForm.valid'>
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/employees']">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+        <mat-card-content style="margin: 5 0 5 10px;">
+            <!-- <mat-grid-list cols="12" rowHeight="120px">
+                <mat-grid-tile [colspan]="fieldColspan">
+                    <span class="view-label">
+                        <img mat-card-avatar *ngIf='employee.avatar' class="center-block img-responsive"
+                            [src]='employee.avatar' [title]='employee.firstname | uppercase'
+                            [style.width.px]='imageWidth' [style.height.px]='imageWidth'
+                            [style.margin.px]='imageMargin'>
+                    </span>
+                </mat-grid-tile>
+            </mat-grid-list> -->
+            <div class="form-card">
+                <mat-grid-list cols="12" rowHeight="80px">
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <!-- colspan="4"> -->
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput id="firstNameId" type="text" placeholder="First Name (required)"
+                                formControlName="FirstName" />
+                            <mat-error *ngIf="displayMessage.FirstName">
+                                {{displayMessage.FirstName}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <!-- colspan="4"> -->
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Middle Name</mat-label>
+                            <input matInput id="middleNameId" type="text" placeholder="Middle Name (required)"
+                                formControlName="MiddleName" />
+                            <mat-error *ngIf="displayMessage.MiddleName">
+                                {{displayMessage.MiddleName}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput id="lastNameId" type="text" placeholder="Last Name (required)"
+                                formControlName="LastName" />
+                            <mat-error *ngIf="displayMessage.LastName">
+                                {{displayMessage.LastName}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>MobileNo1</mat-label>
+                            <input matInput id="mobileNo1" type="text" placeholder="MobileNo1"
+                                formControlName="MobileNo1" />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>MobileNo2</mat-label>
+                            <input matInput id="mobileNo2" type="text" placeholder="MobileNo2"
+                                formControlName="MobileNo2" />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>EmailId</mat-label>
+                            <input matInput id="email" type="email" placeholder="Email " formControlName="EmailId" />
+                            <mat-error *ngIf="displayMessage.EmailId">
+                                {{displayMessage.EmailId}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Address1</mat-label>
+                            <input matInput id="address1" type="text" placeholder="Address1 (required)"
+                                formControlName="Address1" />
+                            <mat-error *ngIf="displayMessage.Address1">
+                                {{displayMessage.Address1}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Address2</mat-label>
+                            <input matInput id="address2" type="text" placeholder="Address2 (required)"
+                                formControlName="Address2" />
+                            <mat-error *ngIf="displayMessage.Address2">
+                                {{displayMessage.Address2}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Postal Code</mat-label>
+                            <input matInput id="PostalCode" type="text" placeholder="PostalCode (required)"
+                                formControlName="PostalCode" />
+                            <mat-error *ngIf="displayMessage.PostalCode">
+                                {{displayMessage.PostalCode}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Target Amount</mat-label>
+                            <input matInput id="TargetAmount" type="text" placeholder="Target Amount (required)"
+                                formControlName="TargetAmount" />
+                            <mat-error *ngIf="displayMessage.TargetAmount">
+                                {{displayMessage.TargetAmount}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>LoginName</mat-label>
+                            <input matInput id="LoginName" type="text" placeholder="LoginName (required)"
+                                formControlName="LoginName" />
+                            <mat-error *ngIf="displayMessage.LoginName">
+                                {{displayMessage.LoginName}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput id="Password" type="text" placeholder="Password (required)"
+                                formControlName="Password" />
+                            <mat-error *ngIf="displayMessage.Password">
+                                {{displayMessage.Password}}
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

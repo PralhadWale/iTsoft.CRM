@@ -1,0 +1,183 @@
+<form novalidate (ngSubmit)="saveEnquiry()" [formGroup]="enquiryForm">
+  <mat-card>
+
+    <mat-toolbar style="background-color: #FFF">
+      <mat-toolbar-row>
+        <span class="view-card-title"> {{pageTitle}}</span>
+        <span class="title-spacer"></span>
+        <mat-card-actions>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
+            [disabled]='!enquiryForm.valid'>
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/enquiries']">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-card-content style="margin: 5 0 5 0px;">
+      <div class="form-card">
+        <mat-grid-list cols="12" rowHeight="80px">
+          
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Enquiry No" id="EnquiryNo" type="text"
+                placeholder="Enquiry No." formControlName="EnquiryNo" />
+              <mat-error *ngIf="displayMessage.EnquiryNo">
+                {{displayMessage.EnquiryNo}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput [matDatepicker]="enquiryDateId" placeholder="Enquiry Date" [value]="enquiry.EnquiryDate">
+              <mat-datepicker-toggle matSuffix [for]="enquiryDateId"></mat-datepicker-toggle>
+              <mat-datepicker #enquiryDateId></mat-datepicker>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Title" id="Title" type="text"
+                placeholder="Title" formControlName="Title" />
+              <mat-error *ngIf="displayMessage.Title">
+                {{displayMessage.Title}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Name" id="Name" type="text"
+                placeholder="Name" formControlName="Name" />
+              <mat-error *ngIf="displayMessage.Name">
+                {{displayMessage.Name}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="CompanyName" id="CompanyName" type="text"
+                placeholder="CompanyName" formControlName="CompanyName" />
+              <mat-error *ngIf="displayMessage.CompanyName">
+                {{displayMessage.CompanyName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Email" id="Email" type="text"
+                placeholder="Email" formControlName="Email" />
+              <mat-error *ngIf="displayMessage.Email">
+                {{displayMessage.Email}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Website" id="Website" type="text"
+                placeholder="Website" formControlName="Website" />
+              <mat-error *ngIf="displayMessage.Website">
+                {{displayMessage.Website}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Address" id="Address" type="text"
+                placeholder="Address" formControlName="Address" />
+              <mat-error *ngIf="displayMessage.Address">
+                {{displayMessage.Website}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="PinCode" id="PinCode" type="text"
+                placeholder="PinCode" formControlName="PinCode" />
+              <mat-error *ngIf="displayMessage.PinCode">
+                {{displayMessage.PinCode}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Amount" id="Amount" type="text"
+                placeholder="Amount" formControlName="Amount" />
+              <mat-error *ngIf="displayMessage.Amount">
+                {{displayMessage.Amount}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="AlterNateNo" id="AlterNateNo" type="text"
+                placeholder="AlterNateNo" formControlName="AlterNateNo" />
+              <mat-error *ngIf="displayMessage.AlterNateNo">
+                {{displayMessage.AlterNateNo}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput [matDatepicker]="enquiryDOBId" placeholder="Date of birth" [value]="enquiry.DOB">
+              <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
+              <mat-datepicker #enquiryDOBId></mat-datepicker>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-select placeholder="Select Source" #sourceIdId formControlName="SourceId"
+                [(value)]="enquiry.SourceId">
+                <!-- <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                  {{customer.firstname}} {{customer.lastname}}
+                </mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-select placeholder="Select State" #stateIdId formControlName="StateId"
+                [(value)]="enquiry.StateId">
+                <!-- <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                  {{customer.firstname}} {{customer.lastname}}
+                </mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-select placeholder="Select City" #cityIdId formControlName="CityId"
+                [(value)]="enquiry.CityId">
+                <!-- <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                  {{customer.firstname}} {{customer.lastname}}
+                </mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-select placeholder="Select CliendBaheviour" #cliendBaheviourId formControlName="CliendBaheviourId"
+                [(value)]="enquiry.CliendBaheviourId">
+                <!-- <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                  {{customer.firstname}} {{customer.lastname}}
+                </mat-option> -->
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+      <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+    </mat-card-content>
+    <!-- </div> -->
+  </mat-card>
+</form>
