@@ -9,6 +9,7 @@ namespace iTSoft.CRM.UnitTests.Web
         [TestMethod]
         public void TestMethod1()
         {
+
         }
     }
 }
