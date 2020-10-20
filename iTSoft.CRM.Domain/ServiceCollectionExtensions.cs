@@ -5,6 +5,7 @@ using System.Text;
 using iTSoft.CRM.Data.Repository;
 using iTSoft.CRM.Domain.Services;
 using iTSoft.HIMS.Service.Shared;
+using iTSoft.CRM.Domain.Services.Process;
 
 namespace iTSoft.CRM.Domain
 {
@@ -26,7 +27,7 @@ namespace iTSoft.CRM.Domain
             // Scoped
             services.AddScoped<ILoginDetailService, LoginDetailService>();
             services.AddScoped<IListService, ListService>();
-
+            services.AddScoped<IRequestService, RequestService>();
 
 
        

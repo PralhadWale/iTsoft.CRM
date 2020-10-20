@@ -14,10 +14,13 @@ namespace iTSoft.CRM.Domain.Services.Process
     public interface IRequestService
     {
         ResponseCode SaveRequest(RequestViewModel requestViewModel);
+
+        List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
     }
-    public class RequestService :  GenericRepository<RequestMaster> , IRequestService
+    public class RequestService : GenericRepository<RequestMaster>, IRequestService
     {
         public const string PROC_RequestManager = "PROC_RequestManager";
+        public const string PROC_RequestLookUpManager = "PROC_RequestLookUpManager";
         public ResponseCode SaveRequest(RequestViewModel requestViewModel)
         {
             using (IDbConnection dbConnection = base.GetConnection())
@@ -31,6 +34,16 @@ namespace iTSoft.CRM.Domain.Services.Process
                 param.Add("@RequestServiceMasterType", requestServices.AsTableValuedParameter("RequestServiceMasterType"));
                 dbConnection.Execute(PROC_RequestManager, param, commandType: CommandType.StoredProcedure);
                 return (ResponseCode)param.Get<int>("@Result");
+            }
+        }
+
+        public List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters)
+        {
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters(requestSerchParameters);
+                param.Add("Action", "SearchRequest");
+                return dbConnection.Query<RequestDetails>(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure).AsList();
             }
         }
     }
