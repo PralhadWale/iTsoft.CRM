@@ -16,7 +16,7 @@ export class NavService {
   }
 
   public closeNav() {
-    this.appDrawer.close();
+    //this.appDrawer.close();
   }
 
   public openNav() {

@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { TableColumnModel, TableDefaultSettings } from 'src/app/shared/table-layout/it-mat-table.component';
+import { DesignationMaster } from '../designation.model';
+import { DesignationService } from '../designation.service';
 
 @Component({
   selector: 'app-designationlist',
@@ -7,9 +11,58 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DesignationlistComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild("designationNav") sidenav: MatSidenav;
+  pageTitle: "Designation List"
 
-  ngOnInit(): void {
+  designationList: Array<any>;
+  designationTableSchema: Array<TableColumnModel> = [];
+  tableSettings: TableDefaultSettings;
+  designationMaster: DesignationMaster = null;
+  constructor(private designationService: DesignationService) {
+
   }
 
+  ngOnInit(): void {
+    this.reset();
+    this.SetTableSchema();
+  }
+
+  onAddDesignationClick($event: any) {
+
+    this.reset();
+    this.sidenav.toggle();
+
+  }
+
+  saveDesignation(designationMaster: DesignationMaster) {
+    if (designationMaster) {
+
+    }
+  }
+
+  reset() {
+
+
+    this.designationMaster = this.designationService.NewDesignation();
+    if (this.sidenav != null) {
+      this.sidenav.close();
+    }
+
+
+  }
+
+
+  SetTableSchema() {
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+
+    this.designationTableSchema =
+      [
+        { ColumnField: "designationName", ColumnHeader: "Designation Name", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+      ];
+
+
+    this.designationList = [{ designationName: "Test Name" }]
+  }
 }
