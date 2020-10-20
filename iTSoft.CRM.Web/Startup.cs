@@ -13,6 +13,8 @@ using System;
 using iTSoft.CRM.Domain;
 using iTSoft.CRM.Data;
 using iTSoft.CRM.Data.Helpers;
+using System.Data.Common;
+using iTSoft.CRM.Data.Entity;
 
 namespace iTSoft.CRM.Web
 {
@@ -29,6 +31,7 @@ namespace iTSoft.CRM.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var CRMConnectionStringVar = Configuration["CRMConnectionString"];
+            ApplicationSettings.ConnectionString = Configuration["CRMConnectionString"]; 
 
             services.AddDbContext<CRMContext>(options =>
             options.UseSqlServer(CRMConnectionStringVar));
@@ -62,6 +65,9 @@ namespace iTSoft.CRM.Web
             // all repositories add scoped will be moved to below method, Need to discuss and refactor
             services.CongfigureCRMDataServices();
             services.AddScoped<ICRMDapper, CRMDapper>();
+
+            DbProviderFactories.RegisterFactory("System.Data.SqlClient", System.Data.SqlClient.SqlClientFactory.Instance);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

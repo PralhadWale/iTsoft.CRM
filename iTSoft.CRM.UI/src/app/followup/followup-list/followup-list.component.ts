@@ -34,7 +34,7 @@ export class FollowupListComponent implements OnInit {
       [
         { ColumnField: "RequestType", ColumnHeader: "Request Type", Type: "text" },
         { ColumnField: "RequestNo", ColumnHeader: "Request No", Type: "text" },
-        { ColumnField: "Request Date", ColumnHeader: "Request Date", Type: "date" },
+        { ColumnField: "RequestDate", ColumnHeader: "Request Date", Type: "date" },
         { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
         { ColumnField: "State", ColumnHeader: "State", Type: "text" },
         { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
@@ -47,7 +47,7 @@ export class FollowupListComponent implements OnInit {
       ];
 
 
-    this.followUpList = [{ Date: Date(), FollowUpDate: Date(), DealStatus: "Completed", EmployeeName: "Pralhad", Attempt: 1, Comment: "", Remark: "", ClientRating: 10 }]
+    this.followUpList = [{ Date: Date(),RequestType:"asdadasd",RequestDate:Date(),RequestNo:"234234234", FollowUpDate: Date(), DealStatus: "Completed", EmployeeName: "Pralhad", Attempt: 1, Comment: "asd", Remark: "asd", ClientRating: 10 , State:"asdas",Status:"sdas" }]
   }
 
 

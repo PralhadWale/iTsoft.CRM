@@ -4,9 +4,9 @@ using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Services.Master;
 using iTSoft.CRM.Web.Controllers;
 using iTSoft.CRM.Web.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
-using System.Web.Http;
 
 namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
@@ -21,7 +21,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Save(EmployeeMaster employeeMaster)
+        public IActionResult Save(EmployeeMaster employeeMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -38,7 +38,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetAll()
+        public IActionResult GetAll()
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -61,7 +61,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetEmployeeInfo(EmployeeMasterSearchParam searchParam)
+        public IActionResult GetEmployeeInfo(EmployeeMasterSearchParam searchParam)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -84,7 +84,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Find(long EmployeeId)
+        public IActionResult Find(long EmployeeId)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -109,7 +109,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Delete(EmployeeMaster employeeMaster)
+        public IActionResult Delete(EmployeeMaster employeeMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try

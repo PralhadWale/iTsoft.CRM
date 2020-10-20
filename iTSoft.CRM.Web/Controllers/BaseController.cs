@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -7,18 +8,17 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
-using System.Web.Http;
 
 namespace iTSoft.CRM.Web.Controllers
 {
-    public class BaseController : ApiController
+    public class BaseController : ControllerBase
     {
         public HttpResponseMessage GetByteResponse(string filePath, string fileName)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             try
             {
-                byte[] byteArray = File.ReadAllBytes(filePath);
+                byte[] byteArray = System.IO.File.ReadAllBytes(filePath);
                 result.Content = new ByteArrayContent(byteArray);
                 result.Content.Headers.ContentDisposition =
                     new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")

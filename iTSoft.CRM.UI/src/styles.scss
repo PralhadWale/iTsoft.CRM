@@ -25,3 +25,53 @@ h1 {
   max-width: 320px;
   background-color: rgb(244, 244, 247);
 }
+
+
+
+thead {
+  color: #337ab7;
+}
+
+.title-spacer {
+  flex: 1 1 auto;
+}
+
+.search-form-fileld{
+    margin-right: 20px;
+}
+
+.table-responsive {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+.mat-table {
+  overflow-x: scroll;
+}
+
+
+
+th {
+  //border: 1px solid #ffa600;
+  padding: 3px 15px !important;
+  text-align: center;
+  font-weight: 00 !important;
+  color: white !important;
+  background-color: black !important;
+}
+
+td.mat-cell {
+  padding: 5px !important;
+ // border: 1px solid #ffa600;
+  text-align: left;
+  font-weight: 400 !important;
+  color: black !important;
+}

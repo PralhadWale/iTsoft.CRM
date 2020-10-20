@@ -3,12 +3,12 @@ using iTSoft.CRM.Data.Entity.Master;
 using iTSoft.CRM.Domain.Services.Master;
 using iTSoft.CRM.Web.Controllers;
 using iTSoft.CRM.Web.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
@@ -25,7 +25,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Save(OrganizationMaster organizationMaster)
+        public IActionResult Save(OrganizationMaster organizationMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -42,7 +42,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetAll()
+        public IActionResult GetAll()
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -65,7 +65,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Delete(OrganizationMaster organizationMaster)
+        public IActionResult Delete(OrganizationMaster organizationMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -82,7 +82,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult FindOrganization(long OrganizationId)
+        public IActionResult FindOrganization(long OrganizationId)
         {
             ServiceResponse response = new ServiceResponse();
             try
