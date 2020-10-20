@@ -14,7 +14,7 @@ using Serilog;
 
 namespace iTSoft.CRM.Web.Area.Process.Controllers
 {
-    public class RequestController : GenericBaseController<RequestMaster>
+    public class RequestController : BaseController
     {
         private readonly ILogger _logger;
 
