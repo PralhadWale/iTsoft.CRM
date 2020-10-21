@@ -76,11 +76,11 @@ export class EmployeeListComponent implements OnInit {
 let ew = new EmployeeMaster();
 ew.EmployeeId = 10;
 ew.UpdatedDate = new Date();
-ew.FirstName ="Pralhad";
+ew.FirstName ="Taxblock";
 ew.MiddleName = "B";
-ew.LastName ="Wale";
-ew.MobileNo1 = "9960869009";
-ew.EmailId = "pralhadwale@gmail.com";
+ew.LastName ="Admin";
+ew.MobileNo1 = "00000000";
+ew.EmailId = "tb@taxblock.in";
 ew.DepartMent = "Admin";
 ew.Role = "Admin";
 ew.TargetAmount =3456;
