@@ -50,7 +50,7 @@ namespace iTSoft.CRM.Web
 
             services.AddCors(options => {
                 options.AddPolicy("CRM", builder => builder
-                 .WithOrigins("http://localhost:4200/")
+                 .WithOrigins("*")
                  .SetIsOriginAllowed((host) => true)
                  .AllowAnyMethod()
                  .AllowAnyHeader());
