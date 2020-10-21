@@ -15,6 +15,7 @@ using iTSoft.CRM.Data;
 using iTSoft.CRM.Data.Helpers;
 using System.Data.Common;
 using iTSoft.CRM.Data.Entity;
+using Newtonsoft.Json.Serialization;
 
 namespace iTSoft.CRM.Web
 {
@@ -35,10 +36,16 @@ namespace iTSoft.CRM.Web
 
             services.AddDbContext<CRMContext>(options =>
             options.UseSqlServer(CRMConnectionStringVar));
+           
+          
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                  {
+                      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                      options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                  }
+                   
             );
 
             services.AddCors(options => {

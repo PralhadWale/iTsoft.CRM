@@ -28,6 +28,13 @@ import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TableColumnModel } from '../shared/table-layout/it-mat-table.component';
+import { RequestService } from '../process/services/request.service';
+import { ListService } from '../process/services/list.service';
+import { RequestViewModel } from '../_models/requestviewmodel';
+import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+import { RequestMaster } from '../_models';
+import { RequestType } from '../_models/requesttype';
+import { AlertService } from '../_services';
 
 @Component({
   selector: 'enquiry-form',
@@ -49,10 +56,10 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   pageTitle: string = "Update Enquiry";
   errorMessage: string;
   enquiryForm: FormGroup;
-  enquiry: IEnquiry = <IEnquiry>{};
+  request: RequestViewModel;
   showImage: boolean;
   fieldColspan = 4;
-  displayedColumns = ["EnquiryNo","Name", "Email","Phone","CompanyName","EnquiryDate" , "Source","Service","Amount","AlterNateNo", "State", "Website", "Address","EnquiryId"];
+
   // Use with the generic validation messcustomerId class
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } } = {
@@ -78,16 +85,25 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private sub: Subscription;
   private genericValidator: GenericValidator;
 
-  followUpList : Array<any>;
-  followUpTableSchema : Array<TableColumnModel> = [];
+  requestSelectList: RequestSelectListModel
+  followUpTableSchema: Array<TableColumnModel> = [];
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private enquiryService: EnquiryService,
+    private requestService: RequestService,
+    private listService: ListService,
+    private alertService : AlertService,
     private breakpointObserver: BreakpointObserver
   ) {
+
+    this.requestSelectList = new RequestSelectListModel();
+
+    this.LoadSelectListData();
+    this.SetDefaultRequest();
     this.SetTableSchema();
+
     breakpointObserver.observe([
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait
@@ -97,58 +113,44 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
-  SetTableSchema() {
-    this.followUpTableSchema =
-     [
-       { ColumnField:"Date" , ColumnHeader:"Date" , Type:"date" },
-       { ColumnField:"FollowUpDate" , ColumnHeader:"FollowUp Date" , Type:"date" },
-       { ColumnField:"State" , ColumnHeader:"State" , Type:"text" },
-       { ColumnField:"Status" , ColumnHeader:"Deal Status" , Type:"text" },
-       { ColumnField:"Comment" , ColumnHeader:"Comment" , Type:"text" },
-       { ColumnField:"Remark" , ColumnHeader:"Remark" , Type:"text" },
-       { ColumnField:"EmployeeName" , ColumnHeader:"Employee Name" , Type:"text" },
-       { ColumnField:"Attempt" , ColumnHeader:"Attempt" , Type:"text" },
-       { ColumnField:"ClientRating" , ColumnHeader:"Client Rating" , Type:"text" },
-       {ColumnField:"$$edit",ColumnHeader:"",Type:"text"}
-     ];
 
-
-     this.followUpList = [{Date:Date(),FollowUpDate:Date(),DealStatus:"Completed",EmployeeName:"Pralhad",Attempt:1,Comment:"",Remark:"",ClientRating:10}]
-  }
 
   ngOnInit(): void {
     this.enquiryForm = this.fb.group({
-      EnquiryId: [""],
-      EnquiryNo: [""],
-      EnquiryDate:[""],
-      Name: ["", [Validators.required]],
-      CompanyName:[""],
-      Title:[""],
-      Email:[""],
-      Website:[""],
-      Address:[""],
-      PinCode:[""],
+      RequestId: [""],
+      RequestNo: [""],
+      RequestDate: [""],
+      Title: [""],
+      CustomerName: ["", [Validators.required]],
+      CompanyName: [""],
+      Website: [""],
+      Email: [""],
+      Designation: [""],
+      PhoneNo1: [""],
+      PhoneNo2: [""],
+      DOB: [""],
+      Address: [""],
+      SourceId: [""],
+      LeadStatusId: [""],
+      StageId: [""],
+      TermsAndCondition: [""],
       Amount: ["", [Validators.required, NumberValidators.range(1, 99999)]],
-      AlterNateNo:[""],
-      DOB:[""],
-      SourceId:[""],
-      StateId:[""],
-      CityId:[""],
-      CliendBaheviourId:[""],
-      membership: false
+      ClientBehaviourId: [""]
+
     });
 
-    // Read the enquiry Id from the route parameter
-    // this.sub = this.route.params.subscribe(params => {
-    //   let id = +params["id"];
-    //   this.getEnquiry(id);
-    // });
+    this.sub = this.route.params.subscribe(
+      params => {
+          let id = +params['id'];
+          this.getRequest(id);
+      }
+  );
 
-   
+
   }
 
   ngOnDestroy(): void {
-   // this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -168,47 +170,105 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  getEnquiry(id: number): void {
-    this.enquiryService
-      .getEnquiry(id)
+  getRequest(requestId: number): void {
+    if(requestId > 0)
+    {
+    this.requestService
+      .Load(requestId)
       .subscribe(
-        (enquiry: IEnquiry) => this.onEnquiryRetrieved(enquiry),
+        (result) => {
+          var data = <RequestViewModel>result.Value.ResponseData;
+          this.onEnquiryRetrieved(data)
+        },
+        (error: any) => (this.errorMessage = <any>error)
+      );
+    }
+    else {
+      this.onEnquiryRetrieved(this.request);
+    }
+  }
+
+
+  onEnquiryRetrieved(request: RequestViewModel): void {
+    if (this.enquiryForm) {
+      this.enquiryForm.reset();
+    }
+    this.request = request;
+
+    if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
+      this.pageTitle = "Add Enquiry";
+    } else {
+      this.pageTitle = `Update Enquiry: ${this.request.RequestMaster.Title} `;
+    }
+
+    // Update the data on the form
+    this.enquiryForm.patchValue({
+      RequestId: this.request.RequestMaster.RequestId,
+      RequestNo: this.request.RequestMaster.RequestNo,
+      RequestDate: this.request.RequestMaster.RequestDate != null ? new Date(this.request.RequestMaster.RequestDate):Date(),
+      Title: this.request.RequestMaster.Title,
+      CustomerName: this.request.RequestMaster.CustomerName,
+      CompanyName: this.request.RequestMaster.CompanyName,
+      Website: this.request.RequestMaster.Website,
+      Email: this.request.RequestMaster.Email,
+      Designation: this.request.RequestMaster.Designation,
+      PhoneNo1: this.request.RequestMaster.PhoneNo1,
+      PhoneNo2: this.request.RequestMaster.PhoneNo2,
+      DOB: new Date(this.request.RequestMaster.DOB),
+      Address: this.request.RequestMaster.Address,
+      SourceId: this.request.RequestMaster.SourceId,
+      LeadStatusId: this.request.RequestMaster.LeadStatusId,
+      StageId: this.request.RequestMaster.StageId,
+      TermsAndCondition: this.request.RequestMaster.TermsAndCondition,
+      Amount: this.request.RequestMaster.Amount,
+      ClientBehaviourId: this.request.RequestMaster.ClientBehaviourId,
+    });
+
+  }
+
+  saveEnquiry() {
+
+    let request = new RequestViewModel();
+    request.RequestMaster = <RequestMaster>this.enquiryForm.value;
+    request.RequestMaster.RequestTypeId = RequestType.Enquiry;
+    this.requestService.Save(request).subscribe(result => {
+      this.alertService.showSuccessMessage("Enquiry Saved successfully");
+    }, (error: any) => {
+      this.alertService.showSuccessMessage("Failed to save");
+    });
+  }
+
+
+  LoadSelectListData() {
+    this.listService
+      .GetRequestSelectList()
+      .subscribe(
+        (result) => {
+          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+        },
         (error: any) => (this.errorMessage = <any>error)
       );
   }
 
- 
-  onEnquiryRetrieved(enquiry: IEnquiry): void {
-    if (this.enquiryForm) {
-      this.enquiryForm.reset();
-    }
-    this.enquiry = enquiry;
-
-    // if (this.enquiry.id === 0) {
-    //   this.pageTitle = "Add Enquiry";
-    // } else {
-    //   this.pageTitle = `Update Enquiry: ${this.enquiry.reference} `;
-    // }
-
-    // // Update the data on the form
-    // this.enquiryForm.patchValue({
-    //   reference: this.enquiry.reference,
-    //   amount: this.enquiry.amount,
-    //   enquiryDate: new Date(this.enquiry.enquiryDate),
-    //   shippedDate: new Date(this.enquiry.shippedDate),
-    //   address: this.enquiry.shipAddress.address,
-    //   city: this.enquiry.shipAddress.city,
-    //   country: this.enquiry.shipAddress.country,
-    //   zipcode: this.enquiry.shipAddress.zipcode,
-    //   customerId: this.enquiry.customerId,
-    //   membership: this.enquiry.membership
-    // });
-
+  SetDefaultRequest() {
+    this.request = new RequestViewModel();
   }
 
-  saveEnquiry()
-  {
-    
+  SetTableSchema() {
+    this.followUpTableSchema =
+      [
+        { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },
+        { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+        { ColumnField: "State", ColumnHeader: "State", Type: "text" },
+        { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
+        { ColumnField: "Comment", ColumnHeader: "Comment", Type: "text" },
+        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+        { ColumnField: "EmployeeName", ColumnHeader: "Employee Name", Type: "text" },
+        { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+        { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+      ];
+
   }
 
   onScreensizeChange() {
@@ -231,5 +291,5 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fieldColspan = 3;
     }
   }
-  deleteProduct(): void { }
+
 }

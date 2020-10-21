@@ -19,6 +19,6 @@ export class FollowupService {
 
   Search(param: FollowUpSerchParameters) {
     let url = this.followUpController + "search";
-    return this.apiService.PostData(url, FollowUpSerchParameters);
+    return this.apiService.PostData(url, param);
   }
 }

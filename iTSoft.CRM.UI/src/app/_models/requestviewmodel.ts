@@ -10,4 +10,12 @@ export class RequestViewModel
     RequestServiceMasters: RequestServiceMaster[];
     RequestServiceDetails: RequestDetails[];
     RequestFollowup: FollowUpDetails[];
+
+    constructor(){
+        this.RequestMaster = new RequestMaster();
+        this.RequestServiceMasters = [];
+        this.RequestServiceDetails = [];
+        this.RequestFollowup = [];
+
+    }
 }
