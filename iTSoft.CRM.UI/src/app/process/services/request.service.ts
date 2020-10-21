@@ -20,11 +20,11 @@ export class RequestService {
 
   Search(param: RequestSerchParameters) {
     let url = this.RequestController + "search";
-    return this.apiService.PostData(url, RequestSerchParameters);
+    return this.apiService.PostData(url, param);
   }
 
   Load(requestId:number) {
     let url = this.RequestController + "load";
-    return this.apiService.GetData(url + "/" + requestId);
+    return this.apiService.GetData(url + "?requestId=" + requestId);
   }
 }

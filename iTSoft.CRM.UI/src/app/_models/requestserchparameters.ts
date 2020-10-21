@@ -1,6 +1,6 @@
 export class RequestSerchParameters
 {
-    RequestTypeId: string;
+    RequestTypeId: number;
     RequestNo: string;
     FromDate: Date;
     ToDate: Date;

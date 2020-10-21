@@ -14,7 +14,9 @@ using Serilog;
 
 namespace iTSoft.CRM.Web.Area.Process.Controllers
 {
-    public class RequestController : BaseController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RequestController : ControllerBase
     {
         private readonly ILogger _logger;
 
@@ -61,7 +63,7 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             return Ok(response);
         }
 
-        [HttpGet("load/requestId")]
+        [HttpGet("load")]
         public IActionResult Load(long requestId)
         {
             ServiceResponse response = new ServiceResponse();
@@ -70,6 +72,22 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
 
                 response.ResponseData = _listService.LoadRequest(requestId);
                 response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - LoadRequest");
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = "Test";
             }
             catch (Exception ex)
             {

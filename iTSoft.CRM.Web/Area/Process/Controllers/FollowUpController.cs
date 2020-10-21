@@ -14,6 +14,8 @@ using Serilog;
 
 namespace iTSoft.CRM.Web.Area.Process.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FollowUpController : BaseController
     {
         private readonly ILogger _logger;

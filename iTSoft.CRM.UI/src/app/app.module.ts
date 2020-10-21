@@ -9,7 +9,7 @@ import { MaterialModule } from './shared/material.module';
 import { environment } from '../environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './login';
-import { AuthenticationService, BackendService, PagerService } from './_services';
+import { APIService, AuthenticationService, BackendService, LoaderService, PagerService } from './_services';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartsModule } from "ng2-charts";  
@@ -43,6 +43,8 @@ import { NavLayoutModule } from './_layout/layout-module';
     AppRoutingModule
   ],
   providers: [
+    LoaderService,
+    APIService,
     AuthGuard,
     BackendService,
     AuthenticationService,
