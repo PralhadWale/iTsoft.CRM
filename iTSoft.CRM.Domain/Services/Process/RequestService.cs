@@ -7,6 +7,7 @@ using iTSoft.CRM.Domain.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace iTSoft.CRM.Domain.Services.Process
@@ -15,12 +16,17 @@ namespace iTSoft.CRM.Domain.Services.Process
     {
         ResponseCode SaveRequest(RequestViewModel requestViewModel);
 
+        RequestViewModel LoadRequest(long requestId);
+
         List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
     }
     public class RequestService : GenericRepository<RequestMaster>, IRequestService
     {
         public const string PROC_RequestManager = "PROC_RequestManager";
         public const string PROC_RequestLookUpManager = "PROC_RequestLookUpManager";
+
+      
+
         public ResponseCode SaveRequest(RequestViewModel requestViewModel)
         {
             using (IDbConnection dbConnection = base.GetConnection())
@@ -45,6 +51,23 @@ namespace iTSoft.CRM.Domain.Services.Process
                 param.Add("Action", "SearchRequest");
                 return dbConnection.Query<RequestDetails>(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure).AsList();
             }
+        }
+
+        public RequestViewModel LoadRequest(long requestId)
+        {
+            RequestViewModel requestViewModel = new RequestViewModel();
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("Action", "LoadRequest");
+                param.Add("RequestId",requestId);
+                var result = dbConnection.QueryMultiple(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure);
+                requestViewModel.RequestMaster = result.Read<RequestMaster>().FirstOrDefault();
+                requestViewModel.RequestServiceDetails = result.Read<RequestServiceDetails>().AsList();
+                requestViewModel.RequestFollowup = result.Read<FollowUpDetails>().AsList();
+            }
+
+            return requestViewModel;
         }
     }
 }

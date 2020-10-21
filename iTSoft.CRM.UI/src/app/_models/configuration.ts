@@ -11,20 +11,6 @@ export class ConfigurationSettings {
 
     }
 
-    public static GetApplicationToken(): string {
-        let ApplicationToken = <string>localStorage["ApplicationToken"];
-        return ApplicationToken;
-    }
-
-    public static GetUserId(): number {
-        // let userId = <number>localStorage["UserId"];
-        let userId = 30025;
-        return userId;
-    }
-
-    public static GetUserFinancialId(): number {
-        // let userId = <number>localStorage["UserId"];
-        let userFinancialId = 1;
-        return userFinancialId;
-    }
+   
+  
 }

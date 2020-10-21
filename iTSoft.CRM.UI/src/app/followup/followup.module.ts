@@ -5,6 +5,7 @@ import { FollowupListComponent } from './followup-list/followup-list.component';
 import { MaterialModule } from '../shared';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { ProcessModule } from '../process/process.module';
 
 @NgModule({
   declarations: [AddFollowupComponent, FollowupListComponent],
@@ -12,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     MaterialModule,
     SharedModule,
+    ProcessModule,
     RouterModule.forChild(
       [
           { path: "", component: FollowupListComponent }

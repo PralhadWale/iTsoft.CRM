@@ -11,6 +11,7 @@ import { QuotationService } from "./quotation.service";
 import { SharedModule } from "../shared/shared.module";
 
 import { MaterialModule } from "../shared/material.module";
+import { ProcessModule } from '../process/process.module';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { MaterialModule } from "../shared/material.module";
     
     // ReactiveFormsModule,
     MaterialModule,
+    ProcessModule,
     RouterModule.forChild([
       { path: "", component: QuotationListComponent },
       {

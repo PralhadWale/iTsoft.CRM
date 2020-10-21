@@ -25,8 +25,8 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             _listService = listService;
         }
 
-        [HttpPost("SaveRequest")]
-        public IActionResult SaveRequest(RequestViewModel requestViewModel)
+        [HttpPost("save")]
+        public IActionResult Save(RequestViewModel requestViewModel)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -43,8 +43,8 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             return Ok(response);
         }
 
-        [HttpPost("SearchRequest")]
-        public IActionResult SearchRequest(RequestSerchParameters requestSerchParameters)
+        [HttpPost("search")]
+        public IActionResult Search(RequestSerchParameters requestSerchParameters)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -57,6 +57,24 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
                 _logger.Error(ex, "Request - SearchRequest");
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("load/requestId")]
+        public IActionResult Load(long requestId)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+
+                response.ResponseData = _listService.LoadRequest(requestId);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - LoadRequest");
             }
             return Ok(response);
         }

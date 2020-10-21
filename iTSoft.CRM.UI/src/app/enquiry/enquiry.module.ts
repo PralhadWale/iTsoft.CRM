@@ -8,10 +8,12 @@ import { EnquiryFormComponent } from "./enquiry-form.component";
 import { EnquiryService } from "./enquiry.service";
 import { SharedModule } from "../shared/shared.module";
 import { MaterialModule } from "../shared/material.module";
+import { ProcessModule } from '../process/process.module';
 @NgModule({
   imports: [
     SharedModule,
     MaterialModule,
+    ProcessModule,
     RouterModule.forChild([
       { path: "", component: EnquiryListComponent },
       {

@@ -13,14 +13,14 @@ namespace iTSoft.CRM.Domain.Services.Process
 {
     public interface IFollowUpService
     {
-        ResponseCode SaveFollowUp(FollowupMaster followupMaster);
+        ResponseCode SaveFollowUp(FollowUpMaster followupMaster);
 
         List<FollowUpDetails> SearchFollowUp(FollowUpSerchParameters FollowUpSerchParameters);
     }
-    public class FollowUpService : GenericRepository<FollowupMaster>, IFollowUpService
+    public class FollowUpService : GenericRepository<FollowUpMaster>, IFollowUpService
     {
         public const string PROC_FollowUpLookUpManager = "PROC_FollowUpLookUpManager";
-        public ResponseCode SaveFollowUp(FollowupMaster followupMaster)
+        public ResponseCode SaveFollowUp(FollowUpMaster followupMaster)
         {
             if (followupMaster.FollowUpId == 0)
                 base.Add(followupMaster);

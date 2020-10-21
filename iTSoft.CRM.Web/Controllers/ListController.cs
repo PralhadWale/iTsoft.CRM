@@ -27,7 +27,7 @@ namespace iTSoft.CRM.Web.Controllers
             _listService = listService;
         }
 
-        [HttpGet("GetRequestSelectList")]
+        [HttpGet("get-request-select-list")]
         public IActionResult GetRequestSelectList()
         {
             ServiceResponse response = new ServiceResponse();
@@ -50,7 +50,7 @@ namespace iTSoft.CRM.Web.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetFollowupSelectList")]
+        [HttpGet("get-followup-select-list")]
         public IActionResult GetFollowupSelectList()
         {
             ServiceResponse response = new ServiceResponse();

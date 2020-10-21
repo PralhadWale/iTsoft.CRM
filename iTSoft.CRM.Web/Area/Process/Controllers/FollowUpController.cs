@@ -25,8 +25,8 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             _listService = listService;
         }
 
-        [HttpPost("SaveFollowUp")]
-        public IActionResult SaveFollowUp(FollowupMaster followupMaster)
+        [HttpPost("save")]
+        public IActionResult Save(FollowUpMaster followupMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -43,8 +43,8 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             return Ok(response);
         }
 
-        [HttpPost("SearchFollowUp")]
-        public IActionResult SearchFollowUp(FollowUpSerchParameters FollowUpSerchParameters)
+        [HttpPost("search")]
+        public IActionResult Search(FollowUpSerchParameters FollowUpSerchParameters)
         {
             ServiceResponse response = new ServiceResponse();
             try

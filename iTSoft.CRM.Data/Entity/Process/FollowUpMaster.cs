@@ -6,7 +6,7 @@ using System.Text;
 namespace iTSoft.CRM.Data.Entity.Process
 {
     [Table("FollowupMaster")]
-    public class FollowupMaster
+    public class FollowUpMaster
     {
         [Key]
         public long FollowUpId { get; set; }
