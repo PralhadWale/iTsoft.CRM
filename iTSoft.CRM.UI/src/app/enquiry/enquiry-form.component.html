@@ -173,7 +173,7 @@
     <!-- </div> -->
   </mat-card>
 </form>
-<mat-card *ngIf="request.RequestFollowup.length > 0">
+<mat-card *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
   <mat-card-content>
     <it-mat-table [dataSource]="request.RequestFollowup" [tableSchema]="followUpTableSchema"></it-mat-table>
   </mat-card-content>

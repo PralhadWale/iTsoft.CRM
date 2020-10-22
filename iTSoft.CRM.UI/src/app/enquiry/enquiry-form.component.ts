@@ -22,12 +22,10 @@ import "rxjs/add/observable/merge";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { IEnquiry } from "./enquiry";
-import { EnquiryService } from "./enquiry.service";
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { TableColumnModel } from '../shared/table-layout/it-mat-table.component';
+import { TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
 import { RequestViewModel } from '../_models/requestviewmodel';
@@ -35,7 +33,7 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 import { RequestMaster } from '../_models';
 import { RequestType } from '../_models/requesttype';
 import { AlertService } from '../_services';
-import * as moment from 'moment'
+
 @Component({
   selector: 'enquiry-form',
   templateUrl: "./enquiry-form.component.html",
@@ -87,6 +85,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   requestSelectList: RequestSelectListModel
   followUpTableSchema: Array<TableColumnModel> = [];
+  tableSettings: TableDefaultSettings;
 
   constructor(
     private fb: FormBuilder,
@@ -198,16 +197,14 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
       this.pageTitle = "Add Enquiry";
     } else {
-      this.pageTitle = `Update Enquiry: ${this.request.RequestMaster.Title} `;
+      this.pageTitle = `Update Enquiry: ${this.request.RequestMaster.RequestNo} `;
     }
 
-
-    
     // Update the data on the form
     this.enquiryForm.patchValue({
       RequestId: this.request.RequestMaster.RequestId,
       RequestNo: this.request.RequestMaster.RequestNo,
-      //RequestDate: moment(this.request.RequestMaster.RequestDate != null ? new Date(this.request.RequestMaster.RequestDate):Date()).format("dd-MMM-yyyy"),
+      RequestDate: this.request.RequestMaster.RequestDate != null ? new Date(this.request.RequestMaster.RequestDate): new Date(),
       Title: this.request.RequestMaster.Title,
       CustomerName: this.request.RequestMaster.CustomerName,
       CompanyName: this.request.RequestMaster.CompanyName,
@@ -216,7 +213,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       Designation: this.request.RequestMaster.Designation,
       PhoneNo1: this.request.RequestMaster.PhoneNo1,
       PhoneNo2: this.request.RequestMaster.PhoneNo2,
-      //DOB: new Date(this.request.RequestMaster.DOB),
+      DOB: new Date(this.request.RequestMaster.DOB),
       Address: this.request.RequestMaster.Address,
       SourceId: this.request.RequestMaster.SourceId,
       LeadStatusId: this.request.RequestMaster.LeadStatusId,
@@ -257,6 +254,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   SetTableSchema() {
+
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add];
+  
+
     this.followUpTableSchema =
       [
         { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },

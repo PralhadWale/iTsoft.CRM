@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 
 
-import { ConfirmDialog } from "../shared";
 import * as _ from "lodash";
-
-import { MatDialog } from '@angular/material/dialog'
 import { RequestService } from '../process/services/request.service';
 import { RequestSerchParameters } from '../_models/Requestserchparameters';
 import { RequestType } from '../_models/requesttype';
@@ -16,7 +13,6 @@ import { RequestDetails } from '../_models/requestdetails';
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
   styleUrls: ["./enquiry-list.component.css"],
-  providers: [ConfirmDialog]
 })
 export class EnquiryListComponent implements OnInit {
 @ViewChild("sidenav")  sidenav : MatSidenav;
@@ -37,7 +33,6 @@ export class EnquiryListComponent implements OnInit {
   constructor(
     private requestService: RequestService,
     private router : Router,
-    public dialog: MatDialog,
 
   ) {
 
@@ -73,10 +68,8 @@ export class EnquiryListComponent implements OnInit {
         
       }
     }
-    
-  }
 
-  
+  }
 
   resetSearchFilter(sidenav:any)
   {
@@ -112,14 +105,15 @@ export class EnquiryListComponent implements OnInit {
 
     this.enquiryTableSchema =
       [
-        { ColumnField: "RequestNo", ColumnHeader: "Request No", Type: "text" },
-        { ColumnField: "RequestDate", ColumnHeader: "Request Date", Type: "date" },
+        { ColumnField: "RequestNo", ColumnHeader: "Enquiry No", Type: "text" },
+        { ColumnField: "RequestDate", ColumnHeader: "Enquiry Date", Type: "date" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
         { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
         { ColumnField: "CustomerName", ColumnHeader: "CustomerName", Type: "text" },
         { ColumnField: "PhoneNo2", ColumnHeader: "Phone No 2", Type: "text" },
         { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
+        { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }
       ];
 

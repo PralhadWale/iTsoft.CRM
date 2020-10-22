@@ -1,116 +1,114 @@
-<form novalidate (ngSubmit)="saveQuotation()" [formGroup]="quotationForm">
+<form #quotationForm="ngForm">
   <mat-card>
-
     <mat-toolbar style="background-color: #FFF">
       <mat-toolbar-row>
         <span class="view-card-title"> {{pageTitle}}</span>
         <span class="title-spacer"></span>
         <mat-card-actions>
-          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
-            [disabled]='!quotationForm.valid'>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit" (click)="onSubmit(quotationForm)">
             <mat-icon>save</mat-icon>
           </button>
           <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/quotations']">
             <mat-icon>cancel</mat-icon>
           </button>
-
         </mat-card-actions>
-
       </mat-toolbar-row>
     </mat-toolbar>
-
     <mat-card-content style="margin: 5 0 5 10px;">
       <div class="form-card">
         <mat-grid-list cols="12" rowHeight="80px">
           <mat-grid-tile [colspan]="fieldColspan">
-            <!-- colspan="4"> -->
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Quotation No</mat-label>
-              <input matInput id="QuotationNo" type="text" placeholder="Quotation No (required)"
-                formControlName="QuotationNo" />
-              <mat-error *ngIf="displayMessage.QuotationNo">
-                {{displayMessage.QuotationNo}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.RequestNo" name="RequestNo" #RequestNo="ngModel" required>
+              <mat-error *ngIf="(RequestNo.touched || quotationForm.submitted) && RequestNo.errors?.required">
+                Quotation No Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Name</mat-label>
-              <input matInput id="Name" type="text" placeholder="Name (required)"
-                formControlName="Name" />
-              <mat-error *ngIf="displayMessage.Name">
-                {{displayMessage.Name}}
+            <mat-label>Quotation Date</mat-label>
+            <input matInput [matDatepicker]="RequestDate" [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" required>
+            <mat-datepicker-toggle matSuffix [for]="RequestDate"></mat-datepicker-toggle>
+            <mat-datepicker #RequestDate color="primary"></mat-datepicker>
+            <mat-error>Reques tDate is required.</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Title</mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Title" name="Title" #Title="ngModel" required>
+              <mat-error *ngIf="(Title.touched || quotationForm.submitted) && Title.errors?.required">
+                Title Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
-          
+
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Company Name</mat-label>
-              <input matInput placeholder="CompanyName" id="CompanyName" type="text"
-                placeholder="CompanyName" formControlName="CompanyName" />
-              <mat-error *ngIf="displayMessage.CompanyName">
-                {{displayMessage.CompanyName}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.CompanyName" name="CompanyName" #CompanyName="ngModel" required>
+              <mat-error *ngIf="(CompanyName.touched || quotationForm.submitted) && CompanyName.errors?.required">
+                Company Name Is required
               </mat-error>
+
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Phone No</mat-label>
-              <input matInput placeholder="PhoneNo" id="PhoneNo" type="text"
-                placeholder="PhoneNo" formControlName="PhoneNo" />
-              <mat-error *ngIf="displayMessage.PhoneNo">
-                {{displayMessage.PhoneNo}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel" required>
+              <mat-error *ngIf="(PhoneNo1.touched || quotationForm.submitted) && PhoneNo1.errors?.required">
+                Phone No Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Email</mat-label>
-              <input matInput id="Email" type="Email" placeholder="Email " formControlName="Email" />
-              <mat-error *ngIf="displayMessage.Email">
-                {{displayMessage.Email}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Email" name="Email" #Email="ngModel" required>
+              <mat-error *ngIf="(Email.touched || quotationForm.submitted) && Email.errors?.required">
+                Email Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Source</mat-label>
-              <mat-select placeholder="Select Source" #sourceIdId formControlName="SourceId"
-                [(value)]="quotation.SourceId">
-                <!-- <mat-option *ngFor="let customer of customers" [value]="customer.id">
-                  {{customer.firstname}} {{customer.lastname}}
-                </mat-option> -->
+              <mat-select placeholder="Select Source" [(ngModel)]="request.RequestMaster.SourceId">
+                <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value">
+                  {{item.Text}} 
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Amount</mat-label>
-              <input matInput placeholder="Amount" id="Amount" type="text"
-                placeholder="Amount" formControlName="Amount" />
-              <mat-error *ngIf="displayMessage.Amount">
-                {{displayMessage.Amount}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel" required>
+              <mat-error *ngIf="(Amount.touched || quotationForm.submitted) && Amount.errors?.required">
+                Amount Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="12">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Terms & Condition</mat-label>
-              <input matInput placeholder="TermsAndCondition" id="TermsAndCondition" type="text"
-                placeholder="TermsAndCondition" formControlName="TermsAndCondition" />
-              <mat-error *ngIf="displayMessage.TermsAndCondition">
-                {{displayMessage.TermsAndCondition}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.TermsAndCondition" name="TermsAndCondition" #TermsAndCondition="ngModel" required>
+              <mat-error *ngIf="(TermsAndCondition.touched || quotationForm.submitted) && TermsAndCondition.errors?.required">
+                Terms And Condition Are required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
         </mat-grid-list>
       </div>
     </mat-card-content>
+   
   </mat-card>
 </form>
-<mat-card>
+<mat-card *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
   <mat-card-content>
-    <it-mat-table [dataSource]="followUpList" [tableSchema]="followUpTableSchema"></it-mat-table>
+    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema"></it-mat-table>
   </mat-card-content>
 </mat-card>

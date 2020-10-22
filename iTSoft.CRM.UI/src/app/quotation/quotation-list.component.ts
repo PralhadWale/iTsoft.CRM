@@ -11,6 +11,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { RequestService } from '../process/services/request.service';
+import { Router } from '@angular/router';
+import { RequestType } from '../_models/requesttype';
+import { RequestSerchParameters } from '../_models/Requestserchparameters';
+import { MatSidenav } from '@angular/material/sidenav';
+import { RequestDetails } from '../_models/requestdetails';
 
 
 @Component({
@@ -20,146 +27,113 @@ import { MatTableDataSource } from '@angular/material/table';
     providers: [ConfirmDialog]
 })
 export class QuotationListComponent implements OnInit {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-
+   @ViewChild("sidenav")  sidenav : MatSidenav;
 
     pageTitle: string = 'Quotations';
-    imageWidth: number = 30;
-    imageMargin: number = 2;
-    showImage: boolean = false;
-    listFilter: any = {};
-    errorMessage: string;
-
-    quotations: Quotation[];
-    quotationList: Quotation[]; //
-    displayedColumns = ["Phone", "Name", "CompanyName", "Date", "Service", "Amount", "Stage","Status","Quotationid"];
-    dataSource: any = null;
-    pager: any = {};
-    pagedItems: any[];
+   
     searchFilter: any = {
         Phone: "",
         Name: "",
         CompanyName: "",
         QuotationNo: ""
     };
-    selectedOption: string;
+   
 
-
+    quotationList: Array<any>;
+    quotationTableSchema: Array<TableColumnModel> = [];
+    tableSettings: TableDefaultSettings;
+   
     constructor(
-        private quotationService: QuotationService,
-        // private pagerService: PagerService,
-        public dialog: MatDialog,
-        public snackBar: MatSnackBar) {
-    }
+        private requestService: RequestService,
+        private router : Router,
+    
+      ) {
+    
+      }
+      ngOnInit(): void {
+        this.SetTableSchema();
+        this.getEnquiries();
+      }
+      
+   
 
-    applyFilter(filterValue: string) {
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.dataSource.filter = filterValue;
-    }
-
-    freshDataList(quotations: Quotation[]) {
-        this.quotations = quotations;
-
-        this.dataSource = new MatTableDataSource(this.quotations);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    }
-
-    ngOnInit(): void {
-        this.quotationService.getQuotations()
-            .subscribe(quotations => {
-                this.freshDataList(quotations);
-            },
-            error => this.errorMessage = <any>error);
-
-        this.searchFilter = {};
-        this.listFilter = {};
-    }
-
-    getQuotations(pageNum?: number) {
-        this.quotationService.getQuotations()
-            .subscribe(quotations => {
-                this.freshDataList(quotations);
-            },
-            error => this.errorMessage = <any>error);
-    }
-
-    searchQuotations(filters: any) {
-        if (filters) {
-            this.quotationService.getQuotations()
-                .subscribe(quotations => {
-                    this.quotations = quotations;
-                    console.log(this.quotations.length)
-                    this.quotations = this.quotations.filter((quotation: Quotation) => {
-                        let match = true;
-
-                        Object.keys(filters).forEach((k) => {
-                            match = match && filters[k] ?
-                                quotation[k].toLocaleLowerCase().indexOf(filters[k].toLocaleLowerCase()) > -1 : match;
-                        })
-                        return match;
-                    });
-                    this.freshDataList(quotations);
-                },
-                error => this.errorMessage = <any>error);
+      onCommandClick($event: CommandEventArgs) {
+   
+        if (!$event.toolbarItem) {
+          if ($event.command.commandType == CommandType.Edit) {
+            let rowData: RequestDetails = Object.assign({}, $event.rowData);
+            this.router.navigate(['/quotations/edit/', rowData.RequestId]);
+          }
+          else if ($event.command.commandType == CommandType.Delete) {
+    
+          }
+          else if ($event.command.commandType == CommandType.View) {
+    
+          }
         }
-
-    }
-
-    resetListFilter() {
-        this.listFilter = {};
-        this.getQuotations();
-    }
-
-    reset() {
-        this.listFilter = {};
-        this.searchFilter = {};
-        this.getQuotations();
-
-    }
-
-    resetSearchFilter(searchPanel: any) {
-        searchPanel.toggle();
-        this.searchFilter = {};
-        this.getQuotations();
-    }
-
-    openSnackBar(message: string, action: string) {
-        this.snackBar.open(message, action, {
-            duration: 1500,
-        });
-    }
-
-    openDialog(id: number) {
-        let dialogRef = this.dialog.open(ConfirmDialog,
-            { data: { title: 'Dialog', message: 'Are you sure to delete this item?' } });
-        dialogRef.disableClose = true;
-
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.selectedOption = result;
-
-            if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
-                this.quotationService.deleteQuotation(id).subscribe(
-                    () => {
-                        this.quotationService.getQuotations()
-                            .subscribe(quotations => {
-                                this.freshDataList(quotations);
-                            },
-                            error => this.errorMessage = <any>error);
-                        this.openSnackBar("The item has been deleted successfully. ", "Close");
-                    },
-                    (error: any) => {
-                        this.errorMessage = <any>error;
-                        console.log(this.errorMessage);
-                        this.openSnackBar("This item has not been deleted successfully. Please try again.", "Close");
-                    }
-                );
-            }
-        });
-    }
+        else {
+          if ($event.toolbarItem == ToolBarItems.Add) {
+            this.router.navigate(['/quotations/edit/', 0]);
+          }
+          else if ($event.toolbarItem == ToolBarItems.Search) {
+            this.sidenav.toggle();
+          }
+          else if ($event.toolbarItem == ToolBarItems.Refresh) {
+            
+          }
+        }
+    
+      }
+    
+      resetSearchFilter(sidenav:any)
+      {
+        this.sidenav.toggle();
+      }
+    
+      searchQuotations(searchFilter:any)
+      {
+        this.sidenav.toggle();
+      }
+    
+      getEnquiries() {
+    
+        let filter = new RequestSerchParameters();
+        filter.RequestTypeId = <number>RequestType.Quotation;
+        filter.FromDate = new Date(2020, 10, 1);
+        filter.ToDate = new Date(2021, 10, 1);
+        this.requestService.Search(filter).subscribe(result => {
+          this.quotationList = result.Value.ResponseData;
+    
+        }, error => { console.log(error); });
+    
+      }
+    
+      SetTableSchema() {
+        this.tableSettings = new TableDefaultSettings();
+        this.tableSettings.ShowToolBar = true;
+        this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search];
+        
+        let gridCommands: Array<CommandModel> = [
+          { commandType: CommandType.Edit}
+        ];
+    
+        this.quotationTableSchema =
+          [
+            { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
+            { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
+            { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
+            { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
+            { ColumnField: "CustomerName", ColumnHeader: "CustomerName", Type: "text" },
+            { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
+            { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
+            { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }
+          ];
+    
+    
+      
+      }
+    
+   
 
 
 

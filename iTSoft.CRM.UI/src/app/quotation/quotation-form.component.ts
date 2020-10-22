@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName, MaxLengthValidator } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName, MaxLengthValidator, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import 'rxjs/add/operator/debounceTime';
@@ -14,7 +14,13 @@ import { QuotationService } from './quotation.service';
 import { NumberValidators } from '../shared/number.validator';
 import { GenericValidator } from '../shared/generic-validator';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { TableColumnModel } from '../shared/table-layout/it-mat-table.component';
+import { TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { RequestService } from '../process/services/request.service';
+import { RequestViewModel } from '../_models/requestviewmodel';
+import { ListService } from '../process/services/list.service';
+import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+import { RequestType } from '../_models/requesttype';
+import { AlertService } from '../_services';
 
 
 @Component({
@@ -37,181 +43,124 @@ import { TableColumnModel } from '../shared/table-layout/it-mat-table.component'
     }
     `]
 })
-export class QuotationFormComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
+export class QuotationFormComponent implements OnInit {
+    @ViewChildren("quotationForm") quotationForm: FormGroup;
 
     pageTitle: string = 'Update Quotation';
     errorMessage: string;
-    quotationForm: FormGroup;
-    quotation: Quotation = <Quotation>{};
-    private sub: Subscription;
-    showImage: boolean;
-    imageWidth: number = 100;
-    imageMargin: number = 2;
-    fieldColspan = 3;
+    request: RequestViewModel;
 
-    // Use with the generic validation message class
-    displayMessage: { [key: string]: string } = {};
-    private genericValidator: GenericValidator;
-
-    // Defines all of the validation messages for the form.
-    // These could instead be retrieved from a file or database.
-    private validationMessages: { [key: string]: { [key: string]: string } | {} } = {
-      
-    };
-
-    followUpList : Array<any>;
-    followUpTableSchema : Array<TableColumnModel> = [];
-
-    constructor(private fb: FormBuilder,
+    fieldColspan: number = 4;
+    tableSettings: TableDefaultSettings;
+    followUpTableSchema: Array<TableColumnModel> = [];
+    requestSelectList : RequestSelectListModel = new RequestSelectListModel();
+    constructor(
         private route: ActivatedRoute,
-        private router: Router,
-        private quotationService: QuotationService,
+        private requestService: RequestService,
+        private listService : ListService,
+        private alertService : AlertService,
         private breakpointObserver: BreakpointObserver
     ) {
+        this.LoadSelectListData();
+        this.SetDefaultRequest();
         this.SetTableSchema();
-        breakpointObserver.observe([
-            Breakpoints.HandsetLandscape,
-            Breakpoints.HandsetPortrait
-        ]).subscribe(result => {
-            // console.log(result)
-            this.onScreensizeChange(result);
-        });
-        this.genericValidator = new GenericValidator(this.validationMessages);
 
     }
 
     ngOnInit(): void {
-        this.quotationForm = this.fb.group({
-            QuotationDate:[''],
-            QuotationNo:[''],
-            Name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-            CompanyName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-            PhoneNo: ['', Validators.maxLength(12)],
-            Email: ['', Validators.maxLength(100)],
-            SourceId: [''],
-            Amount: [''],
-            TermsAndCondition: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(2000)]],
-        });
-
         // Read the quotation Id from the route parameter
-        this.sub = this.route.params.subscribe(
+        this.route.params.subscribe(
             params => {
                 let id = +params['id'];
-                this.getQuotation(id);
+                this.getRequest(id);
             }
         );
-
-        this.sub.add(null);
     }
 
-    SetTableSchema() {
-        this.followUpTableSchema =
-         [
-           { ColumnField:"Date" , ColumnHeader:"Date" , Type:"date" },
-           { ColumnField:"FollowUpDate" , ColumnHeader:"FollowUp Date" , Type:"date" },
-           { ColumnField:"State" , ColumnHeader:"State" , Type:"text" },
-           { ColumnField:"Status" , ColumnHeader:"Deal Status" , Type:"text" },
-           { ColumnField:"Comment" , ColumnHeader:"Comment" , Type:"text" },
-           { ColumnField:"Remark" , ColumnHeader:"Remark" , Type:"text" },
-           { ColumnField:"EmployeeName" , ColumnHeader:"Employee Name" , Type:"text" },
-           { ColumnField:"Attempt" , ColumnHeader:"Attempt" , Type:"text" },
-           { ColumnField:"ClientRating" , ColumnHeader:"Client Rating" , Type:"text" },
-           {ColumnField:"$$edit",ColumnHeader:"",Type:"text"}
-         ];
-    
-    
-         this.followUpList = [{Date:Date(),FollowUpDate:Date(),DealStatus:"Completed",EmployeeName:"Pralhad",Attempt:1,Comment:"",Remark:"",ClientRating:10}]
+    LoadSelectListData() {
+        this.listService
+          .GetRequestSelectList()
+          .subscribe(
+            (result) => {
+              this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+            },
+            (error: any) => (this.errorMessage = <any>error)
+          );
       }
 
-    ngOnDestroy(): void {
-        //this.sub.unsubscribe();
-    }
-
-    ngAfterViewInit(): void {
-        // Watch for the blur event from any input element on the form.
-        const controlBlurs: Observable<any>[] = this.formInputElements
-            .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
-
-        // Merge the blur event observable with the valueChanges observable
-        Observable.merge(this.quotationForm.valueChanges, ...controlBlurs).debounceTime(500).subscribe(value => {
-            this.displayMessage = this.genericValidator.processMessages(this.quotationForm);
-        });
-    }
-
-    getQuotation(id: number): void {
-        this.quotationService.getQuotation(id)
-            .subscribe(
-                (quotation: Quotation) => this.onQuotationRetrieved(quotation),
-                (error: any) => this.errorMessage = <any>error
-            );
-    }
-
-    onQuotationRetrieved(quotation: Quotation): void {
-        if (this.quotationForm) {
-            this.quotationForm.reset();
-        }
-        this.quotation = quotation;
-
-        if (this.quotation.Quotationid === 0) {
-            this.pageTitle = 'New Quotation';
-        } else {
-            this.pageTitle = `Quotation: ${this.quotation.Name}`;
-        }
-
-        // // Update the data on the form
-        // this.quotationForm.patchValue({
-        //     firstname: this.quotation.firstname,
-        //     lastname: this.quotation.lastname,
-        //     email: this.quotation.email,
-        //     rewards: this.quotation.rewards,
-        //     phone: this.quotation.phone,
-        //     mobile: this.quotation.mobile,
-        //     membership: this.quotation.membership
-        // });
-    }
-
-    deleteQuotation(): void {
-        if (this.quotation.Quotationid === 0) {
-            // Don't delete, it was never saved.
-            this.onSaveComplete();
-        } else {
-            if (confirm(`Really delete the quotation: ${this.quotation.Name}?`)) {
-                this.quotationService.deleteQuotation(this.quotation.Quotationid)
-                    .subscribe(
-                        () => this.onSaveComplete(),
-                        (error: any) => this.errorMessage = <any>error
-                    );
-            }
-        }
-    }
-
-    toggleImage(): void {
-        event.preventDefault();
-        this.showImage = !this.showImage;
+    SetTableSchema() {
+        
+        this.tableSettings = new TableDefaultSettings();
+        this.tableSettings.ShowToolBar = true;
+        this.tableSettings.ToolBarItems = [ToolBarItems.Add];
+      
+        
+        this.followUpTableSchema =
+        [
+          { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },
+          { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+          { ColumnField: "State", ColumnHeader: "State", Type: "text" },
+          { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
+          { ColumnField: "Comment", ColumnHeader: "Comment", Type: "text" },
+          { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+          { ColumnField: "EmployeeName", ColumnHeader: "Employee Name", Type: "text" },
+          { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+          { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+          { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+        ];
+        
     }
 
 
-    saveQuotation(): void {
-        if (this.quotationForm.dirty && this.quotationForm.valid) {
-            // Copy the form values over the quotation object values
-            const quotation = Object.assign({}, this.quotation, this.quotationForm.value);
 
-            this.quotationService.saveQuotation(quotation)
+
+    getRequest(requestId: number): void {
+        if (requestId > 0) {
+            this.requestService
+                .Load(requestId)
                 .subscribe(
-                    () => this.onSaveComplete(),
-                    (error: any) => this.errorMessage = <any>error
+                    (result) => {
+                        var data = <RequestViewModel>result.Value.ResponseData;
+                        this.onEnquiryRetrieved(data)
+                    },
+                    (error: any) => (this.errorMessage = <any>error)
                 );
-        } else if (!this.quotationForm.dirty) {
-            this.onSaveComplete();
+        }
+        else {
+            this.onEnquiryRetrieved(this.request);
         }
     }
 
-    onSaveComplete(): void {
-        // Reset the form to clear the flags
-        this.quotationForm.reset();
-        this.router.navigate(['/quotations']);
+
+    onEnquiryRetrieved(request: RequestViewModel): void {
+        this.request = request;
+        if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
+            this.pageTitle = "Add Quotation";
+        } else {
+            this.pageTitle = `Update Quotation: ${this.request.RequestMaster.RequestNo} `;
+        }
     }
+
+
+
+    onSubmit(quotationForm: NgForm) {
+        if (quotationForm && quotationForm.valid) {
+            this.request.RequestMaster.RequestTypeId = RequestType.Quotation;
+            this.requestService.Save(this.request).subscribe(result => {
+             { 
+                this.alertService.showSuccessMessage("Quotation Saved successfully");
+                this.SetDefaultRequest();
+            }
+            }, (error: any) => {
+             { this.alertService.showSuccessMessage("Failed to save"); }
+            });
+        }
+    }
+
+    SetDefaultRequest() {
+        this.request = new RequestViewModel();
+    }
+
 
     onScreensizeChange(result: any) {
         // debugger

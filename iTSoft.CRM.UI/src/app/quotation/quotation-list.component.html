@@ -1,103 +1,13 @@
-<!-- <mat-sidenav-container> -->
 <mat-card class='light' style="height: 100%;">
-
   <mat-card-header>
     <mat-card-title class="view-card-title">
       <h1>{{pageTitle }}</h1>
     </mat-card-title>
   </mat-card-header>
-  <mat-toolbar class="primary">
-    <mat-toolbar-row>
-      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/quotations/edit/', 0]">
-        <mat-icon>queue</mat-icon>
-      </button>
-      <button mat-mini-fab style="margin-right:10px; background-color:#a28b6e" (click)="sidenav.toggle()">
-        <mat-icon>search</mat-icon>
-      </button>
-      <button mat-mini-fab style="margin-right:10px; background-color:darkgray" (click)="reset()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-
-      <span class="title-spacer"></span>
-      <mat-form-field appearance="standard" class="search-form-fileld">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event.target.value)">
-        <mat-icon>filter_list</mat-icon>
-      </mat-form-field>
-
-    </mat-toolbar-row>
-  </mat-toolbar>
-
-  <mat-table #table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="avatar">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let quotation">
-        <!-- <a [routerLink]="['/quotation', quotation.id]"> -->
-        <img *ngIf='quotation.avatar' [src]='quotation.avatar' [title]='quotation.firstname | uppercase'
-          [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
-        <!-- </a> -->
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Phone">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Phone}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Name}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="CompanyName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Company Name </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.CompanyName}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Date">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Date }} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Service">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Service </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Service }} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Amount">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Amount }} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Stage">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Stage </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Stage }} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Status">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-      <mat-cell *matCellDef="let quotation"> {{quotation.Status }} </mat-cell>
-    </ng-container>
-    
-   
-    <ng-container matColumnDef="Quotationid">
-      <mat-header-cell *matHeaderCellDef style="justify-content:right;">
-        <!-- <button mat-button style="color:white; background-color:darkgrey" (click)="resetListFilter()">Reset</button> -->
-      </mat-header-cell>
-      <mat-cell *matCellDef="let quotation" style="justify-content:right;">
-        <button mat-mini-fab style="background-color:teal; min-height: 30px;   margin: 5px;"
-          [routerLink]="['/quotations/edit/', quotation.Quotationid]">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-mini-fab style="background-color:lightblue; min-height: 30px;  margin: 5px;"
-          (click)="openDialog(quotation.Quotationid)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]">
-  </mat-paginator>
+  <mat-card-content>
+    <it-mat-table [dataSource]="quotationList" [tableSettings]="tableSettings" (onCommandClick)='onCommandClick($event)' [tableSchema]="quotationTableSchema"></it-mat-table>
+  </mat-card-content>
 </mat-card>
-
-
-
-
-
 <mat-sidenav class="search-panel" position="end" dark #sidenav mode="push" opened="false">
   <mat-card class="profile-card">
     <mat-card-header>
