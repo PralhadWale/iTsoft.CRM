@@ -9,7 +9,7 @@ namespace iTSoft.CRM.Data.Entity.Process
     public class RequestMaster
     {
         [Key]
-        public long RequestId { get; set; }
+        public long? RequestId { get; set; }
 
         public long? RequestTypeId { get; set; }
 

@@ -44,7 +44,9 @@
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
+          
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Company Name</mat-label>
               <input matInput placeholder="CompanyName" id="CompanyName" type="text"
                 placeholder="CompanyName" formControlName="CompanyName" />
               <mat-error *ngIf="displayMessage.CompanyName">
@@ -54,6 +56,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Phone No</mat-label>
               <input matInput placeholder="PhoneNo" id="PhoneNo" type="text"
                 placeholder="PhoneNo" formControlName="PhoneNo" />
               <mat-error *ngIf="displayMessage.PhoneNo">
@@ -72,6 +75,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Source</mat-label>
               <mat-select placeholder="Select Source" #sourceIdId formControlName="SourceId"
                 [(value)]="quotation.SourceId">
                 <!-- <mat-option *ngFor="let customer of customers" [value]="customer.id">
@@ -82,6 +86,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Amount</mat-label>
               <input matInput placeholder="Amount" id="Amount" type="text"
                 placeholder="Amount" formControlName="Amount" />
               <mat-error *ngIf="displayMessage.Amount">
@@ -91,6 +96,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="12">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Terms & Condition</mat-label>
               <input matInput placeholder="TermsAndCondition" id="TermsAndCondition" type="text"
                 placeholder="TermsAndCondition" formControlName="TermsAndCondition" />
               <mat-error *ngIf="displayMessage.TermsAndCondition">

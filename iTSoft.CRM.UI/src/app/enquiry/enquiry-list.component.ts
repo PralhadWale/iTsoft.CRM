@@ -1,21 +1,17 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 
 
-import { EnquiryService } from "./enquiry.service";
-import { PagerService } from "../_services";
 import { ConfirmDialog } from "../shared";
 import * as _ from "lodash";
-import {MatSnackBar} from '@angular/material/snack-bar';
 
-import {MatDialog} from '@angular/material/dialog'
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { IEnquiryDetails } from './enquiry';
+import { MatDialog } from '@angular/material/dialog'
 import { RequestService } from '../process/services/request.service';
-import { RequestDetails } from '../_models/requestdetails';
 import { RequestSerchParameters } from '../_models/Requestserchparameters';
 import { RequestType } from '../_models/requesttype';
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
+import { RequestDetails } from '../_models/requestdetails';
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
@@ -23,107 +19,113 @@ import { RequestType } from '../_models/requesttype';
   providers: [ConfirmDialog]
 })
 export class EnquiryListComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+@ViewChild("sidenav")  sidenav : MatSidenav;
 
   pageTitle: string = "Enquiry List";
-
-  showImage: boolean = false;
-  listFilter: any = {};
-  errorMessage: string;
-  enquiries: RequestDetails[];
-  enquiryList: RequestDetails[]; //
-  displayedColumns = ["EnquiryNo","Name", "Email","Phone","CompanyName","EnquiryDate" , "Source","Service","Amount","AlterNateNo", "State", "Website", "Address","EnquiryId"];
-  dataSource: any = null; // new MatTableDataSource<Element>(ELEMENT_DATA);
-  pager: any = {};
-  pagedItems: any[];
-  totalAmount: number;
   searchFilter: any = {
     Name: "",
     Email: "",
     Phone: "",
-    EnquiryNo:""
+    EnquiryNo: ""
 
   };
-  selectedOption: string;
-
-
-
+  
+  enquiryList: Array<any>;
+  enquiryTableSchema: Array<TableColumnModel> = [];
+  tableSettings: TableDefaultSettings;
+  
   constructor(
     private requestService: RequestService,
+    private router : Router,
     public dialog: MatDialog,
-    public snackBar: MatSnackBar
-  ) { }
 
-  toggleImage(): void {
-    this.showImage = !this.showImage;
+  ) {
+
   }
-
-
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
-
-  
-
   ngOnInit(): void {
-  
-
-    this.searchFilter = {};
-    this.listFilter = {};
+    this.SetTableSchema();
+    this.getEnquiries();
   }
 
- 
 
-  searchEnquiries(searchFilter)
+  onCommandClick($event: CommandEventArgs) {
+   
+    if (!$event.toolbarItem) {
+      if ($event.command.commandType == CommandType.Edit) {
+        let rowData: RequestDetails = Object.assign({}, $event.rowData);
+        this.router.navigate(['/enquiries/edit/', rowData.RequestId]);
+      }
+      else if ($event.command.commandType == CommandType.Delete) {
+
+      }
+      else if ($event.command.commandType == CommandType.View) {
+
+      }
+    }
+    else {
+      if ($event.toolbarItem == ToolBarItems.Add) {
+        this.router.navigate(['/enquiries/edit/', 0]);
+      }
+      else if ($event.toolbarItem == ToolBarItems.Search) {
+        this.sidenav.toggle();
+      }
+      else if ($event.toolbarItem == ToolBarItems.Refresh) {
+        
+      }
+    }
+    
+  }
+
+  
+
+  resetSearchFilter(sidenav:any)
   {
-    this.getEnquiries();
-  }
-  
-  resetListFilter() {
-    this.listFilter = {};
-    this.getEnquiries();
+    this.sidenav.toggle();
   }
 
-  reset() {
-    this.listFilter = {};
-    this.searchFilter = {};
-
-    this.getEnquiries();
+  searchEnquiries(searchFilter:any)
+  {
+    this.sidenav.toggle();
   }
 
-  resetSearchFilter(searchPanel: any) {
-    searchPanel.toggle();
-    this.searchFilter = {};
-    this.getEnquiries();
-  }
-
-  
   getEnquiries() {
 
     let filter = new RequestSerchParameters();
     filter.RequestTypeId = <number>RequestType.Enquiry;
-    filter.FromDate = new Date(2020,10,1);
-    filter.ToDate = new Date(2021,10,1);
+    filter.FromDate = new Date(2020, 10, 1);
+    filter.ToDate = new Date(2021, 10, 1);
     this.requestService.Search(filter).subscribe(result => {
-      this.freshDataList(result.Value.ResponseData);
+      this.enquiryList = result.Value.ResponseData;
 
-    }, error => { console.log(error);});
+    }, error => { console.log(error); });
 
-    // this.requestService.Load(1).subscribe(result => {
-    //   this.freshDataList(result.Value.ResponseData);
-
-    // }, error => (this.errorMessage = <any>error));
   }
 
-  freshDataList(enquiries: RequestDetails[]) {
-    this.enquiryList = enquiries;
-    this.dataSource = new MatTableDataSource(this.enquiryList);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
+  SetTableSchema() {
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search];
     
+    let gridCommands: Array<CommandModel> = [
+      { commandType: CommandType.Edit}
+    ];
+
+    this.enquiryTableSchema =
+      [
+        { ColumnField: "RequestNo", ColumnHeader: "Request No", Type: "text" },
+        { ColumnField: "RequestDate", ColumnHeader: "Request Date", Type: "date" },
+        { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
+        { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
+        { ColumnField: "CustomerName", ColumnHeader: "CustomerName", Type: "text" },
+        { ColumnField: "PhoneNo2", ColumnHeader: "Phone No 2", Type: "text" },
+        { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
+        { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }
+      ];
+
+
+  
+  }
+
+
 }

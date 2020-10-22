@@ -35,7 +35,7 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 import { RequestMaster } from '../_models';
 import { RequestType } from '../_models/requesttype';
 import { AlertService } from '../_services';
-
+import * as moment from 'moment'
 @Component({
   selector: 'enquiry-form',
   templateUrl: "./enquiry-form.component.html",
@@ -201,11 +201,13 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pageTitle = `Update Enquiry: ${this.request.RequestMaster.Title} `;
     }
 
+
+    
     // Update the data on the form
     this.enquiryForm.patchValue({
       RequestId: this.request.RequestMaster.RequestId,
       RequestNo: this.request.RequestMaster.RequestNo,
-      RequestDate: this.request.RequestMaster.RequestDate != null ? new Date(this.request.RequestMaster.RequestDate):Date(),
+      //RequestDate: moment(this.request.RequestMaster.RequestDate != null ? new Date(this.request.RequestMaster.RequestDate):Date()).format("dd-MMM-yyyy"),
       Title: this.request.RequestMaster.Title,
       CustomerName: this.request.RequestMaster.CustomerName,
       CompanyName: this.request.RequestMaster.CompanyName,
@@ -214,7 +216,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       Designation: this.request.RequestMaster.Designation,
       PhoneNo1: this.request.RequestMaster.PhoneNo1,
       PhoneNo2: this.request.RequestMaster.PhoneNo2,
-      DOB: new Date(this.request.RequestMaster.DOB),
+      //DOB: new Date(this.request.RequestMaster.DOB),
       Address: this.request.RequestMaster.Address,
       SourceId: this.request.RequestMaster.SourceId,
       LeadStatusId: this.request.RequestMaster.LeadStatusId,

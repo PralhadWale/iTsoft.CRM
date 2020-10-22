@@ -20,9 +20,9 @@
     <mat-card-content style="margin: 5 0 5 0px;">
       <div class="form-card">
         <mat-grid-list cols="12" rowHeight="80px">
-          
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Enquiry No.</mat-label>
               <input matInput placeholder="Enquiry No" id="RequestNo" type="text"
                 placeholder="Enquiry No." formControlName="RequestNo" />
               <mat-error *ngIf="displayMessage.RequestNo">
@@ -32,6 +32,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Enquiry Date.</mat-label>
               <input matInput [matDatepicker]="requestDateId" placeholder="Enquiry Date" [value]="request.RequestMaster.RequestDate">
               <mat-datepicker-toggle matSuffix [for]="requestDateId"></mat-datepicker-toggle>
               <mat-datepicker #requestDateId></mat-datepicker>
@@ -39,6 +40,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Title</mat-label>
               <input matInput placeholder="Title" id="Title" type="text"
                 placeholder="Title" formControlName="Title" />
               <mat-error *ngIf="displayMessage.Title">
@@ -49,6 +51,7 @@
 
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Customer Name</mat-label>
               <input matInput placeholder="Customer Name" id="CustomerName" type="text"
                 placeholder="Customer Name" formControlName="CustomerName" />
               <mat-error *ngIf="displayMessage.Name">
@@ -59,6 +62,7 @@
 
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Company Name</mat-label>
               <input matInput placeholder="CompanyName" id="CompanyName" type="text"
                 placeholder="CompanyName" formControlName="CompanyName" />
               <mat-error *ngIf="displayMessage.CompanyName">
@@ -68,6 +72,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Date of birth</mat-label>
               <input matInput [matDatepicker]="enquiryDOBId" placeholder="Date of birth" [value]="request.RequestMaster.DOB">
               <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
               <mat-datepicker #enquiryDOBId></mat-datepicker>
@@ -76,6 +81,7 @@
           
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Email</mat-label>
               <input matInput placeholder="Email" id="Email" type="text"
                 placeholder="Email" formControlName="Email" />
               <mat-error *ngIf="displayMessage.Email">
@@ -85,6 +91,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Phone No 1</mat-label>
               <input matInput id="PhoneNo1" type="text"
                 placeholder="Phone No" formControlName="PhoneNo1" />
               <mat-error *ngIf="displayMessage.PhoneNo2">
@@ -95,6 +102,7 @@
           
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>AlterNate No</mat-label>
               <input matInput placeholder="AlterNate No" id="PhoneNo2" type="text"
                formControlName="PhoneNo2" />
               <mat-error *ngIf="displayMessage.PhoneNo2">
@@ -105,6 +113,7 @@
 
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Website</mat-label>
               <input matInput placeholder="Website" id="Website" type="text"
                 placeholder="Website" formControlName="Website" />
               <mat-error *ngIf="displayMessage.Website">
@@ -114,6 +123,7 @@
           </mat-grid-tile>
           <mat-grid-tile  [colspan]="12">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Address</mat-label>
               <input matInput placeholder="Address" id="Address" type="text"
                 placeholder="Address" formControlName="Address" />
               <mat-error *ngIf="displayMessage.Address">
@@ -126,6 +136,7 @@
           
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Amount</mat-label>
               <input matInput placeholder="Amount" id="Amount" type="text"
                 placeholder="Amount" formControlName="Amount" />
               <mat-error *ngIf="displayMessage.Amount">
@@ -135,6 +146,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Source</mat-label>
               <mat-select placeholder="Select Source" #sourceIdId formControlName="SourceId"
                 [(value)]="request.RequestMaster.SourceId">
                 <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value">
@@ -145,6 +157,7 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Client Behaviour</mat-label>
               <mat-select placeholder="Select ClientBehaviour" #ClientBehaviourId formControlName="ClientBehaviourId"
                 [(value)]="request.RequestMaster.ClientBehaviourId">
                 <mat-option *ngFor="let item of requestSelectList.ClientBehaviour" [value]="item.Value">

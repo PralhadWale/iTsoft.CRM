@@ -3,7 +3,7 @@ import { RequestMaster } from 'src/app/_models/Request';
 import { RequestSerchParameters } from 'src/app/_models/Requestserchparameters';
 import { RequestViewModel } from 'src/app/_models/requestviewmodel';
 import { APIService } from 'src/app/_services';
-
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,9 +13,12 @@ export class RequestService {
 
   }
 
-  Save(Request: RequestViewModel) {
+  Save(request: RequestViewModel) {
+    // request.RequestMaster.RequestDate = moment(request.RequestMaster.RequestDate).format('dd-MMM-yyyy');
+    // request.RequestMaster.DOB = moment(request.RequestMaster.DOB).format('dd-MMM-yyyy');
+
     let url = this.RequestController + "save";
-    return this.apiService.PostData(url, Request);
+    return this.apiService.PostData(url, request);
   }
 
   Search(param: RequestSerchParameters) {

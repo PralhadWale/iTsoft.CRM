@@ -28,7 +28,7 @@ export class EnquiryDetailGuard implements CanActivate {
 export class EnquiryEditGuard implements CanDeactivate<EnquiryFormComponent> {
   canDeactivate(component: EnquiryFormComponent): boolean {
     if (component.enquiryForm.dirty) {
-      let enquiryName = component.enquiryForm.get("reference").value || "New Enquiry";
+      let enquiryName = component.enquiryForm.get("Title").value || "New Enquiry";
       return confirm(`Navigate away and lose all changes to ${enquiryName}?`);
     }
     return true;
