@@ -68,24 +68,26 @@ export class QuotationFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // Read the quotation Id from the route parameter
-        this.route.params.subscribe(
-            params => {
-                let id = +params['id'];
-                this.getRequest(id);
-            }
-        );
+      
     }
 
     LoadSelectListData() {
         this.listService
-          .GetRequestSelectList()
-          .subscribe(
-            (result) => {
-              this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
-            },
-            (error: any) => (this.errorMessage = <any>error)
-          );
+            .GetRequestSelectList()
+            .subscribe(
+                (result) => {
+                    this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+                },
+                (error: any) => (this.errorMessage = <any>error), () => {
+                    // Read the quotation Id from the route parameter
+                    this.route.params.subscribe(
+                        params => {
+                            let id = +params['id'];
+                            this.getRequest(id);
+                        }
+                    );
+                }
+            );
       }
 
     SetTableSchema() {
@@ -121,18 +123,18 @@ export class QuotationFormComponent implements OnInit {
                 .subscribe(
                     (result) => {
                         var data = <RequestViewModel>result.Value.ResponseData;
-                        this.onEnquiryRetrieved(data)
+                        this.onQuotationRetrieved(data)
                     },
                     (error: any) => (this.errorMessage = <any>error)
                 );
         }
         else {
-            this.onEnquiryRetrieved(this.request);
+            this.onQuotationRetrieved(this.request);
         }
     }
 
 
-    onEnquiryRetrieved(request: RequestViewModel): void {
+    onQuotationRetrieved(request: RequestViewModel): void {
         this.request = request;
         if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
             this.pageTitle = "Add Quotation";
