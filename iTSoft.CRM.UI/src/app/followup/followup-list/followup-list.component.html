@@ -5,6 +5,7 @@
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <it-mat-table [dataSource]="followUpList" [tableSettings]="tableSettings" (onAddClick)="onAddFollowUpClick($event)" [tableSchema]="followUpTableSchema"></it-mat-table>
+        <it-mat-table [dataSource]="followUpList" [tableSettings]="tableSettings"  [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table>
     </mat-card-content>
 </mat-card>
+<app-add-followup #addFollowUp></app-add-followup>
