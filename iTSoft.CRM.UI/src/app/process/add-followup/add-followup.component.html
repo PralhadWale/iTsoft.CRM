@@ -13,37 +13,53 @@
         </mat-card-title>
       </mat-card-header>
     </mat-card>
-    <mat-nav-list style="margin-left:20px;">
-     
-
-      <!-- <mat-form-field>
-        <input matInput type="text" placeholder="Name." name="Name" [(ngModel)]="searchFilter.Name"
-          #reference />
+    <mat-nav-list style="margin-left:20px;"> 
+      <input type="hidden" [(ngModel)]="followUP.FollowUpId" />
+       <input type="hidden" [(ngModel)]="followUP.RequestId" />
+      <mat-form-field>
+        <input matInput [matDatepicker]="followUpDate" [(ngModel)]="followUP.FollowUpDate" name="FollowUpDate" #FollowUpDate="ngModel" required>
+        <mat-datepicker-toggle matSuffix [for]="followUpDate"></mat-datepicker-toggle>
+        <mat-datepicker #followUpDate color="primary"></mat-datepicker>
+        <mat-error>FollowUp Date is required.</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Email" name="Email" [(ngModel)]="searchFilter.Email"
-          #reference />
+        <input matInput type="text" placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"
+          #Remark />
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Phone" name="Phone" [(ngModel)]="searchFilter.Phone"
-          #amount />
+        <input matInput type="text" placeholder="Attempt" name="Attempt" [(ngModel)]="followUP.Attempt"
+          #Attempt />
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Enquiry No" name="EnquiryNo" [(ngModel)]="searchFilter.EnquiryNo"
-          #quantity />
-      </mat-form-field> -->
+        <input matInput type="text" placeholder="Enquiry No" name="ClientRating" [(ngModel)]="followUP.ClientRating"
+          #ClientRating />
+      </mat-form-field>
+      <mat-form-field>
+      <mat-select placeholder="Deal Status"  [(ngModel)]="followUP.LeadStatusId" name="LeadStatusId" #LeadStatusId="ngModel">
+        <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.Value" >
+          {{item.Text}} 
+        </mat-option>
+      </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+      <mat-select placeholder="Stage"  [(ngModel)]="followUP.StageId" name="StageId" #StageId="ngModel">
+        <mat-option *ngFor="let item of requestSelectList.Stages" [value]="item.Value" >
+          {{item.Text}} 
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>
       <mat-action-list>
-        <!-- <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="searchEnquiries(searchFilter);sidenav.toggle()">
-          <mat-icon>search</mat-icon>Search
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="onSubmit(followUpForm)">
+          <mat-icon>save</mat-icon>Save
         </button>
         <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
-          (click)="resetSearchFilter(sidenav)">
-          <mat-icon>refresh</mat-icon>Reset
-        </button> -->
+          (click)="onCancelClick()">
+          <mat-icon>cancel</mat-icon>Cancel
+        </button>
       </mat-action-list>
     </mat-card-header>
   </mat-sidenav>

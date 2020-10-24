@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { FollowUp } from 'src/app/_models/followup';
@@ -43,11 +43,15 @@ export class AddFollowupComponent implements OnInit {
 
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.SetFollowUpDefaultData();
+  }
+
   SetFollowUpDefaultData() {
     if (this.followUpDetails == null) {
       this.followUP = new FollowUp();
       this.followUP.RequestId = this.requestId;
-      this.followUP.AddedOn = new Date();
+      this.followUP.FollowUpDate = new Date();
     }
     else {
       this.requestType = this.followUpDetails.RequestTypeId;
@@ -72,23 +76,30 @@ export class AddFollowupComponent implements OnInit {
       );
   }
 
+ 
 
   onSubmit(followUpForm: NgForm) {
     if (followUpForm && followUpForm.valid) {
       if (isNaN(this.followUP.RequestId)) {
         this.alertService.showErrorMessage("Invalid request");
       }
-      this.followUpService.Save(this.followUP).subscribe(result => {
-        {
-          this.alertService.showSuccessMessage("Quotation Saved successfully");
-          this.sidenav.close();
-          this.onFollowUpSaved.emit();
-        }
-      }, (error: any) => {
-        { this.alertService.showSuccessMessage("Failed to save"); }
-      });
+      else {
+        this.followUpService.Save(this.followUP).subscribe(result => {
+          {
+            this.alertService.showSuccessMessage("FollowUp Saved successfully");
+            this.sidenav.close();
+            this.onFollowUpSaved.emit();
+          }
+        }, (error: any) => {
+          { this.alertService.showSuccessMessage("Failed to save"); }
+        });
+      }
     }
   }
 
+  onCancelClick()
+  {
+    this.sidenav.toggle();
+  }
 
 }

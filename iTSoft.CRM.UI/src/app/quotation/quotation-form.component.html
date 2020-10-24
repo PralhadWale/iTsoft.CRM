@@ -29,10 +29,10 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
             <mat-label>Quotation Date</mat-label>
-            <input matInput [matDatepicker]="RequestDate" [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
-            <mat-datepicker-toggle matSuffix [for]="RequestDate"></mat-datepicker-toggle>
-            <mat-datepicker #RequestDate color="primary"></mat-datepicker>
-            <mat-error>Reques tDate is required.</mat-error>
+            <input matInput [matDatepicker]="datepicker1" [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
+            <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
+            <mat-error>Request Date is required.</mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
@@ -109,6 +109,7 @@
 </form>
 <mat-card *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
   <mat-card-content>
-    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema"></it-mat-table>
+    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table>
   </mat-card-content>
 </mat-card>
+<app-add-followup [requestType]="requestTypeId" #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>

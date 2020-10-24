@@ -1,26 +1,16 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName, MaxLengthValidator, NgForm } from '@angular/forms';
+import { Component, OnInit,  ViewChildren,  ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/merge';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import { Quotation } from './quotation';
-import { QuotationService } from './quotation.service';
-
-import { NumberValidators } from '../shared/number.validator';
-import { GenericValidator } from '../shared/generic-validator';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import {  BreakpointObserver } from '@angular/cdk/layout';
+import { CommandEventArgs,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 import { RequestService } from '../process/services/request.service';
 import { RequestViewModel } from '../_models/requestviewmodel';
 import { ListService } from '../process/services/list.service';
 import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 import { RequestType } from '../_models/requesttype';
 import { AlertService } from '../_services';
+import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
+import { FormGroup, NgForm } from '@angular/forms';
 
 
 @Component({
@@ -45,20 +35,21 @@ import { AlertService } from '../_services';
 })
 export class QuotationFormComponent implements OnInit {
     @ViewChildren("quotationForm") quotationForm: FormGroup;
+    @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
 
     pageTitle: string = 'Update Quotation';
     errorMessage: string;
     request: RequestViewModel;
-
+    requestTypeId = RequestType.Quotation;
     fieldColspan: number = 4;
     tableSettings: TableDefaultSettings;
     followUpTableSchema: Array<TableColumnModel> = [];
-    requestSelectList : RequestSelectListModel = new RequestSelectListModel();
+    requestSelectList: RequestSelectListModel = new RequestSelectListModel();
     constructor(
         private route: ActivatedRoute,
         private requestService: RequestService,
-        private listService : ListService,
-        private alertService : AlertService,
+        private listService: ListService,
+        private alertService: AlertService,
         private breakpointObserver: BreakpointObserver
     ) {
         this.LoadSelectListData();
@@ -68,7 +59,7 @@ export class QuotationFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-      
+
     }
 
     LoadSelectListData() {
@@ -88,33 +79,29 @@ export class QuotationFormComponent implements OnInit {
                     );
                 }
             );
-      }
+    }
 
     SetTableSchema() {
-        
+
         this.tableSettings = new TableDefaultSettings();
         this.tableSettings.ShowToolBar = true;
         this.tableSettings.ToolBarItems = [ToolBarItems.Add];
-      
-        
+
+
         this.followUpTableSchema =
-        [
-          { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },
-          { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
-          { ColumnField: "State", ColumnHeader: "State", Type: "text" },
-          { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
-          { ColumnField: "Comment", ColumnHeader: "Comment", Type: "text" },
-          { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-          { ColumnField: "EmployeeName", ColumnHeader: "Employee Name", Type: "text" },
-          { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-          { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-          { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
-        ];
-        
+            [
+                { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },
+                { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+                { ColumnField: "State", ColumnHeader: "State", Type: "text" },
+                { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
+                { ColumnField: "Comment", ColumnHeader: "Comment", Type: "text" },
+                { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+                { ColumnField: "EmployeeName", ColumnHeader: "Employee Name", Type: "text" },
+                { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+                { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+                { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+            ];
     }
-
-
-
 
     getRequest(requestId: number): void {
         if (requestId > 0) {
@@ -143,18 +130,31 @@ export class QuotationFormComponent implements OnInit {
         }
     }
 
+    onCommandClick($event: CommandEventArgs) {
+        if ($event.toolbarItem) {
+            if ($event.toolbarItem == ToolBarItems.Add) {
+                this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
+                this.addFollowUp.requestNo = this.request.RequestMaster.RequestNo;
+                this.addFollowUp.SetFollowUpDefaultData();
+                this.addFollowUp.sidenav.toggle();
+            }
+        }
+    }
+    onFollowUpSaved() {
+        this.getRequest(this.request.RequestMaster.RequestId);
+    }
 
 
     onSubmit(quotationForm: NgForm) {
         if (quotationForm && quotationForm.valid) {
             this.request.RequestMaster.RequestTypeId = RequestType.Quotation;
             this.requestService.Save(this.request).subscribe(result => {
-             { 
-                this.alertService.showSuccessMessage("Quotation Saved successfully");
-                this.SetDefaultRequest();
-            }
+                {
+                    this.alertService.showSuccessMessage("Quotation Saved successfully");
+                    this.SetDefaultRequest();
+                }
             }, (error: any) => {
-             { this.alertService.showSuccessMessage("Failed to save"); }
+                { this.alertService.showSuccessMessage("Failed to save"); }
             });
         }
     }

@@ -1,8 +1,8 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title class="view-card-title">
-            <h1>{{pageTitle }}</h1>
-        </mat-card-title>
+            <h1>Followup List</h1>
+          </mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <it-mat-table [dataSource]="followUpList" [tableSettings]="tableSettings"  [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table>
