@@ -56,9 +56,7 @@ export class AddFollowupComponent implements OnInit {
     }
 
 
-    if (isNaN(this.requestId)) {
-      this.alertService.showErrorMessage("Invalid request");
-    }
+   
     this.requestTypeName = this.requestType == RequestType.Enquiry ? "Enquiry" : "Quotation"
   }
 
@@ -77,7 +75,9 @@ export class AddFollowupComponent implements OnInit {
 
   onSubmit(followUpForm: NgForm) {
     if (followUpForm && followUpForm.valid) {
-
+      if (isNaN(this.followUP.RequestId)) {
+        this.alertService.showErrorMessage("Invalid request");
+      }
       this.followUpService.Save(this.followUP).subscribe(result => {
         {
           this.alertService.showSuccessMessage("Quotation Saved successfully");

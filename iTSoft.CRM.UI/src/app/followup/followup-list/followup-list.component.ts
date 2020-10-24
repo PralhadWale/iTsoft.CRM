@@ -34,6 +34,7 @@ export class FollowupListComponent implements OnInit {
     }, error => { console.log(error); });
 
   }
+  
   onCommandClick($event: CommandEventArgs) {
 
     if (!$event.toolbarItem) {

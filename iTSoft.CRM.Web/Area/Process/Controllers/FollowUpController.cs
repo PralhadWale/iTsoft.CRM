@@ -58,7 +58,7 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             catch (Exception ex)
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
-                _logger.Error(ex, "FollowUp - SearchFollowUp");
+                //_logger.Error(ex, "FollowUp - SearchFollowUp");
             }
             return Ok(response);
         }

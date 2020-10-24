@@ -5,7 +5,6 @@ import { EnquiryListComponent } from "./enquiry-list.component";
 import { EnquiryDetailGuard, EnquiryEditGuard } from "./enquiry-guard.service";
 import { EnquiryFormComponent } from "./enquiry-form.component";
 
-import { EnquiryService } from "./enquiry.service";
 import { SharedModule } from "../shared/shared.module";
 import { MaterialModule } from "../shared/material.module";
 import { ProcessModule } from '../process/process.module';
@@ -15,7 +14,6 @@ import { FollowupModule } from '../followup/followup.module';
     SharedModule,
     MaterialModule,
     ProcessModule,
-    FollowupModule,
     RouterModule.forChild([
       { path: "", component: EnquiryListComponent },
       {
@@ -30,13 +28,8 @@ import { FollowupModule } from '../followup/followup.module';
     EnquiryFormComponent
   ],
   providers: [
-    EnquiryService,
     EnquiryDetailGuard,
     EnquiryEditGuard,
   ],
-  exports: [
-    EnquiryListComponent,
-    EnquiryFormComponent
-  ]
 })
 export class EnquiryModule { }

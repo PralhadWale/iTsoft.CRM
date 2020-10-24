@@ -11,12 +11,12 @@ import 'rxjs/add/observable/of';
 import { IEnquiry, IAddress, IEnquiryDetails } from './enquiry';
 
 @Injectable()
-export class EnquiryService {
-  private basicAction = 'enquirys/';
+export class enquirieservice {
+  private basicAction = 'enquiries/';
 
   constructor(private http: HttpClient, private backend: BackendService) { }
 
-  getEnquirys(): Observable<IEnquiryDetails[]> {
+  getenquiries(): Observable<IEnquiryDetails[]> {
     // return this.http.get(this.basicAction)
     const action = `${this.basicAction}?_expand=customer`;
     return this.backend.getAll(action)
