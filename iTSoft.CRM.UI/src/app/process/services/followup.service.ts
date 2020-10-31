@@ -13,6 +13,8 @@ export class FollowupService {
   }
 
   Save(followUp: FollowUp) {
+    followUp.AddedBy = 1;
+    followUp.AddedOn = new Date();
     let url = this.followUpController + "save";
     return this.apiService.PostData(url, followUp);
   }

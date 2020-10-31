@@ -47,7 +47,7 @@ export class AddFollowupComponent implements OnInit {
     this.SetFollowUpDefaultData();
   }
 
-  SetFollowUpDefaultData() {
+  public SetFollowUpDefaultData() {
     if (this.followUpDetails == null) {
       this.followUP = new FollowUp();
       this.followUP.RequestId = this.requestId;
@@ -59,15 +59,20 @@ export class AddFollowupComponent implements OnInit {
       this.followUP = Object.assign({}, this.followUpDetails);
     }
 
-
-   
     this.requestTypeName = this.requestType == RequestType.Enquiry ? "Enquiry" : "Quotation"
   }
+
+  clearFollowUpData() {
+    this.followUpDetails = null;
+    this.requestNo = '';
+    this.requestType = -1;
+  }
+
 
 
   LoadSelectListData() {
     this.listService
-      .GetRequestSelectList()
+      .GetFollowupSelectList()
       .subscribe(
         (result) => {
           this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
@@ -88,18 +93,20 @@ export class AddFollowupComponent implements OnInit {
           {
             this.alertService.showSuccessMessage("FollowUp Saved successfully");
             this.sidenav.close();
+            this.clearFollowUpData();
             this.onFollowUpSaved.emit();
-          }
+          } 
         }, (error: any) => {
           { this.alertService.showSuccessMessage("Failed to save"); }
         });
       }
     }
   }
-
+ 
   onCancelClick()
   {
-    this.sidenav.toggle();
+    this.clearFollowUpData();
+    this.sidenav.close();
   }
 
 }

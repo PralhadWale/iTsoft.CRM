@@ -1,16 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Quotation } from './quotation';
-import { QuotationService } from './quotation.service';
-import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
 
-import {MatDialog} from '@angular/material/dialog'
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
 import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 import { RequestService } from '../process/services/request.service';
 import { Router } from '@angular/router';
@@ -99,7 +91,7 @@ export class QuotationListComponent implements OnInit {
     
         let filter = new RequestSerchParameters();
         filter.RequestTypeId = <number>RequestType.Quotation;
-        filter.FromDate = new Date(2020, 10, 1);
+        filter.FromDate = new Date(2020, 1, 1);
         filter.ToDate = new Date(2021, 10, 1);
         this.requestService.Search(filter).subscribe(result => {
           this.quotationList = result.Value.ResponseData;
@@ -123,7 +115,7 @@ export class QuotationListComponent implements OnInit {
             { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
             { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
             { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
-            { ColumnField: "CustomerName", ColumnHeader: "CustomerName", Type: "text" },
+            { ColumnField: "CompanyName", ColumnHeader: "Company Name", Type: "text" },
             { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
             { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
             { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }

@@ -7,7 +7,6 @@ import {
 } from "./quotation-guard.service";
 import { QuotationFormComponent } from "./quotation-form.component";
 
-import { QuotationService } from "./quotation.service";
 import { SharedModule } from "../shared/shared.module";
 
 import { MaterialModule } from "../shared/material.module";
@@ -42,7 +41,7 @@ import { ProcessModule } from '../process/process.module';
     QuotationListComponent,
     QuotationFormComponent
   ],
-  providers: [QuotationService, QuotationDetailGuard, QuotationEditGuard,
+  providers: [ QuotationDetailGuard, QuotationEditGuard,
   ],
   // entryComponents: [MatOption],
   exports: [

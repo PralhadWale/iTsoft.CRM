@@ -22,6 +22,13 @@ namespace iTSoft.CRM.Domain.Services.Process
         public const string PROC_FollowUpLookUpManager = "PROC_FollowUpLookUpManager";
         public ResponseCode SaveFollowUp(FollowUpMaster followupMaster)
         {
+
+            if(followupMaster.AddedOn.GetValueOrDefault() == DateTime.MinValue)
+            {
+                followupMaster.AddedOn = DateTime.Now;
+            }
+
+
             if (followupMaster.FollowUpId == 0)
                 base.Add(followupMaster);
             else

@@ -109,7 +109,7 @@
 </form>
 <mat-card *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
   <mat-card-content>
-    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table>
+    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table> 
   </mat-card-content>
 </mat-card>
 <app-add-followup [requestType]="requestTypeId" #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>

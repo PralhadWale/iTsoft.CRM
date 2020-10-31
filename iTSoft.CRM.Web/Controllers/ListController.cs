@@ -35,7 +35,7 @@ namespace iTSoft.CRM.Web.Controllers
             {
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
                 requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId));
-                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusName));
+                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId));
                 requestSelectListModel.Sources = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId));
                 requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId));
 
@@ -45,7 +45,7 @@ namespace iTSoft.CRM.Web.Controllers
             catch (Exception ex)
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
-                _logger.Error(ex, "List - GetRequestSelectList");
+                return Ok(ex.ToString());
             }
             return Ok(response);
         }
@@ -58,7 +58,7 @@ namespace iTSoft.CRM.Web.Controllers
             {
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
                 requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId));
-                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusName));
+                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId));
                 requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId));
 
                 response.ResponseData = requestSelectListModel;

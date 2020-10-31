@@ -1,17 +1,40 @@
-import { Component, OnInit,  ViewChildren,  ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import {  BreakpointObserver } from '@angular/cdk/layout';
-import { CommandEventArgs,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
-import { RequestService } from '../process/services/request.service';
-import { RequestViewModel } from '../_models/requestviewmodel';
-import { ListService } from '../process/services/list.service';
-import { RequestSelectListModel } from '../_models/requestselectlistmodel';
-import { RequestType } from '../_models/requesttype';
-import { AlertService } from '../_services';
-import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
-import { FormGroup, NgForm } from '@angular/forms';
-
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    OnDestroy,
+    ViewChildren,
+    ElementRef,
+    ViewChild,
+  
+  } from "@angular/core";
+  import {
+    FormBuilder,
+    FormGroup,
+    Validators,
+    FormControlName,
+    NgForm
+  } from "@angular/forms";
+  import { ActivatedRoute, Router } from "@angular/router";
+  
+  import { Observable } from "rxjs/Observable";
+  import { Subscription } from "rxjs/Subscription";
+  import {  BreakpointObserver } from '@angular/cdk/layout';
+  
+  import { CommandEventArgs,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+  
+  import { RequestViewModel } from '../_models/requestviewmodel';
+  import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+  import { RequestType } from '../_models/requesttype';
+  
+  import { RequestService } from '../process/services/request.service';
+  import { AlertService } from '../_services';
+  import { ListService } from '../process/services/list.service';
+  
+  import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
+  
+  import { NumberValidators } from "../shared/number.validator";
+  import { GenericValidator } from "../shared/generic-validator";
 
 @Component({
     selector: 'quotation-form',
@@ -88,19 +111,20 @@ export class QuotationFormComponent implements OnInit {
         this.tableSettings.ToolBarItems = [ToolBarItems.Add];
 
 
-        this.followUpTableSchema =
+
+            this.followUpTableSchema =
             [
-                { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },
-                { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
-                { ColumnField: "State", ColumnHeader: "State", Type: "text" },
-                { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
-                { ColumnField: "Comment", ColumnHeader: "Comment", Type: "text" },
-                { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-                { ColumnField: "EmployeeName", ColumnHeader: "Employee Name", Type: "text" },
-                { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-                { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-                { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+              { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
+              { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+              { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
+              { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
+              { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+              { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
+              { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+              { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+              { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
             ];
+      
     }
 
     getRequest(requestId: number): void {
@@ -136,7 +160,7 @@ export class QuotationFormComponent implements OnInit {
                 this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
                 this.addFollowUp.requestNo = this.request.RequestMaster.RequestNo;
                 this.addFollowUp.SetFollowUpDefaultData();
-                this.addFollowUp.sidenav.toggle();
+                this.addFollowUp.sidenav.open();
             }
         }
     }

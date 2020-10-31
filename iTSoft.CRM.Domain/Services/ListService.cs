@@ -56,7 +56,7 @@ namespace iTSoft.HIMS.Service.Shared
             var list = new List<ListModel>();
             foreach (var name in Enum.GetNames(typeof(T)))
             {
-                list.Add(new ListModel() { Value = Convert.ToString((int)Enum.Parse(typeof(T), name)), Text = name });
+                list.Add(new ListModel() { Value = Convert.ToInt64((int)Enum.Parse(typeof(T), name)), Text = name });
             }
             return list;
         }

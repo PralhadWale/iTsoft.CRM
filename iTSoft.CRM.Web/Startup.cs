@@ -93,11 +93,11 @@ namespace iTSoft.CRM.Web
             }
 
          //   app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
+            //app.UseStaticFiles();
+            //if (!env.IsDevelopment())
+            //{
+            //    app.UseSpaStaticFiles();
+            //}
           
             app.UseRouting();
             app.UseCors("CRM");

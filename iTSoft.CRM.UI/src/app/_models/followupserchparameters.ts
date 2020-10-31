@@ -1,6 +1,8 @@
+import { RequestType } from './requesttype';
+
 export class FollowUpSerchParameters
 {
-    RequestTypeId: string;
+    RequestTypeId: number;
     RequestNo: string;
     FromDate: Date | string;
     ToDate: Date | string;
@@ -14,4 +16,11 @@ export class FollowUpSerchParameters
     Amount: number;
     ClientBehaviourId: number;
     AdvisorId: number;
+
+    constructor() {
+        this.RequestTypeId = RequestType.Enquiry;
+        var todaysDate = new Date();
+        this.FromDate = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1);
+        this.ToDate = new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 0);
+    }
 }

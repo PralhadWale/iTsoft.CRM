@@ -33,6 +33,9 @@
               {{element[col.ColumnField]}}
             </span>
             <span *ngIf="col.Type == 'date'">
+              {{element[col.ColumnField] |  date:'dd-MMM-yyyy' }}
+            </span>
+            <span *ngIf="col.Type == 'datetime'">
               {{element[col.ColumnField] |  date:'dd-MMM-yyyy HH:mm' }}
             </span>
 

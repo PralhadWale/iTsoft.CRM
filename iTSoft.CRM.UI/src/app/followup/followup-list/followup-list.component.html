@@ -8,4 +8,45 @@
         <it-mat-table [dataSource]="followUpList" [tableSettings]="tableSettings"  [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table>
     </mat-card-content>
 </mat-card>
-<app-add-followup #addFollowUp></app-add-followup>
+<mat-sidenav class="search-panel" position="end" dark #searchBar mode="push" opened="false">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          <mat-icon>search</mat-icon>
+        </div>
+        <mat-card-title>
+          Advanced Search
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <input matInput [matDatepicker]="fromDate" [(ngModel)]="followUpSearchParam.FromDate" name="FromDate" required>
+        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker #fromDate color="primary"></mat-datepicker>
+        <mat-error>From Date is required.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <input matInput [matDatepicker]="toDate" [(ngModel)]="followUpSearchParam.ToDate" name="ToDate" required>
+        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker #toDate color="primary"></mat-datepicker>
+        <mat-error>To Date is required.</mat-error>
+      </mat-form-field>
+     
+  
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-card-header>
+      <mat-action-list>
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="searchFollowUps(followUpSearchParam)">
+          <mat-icon>search</mat-icon>Search
+        </button>
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+          (click)="resetSearchFilter()">
+          <mat-icon>refresh</mat-icon>Reset
+        </button>
+      </mat-action-list>
+    </mat-card-header>
+  </mat-sidenav>
+<app-add-followup  #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>

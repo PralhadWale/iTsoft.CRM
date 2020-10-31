@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 namespace iTSoft.CRM.Web.Helpers
 {
@@ -11,11 +12,12 @@ namespace iTSoft.CRM.Web.Helpers
         private static readonly ILogger _errorLogger;
         private static readonly ILogger _paymentLogger;
 
-        //static Logger()
-        //{
-        //    _errorLogger = new LoggerConfiguration().WriteTo.File(Path.Combine(HttpContext.Current.Server.MapPath("~/logs/"), "log_ .txt"), rollingInterval: RollingInterval.Day).CreateLogger();
-        //    _paymentLogger = new LoggerConfiguration().WriteTo.File(Path.Combine(HttpContext.Current.Server.MapPath("~/logs/"), "log_payment .txt"), rollingInterval: RollingInterval.Day).CreateLogger();
-        //}
+        static Logger()
+        {
+            //var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location.Substring(0, Assembly.GetEntryAssembly().Location.IndexOf("bin\\"))),"logs");
+            //_errorLogger = new LoggerConfiguration().WriteTo.File(Path.Combine(path, "log_ .txt"), rollingInterval: RollingInterval.Day).CreateLogger();
+            //_paymentLogger = new LoggerConfiguration().WriteTo.File(Path.Combine(path, "log_payment .txt"), rollingInterval: RollingInterval.Day).CreateLogger();
+        }
 
         public static ILogger GetLogger()
         {

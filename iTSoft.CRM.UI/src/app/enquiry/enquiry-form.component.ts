@@ -5,6 +5,7 @@ import {
   OnDestroy,
   ViewChildren,
   ElementRef,
+  ViewChild,
 
 } from "@angular/core";
 import {
@@ -12,27 +13,30 @@ import {
   FormGroup,
   Validators,
   FormControlName,
-
+  NgForm
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import "rxjs/add/operator/debounceTime";
-import "rxjs/add/observable/fromEvent";
-import "rxjs/add/observable/merge";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
+import {  BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
+import { CommandEventArgs,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+
+import { RequestMaster } from '../_models';
+import { RequestViewModel } from '../_models/requestviewmodel';
+import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+import { RequestType } from '../_models/requesttype';
+
+import { RequestService } from '../process/services/request.service';
+import { AlertService } from '../_services';
+import { ListService } from '../process/services/list.service';
+
+import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
 
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
-import { RequestService } from '../process/services/request.service';
-import { ListService } from '../process/services/list.service';
-import { RequestViewModel } from '../_models/requestviewmodel';
-import { RequestSelectListModel } from '../_models/requestselectlistmodel';
-import { RequestMaster } from '../_models';
-import { RequestType } from '../_models/requesttype';
-import { AlertService } from '../_services';
+
 
 @Component({
   selector: 'enquiry-form',
@@ -49,15 +53,15 @@ import { AlertService } from '../_services';
     `],
 })
 export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChildren(FormControlName, { read: ElementRef })
-  formInputElements: ElementRef[];
+  @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
   pageTitle: string = "Update Enquiry";
   errorMessage: string;
   enquiryForm: FormGroup;
   request: RequestViewModel;
   showImage: boolean;
   fieldColspan = 4;
-
+  requestTypeId = RequestType.Enquiry;
   // Use with the generic validation messcustomerId class
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } } = {
@@ -237,6 +241,19 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  onCommandClick($event: CommandEventArgs) {
+    if ($event.toolbarItem) {
+        if ($event.toolbarItem == ToolBarItems.Add) {
+            this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
+            this.addFollowUp.requestNo = this.request.RequestMaster.RequestNo;
+            this.addFollowUp.SetFollowUpDefaultData();
+            this.addFollowUp.sidenav.open();
+        }
+    }
+}
+onFollowUpSaved() {
+    this.getRequest(this.request.RequestMaster.RequestId);
+}
 
   LoadSelectListData() {
     this.listService
@@ -260,19 +277,19 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableSettings.ToolBarItems = [ToolBarItems.Add];
   
 
+   
     this.followUpTableSchema =
-      [
-        { ColumnField: "Date", ColumnHeader: "Date", Type: "date" },
-        { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
-        { ColumnField: "State", ColumnHeader: "State", Type: "text" },
-        { ColumnField: "Status", ColumnHeader: "Deal Status", Type: "text" },
-        { ColumnField: "Comment", ColumnHeader: "Comment", Type: "text" },
-        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-        { ColumnField: "EmployeeName", ColumnHeader: "Employee Name", Type: "text" },
-        { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-        { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
-      ];
+    [
+      { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
+      { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+      { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
+      { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
+      { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+      { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
+      { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+      { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+      { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+    ];
 
   }
 

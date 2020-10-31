@@ -14,6 +14,10 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string ClientBehaviourName { get; set; }
         public string RequestTypeName { get; set; }
         public string Remark { get; set; }
-        public string FollowUpDate { get; set; }
+        public DateTime FollowUpDate { get; set; }
+        public int Attempt { get; set; }
+        public int ClientRating { get; set; }
+        public long FollowUpId { get; set; }
+
     }
 }

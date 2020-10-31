@@ -1,10 +1,10 @@
 export class ListModel
 {
     Text: string;
-    Value: string;
+    Value: number;
 }
 
 export class ListModelWithForeignKey extends ListModel
 {
-    ForeignKey: string;
+    ForeignKey: number;
 }
