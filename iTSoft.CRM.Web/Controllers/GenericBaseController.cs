@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace iTSoft.CRM.Web.Controllers
 {
+
     public class GenericBaseController<TEntity> : ControllerBase where TEntity : class
     {
         public IGenericService<TEntity> genericService;
-        private readonly ILogger _logger;
+        public readonly ILogger _logger;
 
         public GenericBaseController()
         {
@@ -21,21 +22,7 @@ namespace iTSoft.CRM.Web.Controllers
             _logger = Logger.GetLogger();
         }
 
-        [HttpPost("save")]
-        public IActionResult Save(TEntity entity)
-        {
-            ServiceResponse response = new ServiceResponse();
-            try
-            {
-                response.ResponseCode = genericService.Add(entity) > 0 ? ResponseCode.Success : ResponseCode.DataBaseError;
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ResponseCode.ApplicationError;
-                _logger.Error(ex, "Base - Add");
-            }
-            return Ok(response);
-        }
+      
 
 
         [HttpPost("add")]

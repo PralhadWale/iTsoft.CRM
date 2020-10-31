@@ -17,7 +17,7 @@ export class iTCRMSettings {
     public static get REPORT_API_URL(): string { return "http://localhost:44396"; }
 
     public static get Administration(): string { return "/Administration"; }
-    public static get Masters(): string { return "/Masters"; }
+    public static get Masters(): string { return ""; }
 
     constructor() {
 

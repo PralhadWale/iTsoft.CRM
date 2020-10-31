@@ -29,7 +29,7 @@
             </button>
           </div>
           <ng-template #spanfield>
-            <span *ngIf="col.Type != 'date'">
+            <span *ngIf="col.Type != 'date' && col.Type != 'boolean'">
               {{element[col.ColumnField]}}
             </span>
             <span *ngIf="col.Type == 'date'">
@@ -37,6 +37,9 @@
             </span>
             <span *ngIf="col.Type == 'datetime'">
               {{element[col.ColumnField] |  date:'dd-MMM-yyyy HH:mm' }}
+            </span>
+            <span *ngIf="col.Type == 'boolean'">
+              <mat-checkbox class="form-check-input" [(ngModel)]="element[col.ColumnField]" readonly></mat-checkbox>
             </span>
 
           </ng-template>

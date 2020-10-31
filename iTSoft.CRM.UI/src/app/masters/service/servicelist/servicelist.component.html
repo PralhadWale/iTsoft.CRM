@@ -1,49 +1,48 @@
 <mat-card>
-    <mat-card-header>
-        <mat-card-title class="view-card-title">
-            <h1>{{pageTitle }}</h1>
-        </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <it-mat-table [dataSource]="serviceList" [tableSettings]="tableSettings" (onAddClick)="onAddServiceClick($event)" [tableSchema]="serviceTableSchema"></it-mat-table>
-    </mat-card-content>
+  <mat-card-header>
+    <mat-card-title class="view-card-title">
+      <h1>{{pageTitle }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <it-mat-table [dataSource]="serviceList" [tableSettings]="tableSettings" [tableSchema]="serviceTableSchema"
+      (onCommandClick)='onCommandClick($event)'></it-mat-table>
+  </mat-card-content>
 </mat-card>
 
 
 <mat-sidenav class="search-panel" position="end" dark #serviceNav mode="push" opened="false">
-    <mat-card class="profile-card">
-      <mat-card-header>
-        <div mat-card-avatar class="avatar">
-          <mat-icon>queue</mat-icon>
-        </div>
-        <mat-card-title>
-          Add-Update Service
-        </mat-card-title>
-      </mat-card-header>
-    </mat-card>
-    <mat-nav-list style="margin-left:50px;">
-      <mat-form-field appearance="standard">
-        <mat-label>Service Name</mat-label>
-        <input matInput appearance="standard" placeholder="Service Name" name="ServiceName" [(ngModel)]="serviceMaster.ServiceName" />
-      </mat-form-field>
-<!--<mat-form-field appearance="standard">  -->
-        <mat-checkbox class="checkbox_margin">Is Active</mat-checkbox>
-        <!-- <mat-label>Is Active</mat-label> -->
-        <!-- <mat-checkbox>Is Active!</mat-slide-toggle> -->
-        <!-- [(ngModel)]="designationMaster.IsActive" -->
-      <!-- </mat-form-field>  -->
-    </mat-nav-list>
-    <mat-divider></mat-divider>
+  <mat-card class="profile-card">
     <mat-card-header>
-      <mat-action-list>
-        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="saveService(serviceMaster);sidenav.toggle()">
-          <mat-icon>save</mat-icon>Save
-        </button>
-        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
-          (click)="reset()">
-          <mat-icon>refresh</mat-icon>Cancel
-        </button>
-      </mat-action-list>
+      <div mat-card-avatar class="avatar">
+        <mat-icon>queue</mat-icon>
+      </div>
+      <mat-card-title>
+        Add-Update Service
+      </mat-card-title>
     </mat-card-header>
-  </mat-sidenav>
+  </mat-card>
+  <mat-nav-list style="margin-left:50px;">
+    <mat-form-field appearance="standard">
+      <mat-label>Service Name</mat-label>
+      <input matInput appearance="standard" placeholder="Service Name" name="ServiceName"
+        [(ngModel)]="serviceMaster.ServiceName" />
+    </mat-form-field>
+    <div class="form-group form-check">
+      <mat-checkbox name="IsActive" id="IsActive" class="form-check-input"
+        [(ngModel)]="serviceMaster.IsActive" #IsActive="ngModel">Is Active</mat-checkbox>
+    </div>
+  </mat-nav-list>
+  <mat-divider></mat-divider>
+  <mat-card-header>
+    <mat-action-list>
+      <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+        (click)="saveService(serviceMaster)">
+        <mat-icon>save</mat-icon>Save
+      </button>
+      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;" (click)="reset()">
+        <mat-icon>refresh</mat-icon>Cancel
+      </button>
+    </mat-action-list>
+  </mat-card-header>
+</mat-sidenav>

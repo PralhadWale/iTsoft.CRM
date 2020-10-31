@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
-import { iTCRMAPIService } from 'src/app/core/services/ITSoftAPIService';
 import { UserService } from 'src/app/shared/services/UserService';
+import { APIService } from 'src/app/_services';
 import { ServiceMaster } from './service.model';
 
 @Injectable()
 export class ServiceService {
 
-    constructor(private apiService: iTCRMAPIService, private userService: UserService) { }
+    constructor(private apiService: APIService, private userService: UserService) { }
 
-    URLSave: string = iTCRMSettings.Masters + "/Service/Save";
-    getUrl: string = iTCRMSettings.Masters + "/Service/GetAll";
-    deleteURL: string = iTCRMSettings.Masters + "/Service/Delete";
-    getServiceListUrl: string = iTCRMSettings.Masters + "/Service/FindService";
+    URLSave: string = iTCRMSettings.Masters + "/service/save";
+    getUrl: string = iTCRMSettings.Masters + "/service/getall";
+    deleteURL: string = iTCRMSettings.Masters + "/service/delete";
+    getServiceListUrl: string = iTCRMSettings.Masters + "/service/findservice";
 
     Save(serviceMaster: ServiceMaster) {
 
@@ -21,18 +21,18 @@ export class ServiceService {
         serviceMaster.AddedOn = new Date(Date.now());
         serviceMaster.UpdatedOn = new Date(Date.now());
 
-        return this.apiService.POST(this.URLSave, serviceMaster);
+        return this.apiService.PostData(this.URLSave, serviceMaster);
     }
 
     GetAll() {
-        return this.apiService.POST(this.getUrl, '');
+        return this.apiService.GetData(this.getUrl);
     }
     Delete(ServiceId: number) {
-        return this.apiService.POST(this.deleteURL, ServiceId);
+        return this.apiService.PostData(this.deleteURL, ServiceId);
     }
 
     FindService(ServiceId: number) {
-        return this.apiService.GETData(this.getServiceListUrl + "?ServiceId=" + ServiceId);
+        return this.apiService.GetData(this.getServiceListUrl + "?ServiceId=" + ServiceId);
     }
 
     NewService()
