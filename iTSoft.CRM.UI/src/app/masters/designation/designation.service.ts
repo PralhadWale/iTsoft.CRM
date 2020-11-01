@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
-import { iTCRMAPIService } from 'src/app/core/services/ITSoftAPIService';
+
 import { UserService } from 'src/app/shared/services/UserService';
+import { APIService } from 'src/app/_services';
+
 import { DesignationMaster } from './designation.model';
+import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 
 @Injectable() 
 export class DesignationService {
-    constructor(private apiService: iTCRMAPIService, private userService: UserService) { }
+    constructor(private apiService: APIService, private userService: UserService) { }
 
-    URLSave: string = iTCRMSettings.Masters + "/Designation/Save";
-    getUrl: string = iTCRMSettings.Masters + "/Designation/GetAll";
-    deleteURL: string = iTCRMSettings.Masters + "/Designation/Delete";
-    getDesignationListUrl: string = iTCRMSettings.Masters + "/Designation/FindDesignation";
+    URLSave: string = iTCRMSettings.Masters + "/designation/save";
+    getUrl: string = iTCRMSettings.Masters + "/designation/getAll";
+    deleteURL: string = iTCRMSettings.Masters + "/designation/delete";
+    getDesignationListUrl: string = iTCRMSettings.Masters + "/designation/findDesignation";
 
     Save(designationMaster: DesignationMaster) {
 
@@ -20,22 +22,20 @@ export class DesignationService {
         designationMaster.AddedOn = new Date(Date.now());
         designationMaster.UpdatedOn = new Date(Date.now());
 
-        return this.apiService.POST(this.URLSave, designationMaster);
+        return this.apiService.PostData(this.URLSave, designationMaster);
     }
 
     GetAll() {
-        return this.apiService.POST(this.getUrl, '');
+        return this.apiService.GetData(this.getUrl);
     }
 
-    // Delete(designationMaster: Designation) {
-    //     return this.apiService.POST(this.deleteURL, designationMaster);
-    // }
+   
     Delete(DesignationId: number) {
-        return this.apiService.POST(this.deleteURL, DesignationId);
+        return this.apiService.PostData(this.deleteURL, DesignationId);
     }
 
     FindDesignation(DesignationId: number) {
-        return this.apiService.GETData(this.getDesignationListUrl + "?DesignationId=" + DesignationId);
+        return this.apiService.GetData(this.getDesignationListUrl + "?DesignationId=" + DesignationId);
     }
 
     NewDesignation()

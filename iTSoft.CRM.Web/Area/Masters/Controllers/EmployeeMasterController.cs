@@ -10,6 +10,8 @@ using System;
 
 namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class EmployeeMasterController : BaseController
     {
         ILogger _logger = null;
@@ -20,7 +22,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             employeeMasterService = new EmployeeMasterService();
         }
 
-        [HttpPost]
+        [HttpPost("save")]
         public IActionResult Save(EmployeeMaster employeeMaster)
         {
             ServiceResponse response = new ServiceResponse();
@@ -37,7 +39,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             ServiceResponse response = new ServiceResponse();
@@ -60,7 +62,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPost("getemployeeinfo")]
         public IActionResult GetEmployeeInfo(EmployeeMasterSearchParam searchParam)
         {
             ServiceResponse response = new ServiceResponse();
@@ -83,7 +85,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("find")]
         public IActionResult Find(long EmployeeId)
         {
             ServiceResponse response = new ServiceResponse();
@@ -108,7 +110,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPost("delete")]
         public IActionResult Delete(EmployeeMaster employeeMaster)
         {
             ServiceResponse response = new ServiceResponse();

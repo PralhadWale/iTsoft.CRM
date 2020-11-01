@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class OrganizationController : BaseController
     {
         ILogger _logger = null;
@@ -24,7 +26,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("save")]
         public IActionResult Save(OrganizationMaster organizationMaster)
         {
             ServiceResponse response = new ServiceResponse();
@@ -41,7 +43,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             ServiceResponse response = new ServiceResponse();
@@ -64,7 +66,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPost("delete")]
         public IActionResult Delete(OrganizationMaster organizationMaster)
         {
             ServiceResponse response = new ServiceResponse();
@@ -81,7 +83,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("find")]
         public IActionResult FindOrganization(long OrganizationId)
         {
             ServiceResponse response = new ServiceResponse();

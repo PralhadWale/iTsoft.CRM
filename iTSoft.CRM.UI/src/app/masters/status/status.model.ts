@@ -1,6 +1,6 @@
 export class StatusMaster{
-    StatusId: number | null;
-    StatusName: string;
+    LeadStatusId: number | null;
+    LeadStatusName: string;
     IsActive: boolean | null;
     AddedBy: number | null;
     AddedOn: Date | string | null;

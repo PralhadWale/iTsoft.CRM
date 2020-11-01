@@ -21,5 +21,6 @@ namespace iTSoft.CRM.Data.Entity.Master
         public string LoginName { get; set; }
         public string Password { get; set; }
         public bool? IsActive { get; set; }
+        public decimal TargetAmount { get; set; }
     }
 }

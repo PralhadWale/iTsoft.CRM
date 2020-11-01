@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { CommandEventArgs, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
 import { AlertService } from 'src/app/_services';
-import { ServiceMaster } from '../service.model';
 import { ServiceService } from '../service.service';
+
+import { ServiceMaster } from '../service.model';
 
 @Component({
   selector: 'app-servicelist',
@@ -12,7 +13,7 @@ import { ServiceService } from '../service.service';
 })
 export class ServicelistComponent implements OnInit {
   @ViewChild("serviceNav") serviceNav: MatSidenav;
-  pageTitle: "Service List"
+  pageTitle:string = "Service List";
 
   serviceList: Array<any>;
   serviceTableSchema: Array<TableColumnModel> = [];

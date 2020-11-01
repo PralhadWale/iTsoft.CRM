@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { TableColumnModel, TableDefaultSettings } from 'src/app/shared/table-layout/it-mat-table.component';
-import { StageMaster } from '../stage.model';
+import { CommandEventArgs, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
+
+import { AlertService } from 'src/app/_services';
 import { StageService } from '../stage.service';
+
+import { StageMaster } from '../stage.model';
 
 @Component({
   selector: 'app-stagelist',
@@ -12,31 +15,56 @@ import { StageService } from '../stage.service';
 export class StagelistComponent implements OnInit {
 
   @ViewChild("stageNav") sidenav: MatSidenav;
-  pageTitle: "Stage List"
+  pageTitle: string = "Lead Stage List"
 
   stageList: Array<any>;
   stageTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   stageMaster: StageMaster = null;
-  constructor(private stageService: StageService) {
+
+  constructor(private stageService: StageService, private alertService: AlertService) {
 
   }
 
   ngOnInit(): void {
     this.reset();
     this.SetTableSchema();
+    this.getAll();
   }
 
-  onAddStageClick($event: any) {
+  onCommandClick($event: CommandEventArgs) {
 
-    this.reset();
-    this.sidenav.toggle();
+    if (!$event.toolbarItem) {
+      if ($event.command.commandType == CommandType.Edit) {
+        this.stageMaster = Object.assign({}, $event.rowData);
+        this.sidenav.open();
+      }
+    }
+    else {
+      if ($event.toolbarItem == ToolBarItems.Add) {
+        this.reset();
+        this.sidenav.open();
+      }
+      else if ($event.toolbarItem == ToolBarItems.Refresh) {
+
+      }
+    }
 
   }
+
 
   saveStage(stageMaster: StageMaster) {
     if (stageMaster) {
-
+      if (stageMaster.StageId < 1) {
+        this.stageMaster.StageId = this.stageList.length + 1;
+      }
+      this.stageService.Save(stageMaster).subscribe(result => {
+        this.alertService.showSuccessMessage("Record saved successfully");
+        this.reset();
+        this.getAll();
+      }, error => {
+        this.alertService.showErrorMessage(error.error);
+      })
     }
   }
 
@@ -51,18 +79,24 @@ export class StagelistComponent implements OnInit {
 
   }
 
+  getAll() {
+    this.stageService.GetAll().subscribe(result => {
+      this.stageList = result.Value.ResponseData;
+    }, error => {
+      this.alertService.showErrorMessage(error.error);
+    });
+  }
 
   SetTableSchema() {
-    this.tableSettings = new TableDefaultSettings();
-    this.tableSettings.ShowToolBar = true;
-
-    this.stageTableSchema =
-      [
-        { ColumnField: "stageName", ColumnHeader: "Stage Name", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
-      ];
-
-
-    this.stageList = [{ stageName: "Test Name" }]
+      this.tableSettings = new TableDefaultSettings();
+      this.tableSettings.ShowToolBar = true;
+      this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh];
+  
+      this.stageTableSchema =
+        [
+          { ColumnField: "StageName", ColumnHeader: "Stage Name", Type: "text" },
+          { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
+          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+        ];
   }
 }

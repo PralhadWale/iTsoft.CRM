@@ -1,11 +1,12 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title class="view-card-title">
-            <h1>{{pageTitle }}</h1>
+            <h1>{{pageTitle}}</h1>
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <it-mat-table [dataSource]="designationList" [tableSettings]="tableSettings" (onAddClick)="onAddDesignationClick($event)" [tableSchema]="designationTableSchema"></it-mat-table>
+        <it-mat-table [dataSource]="designationList" [tableSettings]="tableSettings" [tableSchema]="designationTableSchema"
+        (onCommandClick)='onCommandClick($event)'></it-mat-table>
     </mat-card-content>
 </mat-card>
 
@@ -24,20 +25,19 @@
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
         <mat-label>Designation Name</mat-label>
-        <input matInput appearance="standard" placeholder="Designation Name" name="DesignationName" [(ngModel)]="designationMaster.DesignationName" />
+        <input matInput appearance="standard" placeholder="Designation Name" name="DesignationName"
+          [(ngModel)]="designationMaster.DesignationName" />
       </mat-form-field>
-<!--<mat-form-field appearance="standard">  -->
-        <mat-checkbox class="checkbox_margin">Is Active</mat-checkbox>
-        <!-- <mat-label>Is Active</mat-label> -->
-        <!-- <mat-checkbox>Is Active!</mat-slide-toggle> -->
-        <!-- [(ngModel)]="designationMaster.IsActive" -->
-      <!-- </mat-form-field>  -->
+      <div class="form-group form-check">
+        <mat-checkbox name="IsActive" id="IsActive" class="form-check-input"
+          [(ngModel)]="designationMaster.IsActive" #IsActive="ngModel">Is Active</mat-checkbox>
+      </div>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>
       <mat-action-list>
         <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="saveDesignation(designationMaster);sidenav.toggle()">
+          (click)="saveDesignation(designationMaster);">
           <mat-icon>save</mat-icon>Save
         </button>
         <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"

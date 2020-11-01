@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
-import { iTCRMAPIService } from 'src/app/core/services/ITSoftAPIService';
+
 import { UserService } from 'src/app/shared/services/UserService';
+import { APIService } from 'src/app/_services';
+
 import { SourceMaster } from './source.model';
+import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 
-@Injectable()
+@Injectable() 
 export class SourceService {
+    constructor(private apiService: APIService, private userService: UserService) { }
 
-    constructor(private apiService: iTCRMAPIService, private userService: UserService) { }
-
-    URLSave: string = iTCRMSettings.Masters + "/Source/Save";
-    getUrl: string = iTCRMSettings.Masters + "/Source/GetAll";
-    deleteURL: string = iTCRMSettings.Masters + "/Source/Delete";
-    getSourceListUrl: string = iTCRMSettings.Masters + "/Source/FindSource";
+    URLSave: string = iTCRMSettings.Masters + "/leadsource/save";
+    getUrl: string = iTCRMSettings.Masters + "/leadsource/getAll";
+    deleteURL: string = iTCRMSettings.Masters + "/leadsource/delete";
+    getSourceListUrl: string = iTCRMSettings.Masters + "/leadsource/findSource";
 
     Save(sourceMaster: SourceMaster) {
 
@@ -21,31 +22,30 @@ export class SourceService {
         sourceMaster.AddedOn = new Date(Date.now());
         sourceMaster.UpdatedOn = new Date(Date.now());
 
-        return this.apiService.POST(this.URLSave, sourceMaster);
+        return this.apiService.PostData(this.URLSave, sourceMaster);
     }
 
     GetAll() {
-        return this.apiService.POST(this.getUrl, '');
+        return this.apiService.GetData(this.getUrl);
     }
 
-    // Delete(sourceMaster: Source) {
-    //     return this.apiService.POST(this.deleteURL, sourceMaster);
-    // }
+   
     Delete(SourceId: number) {
-        return this.apiService.POST(this.deleteURL, SourceId);
+        return this.apiService.PostData(this.deleteURL, SourceId);
     }
 
     FindSource(SourceId: number) {
-        return this.apiService.GETData(this.getSourceListUrl + "?SourceId=" + SourceId);
+        return this.apiService.GetData(this.getSourceListUrl + "?SourceId=" + SourceId);
     }
 
     NewSource()
     {
         let sourceMaster = new SourceMaster();
-        sourceMaster.SourceId = 0;
-        sourceMaster.SourceName = null;
+        sourceMaster.LeadSourceId = 0;
+        sourceMaster.LeadSourceName = null;
         sourceMaster.IsActive = false;
 
         return sourceMaster;
     }
+
 }

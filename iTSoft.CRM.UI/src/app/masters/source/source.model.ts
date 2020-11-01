@@ -1,6 +1,6 @@
 export class SourceMaster{
-    SourceId: number | null;
-    SourceName: string;
+    LeadSourceId: number | null;
+    LeadSourceName: string;
     IsActive: boolean | null;
     AddedBy: number | null;
     AddedOn: Date | string | null;

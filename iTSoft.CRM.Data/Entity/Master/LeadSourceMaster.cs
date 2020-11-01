@@ -5,10 +5,10 @@ using System.Text;
 
 namespace iTSoft.CRM.Data.Entity.Master
 {
-    [Table("LeadStatusMaster")]
+    [Table("LeadSourceMaster")]
     public class LeadSourceMaster
     {
-        [Key]
+        [ExplicitKey]
         public long? LeadSourceId { get; set; }
         public string LeadSourceName { get; set; }
         public bool? IsActive { get; set; }

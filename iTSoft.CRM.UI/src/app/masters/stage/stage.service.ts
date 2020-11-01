@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
-import { iTCRMAPIService } from 'src/app/core/services/ITSoftAPIService';
+
 import { UserService } from 'src/app/shared/services/UserService';
+import { APIService } from 'src/app/_services';
+
 import { StageMaster } from './stage.model';
+import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 
-@Injectable()
+@Injectable() 
 export class StageService {
-    constructor(private apiService: iTCRMAPIService, private userService: UserService) { }
+    constructor(private apiService: APIService, private userService: UserService) { }
 
-    URLSave: string = iTCRMSettings.Masters + "/Stage/Save";
-    getUrl: string = iTCRMSettings.Masters + "/Stage/GetAll";
-    deleteURL: string = iTCRMSettings.Masters + "/Stage/Delete";
-    getStageListUrl: string = iTCRMSettings.Masters + "/Stage/FindStage";
+    URLSave: string = iTCRMSettings.Masters + "/stage/save";
+    getUrl: string = iTCRMSettings.Masters + "/stage/getAll";
+    deleteURL: string = iTCRMSettings.Masters + "/stage/delete";
+    getStageListUrl: string = iTCRMSettings.Masters + "/stage/findStage";
 
     Save(stageMaster: StageMaster) {
 
@@ -20,22 +22,20 @@ export class StageService {
         stageMaster.AddedOn = new Date(Date.now());
         stageMaster.UpdatedOn = new Date(Date.now());
 
-        return this.apiService.POST(this.URLSave, stageMaster);
+        return this.apiService.PostData(this.URLSave, stageMaster);
     }
 
     GetAll() {
-        return this.apiService.POST(this.getUrl, '');
+        return this.apiService.GetData(this.getUrl);
     }
 
-    // Delete(stageMaster: Stage) {
-    //     return this.apiService.POST(this.deleteURL, stageMaster);
-    // }
+   
     Delete(StageId: number) {
-        return this.apiService.POST(this.deleteURL, StageId);
+        return this.apiService.PostData(this.deleteURL, StageId);
     }
 
     FindStage(StageId: number) {
-        return this.apiService.GETData(this.getStageListUrl + "?StageId=" + StageId);
+        return this.apiService.GetData(this.getStageListUrl + "?StageId=" + StageId);
     }
 
     NewStage()
@@ -47,6 +47,5 @@ export class StageService {
 
         return stageMaster;
     }
-
 
 }
