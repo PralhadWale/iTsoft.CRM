@@ -90,6 +90,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 EmployeeMaster employeeMaster = employeeMasterService.Find(employeeId);
                 if (employeeMaster != null)
                 {
+                    employeeMaster.Password = EncryptionHelper.Decrypt(employeeMaster.Password);
                     response.ResponseCode = ResponseCode.Success;
                     response.ResponseData = employeeMaster;
                 }
