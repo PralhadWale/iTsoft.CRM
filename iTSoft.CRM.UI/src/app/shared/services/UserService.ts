@@ -5,6 +5,10 @@ import { iTCRMAPIService } from 'src/app/core/services/ITSoftAPIService';
 
 @Injectable({ providedIn: 'root', })
 export class UserService {
+    
+    GetUserId(): number {
+      return 1;
+    }
 
 
     changePasswordURL: string = "/Account/ChangePassword";

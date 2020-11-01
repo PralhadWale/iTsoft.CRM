@@ -1,16 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { EmployeeMaster } from './employeeMaster';
-import { EmployeeService } from './employee.service';
-import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
 
-import { MatDialog } from '@angular/material/dialog'
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
+import { EmployeeService } from './employee.service';
+import { AlertService } from '../_services';
+import { EmployeeMaster } from './employeeMaster.model';
 
 
 @Component({
@@ -20,156 +18,97 @@ import { MatTableDataSource } from '@angular/material/table';
     providers: [ConfirmDialog]
 })
 export class EmployeeListComponent implements OnInit {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-
+    @ViewChild("sidenav") sidenav: MatSidenav;
 
     pageTitle: string = 'Employees';
-    imageWidth: number = 30;
-    imageMargin: number = 2;
-    showImage: boolean = false;
-    listFilter: any = {};
-    errorMessage: string;
 
-    employees: EmployeeMaster[];
-    employeeList: EmployeeMaster[]; //
-    displayedColumns = ["Name", "MobileNo1", "EmailId","DepartMent",  "Role" , "TargetAmount" ,"EmployeeId"];
-    dataSource: any = null;
-    pager: any = {};
-    pagedItems: any[];
-    searchFilter: any = {
-        FirstName: "",
-        MiddleName: "",
-        EmailId: ""
-    };
-    selectedOption: string;
+    searchFilter: EmployeeMaster = new EmployeeMaster();
 
+
+    employeeList: Array<any>;
+    employeeTableSchema: Array<TableColumnModel> = [];
+    tableSettings: TableDefaultSettings;
 
     constructor(
         private employeeService: EmployeeService,
-        // private pagerService: PagerService,
-        public dialog: MatDialog,
-        public snackBar: MatSnackBar) {
+        private alertService: AlertService,
+        private router: Router,
+
+    ) {
+
     }
-
-    applyFilter(filterValue: string) {
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.dataSource.filter = filterValue;
-    }
-
-    freshDataList(employees: EmployeeMaster[]) {
-        this.employees = employees;
-
-        this.dataSource = new MatTableDataSource(this.employees);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    }
-
     ngOnInit(): void {
-        this.employees = [];
-        // this.employeeService.getEmployees()
-        //     .subscribe(employees => {
-        //         this.freshDataList(employees);
-        //     },
-        //         error => this.errorMessage = <any>error);
-let ew = new EmployeeMaster();
-ew.EmployeeId = 10;
-ew.UpdatedDate = new Date();
-ew.FirstName ="Taxblock";
-ew.MiddleName = "B";
-ew.LastName ="Admin";
-ew.MobileNo1 = "00000000";
-ew.EmailId = "tb@taxblock.in";
-ew.DepartMent = "Admin";
-ew.Role = "Admin";
-ew.TargetAmount =3456;
-this.employees.push(ew);
-        this.freshDataList(this.employees);
-        this.searchFilter = {};
-        this.listFilter = {};
+        this.SetTableSchema();
+        this.getEmployeeList();
     }
 
-    getEmployees(pageNum?: number) {
-        this.employeeService.getEmployees()
-            .subscribe(employees => {
-                this.freshDataList(employees);
-            },
-                error => this.errorMessage = <any>error);
-    }
 
-    searchEmployees(filters: any) {
-        if (filters) {
-            this.employeeService.getEmployees()
-                .subscribe(employees => {
-                    this.employees = employees;
-                    console.log(this.employees.length)
-                    this.employees = this.employees.filter((employee: EmployeeMaster) => {
-                        let match = true;
 
-                        Object.keys(filters).forEach((k) => {
-                            match = match && filters[k] ?
-                                employee[k].toLocaleLowerCase().indexOf(filters[k].toLocaleLowerCase()) > -1 : match;
-                        })
-                        return match;
-                    });
-                    this.freshDataList(employees);
-                },
-                    error => this.errorMessage = <any>error);
+    onCommandClick($event: CommandEventArgs) {
+
+        if (!$event.toolbarItem) {
+            if ($event.command.commandType == CommandType.Edit) {
+                let rowData: EmployeeMaster = Object.assign({}, $event.rowData);
+                this.router.navigate(['/employees/edit/', rowData.EmployeeId]);
+            }
+            else if ($event.command.commandType == CommandType.Delete) {
+
+            }
+          
+        }
+        else {
+            if ($event.toolbarItem == ToolBarItems.Add) {
+                this.router.navigate(['/employees/edit/', 0]);
+            }
+            else if ($event.toolbarItem == ToolBarItems.Search) {
+                this.sidenav.toggle();
+            }
+            else if ($event.toolbarItem == ToolBarItems.Refresh) {
+                this.getEmployeeList();
+            }
         }
 
     }
 
-    resetListFilter() {
-        this.listFilter = {};
-        this.getEmployees();
+    resetSearchFilter(sidenav: any) {
+        this.searchFilter = new EmployeeMaster();
+        this.sidenav.close();
     }
 
-    reset() {
-        this.listFilter = {};
-        this.searchFilter = {};
-        this.getEmployees();
+    searchEmployees(searchFilter: any) {
+       this.getEmployeeList();
+    }
+
+    getEmployeeList() {
+
+        this.employeeService.GetEmployeeInfo(this.searchFilter).subscribe(result => {
+            this.employeeList = result.Value.ResponseData;
+            this.sidenav.close();
+        }, error => { this.alertService.showErrorMessage(error.error); });
 
     }
 
-    resetSearchFilter(searchPanel: any) {
-        searchPanel.toggle();
-        this.searchFilter = {};
-        this.getEmployees();
+    SetTableSchema() {
+        this.tableSettings = new TableDefaultSettings();
+        this.tableSettings.ShowToolBar = true;
+        this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search];
+
+        let gridCommands: Array<CommandModel> = [
+            { commandType: CommandType.Edit }
+        ];
+
+        this.employeeTableSchema =
+            [
+                { ColumnField: "FirstName", ColumnHeader: "First Name", Type: "text" },
+                { ColumnField: "MiddleName", ColumnHeader: "Middle Name", Type: "text" },
+                { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
+                { ColumnField: "MobileNo1", ColumnHeader: "Mobile No 1", Type: "text" },
+                { ColumnField: "EmailId", ColumnHeader: "Email", Type: "text" },
+                { ColumnField: "TargetAmount", ColumnHeader: "Target Amount", Type: "text" },
+                { ColumnField: "LoginName", ColumnHeader: "Login Name", Type: "text" },
+                { ColumnField: "IsActive", ColumnHeader: "Is Active", Type: "boolean" },
+                { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }
+            ];
     }
 
-    openSnackBar(message: string, action: string) {
-        this.snackBar.open(message, action, {
-            duration: 1500,
-        });
-    }
-
-    openDialog(id: number) {
-        let dialogRef = this.dialog.open(ConfirmDialog,
-            { data: { title: 'Dialog', message: 'Are you sure to delete this item?' } });
-        dialogRef.disableClose = true;
-
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.selectedOption = result;
-
-            if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
-                this.employeeService.deleteEmployee(id).subscribe(
-                    () => {
-                        this.employeeService.getEmployees()
-                            .subscribe(employees => {
-                                this.freshDataList(employees);
-                            },
-                                error => this.errorMessage = <any>error);
-                        this.openSnackBar("The item has been deleted successfully. ", "Close");
-                    },
-                    (error: any) => {
-                        this.errorMessage = <any>error;
-                        console.log(this.errorMessage);
-                        this.openSnackBar("This item has not been deleted successfully. Please try again.", "Close");
-                    }
-                );
-            }
-        });
-    }
 }

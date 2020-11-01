@@ -1,78 +1,50 @@
+ 
+
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BackendService } from '../_services'
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
 
-import { EmployeeMaster } from './employeeMaster';
+import { UserService } from 'src/app/shared/services/UserService';
+import { APIService } from 'src/app/_services';
 
-@Injectable()
+import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
+import { EmployeeMaster } from './employeeMaster.model';
+
+@Injectable() 
 export class EmployeeService {
-    private basicAction = 'employees/';
+    constructor(private apiService: APIService, private userService: UserService) { }
 
-    constructor(private http: HttpClient, private backend: BackendService) { }
+    URLSave: string = iTCRMSettings.Masters + "/employee/save";
+    getUrl: string = iTCRMSettings.Masters + "/employee/getAll";
+    deleteURL: string = iTCRMSettings.Masters + "/employee/delete";
+    findURL: string = iTCRMSettings.Masters + "/employee/find";
+    getemployeeinfoURL : string =  iTCRMSettings.Masters + "/employee/getemployeeinfo";
 
-    getEmployees(): Observable<EmployeeMaster[]> {
-        return this.backend.getAll(this.basicAction)
-            .map(this.extractData)
-            .catch(this.handleError);
+    GetEmployeeInfo(employee: EmployeeMaster) {
+        return this.apiService.PostData(this.getemployeeinfoURL, employee);
     }
 
-    getEmployee(id: number): Observable<EmployeeMaster> {
-        if (id === 0) {
-            return Observable.of(this.initializeEmployee());
-        };
-        const action = `${this.basicAction}${id}`;
-        return this.backend.getById(action)
-            .map(this.extractData)
-            .catch(this.handleError);
+    Save(employee: EmployeeMaster) {
+
+        employee.AddedBy = this.userService.GetUserId();
+        employee.UpdatedBy = this.userService.GetUserId();
+        employee.AddedDate = new Date(Date.now());
+        employee.UpdatedDate = new Date(Date.now());
+
+        return this.apiService.PostData(this.URLSave, employee);
     }
 
-    deleteEmployee(id: number): Observable<Response> {
-
-        const action = `${this.basicAction}${id}`;
-        return this.backend.delete(action)
-            .catch(this.handleError);
+    GetAll() {
+        return this.apiService.GetData(this.getUrl);
     }
 
-    saveEmployee(employeeMaster: EmployeeMaster): Observable<EmployeeMaster> {
-
-
-        if (employeeMaster.EmployeeId === 0) {
-            return this.createEmployee(employeeMaster);
-        }
-        return this.updateEmployee(employeeMaster);
+   
+    Delete(employee: EmployeeMaster) {
+        return this.apiService.PostData(this.deleteURL, employee);
     }
 
-    private createEmployee(employeeMaster: EmployeeMaster): Observable<EmployeeMaster> {
-        employeeMaster.EmployeeId = undefined;
-        return this.backend.create(this.basicAction, employeeMaster)
-            .map(this.extractData)
-            .catch(this.handleError);
+    Find(employeeId: number) {
+        return this.apiService.GetData(this.findURL + "?employeeId=" + employeeId);
     }
 
-    private updateEmployee(employeeMaster: EmployeeMaster): Observable<EmployeeMaster> {
-        const action = `${this.basicAction}${employeeMaster.EmployeeId}`;
-        return this.backend.update(action, employeeMaster)
-            .map(() => employeeMaster)
-            .catch(this.handleError);
-    }
-
-    private extractData(response: Response) {
-        let body: any = response.json ? response.json() : response;
-        return body.data ? body.data : (body || {});
-    }
-
-    private handleError(error: Response): Observable<any> {
-        // in a real world app, we may send the server to some remote logging infrastructure
-        // instead of just logging it to the console
-        console.error(error);
-        return Observable.throw(error.json() || 'Server error');
-    }
 
     initializeEmployee(): EmployeeMaster {
         // Return an initialized object

@@ -26,7 +26,7 @@ namespace iTSoft.CRM.Domain.Services.Master
             return employeeMasterRepository.GetAll();
         }
 
-        public List<EmployeeMaster> GetEmployeeInfo(EmployeeMasterSearchParam searchParam)
+        public List<EmployeeMaster> GetEmployeeInfo(EmployeeMaster searchParam)
         {
             return employeeMasterRepository.GetEmployeeInfo(searchParam);
         }

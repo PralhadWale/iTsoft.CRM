@@ -26,10 +26,10 @@ export  class EmployeeDetailGuard implements CanActivate {
 export  class EmployeeEditGuard implements CanDeactivate<EmployeeFormComponent> {
 
     canDeactivate(component: EmployeeFormComponent): boolean {
-        if (component.employeeForm.dirty) {
-            let employeeName = component.employeeForm.get('FirstName').value || 'New Employee';
-            return confirm(`Navigate away and lose all changes to ${employeeName}?`);
-        }
+        // if (component.employeeForm.dirty) {
+        //     let employeeName = component.employeeForm.get('FirstName').value || 'New Employee';
+        //     return confirm(`Navigate away and lose all changes to ${employeeName}?`);
+        // }
         return true;
     }
 }

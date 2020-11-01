@@ -46,15 +46,12 @@ namespace iTSoft.CRM.Data.Repository.Master
             }
         }
 
-        public List<EmployeeMaster> GetEmployeeInfo(EmployeeMasterSearchParam searchParam)
+        public List<EmployeeMaster> GetEmployeeInfo(EmployeeMaster searchParam)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
-                DynamicParameters param = new DynamicParameters();
-                param.Add("@FirstName", searchParam.FirstName);
-                param.Add("@MiddleName", searchParam.MiddleName);
-                param.Add("@LastName", searchParam.LastName);
-                param.Add("@Action", "GetEmployeeInfo");
+                DynamicParameters param = new DynamicParameters(searchParam);
+                param.Add("@Action", "SearchEmployee");
                 List<EmployeeMaster> employeeData = dbConnection.Query<EmployeeMaster>(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure).ToList();
                 return employeeData;
             }

@@ -12,11 +12,11 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeMasterController : BaseController
+    public class EmployeeController : BaseController
     {
         ILogger _logger = null;
         EmployeeMasterService employeeMasterService = null;
-        public EmployeeMasterController()
+        public EmployeeController()
         {
             _logger = Logger.GetLogger();
             employeeMasterService = new EmployeeMasterService();
@@ -63,19 +63,15 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost("getemployeeinfo")]
-        public IActionResult GetEmployeeInfo(EmployeeMasterSearchParam searchParam)
+        public IActionResult GetEmployeeInfo(EmployeeMaster searchParam)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
                 var employeeDetails = employeeMasterService.GetEmployeeInfo(searchParam);
-                if (employeeDetails == null || employeeDetails.Count < 1)
-                    response.ResponseCode = ResponseCode.NotFound;
-                else
-                {
+                
                     response.ResponseData = employeeDetails;
                     response.ResponseCode = ResponseCode.Success;
-                }
             }
             catch (Exception ex)
             {
@@ -86,12 +82,12 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpGet("find")]
-        public IActionResult Find(long EmployeeId)
+        public IActionResult Find(long employeeId)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
-                EmployeeMaster employeeMaster = employeeMasterService.Find(EmployeeId);
+                EmployeeMaster employeeMaster = employeeMasterService.Find(employeeId);
                 if (employeeMaster != null)
                 {
                     response.ResponseCode = ResponseCode.Success;
