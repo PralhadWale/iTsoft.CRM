@@ -97,8 +97,9 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onEmployeeRetrieved(employee: EmployeeMaster): void {
-
-        this.employee = employee;
+        if (employee != null) {
+            this.employee = employee;
+        }
 
         if (this.employee.EmployeeId === 0) {
             this.pageTitle = 'New Employee';
@@ -116,8 +117,8 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             if (confirm(`Really delete the employee: ${this.employee.FirstName}?`)) {
                 this.employeeService.Delete(this.employee).subscribe(
-                () => this.onSaveComplete(), 
-                (error: any) => this.errorMessage = <any>error );
+                    () => this.onSaveComplete(),
+                    (error: any) => this.errorMessage = <any>error);
             }
         }
     }
