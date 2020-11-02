@@ -10,123 +10,121 @@ import { RequestType } from '../_models/requesttype';
 import { RequestSerchParameters } from '../_models/Requestserchparameters';
 import { MatSidenav } from '@angular/material/sidenav';
 import { RequestDetails } from '../_models/requestdetails';
+import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+import { ListService } from '../process/services/list.service';
+import { AlertService } from '../_services';
 
 
 @Component({
-    selector: 'quotation-list',
-    templateUrl: './quotation-list.component.html',
-    styleUrls: ['./quotation-list.component.css'],
-    providers: [ConfirmDialog]
+  selector: 'quotation-list',
+  templateUrl: './quotation-list.component.html',
+  styleUrls: ['./quotation-list.component.css'],
+  providers: [ConfirmDialog]
 })
 export class QuotationListComponent implements OnInit {
-   @ViewChild("sidenav")  sidenav : MatSidenav;
+  @ViewChild("sidenav") sidenav: MatSidenav;
 
-    pageTitle: string = 'Quotations';
-   
-    searchFilter: any = {
-        Phone: "",
-        Name: "",
-        CompanyName: "",
-        QuotationNo: ""
-    };
-   
+  pageTitle: string = 'Quotations';
 
-    quotationList: Array<any>;
-    quotationTableSchema: Array<TableColumnModel> = [];
-    tableSettings: TableDefaultSettings;
-   
-    constructor(
-        private requestService: RequestService,
-        private router : Router,
-    
-      ) {
-    
-      }
-      ngOnInit(): void {
-        this.SetTableSchema();
-        this.getEnquiries();
-      }
-      
-   
+  searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Quotation);
 
-      onCommandClick($event: CommandEventArgs) {
-   
-        if (!$event.toolbarItem) {
-          if ($event.command.commandType == CommandType.Edit) {
-            let rowData: RequestDetails = Object.assign({}, $event.rowData);
-            this.router.navigate(['/quotations/edit/', rowData.RequestId]);
-          }
-          else if ($event.command.commandType == CommandType.Delete) {
-    
-          }
-          else if ($event.command.commandType == CommandType.View) {
-    
-          }
-        }
-        else {
-          if ($event.toolbarItem == ToolBarItems.Add) {
-            this.router.navigate(['/quotations/edit/', 0]);
-          }
-          else if ($event.toolbarItem == ToolBarItems.Search) {
-            this.sidenav.toggle();
-          }
-          else if ($event.toolbarItem == ToolBarItems.Refresh) {
-            
-          }
-        }
-    
-      }
-    
-      resetSearchFilter(sidenav:any)
-      {
-        this.sidenav.toggle();
-      }
-    
-      searchQuotations(searchFilter:any)
-      {
-        this.sidenav.toggle();
-      }
-    
-      getEnquiries() {
-    
-        let filter = new RequestSerchParameters();
-        filter.RequestTypeId = <number>RequestType.Quotation;
-        filter.FromDate = new Date(2020, 1, 1);
-        filter.ToDate = new Date(2021, 10, 1);
-        this.requestService.Search(filter).subscribe(result => {
-          this.quotationList = result.Value.ResponseData;
-    
-        }, error => { console.log(error); });
-    
-      }
-    
-      SetTableSchema() {
-        this.tableSettings = new TableDefaultSettings();
-        this.tableSettings.ShowToolBar = true;
-        this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search];
-        
-        let gridCommands: Array<CommandModel> = [
-          { commandType: CommandType.Edit}
-        ];
-    
-        this.quotationTableSchema =
-          [
-            { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
-            { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
-            { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
-            { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
-            { ColumnField: "CompanyName", ColumnHeader: "Company Name", Type: "text" },
-            { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
-            { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
-            { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }
-          ];
-    
-    
-      
-      }
-    
-   
+
+  quotationList: Array<any>;
+  quotationTableSchema: Array<TableColumnModel> = [];
+  tableSettings: TableDefaultSettings;
+  requestSelectList: RequestSelectListModel = new RequestSelectListModel();
+
+  constructor(
+    private requestService: RequestService,
+    private listService: ListService,
+    private alertService: AlertService,
+    private router: Router,
+
+  ) {
+
+  }
+  ngOnInit(): void {
+    this.LoadSelectListData();
+    this.SetTableSchema();
+    this.getQuotations();
+  }
 
 
 
+  onCommandClick($event: CommandEventArgs) {
+
+    if (!$event.toolbarItem) {
+      if ($event.command.commandType == CommandType.Edit) {
+        let rowData: RequestDetails = Object.assign({}, $event.rowData);
+        this.router.navigate(['/quotations/edit/', rowData.RequestId]);
+      }
+    }
+    else {
+      if ($event.toolbarItem == ToolBarItems.Add) {
+        this.router.navigate(['/quotations/edit/', 0]);
+      }
+      else if ($event.toolbarItem == ToolBarItems.Search) {
+        this.sidenav.open();
+      }
+      else if ($event.toolbarItem == ToolBarItems.Refresh) {
+        this.getQuotations();
+      }
+    }
+
+  }
+
+  resetSearchFilter(sidenav: any) {
+    this.sidenav.toggle();
+  }
+
+  searchQuotations(searchFilter: any) {
+   this.getQuotations();
+  }
+
+  LoadSelectListData() {
+    this.listService
+      .GetRequestSelectList()
+      .subscribe(
+        (result) => {
+          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+
+        },
+
+      );
+  }
+
+  getQuotations() {
+
+    // let filter = new RequestSerchParameters();
+    // filter.RequestTypeId = <number>RequestType.Quotation;
+    // filter.FromDate = new Date(2020, 1, 1);
+    // filter.ToDate = new Date(2021, 10, 1);
+    this.requestService.Search(this.searchFilter).subscribe(result => {
+      this.quotationList = result.Value.ResponseData;
+      this.sidenav.close();
+    }, error => { this.alertService.showErrorMessage(error.error) });
+
+  }
+
+  SetTableSchema() {
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search];
+
+    let gridCommands: Array<CommandModel> = [
+      { commandType: CommandType.Edit }
+    ];
+
+    this.quotationTableSchema =
+      [
+        { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
+        { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
+        { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
+        { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
+        { ColumnField: "CompanyName", ColumnHeader: "Company Name", Type: "text" },
+        { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
+        { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }
+      ];
+  }
 }

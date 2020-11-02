@@ -42,6 +42,17 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
       route: 'followup',
     },
     {
+      displayName: 'Enquiries',
+      iconName: 'perm_phone_msg',
+      route: 'enquiries',
+     
+    },
+    {
+      displayName: 'Quotations',
+      iconName: 'account_tree',
+      route: 'quotations',
+    },
+    {
       displayName: 'Masters',
       iconName: 'videocam',
       route: 'masters',
@@ -71,28 +82,17 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
           iconName: 'group',
           route: 'masters/designation',
         },
-        {
-          displayName: 'Organization',
-          iconName: 'museum',
-          route: 'organizations',
-        },
+        // {
+        //   displayName: 'Organization',
+        //   iconName: 'museum',
+        //   route: 'organizations',
+        // },
         {
           displayName: 'Employee',
           iconName: 'person_pin',
           route: 'employees',
         },
       ]
-    },
-    {
-      displayName: 'Enquiries',
-      iconName: 'perm_phone_msg',
-      route: 'enquiries',
-     
-    },
-    {
-      displayName: 'Quotations',
-      iconName: 'account_tree',
-      route: 'quotations',
     },
     {
       displayName: 'Reports',

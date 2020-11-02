@@ -13,4 +13,11 @@ export class RequestSerchParameters
     StageId: number;
     Amount: number;
     ClientBehaviourId: number;
+
+    constructor(requestTypeId : number) {
+        this.RequestTypeId = requestTypeId;
+        var todaysDate = new Date();
+        this.FromDate = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1);
+        this.ToDate = new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 0);
+    }
 }

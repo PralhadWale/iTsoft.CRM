@@ -83,10 +83,7 @@ export class EnquiryListComponent implements OnInit {
 
   getEnquiries() {
 
-    let filter = new RequestSerchParameters();
-    filter.RequestTypeId = <number>RequestType.Enquiry;
-    filter.FromDate = new Date(2020, 1, 1);
-    filter.ToDate = new Date(2021, 10, 1);
+    let filter = new RequestSerchParameters(RequestType.Enquiry);
     this.requestService.Search(filter).subscribe(result => {
       this.enquiryList = result.Value.ResponseData;
 

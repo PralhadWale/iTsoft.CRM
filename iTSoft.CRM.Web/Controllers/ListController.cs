@@ -50,6 +50,7 @@ namespace iTSoft.CRM.Web.Controllers
             return Ok(response);
         }
 
+
         [HttpGet("get-followup-select-list")]
         public IActionResult GetFollowupSelectList()
         {
