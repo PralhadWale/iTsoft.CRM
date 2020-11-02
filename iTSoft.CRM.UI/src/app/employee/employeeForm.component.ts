@@ -15,6 +15,8 @@ import { GenericValidator } from '../shared/generic-validator';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { EmployeeMaster } from './employeeMaster.model';
 import { AlertService } from '../_services';
+import { EmployeeSelectListModel } from '../_models/employeeSelectListModel';
+import { ListService } from '../process/services/list.service';
 
 
 @Component({
@@ -46,11 +48,13 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     employee: EmployeeMaster = <EmployeeMaster>{};
     fieldColspan: number = 4;
 
+    employeeSelectList : EmployeeSelectListModel = new EmployeeSelectListModel();
 
     constructor(private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private alertService: AlertService,
+        private listService: ListService,
         private employeeService: EmployeeService,
         private breakpointObserver: BreakpointObserver
     ) {
@@ -64,18 +68,13 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.onScreensizeChange(result);
         });
 
-
+        
     }
 
     ngOnInit(): void {
 
-        // Read the employee Id from the route parameter
-        this.route.params.subscribe(
-            params => {
-                let id = +params['id'];
-                this.getEmployee(id);
-            }
-        );
+        this.LoadSelectListData();
+
 
 
     }
@@ -87,6 +86,24 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
 
     }
+
+    LoadSelectListData() {
+        this.listService
+          .GetEmployeeSelectList()
+          .subscribe(
+            (result) => {
+              this.employeeSelectList = <EmployeeSelectListModel>result.Value.ResponseData;
+            },
+    
+          ).add(()=> { 
+            // Read the employee Id from the route parameter
+            this.route.params.subscribe(
+                params => {
+                    let id = +params['id'];
+                    this.getEmployee(id);
+                }
+            );});
+      }
 
     getEmployee(id: number): void {
         this.employeeService.Find(id)

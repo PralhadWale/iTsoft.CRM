@@ -18,4 +18,9 @@ export class ListService {
         let getUrl = this.listController + "get-followup-select-list";
         return this.apiService.GetData(getUrl);
     }
+
+    GetEmployeeSelectList() {
+        let getUrl = this.listController + "get-employee-select-list";
+        return this.apiService.GetData(getUrl);
+    }
 }

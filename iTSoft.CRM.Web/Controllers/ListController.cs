@@ -72,5 +72,26 @@ namespace iTSoft.CRM.Web.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("get-employee-select-list")]
+        public IActionResult GetEmployeeSelectList()
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                EmployeeSelectListModel employeeSelectListModel = new EmployeeSelectListModel();
+                employeeSelectListModel.Roles = _listService.ListAll<IdentityRole>(nameof(IdentityRole.Name), nameof(IdentityRole.RoleId));
+                employeeSelectListModel.Designations = _listService.ListAll<DesignationMaster>(nameof(DesignationMaster.DesignationName), nameof(DesignationMaster.DesignationId));
+
+                response.ResponseData = employeeSelectListModel;
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetFollowupSelectList");
+            }
+            return Ok(response);
+        }
     }
 }

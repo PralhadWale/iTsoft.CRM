@@ -9,8 +9,10 @@ export class EmployeeMaster {
     Address1: string;
     Address2: string;
     PostalCode: string;
-    DepartMent : string;
+    Designation : string;
     Role : string;
+    DesignationId : number;
+    RoleId : number;
     AadharNo: string;
     UniqueID: string;
     LoginName: string;
