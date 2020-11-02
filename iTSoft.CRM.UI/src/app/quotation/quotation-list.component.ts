@@ -4,16 +4,17 @@ import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
 
 import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
-import { RequestService } from '../process/services/request.service';
 import { Router } from '@angular/router';
-import { RequestType } from '../_models/requesttype';
-import { RequestSerchParameters } from '../_models/Requestserchparameters';
 import { MatSidenav } from '@angular/material/sidenav';
+
+import { RequestSerchParameters } from '../_models/Requestserchparameters';
+import { RequestType } from '../_models/requesttype';
 import { RequestDetails } from '../_models/requestdetails';
 import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+
+import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
 import { AlertService } from '../_services';
-
 
 @Component({
   selector: 'quotation-list',
@@ -27,6 +28,7 @@ export class QuotationListComponent implements OnInit {
   pageTitle: string = 'Quotations';
 
   searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Quotation);
+
 
 
   quotationList: Array<any>;
@@ -95,10 +97,6 @@ export class QuotationListComponent implements OnInit {
 
   getQuotations() {
 
-    // let filter = new RequestSerchParameters();
-    // filter.RequestTypeId = <number>RequestType.Quotation;
-    // filter.FromDate = new Date(2020, 1, 1);
-    // filter.ToDate = new Date(2021, 10, 1);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.quotationList = result.Value.ResponseData;
       this.sidenav.close();

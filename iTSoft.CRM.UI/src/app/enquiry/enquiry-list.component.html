@@ -21,22 +21,44 @@
       </mat-card-title>
     </mat-card-header>
   </mat-card>
-  <mat-nav-list style="margin-left:20px;">
-    <mat-form-field>
-      <input matInput type="text" placeholder="Name." name="Name" [(ngModel)]="searchFilter.Name"
-        #reference />
+  <mat-nav-list style="margin-left:10px;">
+    <mat-form-field appearance="outline">
+      <input matInput [matDatepicker]="fromDate" [(ngModel)]="searchFilter.FromDate" name="FromDate" required>
+      <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+      <mat-datepicker #fromDate color="primary"></mat-datepicker>
+      <mat-error>From Date is required.</mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Email" name="Email" [(ngModel)]="searchFilter.Email"
-        #reference />
+    <mat-form-field appearance="outline">
+      <input matInput [matDatepicker]="toDate" [(ngModel)]="searchFilter.ToDate" name="ToDate" required>
+      <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+      <mat-datepicker #toDate color="primary"></mat-datepicker>
+      <mat-error>To Date is required.</mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Phone" name="Phone" [(ngModel)]="searchFilter.Phone"
-        #amount />
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput appearance="outline" placeholder="Phone" name="PhoneNo" [(ngModel)]="searchFilter.PhoneNo" #PhoneNo />
     </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Enquiry No" name="EnquiryNo" [(ngModel)]="searchFilter.EnquiryNo"
-        #quantity />
+    <mat-form-field appearance="outline">
+      <mat-label>CustomerName</mat-label>
+      <input matInput placeholder="Customer Name" name="CustomerName" [(ngModel)]="searchFilter.CustomerName" #CustomerName />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Company Name</mat-label>
+      <input matInput appearance="outline" placeholder="Company Name" name="CompanyName" [(ngModel)]="searchFilter.CompanyName"
+        #CompanyName />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Quotation No</mat-label>
+      <input matInput appearance="outline" placeholder="Quotation No" name="RequestNo" [(ngModel)]="searchFilter.RequestNo"
+        #RequestNo />
+    </mat-form-field>
+    <mat-form-field class="form-field" appearance="outline">
+      <mat-label>Source</mat-label>
+      <mat-select placeholder="Select Source"  [(ngModel)]="searchFilter.SourceId" name="SourceId" #SourceId="ngModel">
+        <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value" >
+          {{item.Text}} 
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-nav-list>
   <mat-divider></mat-divider>

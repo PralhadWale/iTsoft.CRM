@@ -2,13 +2,19 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 
 
 import * as _ from "lodash";
-import { RequestService } from '../process/services/request.service';
-import { RequestSerchParameters } from '../_models/Requestserchparameters';
-import { RequestType } from '../_models/requesttype';
+
 import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
+
+import { RequestSerchParameters } from '../_models/Requestserchparameters';
+import { RequestType } from '../_models/requesttype';
 import { RequestDetails } from '../_models/requestdetails';
+import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+
+import { RequestService } from '../process/services/request.service';
+import { ListService } from '../process/services/list.service';
+import { AlertService } from '../_services';
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
@@ -18,20 +24,17 @@ export class EnquiryListComponent implements OnInit {
 @ViewChild("sidenav")  sidenav : MatSidenav;
 
   pageTitle: string = "Enquiry List";
-  searchFilter: any = {
-    Name: "",
-    Email: "",
-    Phone: "",
-    EnquiryNo: ""
-
-  };
   
+  searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Quotation);
+
   enquiryList: Array<any>;
   enquiryTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
-  
+  requestSelectList: RequestSelectListModel = new RequestSelectListModel();
   constructor(
     private requestService: RequestService,
+    private listService: ListService,
+    private alertService: AlertService,
     private router : Router,
 
   ) {
@@ -40,6 +43,7 @@ export class EnquiryListComponent implements OnInit {
   ngOnInit(): void {
     this.SetTableSchema();
     this.getEnquiries();
+    this.LoadSelectListData();
   }
 
 
@@ -50,22 +54,17 @@ export class EnquiryListComponent implements OnInit {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
         this.router.navigate(['/enquiries/edit/', rowData.RequestId]);
       }
-      else if ($event.command.commandType == CommandType.Delete) {
-
-      }
-      else if ($event.command.commandType == CommandType.View) {
-
-      }
+    
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
         this.router.navigate(['/enquiries/edit/', 0]);
       }
       else if ($event.toolbarItem == ToolBarItems.Search) {
-        this.sidenav.toggle();
+        this.sidenav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-        
+        this.getEnquiries();
       }
     }
 
@@ -78,13 +77,24 @@ export class EnquiryListComponent implements OnInit {
 
   searchEnquiries(searchFilter:any)
   {
-    this.sidenav.toggle();
+    this.getEnquiries();
+  }
+
+  LoadSelectListData() {
+    this.listService
+      .GetRequestSelectList()
+      .subscribe(
+        (result) => {
+          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+
+        },
+
+      );
   }
 
   getEnquiries() {
 
-    let filter = new RequestSerchParameters(RequestType.Enquiry);
-    this.requestService.Search(filter).subscribe(result => {
+    this.requestService.Search(this.searchFilter).subscribe(result => {
       this.enquiryList = result.Value.ResponseData;
 
     }, error => { console.log(error); });
