@@ -11,6 +11,9 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public string CustomerName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
         public string CompanyName { get; set; }
         public string PhoneNo { get; set; }
         public string Email { get; set; }

@@ -21,6 +21,12 @@ namespace iTSoft.CRM.Data.Entity.Process
 
         public string CustomerName { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string MiddleName { get; set; }
+
+        public string LastName { get; set; }
+
         public string CompanyName { get; set; }
 
         public string Website { get; set; }

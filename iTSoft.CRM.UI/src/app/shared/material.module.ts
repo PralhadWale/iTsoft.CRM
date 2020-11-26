@@ -27,7 +27,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
-import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import {DateAdapter, MatNativeDateModule, MatRippleModule, MAT_DATE_FORMATS} from '@angular/material/core';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -43,6 +43,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
+import { AppDateAdapter, APP_DATE_FORMATS } from './pipes/namecase/format-datepicker';
 
 @NgModule({
   exports: [
@@ -90,6 +91,10 @@ import {MatTreeModule} from '@angular/material/tree';
     MatDialogModule,
     PortalModule,
     ScrollingModule,
-  ]
+  ],
+  providers: [
+    {provide: DateAdapter, useClass: AppDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},
+  ],
 })
 export class MaterialModule {}

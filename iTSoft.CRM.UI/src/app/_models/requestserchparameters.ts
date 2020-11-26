@@ -5,6 +5,9 @@ export class RequestSerchParameters
     FromDate: Date;
     ToDate: Date;
     CustomerName: string;
+    LastName: string;
+    MiddleName: string;
+    FirstName: string;
     CompanyName: string;
     PhoneNo: string;
     Email: string;

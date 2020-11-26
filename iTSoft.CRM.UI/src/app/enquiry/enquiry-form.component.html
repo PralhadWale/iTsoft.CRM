@@ -38,29 +38,7 @@
               <mat-datepicker #requestDateId></mat-datepicker>
             </mat-form-field>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Title</mat-label>
-              <input matInput placeholder="Title" id="Title" type="text"
-                placeholder="Title" formControlName="Title" />
-              <mat-error *ngIf="displayMessage.Title">
-                {{displayMessage.Title}}
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Customer Name</mat-label>
-              <input matInput placeholder="Customer Name" id="CustomerName" type="text"
-                placeholder="Customer Name" formControlName="CustomerName" />
-              <mat-error *ngIf="displayMessage.Name">
-                {{displayMessage.Name}}
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="fieldColspan">
+          <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Company Name</mat-label>
               <input matInput placeholder="CompanyName" id="CompanyName" type="text"
@@ -70,6 +48,38 @@
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input matInput placeholder="LastName" id="LastName" type="text"
+                placeholder="LastName" formControlName="LastName" />
+              <mat-error *ngIf="displayMessage.LastName">
+                {{displayMessage.LastName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input matInput placeholder="FirstName" id="FirstName" type="text"
+                placeholder="FirstName" formControlName="FirstName" />
+              <mat-error *ngIf="displayMessage.FirstName">
+                {{displayMessage.FirstName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Middle Name</mat-label>
+              <input matInput placeholder="MiddleName" id="MiddleName" type="text"
+                placeholder="MiddleName" formControlName="MiddleName" />
+              <mat-error *ngIf="displayMessage.MiddleName">
+                {{displayMessage.MiddleName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+         
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Date of birth</mat-label>

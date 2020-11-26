@@ -12,6 +12,12 @@ export class RequestMaster
 
     CustomerName: string;
 
+    LastName: string;
+
+    FirstName: string;
+
+    MiddleName: string;
+
     CompanyName: string;
 
     Website: string;

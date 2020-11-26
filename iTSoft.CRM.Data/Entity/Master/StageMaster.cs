@@ -10,7 +10,7 @@ namespace iTSoft.CRM.Data.Entity.Master
     public class StageMaster
     {
         [Key]
-        public long? StageId { get; set; }
+        public long StageId { get; set; }
         public string StageName { get; set; }
         public bool? IsActive { get; set; }
         public long? AddedBy { get; set; }

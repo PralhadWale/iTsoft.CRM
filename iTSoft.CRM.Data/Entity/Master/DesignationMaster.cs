@@ -8,8 +8,8 @@ namespace iTSoft.CRM.Data.Entity.Master
     [Table("DesignationMaster")]
     public class DesignationMaster
     {
-        [ExplicitKey]
-        public long? DesignationId { get; set; }
+        [Key]
+        public long DesignationId { get; set; }
         public string DesignationName { get; set; }
         public bool? IsActive { get; set; }
         public long? AddedBy { get; set; }

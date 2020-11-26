@@ -7,8 +7,8 @@ namespace iTSoft.CRM.Data.Entity.Master
     [Table("LeadStatusMaster")]
     public class LeadStatusMaster
     {
-        [ExplicitKey]
-        public long? LeadStatusId { get; set; }
+        [Key]
+        public long LeadStatusId { get; set; }
         public string LeadStatusName { get; set; }
         public bool? IsActive { get; set; }
         public long? AddedBy { get; set; }

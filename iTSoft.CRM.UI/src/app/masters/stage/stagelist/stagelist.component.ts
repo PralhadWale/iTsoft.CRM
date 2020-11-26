@@ -55,9 +55,7 @@ export class StagelistComponent implements OnInit {
 
   saveStage(stageMaster: StageMaster) {
     if (stageMaster) {
-      if (stageMaster.StageId < 1) {
-        this.stageMaster.StageId = this.stageList.length + 1;
-      }
+    
       this.stageService.Save(stageMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();

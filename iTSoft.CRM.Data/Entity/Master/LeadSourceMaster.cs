@@ -8,8 +8,8 @@ namespace iTSoft.CRM.Data.Entity.Master
     [Table("LeadSourceMaster")]
     public class LeadSourceMaster
     {
-        [ExplicitKey]
-        public long? LeadSourceId { get; set; }
+        [Key]
+        public long LeadSourceId { get; set; }
         public string LeadSourceName { get; set; }
         public bool? IsActive { get; set; }
         public long? AddedBy { get; set; }

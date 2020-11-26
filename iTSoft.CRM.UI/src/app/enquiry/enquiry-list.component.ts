@@ -25,7 +25,7 @@ export class EnquiryListComponent implements OnInit {
 
   pageTitle: string = "Enquiry List";
   
-  searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Quotation);
+  searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Enquiry);
 
   enquiryList: Array<any>;
   enquiryTableSchema: Array<TableColumnModel> = [];
@@ -115,8 +115,8 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "RequestNo", ColumnHeader: "Enquiry No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Enquiry Date", Type: "date" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
-        { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
-        { ColumnField: "CustomerName", ColumnHeader: "CustomerName", Type: "text" },
+        { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
+        { ColumnField: "FirstName", ColumnHeader: "FirstName", Type: "text" },
         { ColumnField: "PhoneNo2", ColumnHeader: "Phone No 2", Type: "text" },
         { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },

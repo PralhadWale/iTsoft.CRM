@@ -52,9 +52,7 @@ export class ServicelistComponent implements OnInit {
 
   saveService(serviceMaster: ServiceMaster) {
     if (serviceMaster) {
-      if (serviceMaster.ServiceId < 1) {
-        this.serviceMaster.ServiceId = this.serviceList.length + 1;
-      }
+    
       this.serviceService.Save(serviceMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Service saved successfully");
         this.reset();

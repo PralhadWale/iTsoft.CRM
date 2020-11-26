@@ -55,9 +55,7 @@ export class SourcelistComponent implements OnInit {
 
   saveSource(sourceMaster: SourceMaster) {
     if (sourceMaster) {
-      if (sourceMaster.LeadSourceId < 1) {
-        this.sourceMaster.LeadSourceId = this.sourceList.length + 1;
-      }
+   
       this.sourceService.Save(sourceMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();

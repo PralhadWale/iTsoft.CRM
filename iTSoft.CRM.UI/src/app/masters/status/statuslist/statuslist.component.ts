@@ -55,9 +55,7 @@ export class StatuslistComponent implements OnInit {
 
   saveStatus(statusMaster: StatusMaster) {
     if (statusMaster) {
-      if (statusMaster.LeadStatusId < 1) {
-        this.statusMaster.LeadStatusId = this.statusList.length + 1;
-      }
+     
       this.statusService.Save(statusMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();

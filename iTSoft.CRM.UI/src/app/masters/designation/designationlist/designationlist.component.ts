@@ -53,9 +53,7 @@ export class DesignationlistComponent implements OnInit {
 
   saveDesignation(designationMaster: DesignationMaster) {
     if (designationMaster) {
-      if (designationMaster.DesignationId < 1) {
-        this.designationMaster.DesignationId = this.designationList.length + 1;
-      }
+    
       this.designationService.Save(designationMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();
