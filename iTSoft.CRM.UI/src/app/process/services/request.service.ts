@@ -30,4 +30,9 @@ export class RequestService {
     let url = this.RequestController + "load";
     return this.apiService.GetData(url + "?requestId=" + requestId);
   }
+
+  GetNextrequestNumber(requestTypeId: number) {
+    let url = this.RequestController + "getnextrequestnumber";
+    return this.apiService.GetData(url + "?requestTypeId=" + requestTypeId);
+  }
 }

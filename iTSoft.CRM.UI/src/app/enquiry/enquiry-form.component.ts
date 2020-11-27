@@ -188,7 +188,13 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     }
     else {
-      this.onEnquiryRetrieved(this.request);
+
+      this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result)=>{
+        var data = result.Value.ResponseData;
+        this.request.RequestMaster.RequestNo = data;
+        this.onEnquiryRetrieved(this.request)
+      },  (error: any) => (this.errorMessage = <any>error));
+     
     }
   }
 

@@ -140,7 +140,12 @@ export class QuotationFormComponent implements OnInit {
                 );
         }
         else {
-            this.onQuotationRetrieved(this.request);
+            this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result)=>{
+                var data = result.Value.ResponseData;
+                this.request.RequestMaster.RequestNo = data;
+                this.onQuotationRetrieved(this.request);
+              },  (error: any) => (this.errorMessage = <any>error));
+           
         }
     }
 

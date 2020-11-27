@@ -19,13 +19,15 @@ namespace iTSoft.CRM.Domain.Services.Process
         RequestViewModel LoadRequest(long requestId);
 
         List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
+        string GetNextrequestNumber(long requestTypeId);
     }
     public class RequestService : GenericRepository<RequestMaster>, IRequestService
     {
         public const string PROC_RequestManager = "PROC_RequestManager";
         public const string PROC_RequestLookUpManager = "PROC_RequestLookUpManager";
+        public const string PROC_RequestNoManager = "PROC_RequestNoManager";
 
-      
+
 
         public ResponseCode SaveRequest(RequestViewModel requestViewModel)
         {
@@ -68,6 +70,16 @@ namespace iTSoft.CRM.Domain.Services.Process
             }
 
             return requestViewModel;
+        }
+
+        public string GetNextrequestNumber(long requestTypeId)
+        {
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("requestTypeId", requestTypeId);
+                return dbConnection.Query<string>(PROC_RequestNoManager, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            }
         }
     }
 }
