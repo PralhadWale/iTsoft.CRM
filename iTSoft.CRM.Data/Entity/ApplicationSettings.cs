@@ -19,5 +19,6 @@ namespace iTSoft.CRM.Data.Entity
         public static int SmtpClientPort { get; set; }
         public static string GoogleAppId { get; set; }
         public static string PayTMCallBackURL { get; internal set; }
+        public static string RootPath { get; set; }
     }
 }

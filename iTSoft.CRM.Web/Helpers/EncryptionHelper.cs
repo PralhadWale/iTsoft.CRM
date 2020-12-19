@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace iTSoft.CRM.Web.Helpers
 {
-    public static class EncryptionHelper
+    public class EncryptionHelper
     {
         static string EncryptionKey = "be6ba52a-3126-4e64-bf8b-ea38e36b8e52";
-        public static string Encrypt(string clearText)
+        public string Encrypt(string clearText)
         {
 
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
@@ -32,7 +32,7 @@ namespace iTSoft.CRM.Web.Helpers
             }
             return clearText;
         }
-        public static string Decrypt(string cipherText)
+        public string Decrypt(string cipherText)
         {
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);

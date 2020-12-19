@@ -26,7 +26,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                CustomerMaster.Password = EncryptionHelper.Encrypt(CustomerMaster.Password);
+                CustomerMaster.Password = new EncryptionHelper().Encrypt(CustomerMaster.Password);
                 response.ResponseCode = CustomerMasterService.Save(CustomerMaster);
             }
             catch (Exception ex)

@@ -28,7 +28,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                employeeMaster.Password = EncryptionHelper.Encrypt(employeeMaster.Password);
+                employeeMaster.Password = new EncryptionHelper().Encrypt(employeeMaster.Password);
                 response.ResponseCode = employeeMasterService.Save(employeeMaster);
             }
             catch (Exception ex)
@@ -90,7 +90,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 EmployeeMaster employeeMaster = employeeMasterService.Find(employeeId);
                 if (employeeMaster != null)
                 {
-                    employeeMaster.Password = EncryptionHelper.Decrypt(employeeMaster.Password);
+                    employeeMaster.Password = new EncryptionHelper().Decrypt(employeeMaster.Password);
                     response.ResponseCode = ResponseCode.Success;
                     response.ResponseData = employeeMaster;
                 }

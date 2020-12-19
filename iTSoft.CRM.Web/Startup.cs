@@ -16,6 +16,14 @@ using iTSoft.CRM.Data.Helpers;
 using System.Data.Common;
 using iTSoft.CRM.Data.Entity;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Text;
 
 namespace iTSoft.CRM.Web
 {
@@ -36,8 +44,8 @@ namespace iTSoft.CRM.Web
 
             services.AddDbContext<CRMContext>(options =>
             options.UseSqlServer(CRMConnectionStringVar));
-           
-          
+
+            ConfigureAuthentication(services);
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -128,5 +136,158 @@ namespace iTSoft.CRM.Web
             //    }
             //});
         }
+
+        private static void ConfigureAuthentication(IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = ApplicationSettings.TokenIssuer,
+                    ValidAudience = ApplicationSettings.TokenAudience,
+                    IssuerSigningKey = JwtSecurityKey.Create(ApplicationSettings.TokenSymetricKey)
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+
+
+            services.AddAuthorization();
+        }
+
+    }
+
+     public static class JwtSecurityKey
+    {
+        public static SymmetricSecurityKey Create(string secret)
+        {
+            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
+        }
+    }
+
+    public sealed class JwtToken
+    {
+        private JwtSecurityToken token;
+
+        internal JwtToken(JwtSecurityToken token)
+        {
+            this.token = token;
+        }
+
+        public DateTime ValidTo => token.ValidTo;
+        public string Value => new JwtSecurityTokenHandler().WriteToken(this.token);
+    }
+
+    public sealed class JwtTokenBuilder
+    {
+        private SecurityKey securityKey = null;
+        private string subject = "";
+        private string issuer = "";
+        private string audience = "";
+        private List<Claim> claims = new List<Claim>();
+        private int expiryInMinutes = 5;
+
+        public JwtTokenBuilder AddSecurityKey(SecurityKey securityKey)
+        {
+            this.securityKey = securityKey;
+            return this;
+        }
+
+        public JwtTokenBuilder AddSubject(string subject)
+        {
+            this.subject = subject;
+            return this;
+        }
+
+        public JwtTokenBuilder AddIssuer(string issuer)
+        {
+            this.issuer = issuer;
+            return this;
+        }
+
+        public JwtTokenBuilder AddAudience(string audience)
+        {
+            this.audience = audience;
+            return this;
+        }
+
+        public JwtTokenBuilder AddClaim(Claim claim)
+        {
+            this.claims.Add(claim);
+            return this;
+        }
+
+        public JwtTokenBuilder AddClaims(List<Claim> lstClaim)
+        {
+            this.claims.Union(lstClaim);
+            return this;
+        }
+
+        public JwtTokenBuilder AddExpiry(int expiryInMinutes)
+        {
+            this.expiryInMinutes = expiryInMinutes;
+            return this;
+        }
+
+        public JwtToken Build()
+        {
+            EnsureArguments();
+
+            var claims = new List<Claim>
+            {
+              new Claim(JwtRegisteredClaimNames.Sub, this.subject),
+              new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            }
+            .Union(this.claims);
+
+            var token = new JwtSecurityToken(
+                              issuer: this.issuer,
+                              audience: this.audience,
+                              claims: claims,
+                              expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                              signingCredentials: new SigningCredentials(
+                                                        this.securityKey,
+                                                        SecurityAlgorithms.HmacSha256));
+
+            return new JwtToken(token);
+        }
+
+        #region " private "
+
+        private void EnsureArguments()
+        {
+            if (this.securityKey == null)
+                throw new ArgumentNullException("Security Key");
+
+            if (string.IsNullOrEmpty(this.subject))
+                throw new ArgumentNullException("Subject");
+
+            if (string.IsNullOrEmpty(this.issuer))
+                throw new ArgumentNullException("Issuer");
+
+            if (string.IsNullOrEmpty(this.audience))
+                throw new ArgumentNullException("Audience");
+        }
+
+        #endregion
     }
 }

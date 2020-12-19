@@ -36,5 +36,6 @@ namespace iTSoft.CRM.Data.Entity
         public int PartyTypeId { get; set; }
         public long RoleId { get; set; }
         public long OrganizationId { get; set; }
+        public object Token { get; set; }
     }
 }
