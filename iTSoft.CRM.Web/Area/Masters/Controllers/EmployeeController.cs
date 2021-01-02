@@ -4,6 +4,7 @@ using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Services.Master;
 using iTSoft.CRM.Web.Controllers;
 using iTSoft.CRM.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
@@ -12,6 +13,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeeController : BaseController
     {
         ILogger _logger = null;

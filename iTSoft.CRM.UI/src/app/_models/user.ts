@@ -1,7 +1,7 @@
 /* Defines the User entity */
 export class User {
     id: number;
-    token: string;
+    Token: string;
     username: string;
     password: string;
     firstname: string;

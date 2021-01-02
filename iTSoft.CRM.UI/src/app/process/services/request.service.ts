@@ -4,13 +4,21 @@ import { RequestSerchParameters } from 'src/app/_models/Requestserchparameters';
 import { RequestViewModel } from 'src/app/_models/requestviewmodel';
 import { APIService } from 'src/app/_services';
 import * as moment from 'moment';
+import { RequestDetails } from 'src/app/_models/requestdetails';
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
+ 
   private RequestController = "/Request/";
   constructor(private apiService: APIService) {
 
+  }
+
+  AssignRequest(requestDetails: RequestDetails) {
+    
+    let url = this.RequestController + "assign";
+    return this.apiService.PostData(url, requestDetails);
   }
 
   Save(request: RequestViewModel) {

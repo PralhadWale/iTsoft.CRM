@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { AddFollowupComponent } from 'src/app/process/add-followup/add-followup.component';
+import { AssignFollowUpAvisorComponent } from 'src/app/process/assign-followup-advisor/assign-followup-advisor.component';
 import { FollowupService } from 'src/app/process/services/followup.service';
 import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
 import { FollowUpDetails } from 'src/app/_models/followupdetails';
@@ -16,11 +17,12 @@ import { RequestType } from 'src/app/_models/requesttype';
 export class FollowupListComponent implements OnInit {
   pageTitle: "Followup List"
   @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
+  @ViewChild("assignAdvisor") assignAdvisor :AssignFollowUpAvisorComponent;
   @ViewChild("searchBar") searchBar : MatSidenav;
   followUpList: Array<any>;
   followUpTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
-
+   followUpDetails : FollowUpDetails  = new FollowUpDetails();
 
   followUpSearchParam : FollowUpSerchParameters = new FollowUpSerchParameters();
 
@@ -38,7 +40,7 @@ export class FollowupListComponent implements OnInit {
 
     if (!$event.toolbarItem) {
       let rowData: FollowUpDetails = Object.assign({}, $event.rowData);
-      if($event.command.commandType == CommandType.Other)
+      if($event.command.commandType == CommandType.Other && $event.command.content == 'add')
       {
         this.addFollowUp.requestType = rowData.RequestTypeId;
         this.addFollowUp.requestId = rowData.RequestId;
@@ -46,6 +48,13 @@ export class FollowupListComponent implements OnInit {
         this.addFollowUp.SetFollowUpDefaultData();
         this.addFollowUp.sidenav.open();
       }
+      else if($event.command.commandType == CommandType.Other  && $event.command.content == 'transfer')
+      {
+        this.followUpDetails = rowData;
+        this.assignAdvisor.sidenav.open();
+        
+      }
+
       else if ($event.command.commandType == CommandType.Edit) {
         this.addFollowUp.followUpDetails = rowData;
         this.addFollowUp.SetFollowUpDefaultData();
@@ -72,6 +81,11 @@ export class FollowupListComponent implements OnInit {
       }
     }
 
+  }
+
+  onAssigned()
+  {
+    this.getFollowUp();
   }
 
   searchFollowUps(followUpSearchParam:FollowUpSerchParameters)
@@ -104,7 +118,8 @@ export class FollowupListComponent implements OnInit {
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.View },
       { commandType: CommandType.Edit },
-      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'Add', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
+      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true },
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
     ];
     
     this.followUpTableSchema =

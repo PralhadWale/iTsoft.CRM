@@ -15,6 +15,7 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
 import { AlertService } from '../_services';
+import { AssignRequestAvisorComponent } from '../process/assign-request-advisor/assign-request-advisor.component';
 
 @Component({
   selector: 'quotation-list',
@@ -24,6 +25,7 @@ import { AlertService } from '../_services';
 })
 export class QuotationListComponent implements OnInit {
   @ViewChild("sidenav") sidenav: MatSidenav;
+  @ViewChild("assignAdvisor")  assignAdvisor : AssignRequestAvisorComponent;
 
   pageTitle: string = 'Quotations';
 
@@ -35,7 +37,7 @@ export class QuotationListComponent implements OnInit {
   quotationTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   requestSelectList: RequestSelectListModel = new RequestSelectListModel();
-
+  requestDetails : RequestDetails  = new RequestDetails();
   constructor(
     private requestService: RequestService,
     private listService: ListService,
@@ -60,6 +62,12 @@ export class QuotationListComponent implements OnInit {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
         this.router.navigate(['/quotations/edit/', rowData.RequestId]);
       }
+      else  if ($event.command.content == "transfer") {
+        let rowData: RequestDetails = Object.assign({}, $event.rowData);
+        this.requestDetails = rowData;
+        this.requestDetails.TransferPendingFollowUp = true;
+        this.assignAdvisor.sidenav.open();
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -75,8 +83,14 @@ export class QuotationListComponent implements OnInit {
 
   }
 
+
   resetSearchFilter(sidenav: any) {
     this.sidenav.toggle();
+  }
+
+  onAssigned()
+  {
+    this.getQuotations();
   }
 
   searchQuotations(searchFilter: any) {
@@ -110,7 +124,8 @@ export class QuotationListComponent implements OnInit {
     this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search];
 
     let gridCommands: Array<CommandModel> = [
-      { commandType: CommandType.Edit }
+      { commandType: CommandType.Edit },
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
     ];
 
     this.quotationTableSchema =
@@ -121,6 +136,7 @@ export class QuotationListComponent implements OnInit {
         { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
         { ColumnField: "CompanyName", ColumnHeader: "Company Name", Type: "text" },
         { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
+        { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }
       ];

@@ -3,9 +3,13 @@
  */
 import {
   Component,
-  OnInit} from '@angular/core';
+  OnInit
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
+import { AuthenticationService } from '../_services';
+import { UserProfilService } from '../_services/userProfile.Service';
+import { RevenueDashboardData } from '../_models/revenueDashboardData';
 
 
 interface InfoBox {
@@ -37,10 +41,11 @@ export class DashboardComponent implements OnInit {
   mediaQueryMin: any = null;
   isMobile = false;
   chartColspan = 1;
-
+  infoBoxes: InfoBox[] = [];
 
   constructor(
-    private breakpointObserver: BreakpointObserver, ) {
+    private userProfile: UserProfilService,
+    private breakpointObserver: BreakpointObserver,) {
     // this.mediaQueryList = mediaMatcher.matchMedia('(min-width: 640px)');
     // this.mediaQueryMin = mediaMatcher.matchMedia('(min-width: 960px)');
 
@@ -51,54 +56,67 @@ export class DashboardComponent implements OnInit {
     ]).subscribe(result => {
       this.onScreensizeChange()
     });
+
+    this.LoadRevenueDashboard();
+  }
+  LoadRevenueDashboard() {
+    this.userProfile.getUseRevenueDashboard().subscribe((result) => {
+      let revenueDashboardData = <RevenueDashboardData>result.Value;
+
+
+      this.infoBoxes = [
+        {
+          bgClass: "user-registration",
+          icon: "account_balance",
+          title: "Total Exp Revenue",
+          subtitle: revenueDashboardData.TotalExpRevenue.toString(),
+        },
+        {
+          bgClass: "new-order",
+          icon: "account_balance_wallet",
+          title: "Total Act. Revenue",
+          subtitle: revenueDashboardData.TotalActRevenue.toString(),
+        },
+        {
+          bgClass: "user-registration",
+          icon: "card_travel",
+          title: "Monthly Exp Revenue",
+          subtitle: revenueDashboardData.MonthlyExpRevenue.toString(),
+        },
+        {
+          bgClass: "new-order",
+          icon: "card_travel",
+          title: "Monthly Act. Revenue",
+          subtitle: revenueDashboardData.MonthlyActRevenue.toString(),
+        },
+        {
+          bgClass: "user-registration",
+          icon: "card_travel",
+          title: "Today's Exp. Revenue",
+          subtitle: revenueDashboardData.TodaysExpRevenue.toString(),
+        },
+        {
+          bgClass: "new-order",
+          icon: "card_travel",
+          title: "Today's Act. Revenue",
+          subtitle: revenueDashboardData.TodaysActRevenue.toString(),
+        },
+
+      ];
+
+    }, (error) => {
+
+    });
   }
 
-  infoBoxes: InfoBox[] = [
-    {
-      bgClass: "user-registration",
-      icon: "account_balance",
-      title: "Total Exp Revenue",
-      subtitle: "10000",
-    },
-    {
-      bgClass: "new-order",
-      icon: "account_balance_wallet",
-      title: "Total Act. Revenue",
-      subtitle: "12000",
-    },
-    {
-      bgClass: "user-registration",
-      icon: "card_travel",
-      title: "Monthly Exp Revenue",
-      subtitle: "10000",
-    },
-    {
-      bgClass: "new-order",
-      icon: "card_travel",
-      title: "Monthly Act. Revenue",
-      subtitle: "12000",
-    },
-    {
-      bgClass: "user-registration",
-      icon: "card_travel",
-      title: "Today's Exp. Revenue",
-      subtitle: "10000",
-    },
-    {
-      bgClass: "new-order",
-      icon: "card_travel",
-      title: "Today's Act. Revenue",
-      subtitle: "12000",
-    },
 
-  ]
 
 
   lineChartData: Array<number[]> = [
     [65, 59, 80, 81, 56, 55, 40],
     [28, 48, 40, 19, 86, 27, 90]
   ];
-  lineChartLabels: Array<string> = ['September','October'];
+  lineChartLabels: Array<string> = ['September', 'October'];
   lineChartType: string = 'line';
   pieChartType: string = 'pie';
 
@@ -151,7 +169,7 @@ export class DashboardComponent implements OnInit {
       this.colNum = 4;
       this.chartColNum = 2;
       this.chartColspan = 2;
-      
+
     }
   }
 }

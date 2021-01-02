@@ -15,18 +15,9 @@ export class AuthenticationService {
   login(user: any) {
 
     return this.apiService.PostData(this.loginURL, user).map((response: Response) => {
-      let data = (<any>response);
+      let data = (<any>response).Value;
       let user = <User>data;
-      if (!user) {
-        user = new User();
-        user.firstname="Admin";
-      }
-
-      user.token = data.Token;// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
       if (user) {
-        // store user details and token in local storage to keep user logged in between page refreshes
-
         user.isAuthenticated = true;
         localStorage.setItem(APP_USER_PROFILE, JSON.stringify(user));
       }

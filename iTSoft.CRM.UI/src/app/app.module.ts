@@ -9,17 +9,19 @@ import { MaterialModule } from './shared/material.module';
 import { environment } from '../environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './login';
-import { APIService, AuthenticationService,  LoaderService } from './_services';
-import { HttpClientModule } from '@angular/common/http';
+import { APIService, AuthenticationService, AuthInterceptor, LoaderService } from './_services';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ChartsModule } from "ng2-charts";  
+import { ChartsModule } from "ng2-charts";
 import { AboutComponent } from './about';
 import { NotFoundPageComponent } from './notfoundpage';
 import { ConfirmDialog } from './shared/dialog.component';
-import { LoadingComponent } from  './loading';
+import { LoadingComponent } from './loading';
 import { AuthGuard } from './_guard';
 import { iTCRMLoaderService } from './core/services/ITSoftLoaderService';
 import { NavLayoutModule } from './_layout/layout-module';
+import { Router } from '@angular/router';
+import { UserProfilService } from './_services/userProfile.Service';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,15 @@ import { NavLayoutModule } from './_layout/layout-module';
     APIService,
     AuthGuard,
     AuthenticationService,
-    iTCRMLoaderService
+    UserProfilService,
+    iTCRMLoaderService,
+    {
+      provide: HTTP_INTERCEPTORS, useFactory: function (router: Router) {
+        return new AuthInterceptor(router);
+      },
+      multi: true,
+      deps: [Router]
+    }
   ],
   bootstrap: [AppComponent]
 })

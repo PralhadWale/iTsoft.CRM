@@ -110,9 +110,11 @@ namespace iTSoft.CRM.Web
             app.UseRouting();
             app.UseCors("CRM");
 
-            app.UseEndpoints(endCRMnts =>
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endPoints =>
             {
-                endCRMnts.MapControllerRoute(
+                endPoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });

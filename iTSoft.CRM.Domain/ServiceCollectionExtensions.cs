@@ -29,7 +29,7 @@ namespace iTSoft.CRM.Domain
             services.AddScoped<IListService, ListService>();
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IFollowUpService, FollowUpService>();
-
+            services.AddScoped<IProfileService, ProfileService>();
         }
 
         private static void ConfigureCRMRepositoryServices(IServiceCollection services)

@@ -6,7 +6,7 @@ import {
 } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
-import { AuthenticationService } from "../_services";
+import { AlertService, AuthenticationService } from "../_services";
 
 @Component({
   selector: "login-form",
@@ -25,13 +25,14 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private alertService : AlertService,
     private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
     // this.authenticationService.logout();
-    this.model.username = "Admin@test.com";
-    this.model.password = "password";
+    this.model.username = "asdasd@asd.com";
+    this.model.password = "12345";
     this.returnUrl =
       this.route.snapshot.queryParams["returnUrl"] || "dashboard";
     // this.isloading = false;
@@ -50,6 +51,7 @@ export class LoginComponent implements OnInit {
       },
       error => {
         console.log(error);
+        this.alertService.showWarningMessage(error.error);
         this.isValidating = false;
       },
       () => {

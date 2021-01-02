@@ -1,0 +1,40 @@
+<mat-sidenav class="search-panel" position="end" position="end" dark #assignsidenav mode="push" opened="false">
+
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <div mat-card-avatar class="avatar">
+        <mat-icon>transfer_within_a_station</mat-icon>
+      </div>
+      <mat-card-title>
+        Assign FollowUp
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <mat-nav-list style="margin-left:10px;">
+    <mat-form-field appearance="outline">
+      <mat-label>Request No</mat-label>
+      <input matInput appearance="outline" placeholder="RequestNo" name="RequestNo" [(ngModel)]="followUpDetails.RequestNo" #RequestNo readonly/>
+    </mat-form-field>
+    <mat-form-field class="form-field" appearance="outline">
+      <mat-label>Assign To</mat-label>
+      <mat-select placeholder="Select Advisor"  [(ngModel)]="followUpDetails.AdvisorId" name="AdvisorId" #AdvisorId="ngModel">
+        <mat-option *ngFor="let item of requestSelectList.Advisors" [value]="item.Value" >
+          {{item.Text}} 
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-nav-list>
+  <mat-divider></mat-divider>
+  <mat-card-header>
+    <mat-action-list>
+      <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+        (click)="onSubmit();">
+        <mat-icon>save</mat-icon>Assign
+      </button>
+      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+        (click)="onCancelClick()">
+        <mat-icon>refresh</mat-icon>Cancel
+      </button>
+    </mat-action-list>
+  </mat-card-header>
+</mat-sidenav>

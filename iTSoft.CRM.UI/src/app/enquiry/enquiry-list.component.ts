@@ -15,6 +15,7 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
 import { AlertService } from '../_services';
+import { AssignRequestAvisorComponent } from "../process/assign-request-advisor/assign-request-advisor.component";
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
@@ -22,6 +23,7 @@ import { AlertService } from '../_services';
 })
 export class EnquiryListComponent implements OnInit {
 @ViewChild("sidenav")  sidenav : MatSidenav;
+@ViewChild("assignAdvisor")  assignAdvisor : AssignRequestAvisorComponent;
 
   pageTitle: string = "Enquiry List";
   
@@ -31,6 +33,7 @@ export class EnquiryListComponent implements OnInit {
   enquiryTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   requestSelectList: RequestSelectListModel = new RequestSelectListModel();
+  requestDetails : RequestDetails  = new RequestDetails();
   constructor(
     private requestService: RequestService,
     private listService: ListService,
@@ -54,6 +57,12 @@ export class EnquiryListComponent implements OnInit {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
         this.router.navigate(['/enquiries/edit/', rowData.RequestId]);
       }
+      else  if ($event.command.content == "transfer") {
+        let rowData: RequestDetails = Object.assign({}, $event.rowData);
+        this.requestDetails = rowData;
+        this.requestDetails.TransferPendingFollowUp = true;
+        this.assignAdvisor.sidenav.open();
+      }
     
     }
     else {
@@ -73,6 +82,11 @@ export class EnquiryListComponent implements OnInit {
   resetSearchFilter(sidenav:any)
   {
     this.sidenav.toggle();
+  }
+
+  onAssigned()
+  {
+    this.getEnquiries();
   }
 
   searchEnquiries(searchFilter:any)
@@ -107,7 +121,10 @@ export class EnquiryListComponent implements OnInit {
     this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search];
     
     let gridCommands: Array<CommandModel> = [
-      { commandType: CommandType.Edit}
+      { commandType: CommandType.Edit},
+      //{ commandType: CommandType.View},
+    // { commandType: CommandType.Other,icon:'transfer_within_a_station'}
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
     ];
 
     this.enquiryTableSchema =
@@ -118,8 +135,8 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
         { ColumnField: "FirstName", ColumnHeader: "FirstName", Type: "text" },
         { ColumnField: "PhoneNo2", ColumnHeader: "Phone No 2", Type: "text" },
-        { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
+        { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }
       ];

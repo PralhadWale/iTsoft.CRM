@@ -7,4 +7,5 @@ export class RequestDetails extends RequestMaster
     StageName: string;
     AdvisorName: string;
     ClientBehaviourName: string;
+    TransferPendingFollowUp:boolean;
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FollowUp } from 'src/app/_models/followup';
+import { FollowUpDetails } from 'src/app/_models/followupdetails';
 import { FollowUpSerchParameters } from 'src/app/_models/followupserchparameters';
 import { APIService } from 'src/app/_services';
 
@@ -7,6 +8,7 @@ import { APIService } from 'src/app/_services';
   providedIn: 'root'
 })
 export class FollowupService {
+ 
   private followUpController = "/FollowUp/";
   constructor(private apiService: APIService) {
 
@@ -21,6 +23,11 @@ export class FollowupService {
 
   Search(param: FollowUpSerchParameters) {
     let url = this.followUpController + "search";
+    return this.apiService.PostData(url, param);
+  }
+
+  Assign(param: FollowUpDetails) {
+    let url = this.followUpController + "assign";
     return this.apiService.PostData(url, param);
   }
 }
