@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
+import { ListModel } from 'src/app/_models/listmodel';
 import { RequestDetails } from 'src/app/_models/requestdetails';
 import { RequestSelectListModel } from 'src/app/_models/requestselectlistmodel';
 import { AlertService } from 'src/app/_services';
@@ -56,20 +57,17 @@ export class AssignRequestAvisorComponent implements OnInit {
     this.requestDetails = new RequestDetails();
   }
 
-
-
   LoadSelectListData() {
     this.listService
-      .GetRequestSelectList()
+      .GetAdvisorSelectList()
       .subscribe(
         (result) => {
-          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+          this.requestSelectList = new RequestSelectListModel();
+          this.requestSelectList.Advisors = <Array<ListModel>>result.Value.ResponseData;
         },
         (error: any) => (this.errorMessage = <any>error)
       );
   }
-
- 
 
   onSubmit() {
     if(this.requestDetails.AdvisorId!= null && this.requestDetails.AdvisorId > 0)

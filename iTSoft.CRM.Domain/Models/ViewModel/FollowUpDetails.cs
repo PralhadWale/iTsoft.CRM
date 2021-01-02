@@ -18,6 +18,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public int Attempt { get; set; }
         public int ClientRating { get; set; }
         public long FollowUpId { get; set; }
+        public long IsCompleted { get; set; }
 
     }
 }

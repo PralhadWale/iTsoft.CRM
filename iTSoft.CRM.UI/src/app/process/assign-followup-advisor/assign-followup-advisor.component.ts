@@ -2,12 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { NgForm } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { FollowUpDetails } from 'src/app/_models/followupdetails';
-import { RequestDetails } from 'src/app/_models/requestdetails';
+import { ListModel } from 'src/app/_models/listmodel';
 import { RequestSelectListModel } from 'src/app/_models/requestselectlistmodel';
 import { AlertService } from 'src/app/_services';
 import { FollowupService } from '../services/followup.service';
 import { ListService } from '../services/list.service';
-import { RequestService } from '../services/request.service';
 
 @Component({
   selector: 'app-assign-followup-advisor',
@@ -64,10 +63,11 @@ export class AssignFollowUpAvisorComponent implements OnInit {
 
   LoadSelectListData() {
     this.listService
-      .GetRequestSelectList()
+      .GetAdvisorSelectList()
       .subscribe(
         (result) => {
-          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+          this.requestSelectList = new RequestSelectListModel();
+          this.requestSelectList.Advisors = <Array<ListModel>>result.Value.ResponseData;
         },
         (error: any) => (this.errorMessage = <any>error)
       );

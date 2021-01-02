@@ -17,7 +17,7 @@ namespace iTSoft.HIMS.Service.Shared
         List<ListModel> ListEnum<T>();
 
         List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey);
-
+        List<ListModel> GetAdvisors();
     }
 
     public class ListService : IListService
@@ -27,6 +27,11 @@ namespace iTSoft.HIMS.Service.Shared
         public ListService(IListRepository listRepository)
         {
             _listRepository = listRepository;
+        }
+
+        public List<ListModel> GetAdvisors()
+        {
+            return _listRepository.GetAdvisors();
         }
 
         public List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters)

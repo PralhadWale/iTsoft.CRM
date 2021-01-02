@@ -23,4 +23,11 @@ export class ListService {
         let getUrl = this.listController + "get-employee-select-list";
         return this.apiService.GetData(getUrl);
     }
+
+    
+    GetAdvisorSelectList() {
+        let getUrl = this.listController + "get-advisor-select-list";
+        return this.apiService.GetData(getUrl);
+    }
+
 }

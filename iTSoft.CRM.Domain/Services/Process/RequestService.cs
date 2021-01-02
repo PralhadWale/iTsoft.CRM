@@ -3,6 +3,7 @@ using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Process;
 using iTSoft.CRM.Data.Shared;
+using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Models.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace iTSoft.CRM.Domain.Services.Process
     {
         ResponseCode SaveRequest(RequestViewModel requestViewModel);
 
+        ResponseCode AssignRequest(AssignAdvisorViewModel requestViewModel);
         RequestViewModel LoadRequest(long requestId);
 
         List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
@@ -26,6 +28,7 @@ namespace iTSoft.CRM.Domain.Services.Process
         public const string PROC_RequestManager = "PROC_RequestManager";
         public const string PROC_RequestLookUpManager = "PROC_RequestLookUpManager";
         public const string PROC_RequestNoManager = "PROC_RequestNoManager";
+        public const string PROC_AssignRequest= "PROC_AssignRequest";
 
 
 
@@ -79,6 +82,21 @@ namespace iTSoft.CRM.Domain.Services.Process
                 DynamicParameters param = new DynamicParameters();
                 param.Add("requestTypeId", requestTypeId);
                 return dbConnection.Query<string>(PROC_RequestNoManager, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            }
+        }
+
+        public ResponseCode AssignRequest(AssignAdvisorViewModel requestViewModel)
+        {
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add(nameof(requestViewModel.AdvisorId), requestViewModel.AdvisorId);
+                param.Add(nameof(requestViewModel.RequestId), requestViewModel.RequestId);
+                param.Add(nameof(requestViewModel.UpdatedBy), requestViewModel.UpdatedBy);
+                param.Add(nameof(requestViewModel.TransferPendingFollowUp), requestViewModel.TransferPendingFollowUp);
+                param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
+                dbConnection.Execute(PROC_AssignRequest, param, commandType: CommandType.StoredProcedure);
+                return (ResponseCode)param.Get<int>("@Result");
             }
         }
     }

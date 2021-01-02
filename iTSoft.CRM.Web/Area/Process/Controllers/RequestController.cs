@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
 using iTSoft.CRM.Data.Entity.Process;
+using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Models.ViewModel;
 using iTSoft.CRM.Domain.Services.Process;
 using iTSoft.CRM.Web.Controllers;
@@ -20,11 +21,11 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
     {
         private readonly ILogger _logger;
 
-        IRequestService _listService = null;
-        public RequestController(IRequestService listService)
+        IRequestService requestService = null;
+        public RequestController(IRequestService _requestService)
         {
             _logger = Logger.GetLogger();
-            _listService = listService;
+            requestService = _requestService;
         }
 
         [HttpPost("save")]
@@ -34,8 +35,24 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
             
-                response.ResponseData = _listService.SaveRequest(requestViewModel);
+                response.ResponseData = requestService.SaveRequest(requestViewModel);
                 response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - SaveRequest");
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("assign")]
+        public IActionResult Assign(AssignAdvisorViewModel assignAdvisorViewModel)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseCode = requestService.AssignRequest(assignAdvisorViewModel);
             }
             catch (Exception ex)
             {
@@ -52,7 +69,7 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
 
-                response.ResponseData = _listService.SearchRequest(requestSerchParameters);
+                response.ResponseData = requestService.SearchRequest(requestSerchParameters);
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)
@@ -70,7 +87,7 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
 
-                response.ResponseData = _listService.LoadRequest(requestId);
+                response.ResponseData = requestService.LoadRequest(requestId);
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)
@@ -88,7 +105,7 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
 
-                response.ResponseData = _listService.GetNextrequestNumber(requestTypeId);
+                response.ResponseData = requestService.GetNextrequestNumber(requestTypeId);
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)

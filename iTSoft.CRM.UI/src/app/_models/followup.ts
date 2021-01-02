@@ -11,4 +11,6 @@ export class FollowUp {
     AddedOn: Date;
     UpdatedBy: number;
     UpdatedOn: Date;
+    AdvisorId:number;
+    IsCompleted:boolean;
 }

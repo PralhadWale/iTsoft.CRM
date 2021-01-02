@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
 using iTSoft.CRM.Data.Entity.Process;
+using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Models.ViewModel;
 using iTSoft.CRM.Domain.Services.Process;
 using iTSoft.CRM.Web.Controllers;
@@ -20,11 +21,11 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
     {
         private readonly ILogger _logger;
 
-        IFollowUpService _listService = null;
-        public FollowUpController(IFollowUpService listService)
+        IFollowUpService followUpService = null;
+        public FollowUpController(IFollowUpService _followUpService)
         {
             _logger = Logger.GetLogger();
-            _listService = listService;
+            followUpService = _followUpService;
         }
 
         [HttpPost("save")]
@@ -34,12 +35,28 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
 
-                response.ResponseCode = _listService.SaveFollowUp(followupMaster);
+                response.ResponseCode = followUpService.SaveFollowUp(followupMaster);
             }
             catch (Exception ex)
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
                 _logger.Error(ex, "FollowUp - SaveFollowUp");
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("assign")]
+        public IActionResult Assign(AssignAdvisorViewModel assignAdvisorViewModel)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseCode = followUpService.AssignRequest(assignAdvisorViewModel);
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - SaveRequest");
             }
             return Ok(response);
         }
@@ -51,7 +68,7 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
 
-                response.ResponseData = _listService.SearchFollowUp(FollowUpSerchParameters);
+                response.ResponseData = followUpService.SearchFollowUp(FollowUpSerchParameters);
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)

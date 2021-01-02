@@ -24,13 +24,11 @@ namespace iTSoft.CRM.Data.Entity.Process
         public string Attempt { get; set; }
 
         public long? ClientRating { get; set; }
-
+        public long? AdvisorId { get; set; }
+        public bool IsCompleted { get; set; }
         public long? AddedBy { get; set; }
-
         public DateTime? AddedOn { get; set; }
-
         public long? UpdatedBy { get; set; }
-
         public DateTime? UpdatedOn { get; set; }
 
     }

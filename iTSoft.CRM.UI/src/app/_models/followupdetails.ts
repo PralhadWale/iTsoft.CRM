@@ -13,4 +13,6 @@ export class FollowUpDetails extends RequestMaster
     Remark: string;
     Attempt: string;
     ClientRating: number;
+    IsCompleted:boolean;
+    TransferWithRequest:boolean;
 }

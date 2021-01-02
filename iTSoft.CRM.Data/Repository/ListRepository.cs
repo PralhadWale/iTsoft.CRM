@@ -12,9 +12,14 @@ namespace iTSoft.CRM.Data.Repository
         List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters);
         List<ListModel> ListAll<T>(string textField, string valueField);
         List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey);
+        List<ListModel> GetAdvisors();
     }
     public class ListRepository : BaseRepository , IListRepository
     {
+        public List<ListModel> GetAdvisors()
+        {
+            return base.GetConnection().Query<ListModel>("Select U.LastName + ' ' + U.FirstName As Text, U.UserId As Value From UserMaster U Join IdentityUserRole IUR on U.UserId = IUR.UserId and IUR.RoleId = 2").AsList();
+        }
 
         public List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters)
         {

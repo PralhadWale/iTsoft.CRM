@@ -93,5 +93,22 @@ namespace iTSoft.CRM.Web.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("get-advisor-select-list")]
+        public IActionResult GetAdvisorSelectList()
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.GetAdvisors();
+               response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetFollowupSelectList");
+            }
+            return Ok(response);
+        }
     }
 }
