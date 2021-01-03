@@ -26,7 +26,7 @@ export class AddFollowupComponent implements OnInit {
   followUP: FollowUp;
   requestSelectList: RequestSelectListModel;
   requestTypeName: string;
-
+  public IsCompleted :boolean = false;
   constructor(
     private followUpService: FollowupService,
     private listService: ListService,
@@ -52,11 +52,13 @@ export class AddFollowupComponent implements OnInit {
       this.followUP = new FollowUp();
       this.followUP.RequestId = this.requestId;
       this.followUP.FollowUpDate = new Date();
+      this.IsCompleted = false;
     }
     else {
       this.requestType = this.followUpDetails.RequestTypeId;
       this.requestNo = this.followUpDetails.RequestNo;
       this.followUP = Object.assign({}, this.followUpDetails);
+      this.IsCompleted = this.followUpDetails.IsCompleted;
     }
 
     this.requestTypeName = this.requestType == RequestType.Enquiry ? "Enquiry" : "Quotation"

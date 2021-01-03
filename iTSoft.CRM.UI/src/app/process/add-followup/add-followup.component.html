@@ -48,16 +48,19 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <div class="form-group form-check">
+    <div class="form-group form-check" *ngIf="!IsCompleted">
       <mat-checkbox name="IsCompleted" id="IsCompleted" class="form-check-input"
         [(ngModel)]="followUP.IsCompleted" #IsCompleted="ngModel">Mark Completed</mat-checkbox>
     </div>
+    <mat-form-field *ngIf="IsCompleted">
+      <input matInput type="text" placeholder="Follow up Status" name="IsCompleted" value="Completed"   #IsCompleted readonly/>
+    </mat-form-field>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>
       <mat-action-list>
         <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="onSubmit(followUpForm)">
+          (click)="onSubmit(followUpForm)"  *ngIf="!IsCompleted">
           <mat-icon>save</mat-icon>Save
         </button>
         <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
