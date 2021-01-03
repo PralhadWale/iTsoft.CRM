@@ -48,6 +48,10 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div class="form-group form-check">
+      <mat-checkbox name="IsCompleted" id="IsCompleted" class="form-check-input"
+        [(ngModel)]="followUP.IsCompleted" #IsCompleted="ngModel">Mark Completed</mat-checkbox>
+    </div>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>

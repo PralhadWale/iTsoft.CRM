@@ -16,8 +16,13 @@ export class FollowupService {
   }
 
   Save(followUp: FollowUp) {
-    followUp.AddedBy = 1;
+    
+    followUp.AddedBy = ConfigurationSettings.User.UserId;
     followUp.AddedOn = new Date();
+    followUp.UpdatedBy = ConfigurationSettings.User.UserId;
+    followUp.UpdatedOn = new Date();
+    followUp.AdvisorId = ConfigurationSettings.User.UserId;
+
     let url = this.followUpController + "save";
     return this.apiService.PostData(url, followUp);
   }
