@@ -7,7 +7,7 @@
         <span class="view-card-title"> {{pageTitle}}</span>
         <span class="title-spacer"></span>
         <mat-card-actions>
-          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
             [disabled]='!enquiryForm.valid'>
             <mat-icon>save</mat-icon>
           </button>
@@ -102,8 +102,7 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Phone No 1</mat-label>
-              <input matInput id="PhoneNo1" type="text"
-                placeholder="Phone No" formControlName="PhoneNo1" />
+              <input matInput id="PhoneNo1" type="text" placeholder="Phone No" formControlName="PhoneNo1" maxlength="12" />
               <mat-error *ngIf="displayMessage.PhoneNo2">
                 {{displayMessage.PhoneNo2}}
               </mat-error>
@@ -113,8 +112,7 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>AlterNate No</mat-label>
-              <input matInput placeholder="AlterNate No" id="PhoneNo2" type="text"
-               formControlName="PhoneNo2" />
+              <input matInput placeholder="AlterNate No" id="PhoneNo2" type="text" maxlength="12" formControlName="PhoneNo2" />
               <mat-error *ngIf="displayMessage.PhoneNo2">
                 {{displayMessage.PhoneNo2}}
               </mat-error>

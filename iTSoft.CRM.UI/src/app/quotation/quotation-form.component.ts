@@ -70,6 +70,7 @@ export class QuotationFormComponent implements OnInit {
     requestSelectList: RequestSelectListModel = new RequestSelectListModel();
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private requestService: RequestService,
         private listService: ListService,
         private alertService: AlertService,
@@ -181,6 +182,8 @@ export class QuotationFormComponent implements OnInit {
                 {
                     this.alertService.showSuccessMessage("Quotation Saved successfully");
                     this.SetDefaultRequest();
+                    //this.quotationForm.reset();
+                    this.router.navigate(['/quotations']);
                 }
             }, (error: any) => {
                 { this.alertService.showSuccessMessage("Failed to save"); }

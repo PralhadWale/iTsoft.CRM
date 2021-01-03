@@ -238,15 +238,19 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   saveEnquiry() {
-
-    let request = new RequestViewModel();
-    request.RequestMaster = <RequestMaster>this.enquiryForm.value;
-    request.RequestMaster.RequestTypeId = RequestType.Enquiry;
-    this.requestService.Save(request).subscribe(result => {
-      this.alertService.showSuccessMessage("Enquiry Saved successfully");
-    }, (error: any) => {
-      this.alertService.showSuccessMessage("Failed to save");
-    });
+    if (this.enquiryForm.valid) {
+      let request = new RequestViewModel();
+      request.RequestMaster = <RequestMaster>this.enquiryForm.value;
+      request.RequestMaster.RequestTypeId = RequestType.Enquiry;
+      this.requestService.Save(request).subscribe(result => {
+        this.alertService.showSuccessMessage("Enquiry Saved successfully");
+        this.SetDefaultRequest();
+        this.enquiryForm.reset();
+        this.router.navigate(['/enquiries']);
+      }, (error: any) => {
+        this.alertService.showSuccessMessage("Failed to save");
+      });
+    }
   }
 
   onCommandClick($event: CommandEventArgs) {
@@ -275,7 +279,9 @@ onFollowUpSaved() {
   }
 
   SetDefaultRequest() {
+    
     this.request = new RequestViewModel();
+  
   }
 
   SetTableSchema() {

@@ -32,8 +32,6 @@ namespace iTSoft.CRM.Data.Entity
     public class IdentityUserDetails : IdentityUser
     {
         public string ProfileName { get; set; }
-        public int SellerTypeId { get; set; }
-        public int PartyTypeId { get; set; }
         public long RoleId { get; set; }
         public long OrganizationId { get; set; }
         public object Token { get; set; }

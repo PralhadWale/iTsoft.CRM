@@ -1,10 +1,13 @@
-/* Defines the User entity */
-export class User {
-    id: number;
-    Token: string;
-    username: string;
-    password: string;
-    firstname: string;
-    lastname: string;
+
+export interface User {
+    UserId: number;
+    IsEmployee: boolean;
     isAuthenticated: boolean;
+    UserName: string;
+    Email: string;
+    PhoneNumber: string;
+    ProfileName: string;
+    RoleId: number;
+    OrganizationId: number;
+    Token: any;
 }

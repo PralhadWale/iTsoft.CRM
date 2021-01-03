@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ConfigurationSettings } from 'src/app/_models/configuration';
 import { FollowUp } from 'src/app/_models/followup';
 import { FollowUpDetails } from 'src/app/_models/followupdetails';
 import { FollowUpSerchParameters } from 'src/app/_models/followupserchparameters';
@@ -26,7 +27,13 @@ export class FollowupService {
     return this.apiService.PostData(url, param);
   }
 
-  Assign(param: FollowUpDetails) {
+  Assign(followUpDetails: FollowUpDetails) {
+    let param = {
+      AdvisorId:followUpDetails.AdvisorId,
+      TransferWithRequest:followUpDetails.TransferWithRequest,
+      FollowUpId : followUpDetails.FollowUpId,
+      UpdatedBy : ConfigurationSettings.User.UserId
+    };
     let url = this.followUpController + "assign";
     return this.apiService.PostData(url, param);
   }

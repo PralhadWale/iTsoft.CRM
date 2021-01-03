@@ -5,6 +5,7 @@ import { RequestViewModel } from 'src/app/_models/requestviewmodel';
 import { APIService } from 'src/app/_services';
 import * as moment from 'moment';
 import { RequestDetails } from 'src/app/_models/requestdetails';
+import { ConfigurationSettings } from 'src/app/_models/configuration';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,15 +17,22 @@ export class RequestService {
   }
 
   AssignRequest(requestDetails: RequestDetails) {
-    
+    let param = {
+      AdvisorId:requestDetails.AdvisorId,
+      TransferPendingFollowUp:requestDetails.TransferPendingFollowUp,
+      RequestId : requestDetails.RequestId,
+      UpdatedBy : ConfigurationSettings.User.UserId
+    };
     let url = this.RequestController + "assign";
-    return this.apiService.PostData(url, requestDetails);
+    return this.apiService.PostData(url, param);
   }
 
   Save(request: RequestViewModel) {
     // request.RequestMaster.RequestDate = moment(request.RequestMaster.RequestDate).format('dd-MMM-yyyy');
     // request.RequestMaster.DOB = moment(request.RequestMaster.DOB).format('dd-MMM-yyyy');
-
+    request.RequestMaster.AdvisorId = ConfigurationSettings.User.UserId;
+    request.RequestMaster.AddedBy = ConfigurationSettings.User.UserId;
+    request.RequestMaster.AddedOn = new Date();
     let url = this.RequestController + "save";
     return this.apiService.PostData(url, request);
   }
