@@ -4,9 +4,12 @@ import { Router } from '@angular/router';
 import { AddFollowupComponent } from 'src/app/process/add-followup/add-followup.component';
 import { AssignFollowUpAvisorComponent } from 'src/app/process/assign-followup-advisor/assign-followup-advisor.component';
 import { FollowupService } from 'src/app/process/services/followup.service';
+import { ListService } from 'src/app/process/services/list.service';
 import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
+import { ConfigurationSettings } from 'src/app/_models/configuration';
 import { FollowUpDetails } from 'src/app/_models/followupdetails';
 import { FollowUpSerchParameters } from 'src/app/_models/followupserchparameters';
+import { ListModel } from 'src/app/_models/listmodel';
 import { RequestType } from 'src/app/_models/requesttype';
 
 @Component({
@@ -22,17 +25,26 @@ export class FollowupListComponent implements OnInit {
   followUpList: Array<any>;
   followUpTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
-   followUpDetails : FollowUpDetails  = new FollowUpDetails();
+  followUpDetails : FollowUpDetails  = new FollowUpDetails();
 
   followUpSearchParam : FollowUpSerchParameters = new FollowUpSerchParameters();
-
-  constructor(private followUpService : FollowupService,   private router : Router) { 
-
+  public advisorSelectList : Array<ListModel> =[];  
+  public IsAdvisor : boolean = true;
+  constructor(private followUpService : FollowupService,
+      private listService : ListService, 
+      private router : Router) { 
+       this.IsAdvisor = ConfigurationSettings.User.RoleId == 2;
   }
 
   ngOnInit(): void {
+    this.getSelectList();
     this.SetTableSchema();
     this.getFollowUp();
+  }
+  getSelectList() {
+    this.listService.GetAdvisorSelectList().subscribe((result) => {
+       this.advisorSelectList = <Array<ListModel>>result.Value.ResponseData
+    });
   }
 
   
@@ -95,6 +107,7 @@ export class FollowupListComponent implements OnInit {
 
   resetSearchFilter()
   {
+    
     this.followUpSearchParam = new FollowUpSerchParameters();
     this.searchBar.close();
   }

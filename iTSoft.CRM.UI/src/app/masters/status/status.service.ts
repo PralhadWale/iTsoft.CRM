@@ -17,10 +17,14 @@ export class StatusService {
 
     Save(statusMaster: StatusMaster) {
 
-        // statusMaster.AddedBy = this.userService.GetUserId();
-        // statusMaster.UpdatedBy = this.userService.GetUserId();
-        statusMaster.AddedOn = new Date(Date.now());
-        statusMaster.UpdatedOn = new Date(Date.now());
+        if(statusMaster.LeadStatusId < 1)
+        {
+            statusMaster.AddedBy = this.userService.GetUserId();
+            statusMaster.AddedOn = new Date(Date.now());
+        }
+        
+         statusMaster.UpdatedBy = this.userService.GetUserId();
+         statusMaster.UpdatedOn = new Date(Date.now());
 
         return this.apiService.PostData(this.URLSave, statusMaster);
     }

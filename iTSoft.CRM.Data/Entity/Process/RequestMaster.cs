@@ -51,6 +51,8 @@ namespace iTSoft.CRM.Data.Entity.Process
 
         public long? CityId { get; set; }
 
+        public long? DepartmentId { get; set; }
+
         public string Address { get; set; }
 
         public string TermsAndCondition { get; set; }

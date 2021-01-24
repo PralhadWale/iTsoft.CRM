@@ -16,9 +16,13 @@ export class ServiceService {
 
     Save(serviceMaster: ServiceMaster) {
 
-        // serviceMaster.AddedBy = this.userService.GetUserId();
-        // serviceMaster.UpdatedBy = this.userService.GetUserId();
-        serviceMaster.AddedOn = new Date(Date.now());
+        if(serviceMaster.ServiceId < 1)
+        {
+            serviceMaster.AddedBy = this.userService.GetUserId();
+            serviceMaster.AddedOn = new Date(Date.now());
+        }
+
+        serviceMaster.UpdatedBy = this.userService.GetUserId();
         serviceMaster.UpdatedOn = new Date(Date.now());
 
         return this.apiService.PostData(this.URLSave, serviceMaster);

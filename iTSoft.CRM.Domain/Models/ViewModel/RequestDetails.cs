@@ -12,5 +12,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string StageName { get; set; }
         public string AdvisorName { get; set; }
         public string ClientBehaviourName { get; set; }
+        public string Department { get; set; }
+
     }
+
 }

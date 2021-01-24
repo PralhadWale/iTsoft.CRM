@@ -32,8 +32,20 @@
         <mat-datepicker #toDate color="primary"></mat-datepicker>
         <mat-error>To Date is required.</mat-error>
       </mat-form-field>
-     
-  
+      <div *ngIf="!IsAdvisor">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Assign To</mat-label>
+        <mat-select placeholder="Select Advisor"  [(ngModel)]="followUpSearchParam.AdvisorId" name="AdvisorId" #AdvisorId="ngModel">
+          <mat-option *ngFor="let item of advisorSelectList" [value]="item.Value" >
+            {{item.Text}} 
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="form-group form-check">
+        <mat-checkbox name="IsCompleted" id="IsCompleted" class="form-check-input"
+          [(ngModel)]="followUpSearchParam.IsCompleted" #IsCompleted="ngModel">Mark Completed</mat-checkbox>
+       </div>
+      </div>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>

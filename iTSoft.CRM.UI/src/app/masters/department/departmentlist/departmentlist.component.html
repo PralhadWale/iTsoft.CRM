@@ -1,0 +1,49 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="view-card-title">
+            <h1>{{pageTitle}}</h1>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <it-mat-table [dataSource]="departmentList" [tableSettings]="tableSettings" [tableSchema]="departmentTableSchema"
+        (onCommandClick)='onCommandClick($event)'></it-mat-table>
+    </mat-card-content>
+</mat-card>
+
+
+<mat-sidenav class="search-panel" position="end" dark #departmentNav mode="push" opened="false">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          <mat-icon>queue</mat-icon>
+        </div>
+        <mat-card-title>
+          Add-Update Department
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Department Name</mat-label>
+        <input matInput appearance="standard" placeholder="Department Name" name="DepartmentName"
+          [(ngModel)]="departmentMaster.DepartmentName" />
+      </mat-form-field>
+      <div class="form-group form-check">
+        <mat-checkbox name="IsActive" id="IsActive" class="form-check-input"
+          [(ngModel)]="departmentMaster.IsActive" #IsActive="ngModel">Is Active</mat-checkbox>
+      </div>
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-card-header>
+      <mat-action-list>
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="saveDepartment(departmentMaster);">
+          <mat-icon>save</mat-icon>Save
+        </button>
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+          (click)="reset()">
+          <mat-icon>refresh</mat-icon>Cancel
+        </button>
+      </mat-action-list>
+    </mat-card-header>
+  </mat-sidenav>

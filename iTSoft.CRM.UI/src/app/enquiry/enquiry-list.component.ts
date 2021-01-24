@@ -136,6 +136,7 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "FirstName", ColumnHeader: "FirstName", Type: "text" },
         { ColumnField: "PhoneNo2", ColumnHeader: "Phone No 2", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
+        { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands }

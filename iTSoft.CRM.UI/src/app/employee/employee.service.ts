@@ -68,6 +68,7 @@ export class EmployeeService {
             Designation:null,
             RoleId: 0,
             DesignationId:0,
+            DepartmentId:0,
             AddedBy: 0,
             UpdatedBy: 0,
             TargetAmount:100,

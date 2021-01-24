@@ -8,6 +8,11 @@ const routes: Routes = [
             import('./designation/designation.module').then(m => m.DesignationModule)
     },
     {
+        path: "department",
+        loadChildren: () =>
+            import('./department/department.module').then(m => m.DepartmentModule)
+    },
+    {
         path: "service",
         loadChildren: () =>
             import('./service/service.module').then(m => m.ServiceModule)

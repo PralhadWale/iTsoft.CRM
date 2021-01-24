@@ -59,8 +59,21 @@ th{
     mat-icon:hover{
         cursor: pointer;
     }
+
+    .mat-cell {
+        color: white;
+        font-size: 10px;
+    }
+    
     
     // th.mat-header-cell {
     //     text-align: center !important;
     // }
 }
+
+.table-container.mat-elevation-z8 {    
+    overflow-x: auto !important;
+  }
+  .table-container .mat-table.mat-table {
+    min-width: 450px !important;
+  }

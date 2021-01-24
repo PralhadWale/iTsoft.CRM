@@ -7,6 +7,7 @@ export class RequestSelectListModel
     Sources: ListModel[];
     ClientBehaviour: ListModel[];
     Advisors : ListModel[];
+    Departments : ListModel[];
     constructor()
     {
         this.LeadStatuses=[];
@@ -14,5 +15,6 @@ export class RequestSelectListModel
         this.Sources=[];
         this.ClientBehaviour=[];
         this.Advisors = [];
+        this.Departments = [];
     }
 }

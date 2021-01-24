@@ -15,10 +15,14 @@ export class StateService {
 
     Save(stateMaster: StateMaster) {
 
-        // stateMaster.AddedBy = this.userService.GetUserId();
-        // stateMaster.UpdatedBy = this.userService.GetUserId();
-        stateMaster.AddedOn = new Date(Date.now());
+        if(stateMaster.StateId < 1)
+        {
+            stateMaster.AddedOn = new Date(Date.now());
+            stateMaster.AddedBy = this.userService.GetUserId();
+        }
+       
         stateMaster.UpdatedOn = new Date(Date.now());
+        stateMaster.UpdatedBy = this.userService.GetUserId();
 
         return this.apiService.POST(this.URLSave, stateMaster);
     }

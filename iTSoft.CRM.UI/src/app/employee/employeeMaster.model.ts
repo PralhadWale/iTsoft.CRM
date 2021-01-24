@@ -12,6 +12,7 @@ export class EmployeeMaster {
     Designation : string;
     Role : string;
     DesignationId : number;
+    DepartmentId : number;
     RoleId : number;
     AadharNo: string;
     UniqueID: string;

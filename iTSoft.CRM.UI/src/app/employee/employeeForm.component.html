@@ -149,6 +149,16 @@
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
+                            <mat-label>Department</mat-label>
+                            <mat-select placeholder="Select Department"  [(ngModel)]="employee.DepartmentId" name="DepartmentId" #DepartmentId="ngModel">
+                              <mat-option *ngFor="let item of employeeSelectList.Departments" [value]="item.Value" >
+                                {{item.Text}} 
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan">
+                        <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Role</mat-label>
                             <mat-select placeholder="Select Role"  [(ngModel)]="employee.RoleId" name="RoleId" #RoleId="ngModel">
                               <mat-option *ngFor="let item of employeeSelectList.Roles" [value]="item.Value" >

@@ -16,7 +16,7 @@ export class FollowUpSerchParameters
     Amount: number;
     ClientBehaviourId: number;
     AdvisorId: number;
-
+    IsCompleted  : boolean;
     constructor() {
         //this.RequestTypeId = RequestType.Enquiry;
         var todaysDate = new Date();

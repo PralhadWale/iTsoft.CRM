@@ -139,7 +139,8 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       StageId: [""],
       TermsAndCondition: [""],
       Amount: ["", [Validators.required, NumberValidators.range(1, 99999)]],
-      ClientBehaviourId: [""]
+      ClientBehaviourId: [""],
+      DepartmentId: [""]
 
     });
 
@@ -233,6 +234,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       TermsAndCondition: this.request.RequestMaster.TermsAndCondition,
       Amount: this.request.RequestMaster.Amount,
       ClientBehaviourId: this.request.RequestMaster.ClientBehaviourId,
+      DepartmentId: this.request.RequestMaster.DepartmentId,
     });
 
   }

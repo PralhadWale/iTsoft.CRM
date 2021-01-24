@@ -17,10 +17,14 @@ export class StageService {
 
     Save(stageMaster: StageMaster) {
 
-        // stageMaster.AddedBy = this.userService.GetUserId();
-        // stageMaster.UpdatedBy = this.userService.GetUserId();
-        stageMaster.AddedOn = new Date(Date.now());
+        if(stageMaster.StageId < 1)
+        {
+            stageMaster.AddedOn = new Date(Date.now());
+            stageMaster.AddedBy = this.userService.GetUserId();
+        }
+
         stageMaster.UpdatedOn = new Date(Date.now());
+        stageMaster.UpdatedBy = this.userService.GetUserId();
 
         return this.apiService.PostData(this.URLSave, stageMaster);
     }

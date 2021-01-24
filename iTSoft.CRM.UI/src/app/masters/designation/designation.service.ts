@@ -16,11 +16,16 @@ export class DesignationService {
     getDesignationListUrl: string = iTCRMSettings.Masters + "/designation/findDesignation";
 
     Save(designationMaster: DesignationMaster) {
+      
+        if(designationMaster.DesignationId < 1)
+        {
+            designationMaster.AddedBy = this.userService.GetUserId();
+            designationMaster.AddedOn = new Date(Date.now());
+        }
 
-        // designationMaster.AddedBy = this.userService.GetUserId();
-        // designationMaster.UpdatedBy = this.userService.GetUserId();
-        designationMaster.AddedOn = new Date(Date.now());
+        designationMaster.UpdatedBy = this.userService.GetUserId();
         designationMaster.UpdatedOn = new Date(Date.now());
+
 
         return this.apiService.PostData(this.URLSave, designationMaster);
     }

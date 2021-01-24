@@ -82,11 +82,11 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
           iconName: 'group',
           route: 'masters/designation',
         },
-        // {
-        //   displayName: 'Organization',
-        //   iconName: 'museum',
-        //   route: 'organizations',
-        // },
+        {
+          displayName: 'Department',
+          iconName: 'museum',
+          route: 'masters/department',
+        },
         {
           displayName: 'Employee',
           iconName: 'person_pin',

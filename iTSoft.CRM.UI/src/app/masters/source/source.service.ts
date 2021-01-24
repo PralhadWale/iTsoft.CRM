@@ -17,9 +17,13 @@ export class SourceService {
 
     Save(sourceMaster: SourceMaster) {
 
-        // sourceMaster.AddedBy = this.userService.GetUserId();
-        // sourceMaster.UpdatedBy = this.userService.GetUserId();
-        sourceMaster.AddedOn = new Date(Date.now());
+        if(sourceMaster.LeadSourceId < 1)
+        {
+            sourceMaster.AddedBy = this.userService.GetUserId();
+            sourceMaster.AddedOn = new Date(Date.now());
+        }
+
+        sourceMaster.UpdatedBy = this.userService.GetUserId();
         sourceMaster.UpdatedOn = new Date(Date.now());
 
         return this.apiService.PostData(this.URLSave, sourceMaster);

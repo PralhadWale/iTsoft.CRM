@@ -9,5 +9,6 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
     {
         public List<ListModel> Roles { get; set; }
         public List<ListModel> Designations { get; set; }
+        public List<ListModel> Departments { get; set; }
     }
 }

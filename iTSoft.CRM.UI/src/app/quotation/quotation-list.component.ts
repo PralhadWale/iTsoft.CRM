@@ -136,6 +136,7 @@ export class QuotationListComponent implements OnInit {
         { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
         { ColumnField: "CompanyName", ColumnHeader: "Company Name", Type: "text" },
         { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
+        { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }

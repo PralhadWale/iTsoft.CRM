@@ -33,11 +33,13 @@ namespace iTSoft.CRM.Web.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
+               
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
                 requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId));
                 requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId));
                 requestSelectListModel.Sources = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId));
                 requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId));
+                requestSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId));
 
                 response.ResponseData = requestSelectListModel;
                 response.ResponseCode = ResponseCode.Success;
@@ -82,6 +84,7 @@ namespace iTSoft.CRM.Web.Controllers
                 EmployeeSelectListModel employeeSelectListModel = new EmployeeSelectListModel();
                 employeeSelectListModel.Roles = _listService.ListAll<IdentityRole>(nameof(IdentityRole.Name), nameof(IdentityRole.RoleId));
                 employeeSelectListModel.Designations = _listService.ListAll<DesignationMaster>(nameof(DesignationMaster.DesignationName), nameof(DesignationMaster.DesignationId));
+                employeeSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId));
 
                 response.ResponseData = employeeSelectListModel;
                 response.ResponseCode = ResponseCode.Success;
