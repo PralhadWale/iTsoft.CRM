@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Dapper;
-using iTSoft.CRM.Data.Context;
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Helpers;

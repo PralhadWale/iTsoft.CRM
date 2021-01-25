@@ -24,17 +24,19 @@ namespace iTSoft.CRM.Web.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            loginModel.Password = new EncryptionHelper().Encrypt(loginModel.Password);
-            var result = await _iLoginDetailService.VerifyUser(loginModel);
-            if (result != null)
-            {
-                result.Token = SetTokenData(result);
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest("Invalid username or password");
-            }
+           // throw new Exception("Test");
+                loginModel.Password = new EncryptionHelper().Encrypt(loginModel.Password);
+                var result = await _iLoginDetailService.VerifyUser(loginModel);
+                if (result != null)
+                {
+                    result.Token = SetTokenData(result);
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest("Invalid username or password");
+                }
+                
         }
 
 

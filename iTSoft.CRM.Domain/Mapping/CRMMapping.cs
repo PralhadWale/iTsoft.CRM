@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using iTSoft.CRM.Data.Context;
 using iTSoft.CRM.Domain.Models;
 
 namespace iTSoft.CRM.Domain.Mapping
@@ -8,8 +7,8 @@ namespace iTSoft.CRM.Domain.Mapping
     {
         public CRMMapping()
         {
-            CreateMap<UserDetails, LoginDetailViewModel>().ReverseMap();
-            CreateMap<UserDetails, UserDetailsViewModel>().ReverseMap();
+            //CreateMap<UserDetails, LoginDetailViewModel>().ReverseMap();
+            //CreateMap<UserDetails, UserDetailsViewModel>().ReverseMap();
          
 
 

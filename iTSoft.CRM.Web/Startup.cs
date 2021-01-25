@@ -6,8 +6,6 @@ using Microsoft.Extensions.Hosting;
 using iTSoft.CRM.Domain.Services;
 using AutoMapper;
 using iTSoft.CRM.Domain.Mapping;
-using iTSoft.CRM.Data.Context;
-using Microsoft.EntityFrameworkCore;
 using iTSoft.CRM.Data.Repository;
 using System;
 using iTSoft.CRM.Domain;
@@ -42,9 +40,7 @@ namespace iTSoft.CRM.Web
             var CRMConnectionStringVar = Configuration["CRMConnectionString"];
             ApplicationSettings.ConnectionString = Configuration["CRMConnectionString"]; 
 
-            services.AddDbContext<CRMContext>(options =>
-            options.UseSqlServer(CRMConnectionStringVar));
-
+            
             ConfigureAuthentication(services);
 
             services.AddControllersWithViews()
@@ -76,9 +72,8 @@ namespace iTSoft.CRM.Web
             //services.AddScoped<ILoginDetailService, LoginDetailService>();
             // all services add scoped will be moved to below method, Need to discuss and refactor
             services.ConfigureCRMDomainServices();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             // all repositories add scoped will be moved to below method, Need to discuss and refactor
-            services.CongfigureCRMDataServices();
+         
             services.AddScoped<ICRMDapper, CRMDapper>();
 
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", System.Data.SqlClient.SqlClientFactory.Instance);
@@ -116,7 +111,8 @@ namespace iTSoft.CRM.Web
             {
                 endPoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}", defaults: new { controller = "WeatherForecast"});
+
             });
 
             //app.UseSpa(spa =>

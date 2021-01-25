@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using iTSoft.CRM.Data.Context;
 using iTSoft.CRM.Data.Helpers;
 using iTSoft.CRM.Data.Repository;
 using iTSoft.CRM.Domain.Models;
@@ -25,14 +24,12 @@ namespace iTSoft.CRM.Domain.Services
     }
     public class LoginDetailService : BaseRepository, ILoginDetailService
     {
-        private readonly IRepository<LoginDetail> _ILoginDetailRepository;
         private readonly ICRMDapper _CRMDapper;
         private readonly IMapper _iMapper;
 
         public const string PROC_ADM_UserManager = "PROC_ADM_UserManager";
-        public LoginDetailService(IRepository<LoginDetail> iLoginDetailRepository, ICRMDapper CRMDapper, IMapper iMapper)
+        public LoginDetailService(ICRMDapper CRMDapper, IMapper iMapper)
         {
-            this._ILoginDetailRepository = iLoginDetailRepository;
             this._CRMDapper = CRMDapper;
             this._iMapper = iMapper;
         }
