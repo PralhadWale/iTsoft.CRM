@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iTSoft.CRM.Domain", "iTSoft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTSoft.CRM.UnitTests.Domain", "iTSoft.CRM.UnitTests.Domain\iTSoft.CRM.UnitTests.Domain.csproj", "{A18683E9-8343-4646-B673-C794FBD07E99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTSoft.Communication", "iTSoft.Communication\iTSoft.Communication.csproj", "{5B2BF18B-E672-4CFA-8DCE-07EAB2160AC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{A18683E9-8343-4646-B673-C794FBD07E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A18683E9-8343-4646-B673-C794FBD07E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A18683E9-8343-4646-B673-C794FBD07E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B2BF18B-E672-4CFA-8DCE-07EAB2160AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B2BF18B-E672-4CFA-8DCE-07EAB2160AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B2BF18B-E672-4CFA-8DCE-07EAB2160AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B2BF18B-E672-4CFA-8DCE-07EAB2160AC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
