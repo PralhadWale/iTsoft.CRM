@@ -53,6 +53,11 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
       route: 'quotations',
     },
     {
+      displayName: 'Clients',
+      iconName: 'person_pin',
+      route: 'clients',
+    },
+    {
       displayName: 'Masters',
       iconName: 'videocam',
       route: 'masters',

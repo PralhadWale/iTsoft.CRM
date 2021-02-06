@@ -2,6 +2,7 @@
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Process;
+using iTSoft.CRM.Data.Enum;
 using iTSoft.CRM.Data.Shared;
 using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Models.ViewModel;
@@ -23,7 +24,7 @@ namespace iTSoft.CRM.Domain.Services.Process
     {
         public const string PROC_FollowUpLookUpManager = "PROC_FollowUpLookUpManager";
         public const string PROC_AssignFollowUp = "PROC_AssignFollowUp";
-
+        public const string PROC_EnrollClient = "PROC_EnrollClient";
         public ResponseCode SaveFollowUp(FollowUpMaster followupMaster)
         {
 
@@ -38,7 +39,28 @@ namespace iTSoft.CRM.Domain.Services.Process
             else
                 base.Update(followupMaster);
 
+            if(followupMaster.LeadStatusId == (int)LeadStatus.Won)
+            {
+                this.EnrollClient(followupMaster);
+            }
+
             return ResponseCode.Success;
+        }
+
+        private void EnrollClient(FollowUpMaster followupMaster)
+        {
+            try
+            {
+                using (IDbConnection dbConnection = base.GetConnection())
+                {
+                    DynamicParameters param = new DynamicParameters(followupMaster.RequestId);
+                     dbConnection.Execute(PROC_EnrollClient, param, commandType: CommandType.StoredProcedure);
+                }
+            }
+            catch
+            {
+
+            }
         }
 
         public List<FollowUpDetails> SearchFollowUp(FollowUpSerchParameters FollowUpSerchParameters)

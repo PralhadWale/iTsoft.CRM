@@ -1,0 +1,70 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="view-card-title">
+            <h1>{{pageTitle}}</h1>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <it-mat-table [dataSource]="clientList" [tableSettings]="tableSettings" [tableSchema]="clientTableSchema"
+        (onCommandClick)='onCommandClick($event)'></it-mat-table>
+    </mat-card-content>
+</mat-card>
+
+
+<mat-sidenav class="search-panel" position="end" dark #clientNav mode="push" opened="false">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          <mat-icon>search</mat-icon>
+        </div>
+        <mat-card-title>
+          Search Client
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Client Name</mat-label>
+        <input matInput appearance="standard" placeholder="Client Name" name="ClientName"
+          [(ngModel)]="clientMaster.ClientName" />
+      </mat-form-field>
+      
+    </mat-nav-list>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Company Name</mat-label>
+        <input matInput appearance="standard" placeholder="Client Name" name="CorporateName"
+          [(ngModel)]="clientMaster.CorporateName" />
+      </mat-form-field>
+      
+    </mat-nav-list>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Email</mat-label>
+        <input matInput appearance="standard" placeholder="Email" name="Email"
+          [(ngModel)]="clientMaster.Email" />
+      </mat-form-field>
+      
+    </mat-nav-list>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Mobile No</mat-label>
+        <input matInput appearance="standard" placeholder="MobileNo" name="MobileNo"
+          [(ngModel)]="clientMaster.MobileNo" />
+      </mat-form-field>
+      
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-card-header>
+      <mat-action-list>
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="searchClient(clientMaster);">
+          <mat-icon>search</mat-icon>Search
+        </button>
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+        (click)="reset()">
+        <mat-icon>refresh</mat-icon>Cancel
+      </button>
+      </mat-action-list>
+    </mat-card-header>
+  </mat-sidenav>

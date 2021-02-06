@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // this.authenticationService.logout();
-    this.model.username = "asdasd@asd.com";
+    this.model.username = "admin@taxblock.in";
     this.model.password = "12345";
     this.returnUrl =
       this.route.snapshot.queryParams["returnUrl"] || "dashboard";

@@ -11,42 +11,42 @@ using System.Text;
 
 namespace iTSoft.CRM.Data.Repository.Master
 {
-    public class CustomerRepository : BaseRepository
+    public class ClientRepository : BaseRepository
     {
         public IDbConnection dbConnection;
-        public CustomerRepository()
+        public ClientRepository()
         {
             dbConnection = base.GetConnection();
         }
-        private const string PROC_EmployeeManager = "PROC_EmployeeManager";
+        private const string PROC_ClientManager = "PROC_ClientManager";
 
-        public ResponseCode Save(CustomerMaster Customer)
+        public ResponseCode Save(ClientMaster Customer)
         {
             ResponseCode result = ResponseCode.Failed;
             using (IDbConnection dbConnection = base.GetConnection())
             {
-                string flag = Customer.CustomerId > 0 ? ActionFlag.Update : ActionFlag.Add;
+                string flag = Customer.ClientId > 0 ? ActionFlag.Update : ActionFlag.Add;
                 DynamicParameters param = new DynamicParameters(Customer);
                 param.Add("@Action", flag);
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
-                dbConnection.Execute(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure);
+                dbConnection.Execute(PROC_ClientManager, param, commandType: CommandType.StoredProcedure);
                 result = (ResponseCode)param.Get<int>("@Result");
             }
             return result;
         }
 
-        public List<CustomerMaster> GetAll()
+        public List<ClientMaster> SearchClient(ClientMaster clientMaster)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
-                DynamicParameters param = new DynamicParameters();
-                param.Add("@Action", "SearchEmployee");
-                List<CustomerMaster> customerData = dbConnection.Query<CustomerMaster>(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure).ToList();
+                DynamicParameters param = new DynamicParameters(clientMaster);
+                param.Add("@Action", "Search");
+                List<ClientMaster> customerData = dbConnection.Query<ClientMaster>(PROC_ClientManager, param, commandType: CommandType.StoredProcedure).ToList();
                 return customerData;
             }
         }
 
-        public List<CustomerMaster> GetCustomerInfo(EmployeeMasterSearchParam searchParam)
+        public List<ClientMaster> GetCustomerInfo(EmployeeMasterSearchParam searchParam)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
@@ -55,33 +55,33 @@ namespace iTSoft.CRM.Data.Repository.Master
                 param.Add("@MiddleName", searchParam.MiddleName);
                 param.Add("@LastName", searchParam.LastName);
                 param.Add("@Action", "GetEmployeeInfo");
-                List<CustomerMaster> customerData = dbConnection.Query<CustomerMaster>(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure).ToList();
+                List<ClientMaster> customerData = dbConnection.Query<ClientMaster>(PROC_ClientManager, param, commandType: CommandType.StoredProcedure).ToList();
                 return customerData;
             }
         }
 
-        public CustomerMaster Find(long CustomerId)
+        public ClientMaster Find(long CustomerId)
         {
-            CustomerMaster result;
+            ClientMaster result;
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters();
                 param.Add("@CustomerId", CustomerId);
                 param.Add("@Action", ActionFlag.Find);
-                result = dbConnection.Query<CustomerMaster>(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                result = dbConnection.Query<ClientMaster>(PROC_ClientManager, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }
             return result;
         }
-        public ResponseCode Delete(CustomerMaster Customer)
+        public ResponseCode Delete(ClientMaster Customer)
         {
             ResponseCode result = ResponseCode.Failed;
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters();
                 param.Add("@Action", "Delete");
-                param.Add("@CustomerId", Customer.CustomerId);
+                param.Add("@CustomerId", Customer.ClientId);
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
-                dbConnection.Execute(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure);
+                dbConnection.Execute(PROC_ClientManager, param, commandType: CommandType.StoredProcedure);
                 result = (ResponseCode)param.Get<int>("@Result");
             }
             return result;

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace iTSoft.CRM.Data.Entity.Master
 {
-    public class CustomerMaster
+    public class ClientMaster
     {
-        public long CustomerId { get; set; }
+        public long ClientId { get; set; }
         public int? GenderId { get; set; }
-        public string CustomerName { get; set; }
+        public string ClientName { get; set; }
         public long? OrganizationId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -49,5 +49,6 @@ namespace iTSoft.CRM.Data.Entity.Master
         public DateTime? AddedDate { get; set; }
         public long? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
+        public string CorporateName { get; set; }
     }
 }

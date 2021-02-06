@@ -4,24 +4,29 @@ using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Services.Master;
 using iTSoft.CRM.Web.Controllers;
 using iTSoft.CRM.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
 
 namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
-    public class CustomerMasterController : BaseController
+
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class ClientController : BaseController
     {
         ILogger _logger = null;
-        CustomerService CustomerMasterService = null;
-        public CustomerMasterController()
+        ClientService CustomerMasterService = null;
+        public ClientController()
         {
             _logger = Logger.GetLogger();
-            CustomerMasterService = new CustomerService();
+            CustomerMasterService = new ClientService();
         }
 
         [HttpPost]
-        public IActionResult Save(CustomerMaster CustomerMaster)
+        public IActionResult Save(ClientMaster CustomerMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -37,13 +42,13 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        public IActionResult GetAll()
+        [HttpPost("searchClient")]
+        public IActionResult SearchClient(ClientMaster clientMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
-                var CustomerDetails = CustomerMasterService.GetAll();
+                var CustomerDetails = CustomerMasterService.SearchClient(clientMaster);
                 if (CustomerDetails == null || CustomerDetails.Count < 1)
                     response.ResponseCode = ResponseCode.NotFound;
                 else
@@ -89,7 +94,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                CustomerMaster CustomerMaster = CustomerMasterService.Find(CustomerId);
+                ClientMaster CustomerMaster = CustomerMasterService.Find(CustomerId);
                 if (CustomerMaster != null)
                 {
                     response.ResponseCode = ResponseCode.Success;
@@ -109,7 +114,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(CustomerMaster CustomerMaster)
+        public IActionResult Delete(ClientMaster CustomerMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
