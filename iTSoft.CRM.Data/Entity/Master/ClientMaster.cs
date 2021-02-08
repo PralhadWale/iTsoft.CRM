@@ -51,4 +51,12 @@ namespace iTSoft.CRM.Data.Entity.Master
         public DateTime? UpdatedDate { get; set; }
         public string CorporateName { get; set; }
     }
+
+
+    public  class ClientDetails : ClientMaster
+    {
+        public bool? IsAssigned { get; set; }
+        public string   DepartmentName { get; set; }
+        public decimal? Amount { get; set; }
+    }
 }

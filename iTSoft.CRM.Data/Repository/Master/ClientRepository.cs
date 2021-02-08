@@ -35,13 +35,13 @@ namespace iTSoft.CRM.Data.Repository.Master
             return result;
         }
 
-        public List<ClientMaster> SearchClient(ClientMaster clientMaster)
+        public List<ClientDetails> SearchClient(ClientDetails clientMaster)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters(clientMaster);
                 param.Add("@Action", "Search");
-                List<ClientMaster> customerData = dbConnection.Query<ClientMaster>(PROC_ClientManager, param, commandType: CommandType.StoredProcedure).ToList();
+                List<ClientDetails> customerData = dbConnection.Query<ClientDetails>(PROC_ClientManager, param, commandType: CommandType.StoredProcedure).ToList();
                 return customerData;
             }
         }

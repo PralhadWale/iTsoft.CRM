@@ -43,7 +43,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost("searchClient")]
-        public IActionResult SearchClient(ClientMaster clientMaster)
+        public IActionResult SearchClient(ClientDetails clientMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try

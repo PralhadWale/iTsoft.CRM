@@ -21,7 +21,7 @@ namespace iTSoft.CRM.Domain.Services.Master
             return clientRepository.Save(Customer);
         }
 
-        public List<ClientMaster> SearchClient(ClientMaster clientMaster)
+        public List<ClientDetails> SearchClient(ClientDetails clientMaster)
         {
             return clientRepository.SearchClient(clientMaster);
         }

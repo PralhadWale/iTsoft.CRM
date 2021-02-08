@@ -12,7 +12,7 @@ import { ClientMaster } from '../client.model';
 })
 export class ClientlistComponent implements OnInit {
 
-  @ViewChild("clientNav") sidenav: MatSidenav;
+  @ViewChild("searchClientNav") searchNav: MatSidenav;
   pageTitle: string = "Client List"
 
   clientList: Array<any>;
@@ -20,6 +20,8 @@ export class ClientlistComponent implements OnInit {
   tableSettings: TableDefaultSettings;
   clientMaster: ClientMaster = null;
 
+  clientTypes : Array<string> = ['Assigned','Un-Assigned','All'];
+  selectedClientType : string = "Assigned"; 
   constructor(private clientService: ClientService, private alertService: AlertService) {
 
   }
@@ -35,13 +37,13 @@ export class ClientlistComponent implements OnInit {
     if (!$event.toolbarItem) {
       if ($event.command.commandType == CommandType.Edit) {
         this.clientMaster = Object.assign({}, $event.rowData);
-        this.sidenav.open();
+        this.searchNav.open();
       }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Search) {
         this.reset();
-        this.sidenav.open();
+        this.searchNav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
 
@@ -61,8 +63,8 @@ export class ClientlistComponent implements OnInit {
 
 
     this.clientMaster = this.clientService.NewClient();
-    if (this.sidenav != null) {
-      this.sidenav.close();
+    if (this.searchNav != null) {
+      this.searchNav.close();
     }
 
 
@@ -71,8 +73,21 @@ export class ClientlistComponent implements OnInit {
   
   Search(clientMaster:ClientMaster)
   {
+    if(this.selectedClientType == "Assigned")
+    {
+      clientMaster.IsAssigned = true;
+    }
+    else  if(this.selectedClientType == "Un-Assigned")
+    {
+      clientMaster.IsAssigned = false;
+    }
+    else 
+    {
+      clientMaster.IsAssigned = null;
+    }
     this.clientService.SearchClient(clientMaster).subscribe(result => {
       this.clientList = result.Value.ResponseData;
+      this.searchNav.close();
     }, error => {
       this.alertService.showErrorMessage(error.error);
     });
@@ -81,7 +96,7 @@ export class ClientlistComponent implements OnInit {
   SetTableSchema() {
       this.tableSettings = new TableDefaultSettings();
       this.tableSettings.ShowToolBar = true;
-      this.tableSettings.ToolBarItems = [ToolBarItems.Search, ToolBarItems.Refresh];
+      this.tableSettings.ToolBarItems = [ToolBarItems.Add,ToolBarItems.Search, ToolBarItems.Refresh];
   
       this.clientTableSchema =
         [
@@ -93,6 +108,8 @@ export class ClientlistComponent implements OnInit {
           { ColumnField: "MobileNo", ColumnHeader: "Mobile No", Type: "text" },
           { ColumnField: "AlternateMobileNo" , ColumnHeader : "Alternate Mobile" , Type:"text" },
           { ColumnField: "CorporateName" , ColumnHeader : "Corporate Name" , Type:"text" },
+          { ColumnField: "DepartmentName" , ColumnHeader : "Department Name" , Type:"text" },
+          { ColumnField: "Amount" , ColumnHeader : "Amount" , Type:"text" },
           { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
         ];
   }

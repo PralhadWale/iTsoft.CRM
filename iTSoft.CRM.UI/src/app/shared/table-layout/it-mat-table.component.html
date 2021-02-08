@@ -12,7 +12,7 @@
     </mat-form-field>
   </mat-toolbar-row>
 </mat-toolbar>
-  <div class="mat-elevation-z8" style="overflow-x: scroll !important">
+  <div class="mat-elevation-z8" style="overflow-x: scroll !important; max-height: 70vh;overflow: auto;">
     <table mat-table [dataSource]="tableDataSource">
       <ng-container matColumnDef="{{col.ColumnField}}" *ngFor="let col of tableSchema;">
         <th mat-header-cell *matHeaderCellDef>

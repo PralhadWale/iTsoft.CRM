@@ -11,7 +11,7 @@
 </mat-card>
 
 
-<mat-sidenav class="search-panel" position="end" dark #clientNav mode="push" opened="false">
+<mat-sidenav class="search-panel" position="end" dark #searchClientNav mode="push" opened="false">
     <mat-card class="profile-card">
       <mat-card-header>
         <div mat-card-avatar class="avatar">
@@ -52,7 +52,14 @@
         <input matInput appearance="standard" placeholder="MobileNo" name="MobileNo"
           [(ngModel)]="clientMaster.MobileNo" />
       </mat-form-field>
-      
+  
+    </mat-nav-list>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-radio-group aria-labelledby="client-radio-group-label" class="client-radio-group" [(ngModel)]="selectedClientType">
+        <mat-radio-button class="client-radio-button" *ngFor="let clientType of clientTypes" [value]="clientType">
+          {{clientType}}
+        </mat-radio-button>
+    </mat-radio-group>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>

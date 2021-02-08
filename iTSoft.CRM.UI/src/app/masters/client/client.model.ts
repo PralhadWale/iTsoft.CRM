@@ -43,4 +43,7 @@ export class ClientMaster {
     AddedDate: Date | null;
     UpdatedBy: number | null;
     UpdatedDate: Date | null;
+    IsAssigned : boolean;
+    DepartmentName : string;
+    Amount : number;
 }
