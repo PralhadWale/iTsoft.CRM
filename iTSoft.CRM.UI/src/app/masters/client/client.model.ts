@@ -46,4 +46,6 @@ export class ClientMaster {
     IsAssigned : boolean;
     DepartmentName : string;
     Amount : number;
+    AdvisorId : number;
+    AdvisorName:string;
 }

@@ -44,6 +44,7 @@ namespace iTSoft.CRM.Data.Entity.Master
         public string OfficeState { get; set; }
         public string OfficePinCode { get; set; }
         public string Password { get; set; }
+        public long AdvisorId { get; set; }
         public Byte[] ProfilePhoto { get; set; }
         public long? AddedBy { get; set; }
         public DateTime? AddedDate { get; set; }
@@ -58,5 +59,6 @@ namespace iTSoft.CRM.Data.Entity.Master
         public bool? IsAssigned { get; set; }
         public string   DepartmentName { get; set; }
         public decimal? Amount { get; set; }
+        public  string  AdvisorName { get; set; }
     }
 }

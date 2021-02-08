@@ -110,6 +110,7 @@ export class ClientlistComponent implements OnInit {
           { ColumnField: "CorporateName" , ColumnHeader : "Corporate Name" , Type:"text" },
           { ColumnField: "DepartmentName" , ColumnHeader : "Department Name" , Type:"text" },
           { ColumnField: "Amount" , ColumnHeader : "Amount" , Type:"text" },
+          { ColumnField: "AdvisorName" , ColumnHeader : "Advisor" , Type:"text" },
           { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
         ];
   }
