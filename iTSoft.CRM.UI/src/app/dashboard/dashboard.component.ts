@@ -10,6 +10,7 @@ import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layo
 import { AuthenticationService } from '../_services';
 import { UserProfilService } from '../_services/userProfile.Service';
 import { RevenueDashboardData } from '../_models/revenueDashboardData';
+import { DashboardSearchParameters, DashboardService, DepartmentWiseRevenueDashboardViewModel, LeadSourceDashboardViewModel, LeadStatusDashboardViewModel, RevenueTargetDashboardViewModel, TopNEmployeeDashboardViewModel } from './dashboard.service';
 
 
 interface InfoBox {
@@ -43,8 +44,16 @@ export class DashboardComponent implements OnInit {
   chartColspan = 1;
   infoBoxes: InfoBox[] = [];
 
+  leadSources: Array<LeadSourceDashboardViewModel> = [];
+  leadStatus : Array<LeadStatusDashboardViewModel> = [];
+  topEmployees : Array<TopNEmployeeDashboardViewModel> = [];
+  departmentRevenue : Array<DepartmentWiseRevenueDashboardViewModel> = [];
+  revenueTarget : RevenueTargetDashboardViewModel = new RevenueTargetDashboardViewModel();
+  
+
   constructor(
     private userProfile: UserProfilService,
+    private dashboardService : DashboardService,
     private breakpointObserver: BreakpointObserver,) {
     // this.mediaQueryList = mediaMatcher.matchMedia('(min-width: 640px)');
     // this.mediaQueryMin = mediaMatcher.matchMedia('(min-width: 960px)');
@@ -57,8 +66,91 @@ export class DashboardComponent implements OnInit {
       this.onScreensizeChange()
     });
 
-    this.LoadRevenueDashboard();
+    //this.LoadRevenueDashboard();
+
+    this.SetAdminDashboard();
   }
+
+
+  SetAdminDashboard() {
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    let dashbordSearchParam = new DashboardSearchParameters();
+    dashbordSearchParam.FromDate  = firstDay;
+    dashbordSearchParam.ToDate = lastDay;
+    
+    this.dashboardService.GetLeadSourceDashboard(dashbordSearchParam).subscribe(result => {
+      if(result.Value.ResponseCode == 1)
+      {
+      this.leadSources = result.Value.ResponseData;
+      }
+    },(error => {
+    }));
+
+    this.dashboardService.GetDepartmentWiseRevenueDashboard(dashbordSearchParam).subscribe(result => {
+      if(result.Value.ResponseCode == 1)
+      {
+      this.departmentRevenue = result.Value.ResponseData;
+      }
+    },(error => {
+    }));
+
+    this.dashboardService.GetLeadStatusDashboard(dashbordSearchParam).subscribe(result => {
+      if(result.Value.ResponseCode == 1)
+      {
+      this.leadStatus = result.Value.ResponseData;
+      }
+    },(error => {
+    }));
+
+    this.dashboardService.GetRevenueTargetDashboard(dashbordSearchParam).subscribe(result => {
+      if(result.Value.ResponseCode == 1)
+      {
+      this.revenueTarget = result.Value.ResponseData;
+
+      this.infoBoxes = [
+        {
+          bgClass: "user-registration",
+          icon: "account_balance",
+          title: "Expected Revenue",
+          subtitle: this.revenueTarget.MonthlyTarget.toString(),
+        },
+        {
+          bgClass: "new-order",
+          icon: "account_balance_wallet",
+          title: "Lead. Generated",
+          subtitle: this.revenueTarget.TotalLeadGenerated.toString(),
+        },
+        {
+          bgClass: "user-registration",
+          icon: "card_travel",
+          title: "Total Achieved",
+          subtitle: this.revenueTarget.TotalAchieved.toString(),
+        }
+      ]
+
+    }
+  },(error => {
+    }));
+
+    dashbordSearchParam.NumberOfEmployees = 5;
+    this.dashboardService.GetTopNEmployeeDashboard(dashbordSearchParam).subscribe(result => {
+      if(result.Value.ResponseCode == 1)
+      {
+      this.topEmployees = result.Value.ResponseData;
+      }
+    },(error => {
+    }));
+
+
+  }
+
+
+
+
+
   LoadRevenueDashboard() {
     this.userProfile.getUseRevenueDashboard().subscribe((result) => {
       let revenueDashboardData = <RevenueDashboardData>result.Value;

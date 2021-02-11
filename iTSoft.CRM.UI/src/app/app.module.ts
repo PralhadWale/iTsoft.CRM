@@ -26,7 +26,6 @@ import { UserProfilService } from './_services/userProfile.Service';
 @NgModule({
   declarations: [
     LoginComponent,
-    DashboardComponent,
     AboutComponent,
     NotFoundPageComponent,
     ConfirmDialog,
