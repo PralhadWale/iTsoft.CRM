@@ -48,6 +48,10 @@ export class RequestMaster
 
     Amount: number;
 
+    AgreedAmount : number;
+    
+    RevenueAmount:number;
+
     ClientBehaviourId: number;
 
     DepartmentId : number;

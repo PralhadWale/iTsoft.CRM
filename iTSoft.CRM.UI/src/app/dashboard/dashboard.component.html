@@ -1,93 +1,94 @@
 <!-- <mat-sidenav-container> -->
-  <hr/>
-  <div class="grid-container">
-    <mat-grid-list cols="{{ ( cardLayout | async )?.columns }}" rowHeight="100px" [rowspan]="( cardLayout | async )?.miniCard.rows">
-      <!--Mini Cards-->
-      <mat-grid-tile *ngFor="let mc of infoBoxes" [colspan]="( cardLayout | async )?.miniCard.cols"
-        [rowspan]="( cardLayout | async )?.miniCard.rows">
-        <app-mini-card [icon]="mc.icon" [title]="mc.title" [value]="mc.value" [color]="mc.color" [isIncrease]="mc.isIncrease" duration="since last month" [percentValue]="mc.percentValue" [isCurrency]="mc. isCurrency"></app-mini-card>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
-        <app-card title="Lead Source Dashboard">
-            <div class="table-responsive">
-                <table class="dashboard-table">
-                    <thead class="text-warning">
-                        <th>Lead Source </th>
-                        <th>Leads Created</th>
-                        <th>Converted To Clients</th>
-                        <th>Conversion Rate In Percent</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let d of leadSources;">
-                            <td>{{d.LeadSourceName}}</td>
-                            <td>{{d.LeadsCreated}}</td>
-                            <td>{{d.ConvertedToClients}}</td>
-                            <td>{{d.ConversionRateInPercent}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </app-card>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
-        <app-card title="Lead Status Dasbhboard">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="text-warning">
-                        <th>Lead Status</th>
-                        <th>Request Count</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let e of leadStatus;">
-                            <td>{{e.LeadStatusName}}</td>
-                            <td>{{e.RequestCount}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </app-card>
-    </mat-grid-tile>
+<hr />
+<div class="grid-container">
+    <mat-grid-list cols="{{ ( cardLayout | async )?.columns }}" rowHeight="100px">
+        <!--Mini Cards-->
+        <mat-grid-tile *ngFor="let mc of infoBoxes" [colspan]="( cardLayout | async )?.miniCard.cols"  [rowspan]="( cardLayout | async )?.miniCard.rows">
+            <app-mini-card [icon]="mc.icon" [title]="mc.title" [value]="mc.value" [color]="mc.color"
+                [isIncrease]="mc.isIncrease" duration="since last month" [percentValue]="mc.percentValue"
+                [isCurrency]="mc. isCurrency"></app-mini-card>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+            <app-card title="Lead Source Dashboard">
+                <div class="table-responsive">
+                    <table class="dashboard-table">
+                        <thead class="text-warning">
+                            <th>Lead Source </th>
+                            <th>Leads Created</th>
+                            <th>Converted To Clients</th>
+                            <th>Conversion Rate In Percent</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of leadSources;">
+                                <td>{{d.LeadSourceName}}</td>
+                                <td>{{d.LeadsCreated}}</td>
+                                <td>{{d.ConvertedToClients}}</td>
+                                <td>{{d.ConversionRateInPercent}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </app-card>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+            <app-card title="Lead Status Dasbhboard">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="text-warning">
+                            <th>Lead Status</th>
+                            <th>Request Count</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let e of leadStatus;">
+                                <td>{{e.LeadStatusName}}</td>
+                                <td>{{e.RequestCount}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </app-card>
+        </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
-        <app-card title="Departmentwise Revenue">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="text-warning">
-                        <th>Name</th>
-                        <th>Revenue Generated</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let d of departmentRevenue;">
-                            <td>{{d.DepartmentName}}</td>
-                            <td>{{d.RevenueGenerated}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </app-card>
-    </mat-grid-tile>
+        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+            <app-card title="Departmentwise Revenue">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="text-warning">
+                            <th>Name</th>
+                            <th>Revenue Generated</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of departmentRevenue;">
+                                <td>{{d.DepartmentName}}</td>
+                                <td>{{d.RevenueGenerated}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </app-card>
+        </mat-grid-tile>
 
 
-    <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
-        <app-card title="Top Employees">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="text-warning">
-                        <th>Name</th>
-                        <th>Target Amount</th>
-                        <th>Revenue Generated</th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let employee of topEmployees;">
-                            <td>{{employee.EmployeeName}}</td>
-                            <td>{{employee.TargetAmount}}</td>
-                            <td>{{employee.RevenueGenerated}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </app-card>
-    </mat-grid-tile>
-      <!--Charts-->
+        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+            <app-card title="Top Employees">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="text-warning">
+                            <th>Name</th>
+                            <th>Target Amount</th>
+                            <th>Revenue Generated</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let employee of topEmployees;">
+                                <td>{{employee.EmployeeName}}</td>
+                                <td>{{employee.TargetAmount}}</td>
+                                <td>{{employee.RevenueGenerated}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </app-card>
+        </mat-grid-tile>
+        <!--Charts-->
     </mat-grid-list>
-  </div>
+</div>

@@ -56,8 +56,9 @@ namespace iTSoft.CRM.Data.Entity.Process
         public string Address { get; set; }
 
         public string TermsAndCondition { get; set; }
-
         public decimal? Amount { get; set; }
+        public decimal? AgreedAmount { get; set; }
+        public decimal? RevenueAmount { get; set; }
 
         public long? ClientBehaviourId { get; set; }
 

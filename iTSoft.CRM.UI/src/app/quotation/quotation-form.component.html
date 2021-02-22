@@ -105,6 +105,15 @@
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Agreed Amount</mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.AgreedAmount" name="AgreedAmount" #AgreedAmount="ngModel" required>
+              <mat-error *ngIf="(AgreedAmount.touched || quotationForm.submitted) && AgreedAmount.errors?.required">
+                Agreed Amount Is required
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
           <mat-grid-tile [colspan]="12">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Terms & Condition</mat-label>
