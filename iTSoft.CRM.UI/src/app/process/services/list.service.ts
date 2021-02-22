@@ -38,4 +38,9 @@ export class ListService {
         return this.apiService.GetData(getUrl);
     }
 
+    GetClientSelectList() {
+        let getUrl = this.listController + "get-client-select-list";
+        return this.apiService.GetData(getUrl);
+    }
+
 }

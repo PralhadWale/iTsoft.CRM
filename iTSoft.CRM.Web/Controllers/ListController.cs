@@ -92,7 +92,7 @@ namespace iTSoft.CRM.Web.Controllers
             catch (Exception ex)
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
-                _logger.Error(ex, "List - GetFollowupSelectList");
+                _logger.Error(ex, "List - GetEmployeeSelectList");
             }
             return Ok(response);
         }
@@ -109,7 +109,29 @@ namespace iTSoft.CRM.Web.Controllers
             catch (Exception ex)
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
-                _logger.Error(ex, "List - GetFollowupSelectList");
+                _logger.Error(ex, "List - GetAdvisorSelectList");
+            }
+            return Ok(response);
+        }
+
+
+        [HttpGet("get-client-select-list")]
+        public IActionResult GetClientSelectList()
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = new
+                {
+                    Advisors = _listService.GetAdvisors(),
+                    Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId))
+                };
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetClientSelectList");
             }
             return Ok(response);
         }

@@ -86,8 +86,8 @@ export class ServicelistComponent implements OnInit {
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
-        { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+        // { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
+        // { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
       ];
 
 

@@ -25,13 +25,13 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             CustomerMasterService = new ClientService();
         }
 
-        [HttpPost]
+        [HttpPost("save")]
         public IActionResult Save(ClientMaster CustomerMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
-                CustomerMaster.Password = new EncryptionHelper().Encrypt(CustomerMaster.Password);
+                //CustomerMaster.Password = new EncryptionHelper().Encrypt(CustomerMaster.Password);
                 response.ResponseCode = CustomerMasterService.Save(CustomerMaster);
             }
             catch (Exception ex)

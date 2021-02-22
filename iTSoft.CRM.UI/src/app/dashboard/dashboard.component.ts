@@ -11,13 +11,17 @@ import { AuthenticationService } from '../_services';
 import { UserProfilService } from '../_services/userProfile.Service';
 import { RevenueDashboardData } from '../_models/revenueDashboardData';
 import { DashboardSearchParameters, DashboardService, DepartmentWiseRevenueDashboardViewModel, LeadSourceDashboardViewModel, LeadStatusDashboardViewModel, RevenueTargetDashboardViewModel, TopNEmployeeDashboardViewModel } from './dashboard.service';
+import { map } from 'rxjs/internal/operators/map';
 
 
 interface InfoBox {
-  bgClass: string;
-  icon: string;
-  title: string;
-  subtitle: string;
+    title: string;
+    value: string;
+    isIncrease: boolean;
+    color: string;
+    percentValue: string;
+    icon: string;
+    isCurrency: boolean;
 }
 
 /**
@@ -31,6 +35,27 @@ interface InfoBox {
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
+
+  cardLayout = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]).pipe(
+    map(({ matches }) => {
+      if (matches) { 
+        return {
+          columns: 1,
+          miniCard: { cols: 1, rows: 1 },
+          chart: { cols: 1, rows: 2 },
+          table: { cols: 1, rows: 4 },
+        };
+      }
+
+     return {
+        columns: 6,
+        miniCard: { cols: 2, rows: 2 },
+        chart: { cols: 3, rows: 3 },
+        table: { cols: 3, rows: 3 },
+      };
+    })
+  );
+  
 
   colNum: number = 2;
   rowHeight = '120px';
@@ -111,24 +136,10 @@ export class DashboardComponent implements OnInit {
       this.revenueTarget = result.Value.ResponseData;
 
       this.infoBoxes = [
-        {
-          bgClass: "user-registration",
-          icon: "account_balance",
-          title: "Expected Revenue",
-          subtitle: this.revenueTarget.MonthlyTarget.toString(),
-        },
-        {
-          bgClass: "new-order",
-          icon: "account_balance_wallet",
-          title: "Lead. Generated",
-          subtitle: this.revenueTarget.TotalLeadGenerated.toString(),
-        },
-        {
-          bgClass: "user-registration",
-          icon: "card_travel",
-          title: "Total Achieved",
-          subtitle: this.revenueTarget.TotalAchieved.toString(),
-        }
+          { title: "Expected Revenue", value: this.revenueTarget.MonthlyTarget.toString(), isIncrease: false, color: "accent", percentValue: "0.2544", icon: "local_atm", isCurrency: true },
+          { title: "Lead. Generated", value: this.revenueTarget.TotalLeadGenerated.toString(), isIncrease: true, color: "warn", percentValue: "0.4565", icon: "shopping_cart", isCurrency: false },
+          { title: "Total Achieved", value: this.revenueTarget.TotalAchieved.toString(), isIncrease: true, color: "primary", percentValue: "0.5383", icon: "payments", isCurrency: true },
+         // { title: "Returning Customers", value: "35", isIncrease: false, color: "primary", percentValue: "0.8361", icon: "portrait", isCurrency: false }
       ]
 
     }
@@ -146,61 +157,6 @@ export class DashboardComponent implements OnInit {
 
 
   }
-
-
-
-
-
-  LoadRevenueDashboard() {
-    this.userProfile.getUseRevenueDashboard().subscribe((result) => {
-      let revenueDashboardData = <RevenueDashboardData>result.Value;
-
-
-      this.infoBoxes = [
-        {
-          bgClass: "user-registration",
-          icon: "account_balance",
-          title: "Total Exp Revenue",
-          subtitle: revenueDashboardData.TotalExpRevenue.toString(),
-        },
-        {
-          bgClass: "new-order",
-          icon: "account_balance_wallet",
-          title: "Total Act. Revenue",
-          subtitle: revenueDashboardData.TotalActRevenue.toString(),
-        },
-        {
-          bgClass: "user-registration",
-          icon: "card_travel",
-          title: "Monthly Exp Revenue",
-          subtitle: revenueDashboardData.MonthlyExpRevenue.toString(),
-        },
-        {
-          bgClass: "new-order",
-          icon: "card_travel",
-          title: "Monthly Act. Revenue",
-          subtitle: revenueDashboardData.MonthlyActRevenue.toString(),
-        },
-        {
-          bgClass: "user-registration",
-          icon: "card_travel",
-          title: "Today's Exp. Revenue",
-          subtitle: revenueDashboardData.TodaysExpRevenue.toString(),
-        },
-        {
-          bgClass: "new-order",
-          icon: "card_travel",
-          title: "Today's Act. Revenue",
-          subtitle: revenueDashboardData.TodaysActRevenue.toString(),
-        },
-
-      ];
-
-    }, (error) => {
-
-    });
-  }
-
 
 
 

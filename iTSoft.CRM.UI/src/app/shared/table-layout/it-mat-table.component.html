@@ -22,8 +22,8 @@
         </th>
         <td mat-cell *matCellDef="let element" (click)="onMatCellClick(element[col.ColumnField]);">
           <div *ngIf="!element.isEdit">
-            <div class="btn-edit cell-fab" *ngIf="col.Command != null;else spanfield" style="justify-content:right;">
-              <button mat-mini-fab *ngFor="let command of col.Command;" [ngStyle]="command.style"
+            <div class="btn-edit" *ngIf="col.Command != null;else spanfield" style="justify-content:right;">
+              <button  mat-icon-button class="cell-fab_U" *ngFor="let command of col.Command;" [ngStyle]="command.style"
                 (click)="commandClick($event , element,col,command)">
                 <mat-icon *ngIf="command.icon">{{command.icon}}</mat-icon>
               </button>
@@ -49,4 +49,5 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

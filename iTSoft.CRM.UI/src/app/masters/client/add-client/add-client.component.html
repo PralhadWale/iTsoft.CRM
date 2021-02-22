@@ -1,0 +1,143 @@
+<form #clientForm="ngForm">
+  <mat-sidenav class="big-search-panel" position="end" position="end" dark #sidenav mode="push" opened="false">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          <mat-icon>queue</mat-icon>
+        </div>
+        <mat-card-title>
+
+        </mat-card-title>
+        <mat-card-title>
+          {{title}}
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+    <input type="hidden" [(ngModel)]="clientMaster.ClientId" name="ClientId" />
+    <mat-grid-list cols="12" rowHeight="80px" style="padding-top: 20px;">
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput type='text' [(ngModel)]="clientMaster.FirstName" name="FirstName" #FirstName="ngModel"
+            maxlength="50" required>
+          <mat-error *ngIf="(FirstName.touched || clientForm.submitted)">
+            Please enter valid first name
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Middle Name</mat-label>
+          <input matInput type='text' [(ngModel)]="clientMaster.MiddleName" name="MiddleName" #MiddleName="ngModel"
+            maxlength="50" required>
+          <mat-error *ngIf="(MiddleName.touched || clientForm.submitted)">
+            Please enter valid middle name
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput type='text' [(ngModel)]="clientMaster.LastName" name="LastName" #LastName="ngModel"
+            maxlength="50" required>
+          <mat-error *ngIf="(LastName.touched || clientForm.submitted)">
+           Please enter valid last name
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Corporate Name</mat-label>
+          <input matInput type='text' [(ngModel)]="clientMaster.CorporateName" name="CorporateName"
+            #CorporateName="ngModel" maxlength="250">
+          <mat-error *ngIf="(CorporateName.touched || clientForm.submitted)">
+            Please enter valid corporate name
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>PAN No</mat-label>
+          <input matInput type='text' [(ngModel)]="clientMaster.PANNo" name="PANNo" #PANNo="ngModel" maxlength="250"
+          pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"  required>
+          <mat-error *ngIf="(PANNo.touched || clientForm.submitted)">
+           Please enter valid PAN No
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Mobile No</mat-label>
+          <input matInput type='text' [(ngModel)]="clientMaster.MobileNo" name="MobileNo" #MobileNo="ngModel"
+            maxlength="12" minlength="10" required>
+          <mat-error *ngIf="(MobileNo.touched || clientForm.submitted)">
+            Please enter valid mobile number
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type='email' [(ngModel)]="clientMaster.Email" name="Email" #Email="ngModel" maxlength="100"
+            minlength="3" required>
+          <mat-error *ngIf="(Email.touched || clientForm.submitted)">
+            Please enter valid email
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Date of birth</mat-label>
+          <input matInput [matDatepicker]="doB" [(ngModel)]="clientMaster.DoB" name="DoB" required>
+          <mat-datepicker-toggle matSuffix [for]="doB"></mat-datepicker-toggle>
+          <mat-datepicker #doB color="primary"></mat-datepicker>
+          <mat-error *ngIf="(clientForm.submitted)">Please select valid date of birth.</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="fieldColspan">
+        <!-- colspan="4"> -->
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Advisor</mat-label>
+          <mat-select placeholder="Advisor" [(ngModel)]="clientMaster.AdvisorId" name="AdvisorId"
+            [(value)]="clientMaster.AdvisorId" #AdvisorId="ngModel" required>
+            <mat-option *ngFor="let item of clientSelectListModel.Advisors" [value]="item.Value">
+              {{item.Text}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="(AdvisorId.touched || clientForm.submitted)">Please select advisor.</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <mat-divider></mat-divider>
+    <mat-card-header>
+      <mat-action-list>
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="onSubmit(clientForm)">
+          <mat-icon>save</mat-icon>Save
+        </button>
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+          (click)="onCancelClick()">
+          <mat-icon>cancel</mat-icon>Cancel
+        </button>
+      </mat-action-list>
+    </mat-card-header>
+  </mat-sidenav>
+</form>

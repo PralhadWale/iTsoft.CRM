@@ -66,19 +66,15 @@ th{
     }
     
     .cell-fab_U {
-        width: 20px;
-        height: 20px;
-        line-height: 14px;
-        font-size: 14px;
+        width: 24px;
+        height: 24px;
+        line-height: 16px;
+        font-size: 16px;
    
         &::ng-deep .mat-button-wrapper{
-            line-height: 14px;
-            padding: 0;
-   
+          
              .mat-icon {
-                 font-size: 14px;
-                 padding-right: 4px;
-                 padding-top: 4px;
+                 font-size: 16px;
              }
        }
    }

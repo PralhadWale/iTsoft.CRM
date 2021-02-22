@@ -9,8 +9,6 @@
         (onCommandClick)='onCommandClick($event)'></it-mat-table>
     </mat-card-content>
 </mat-card>
-
-
 <mat-sidenav class="search-panel" position="end" dark #searchClientNav mode="push" opened="false">
     <mat-card class="profile-card">
       <mat-card-header>
@@ -75,3 +73,4 @@
       </mat-action-list>
     </mat-card-header>
   </mat-sidenav>
+  <app-add-client  #addClient (onClientSaved)="onClientSaved()"></app-add-client>

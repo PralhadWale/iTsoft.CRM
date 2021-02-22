@@ -73,7 +73,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     amount: {
       required: "Enquiry amount is required.",
       range:
-        "Amount of the enquiry must be between 1 (lowest) and 9999 (highest)."
+        "Amount of the enquiry must be between 1 (lowest) and 9999999 (highest)."
     },
     quantity: {
       required: "Enquiry quantity is required.",
@@ -138,7 +138,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       LeadStatusId: [""],
       StageId: [""],
       TermsAndCondition: [""],
-      Amount: ["", [Validators.required, NumberValidators.range(1, 99999)]],
+      Amount: ["", [Validators.required, NumberValidators.range(1, 999999999999)]],
       ClientBehaviourId: [""],
       DepartmentId: [""]
 

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { stringify } from 'querystring';
 
@@ -19,12 +20,13 @@ export class ITMatTableComponent implements OnInit , OnChanges {
   @Output() onRefreshClick = new EventEmitter();
   @Output() onCommandClick = new EventEmitter<CommandEventArgs>();
   
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = [];
-  tableDataSource = new MatTableDataSource<any>();
+  tableDataSource = new MatTableDataSource<any>([]);
  
-  commandDefaultStyles: Array<CommandModel> = [{},{ click: null, commandType: CommandType.Edit, icon: 'edit', content: 'edit', style: { 'background-color': 'teal', 'min-height': '30px', 'margin': '5px' } },
-  { click: null, commandType: CommandType.Delete, icon: 'delete', content: 'delete', style: { 'background-color': 'lightblue', 'min-height': '30px', 'margin': '5px' } },
-  { click: null, commandType: CommandType.Delete, icon: 'visibility', content: 'view', style: { 'background-color': 'pink', 'min-height': '30px', 'margin': '5px' } }];
+  commandDefaultStyles: Array<CommandModel> = [{},{ click: null, commandType: CommandType.Edit, icon: 'edit', content: 'edit', style: { 'background-color': 'teal',  'margin': '5px' } },
+  { click: null, commandType: CommandType.Delete, icon: 'delete', content: 'delete', style: { 'background-color': 'lightblue',  'margin': '5px' } },
+  { click: null, commandType: CommandType.Delete, icon: 'visibility', content: 'view', style: { 'background-color': 'pink',  'margin': '5px' } }];
 
 
   toolBarItems: Array<CommandModel> = [{}, { icon: 'queue', style: { 'margin-right': '10px', 'background-color': '#e07c9e' } },
@@ -50,6 +52,7 @@ export class ITMatTableComponent implements OnInit , OnChanges {
     this.SetTable();
   }
 
+  
   ngOnChanges(changes: SimpleChanges) {
     if (changes.tableSchema) {
       this.tableSchema = changes.tableSchema.currentValue;
@@ -60,6 +63,7 @@ export class ITMatTableComponent implements OnInit , OnChanges {
 
     if (changes.dataSource) {
     this.dataSource = changes.dataSource.currentValue;
+   
     }
   
     this.SetTable();
@@ -90,6 +94,9 @@ export class ITMatTableComponent implements OnInit , OnChanges {
   // Refresh Table datasource. it will fire change detection and will reflect datasource changes on table.
   RefreshDataSource() {
     this.tableDataSource.data = this.dataSource;
+    if (this.dataSource != null) {
+      this.tableDataSource.paginator = this.paginator;
+    }
   }
 
   applyFilter(filterValue) {

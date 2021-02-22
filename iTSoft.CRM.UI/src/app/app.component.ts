@@ -7,6 +7,7 @@ import { iTCRMLoaderService } from './core/services/ITSoftLoaderService';
 import { iTCRMAlertService } from './core/services/ITSoftAlertService';
 import { NavItem } from './_layout/models/nav-item';
 import { NavService } from './_layout/services/nav.service';
+import { UserRole } from './_models/userRole';
 
 @Component({
   selector: 'app-root',
@@ -29,89 +30,7 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
 
   
   version = 1.0;
-  navItems: NavItem[] = [
-    {
-      displayName: 'Dashboard',
-      iconName: 'insert_chart_outline',
-      route: 'dashboard',
-     
-    },
-    {
-      displayName: 'Follow Up',
-      iconName: 'account_tree',
-      route: 'followup',
-    },
-    {
-      displayName: 'Enquiries',
-      iconName: 'perm_phone_msg',
-      route: 'enquiries',
-     
-    },
-    {
-      displayName: 'Quotations',
-      iconName: 'account_tree',
-      route: 'quotations',
-    },
-    {
-      displayName: 'Clients',
-      iconName: 'person_pin',
-      route: 'clients',
-    },
-    {
-      displayName: 'Masters',
-      iconName: 'videocam',
-      route: 'masters',
-      children: [
-        {
-          displayName: 'Service',
-          iconName: 'group',
-          route: 'masters/service',
-        },
-        {
-          displayName: 'Stage',
-          iconName: 'group',
-          route: 'masters/stage',
-        },
-        {
-          displayName: 'Status',
-          iconName: 'group',
-          route: 'masters/status',
-        },
-        {
-          displayName: 'Source',
-          iconName: 'group',
-          route: 'masters/source',
-        },
-        {
-          displayName: 'Designation',
-          iconName: 'group',
-          route: 'masters/designation',
-        },
-        {
-          displayName: 'Department',
-          iconName: 'museum',
-          route: 'masters/department',
-        },
-        {
-          displayName: 'Employee',
-          iconName: 'person_pin',
-          route: 'employees',
-        },
-      ]
-    },
-    {
-      displayName: 'Reports',
-      iconName: 'videocam',
-      route: '',
-      children: [
-        {
-          displayName: 'Follow up report',
-          iconName: 'account_tree',
-          route: 'follow-up-report',
-        }
-      ]
-    }
-  ];
+  navItems: NavItem[] = [];
 
   constructor(
     private loaderService: iTCRMLoaderService,
@@ -159,6 +78,12 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
   ngOnInit(): void {
     console.log(" ngOnInit")
     this.user = this.authService.getUser();
+    
+    if(this.user != null)
+    {
+      this.navItems = this.navService.GetRoleMenu(<UserRole>this.user.RoleId);
+    }
+
     this.isloading = false;
 
     this.loaderService.status.subscribe((val: boolean) => {
@@ -189,6 +114,7 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
   isAuth(isAuth?: any) {
     if (isAuth) {
       this.user = this.authService.getUser()
+      this.navItems = this.navService.GetRoleMenu(<UserRole>this.user.RoleId);
       // this.user = JSON.parse(localStorage.getItem(APP_USER_PROFILE)) || <User>{};
     }
   }
