@@ -16,6 +16,8 @@ import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
 import { AlertService } from '../_services';
 import { AssignRequestAvisorComponent } from "../process/assign-request-advisor/assign-request-advisor.component";
+import { ConfigurationSettings } from "../_models/configuration";
+import { UserRole } from "../_models/userRole";
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
@@ -30,10 +32,13 @@ export class EnquiryListComponent implements OnInit {
   searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Enquiry);
 
   enquiryList: Array<any>;
+  selectedEnquiryList:Array<RequestDetails>;
   enquiryTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   requestSelectList: RequestSelectListModel = new RequestSelectListModel();
   requestDetails : RequestDetails  = new RequestDetails();
+
+
   constructor(
     private requestService: RequestService,
     private listService: ListService,
@@ -58,6 +63,7 @@ export class EnquiryListComponent implements OnInit {
         this.router.navigate(['/enquiries/edit/', rowData.RequestId]);
       }
       else  if ($event.command.content == "transfer") {
+        this.selectedEnquiryList =[];
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
         this.requestDetails = rowData;
         this.requestDetails.TransferPendingFollowUp = true;
@@ -74,6 +80,20 @@ export class EnquiryListComponent implements OnInit {
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
         this.getEnquiries();
+      }
+      else if ($event.toolbarItem == ToolBarItems.Transfer) {
+          this.selectedEnquiryList = $event.selectedItems;
+
+          if(this.selectedEnquiryList == null || this.selectedEnquiryList.length == null || this.selectedEnquiryList.length == 0)
+          {
+            this.alertService.showErrorMessage("Please select at least one enquiry to transfer");
+          }
+          else 
+          {
+            this.requestDetails = new RequestDetails();
+            
+            this.assignAdvisor.sidenav.open();
+          }
       }
     }
 
@@ -118,13 +138,12 @@ export class EnquiryListComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search];
-    
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search , ToolBarItems.Transfer];
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit},
       //{ commandType: CommandType.View},
     // { commandType: CommandType.Other,icon:'transfer_within_a_station'}
-      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true }
     ];
 
     this.enquiryTableSchema =
@@ -143,6 +162,9 @@ export class EnquiryListComponent implements OnInit {
       ];
 
 
+      if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId !== UserRole.Advisor) {
+        this.enquiryTableSchema.unshift({ ColumnField: "IsSelected", ColumnHeader: "", Type: "boolean" })
+      }
   
   }
 

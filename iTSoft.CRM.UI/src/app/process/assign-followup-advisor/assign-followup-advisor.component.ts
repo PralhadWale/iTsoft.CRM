@@ -17,6 +17,7 @@ export class AssignFollowUpAvisorComponent implements OnInit {
   @ViewChild("assignsidenav") sidenav: MatSidenav;
 
   @Input() followUpDetails: FollowUpDetails;
+  @Input() multipleFollowUpDetails : Array<FollowUpDetails>;
   @Output() onAssigned = new EventEmitter();
 
   errorMessage: any;
@@ -44,19 +45,27 @@ export class AssignFollowUpAvisorComponent implements OnInit {
     {
       this.followUpDetails = changes.followUpDetails.currentValue;
     }
+
+    if(changes.multipleFollowUpDetails)
+    {
+      this.multipleFollowUpDetails = changes.multipleFollowUpDetails.currentValue;
+    }
+
   }
 
   public SetRequestDefaultData() {
     if (this.followUpDetails == null) {
       this.followUpDetails = new FollowUpDetails();
     }
-
+    
+    this.multipleFollowUpDetails =[];
     
 
   }
 
   clearData() {
     this.followUpDetails = new FollowUpDetails();
+    this.multipleFollowUpDetails =[];
   }
 
 

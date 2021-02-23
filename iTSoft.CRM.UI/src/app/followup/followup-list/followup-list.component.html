@@ -62,4 +62,4 @@
     </mat-card-header>
   </mat-sidenav>
 <app-add-followup  #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>
-<app-assign-followup-advisor #assignAdvisor [followUpDetails]="followUpDetails" (onAssigned)="onAssigned()"></app-assign-followup-advisor>
+<app-assign-followup-advisor #assignAdvisor [followUpDetails]="followUpDetails" [multipleFollowUpDetails]="selectedFollowUpDetails" (onAssigned)="onAssigned()"></app-assign-followup-advisor>

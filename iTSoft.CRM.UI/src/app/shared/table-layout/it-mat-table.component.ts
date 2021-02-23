@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { stringify } from 'querystring';
-
+import {SelectionModel} from '@angular/cdk/collections';
 @Component({
   selector: 'it-mat-table',
   templateUrl: './it-mat-table.component.html',
@@ -21,8 +21,10 @@ export class ITMatTableComponent implements OnInit , OnChanges {
   @Output() onCommandClick = new EventEmitter<CommandEventArgs>();
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  
   displayedColumns: string[] = [];
   tableDataSource = new MatTableDataSource<any>([]);
+  selection = new SelectionModel<any>(true, []);
  
   commandDefaultStyles: Array<CommandModel> = [{},{ click: null, commandType: CommandType.Edit, icon: 'edit', content: 'edit', style: { 'background-color': 'teal',  'margin': '5px' } },
   { click: null, commandType: CommandType.Delete, icon: 'delete', content: 'delete', style: { 'background-color': 'lightblue',  'margin': '5px' } },
@@ -31,13 +33,17 @@ export class ITMatTableComponent implements OnInit , OnChanges {
 
   toolBarItems: Array<CommandModel> = [{}, { icon: 'queue', style: { 'margin-right': '10px', 'background-color': '#e07c9e' } },
   { icon: 'search', style: { 'margin-right': '10px', 'background-color': '#a28b6e' } },
-  { icon: 'refresh', style: { 'margin-right': '10px', 'background-color': '#darkgray' } }];
+  { icon: 'refresh', style: { 'margin-right': '10px', 'background-color': '#darkgray' } },
+  { icon: 'transfer_within_a_station', style: { 'margin-right': '10px', 'background-color': 'green' } },
+];
 
 
   constructor() {
+    
     if (!this.tableSettings) {
       this.tableSettings = new TableDefaultSettings();
       this.tableSettings.ShowToolBar = false;
+      this.tableSettings.ShowTransferToolBarItem = false;
       this.tableSettings.AllowEdit = false;
       
     }
@@ -45,7 +51,14 @@ export class ITMatTableComponent implements OnInit , OnChanges {
     if(this.tableSettings.ShowToolBar && (this.tableSettings.ToolBarItems == null || this.tableSettings.ToolBarItems.length == 0))
     {
       this.tableSettings.ToolBarItems = [ ToolBarItems.Add, ToolBarItems.Refresh,ToolBarItems.Search];
+
     }
+
+    // if(this.tableSettings.ShowToolBar && this.tableSettings.ShowTransferToolBarItem)
+    // {
+    //   this.tableSettings.ToolBarItems .push(ToolBarItems.Transfer)
+    // }
+
   }
 
   ngOnInit(): void {
@@ -63,6 +76,7 @@ export class ITMatTableComponent implements OnInit , OnChanges {
 
     if (changes.dataSource) {
     this.dataSource = changes.dataSource.currentValue;
+    this.selection.clear();
    
     }
   
@@ -119,18 +133,32 @@ export class ITMatTableComponent implements OnInit , OnChanges {
 
   commandClick($event:any , element:any , col:TableColumnModel , command : CommandModel)
   {
-     let commandEventArgs : CommandEventArgs = { $event : $event , rowData : element, column : col , command:command };
+     let commandEventArgs : CommandEventArgs = { $event : $event , rowData : element, column : col , command:command , selectedItems:this.selection.selected };
      this.onCommandClick.emit(commandEventArgs);
   }
 
   toolBarCommandClick($event:any , command : CommandModel , toolbarItem : ToolBarItems)
   {
-    let commandEventArgs : CommandEventArgs = { $event : $event , command:command , toolbarItem : toolbarItem };
+    let commandEventArgs : CommandEventArgs = { $event : $event , command:command , toolbarItem : toolbarItem , selectedItems:this.selection.selected};
     this.onCommandClick.emit(commandEventArgs);
   }
 
   onMatCellClick(cellValue) {
     let value = cellValue;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.tableDataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.tableDataSource.data.forEach(row => this.selection.select(row));
   }
 }
 
@@ -149,6 +177,7 @@ export class TableDefaultSettings {
   ShowToolBar: boolean = false;
   AllowEdit: boolean = false;
   ToolBarItems: Array<ToolBarItems> = [];
+  ShowTransferToolBarItem: boolean;
 }
 
 export class CommandModel
@@ -168,6 +197,7 @@ export class CommandEventArgs
   column?:TableColumnModel;
   command?:CommandModel;
   toolbarItem? : ToolBarItems;
+  selectedItems : Array<any>;
 }
 
 export class SelectListItem {
@@ -180,6 +210,7 @@ export enum ToolBarItems
   Add=1,
   Search=2,
   Refresh=3,
+  Transfer
 }
 
 

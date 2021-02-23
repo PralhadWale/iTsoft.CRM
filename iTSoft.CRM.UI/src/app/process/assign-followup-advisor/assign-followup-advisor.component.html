@@ -11,7 +11,7 @@
     </mat-card-header>
   </mat-card>
   <mat-nav-list style="margin-left:10px;">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" *ngIf="followUpDetails!= null && followUpDetails.FollowUpId > 0">
       <mat-label>Request No</mat-label>
       <input matInput appearance="outline" placeholder="RequestNo" name="RequestNo" [(ngModel)]="followUpDetails.RequestNo" #RequestNo readonly/>
     </mat-form-field>

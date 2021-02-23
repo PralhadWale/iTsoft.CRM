@@ -7,11 +7,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
-import { AuthenticationService } from '../_services';
 import { UserProfilService } from '../_services/userProfile.Service';
-import { RevenueDashboardData } from '../_models/revenueDashboardData';
 import { DashboardSearchParameters, DashboardService, DepartmentWiseRevenueDashboardViewModel, LeadSourceDashboardViewModel, LeadStatusDashboardViewModel, RevenueTargetDashboardViewModel, TopNEmployeeDashboardViewModel } from './dashboard.service';
 import { map } from 'rxjs/internal/operators/map';
+import { ConfigurationSettings } from '../_models/configuration';
+import { UserRole } from '../_models/userRole';
 
 
 interface InfoBox {
@@ -74,10 +74,10 @@ export class DashboardComponent implements OnInit {
   topEmployees : Array<TopNEmployeeDashboardViewModel> = [];
   departmentRevenue : Array<DepartmentWiseRevenueDashboardViewModel> = [];
   revenueTarget : RevenueTargetDashboardViewModel = new RevenueTargetDashboardViewModel();
-  
+  isAdmin:boolean = false;
 
   constructor(
-    private userProfile: UserProfilService,
+  
     private dashboardService : DashboardService,
     private breakpointObserver: BreakpointObserver,) {
     // this.mediaQueryList = mediaMatcher.matchMedia('(min-width: 640px)');
@@ -105,30 +105,42 @@ export class DashboardComponent implements OnInit {
     let dashbordSearchParam = new DashboardSearchParameters();
     dashbordSearchParam.FromDate  = firstDay;
     dashbordSearchParam.ToDate = lastDay;
-    
-    this.dashboardService.GetLeadSourceDashboard(dashbordSearchParam).subscribe(result => {
-      if(result.Value.ResponseCode == 1)
-      {
-      this.leadSources = result.Value.ResponseData;
-      }
-    },(error => {
-    }));
 
-    this.dashboardService.GetDepartmentWiseRevenueDashboard(dashbordSearchParam).subscribe(result => {
-      if(result.Value.ResponseCode == 1)
-      {
-      this.departmentRevenue = result.Value.ResponseData;
-      }
-    },(error => {
-    }));
+    if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId == UserRole.Admin) {
+      this.isAdmin = true;
 
-    this.dashboardService.GetLeadStatusDashboard(dashbordSearchParam).subscribe(result => {
-      if(result.Value.ResponseCode == 1)
-      {
-      this.leadStatus = result.Value.ResponseData;
-      }
-    },(error => {
-    }));
+
+      this.dashboardService.GetLeadSourceDashboard(dashbordSearchParam).subscribe(result => {
+        if (result.Value.ResponseCode == 1) {
+          this.leadSources = result.Value.ResponseData;
+        }
+      }, (error => {
+      }));
+
+      this.dashboardService.GetDepartmentWiseRevenueDashboard(dashbordSearchParam).subscribe(result => {
+        if (result.Value.ResponseCode == 1) {
+          this.departmentRevenue = result.Value.ResponseData;
+        }
+      }, (error => {
+      }));
+
+      this.dashboardService.GetLeadStatusDashboard(dashbordSearchParam).subscribe(result => {
+        if (result.Value.ResponseCode == 1) {
+          this.leadStatus = result.Value.ResponseData;
+        }
+      }, (error => {
+      }));
+
+      dashbordSearchParam.NumberOfEmployees = 5;
+      this.dashboardService.GetTopNEmployeeDashboard(dashbordSearchParam).subscribe(result => {
+        if(result.Value.ResponseCode == 1)
+        {
+        this.topEmployees = result.Value.ResponseData;
+        }
+      },(error => {
+      }));
+
+    }
 
     this.dashboardService.GetRevenueTargetDashboard(dashbordSearchParam).subscribe(result => {
       if(result.Value.ResponseCode == 1)
@@ -146,14 +158,7 @@ export class DashboardComponent implements OnInit {
   },(error => {
     }));
 
-    dashbordSearchParam.NumberOfEmployees = 5;
-    this.dashboardService.GetTopNEmployeeDashboard(dashbordSearchParam).subscribe(result => {
-      if(result.Value.ResponseCode == 1)
-      {
-      this.topEmployees = result.Value.ResponseData;
-      }
-    },(error => {
-    }));
+   
 
 
   }

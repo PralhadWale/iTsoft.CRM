@@ -11,7 +11,7 @@
     </mat-card-header>
   </mat-card>
   <mat-nav-list style="margin-left:10px;">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" *ngIf="requestDetails!= null && requestDetails.RequestId > 0">
       <mat-label>Request No</mat-label>
       <input matInput appearance="outline" placeholder="RequestNo" name="RequestNo" [(ngModel)]="requestDetails.RequestNo" #RequestNo readonly/>
     </mat-form-field>

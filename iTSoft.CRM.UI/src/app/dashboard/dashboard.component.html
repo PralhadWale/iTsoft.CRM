@@ -1,14 +1,14 @@
 <!-- <mat-sidenav-container> -->
 <hr />
 <div class="grid-container">
-    <mat-grid-list cols="{{ ( cardLayout | async )?.columns }}" rowHeight="100px">
+    <mat-grid-list cols="{{ ( cardLayout | async )?.columns }}" rowHeight="130px">
         <!--Mini Cards-->
         <mat-grid-tile *ngFor="let mc of infoBoxes" [colspan]="( cardLayout | async )?.miniCard.cols"  [rowspan]="( cardLayout | async )?.miniCard.rows">
             <app-mini-card [icon]="mc.icon" [title]="mc.title" [value]="mc.value" [color]="mc.color"
                 [isIncrease]="mc.isIncrease" duration="since last month" [percentValue]="mc.percentValue"
                 [isCurrency]="mc. isCurrency"></app-mini-card>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+        <mat-grid-tile  *ngIf="leadSources && leadSources.length > 0" [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
             <app-card title="Lead Source Dashboard">
                 <div class="table-responsive">
                     <table class="dashboard-table">
@@ -30,17 +30,19 @@
                 </div>
             </app-card>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+        <mat-grid-tile *ngIf="leadStatus && leadStatus.length > 0" [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
             <app-card title="Lead Status Dasbhboard">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="dashboard-table">
                         <thead class="text-warning">
                             <th>Lead Status</th>
                             <th>Request Count</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let e of leadStatus;">
-                                <td>{{e.LeadStatusName}}</td>
+                                <td class="status" style="text-align: left">
+                                    <span class="status-text status-orange">&nbsp; {{e.LeadStatusName}}</span>
+                                </td>
                                 <td>{{e.RequestCount}}</td>
                             </tr>
                         </tbody>
@@ -49,7 +51,7 @@
             </app-card>
         </mat-grid-tile>
 
-        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+        <!-- <mat-grid-tile *ngIf="leadStatus && departmentRevenue.length > 0" [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
             <app-card title="Departmentwise Revenue">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -69,7 +71,7 @@
         </mat-grid-tile>
 
 
-        <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
+        <mat-grid-tile *ngIf="topEmployees && topEmployees.length > 0" [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
             <app-card title="Top Employees">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -88,7 +90,7 @@
                     </table>
                 </div>
             </app-card>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
         <!--Charts-->
     </mat-grid-list>
 </div>

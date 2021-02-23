@@ -11,6 +11,8 @@ import { FollowUpDetails } from 'src/app/_models/followupdetails';
 import { FollowUpSerchParameters } from 'src/app/_models/followupserchparameters';
 import { ListModel } from 'src/app/_models/listmodel';
 import { RequestType } from 'src/app/_models/requesttype';
+import { UserRole } from 'src/app/_models/userRole';
+import { AlertService } from 'src/app/_services';
 
 @Component({
   selector: 'app-followup-list',
@@ -26,11 +28,13 @@ export class FollowupListComponent implements OnInit {
   followUpTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   followUpDetails : FollowUpDetails  = new FollowUpDetails();
+  selectedFollowUpDetails : Array<FollowUpDetails> = [];
 
   followUpSearchParam : FollowUpSerchParameters = new FollowUpSerchParameters();
   public advisorSelectList : Array<ListModel> =[];  
   public IsAdvisor : boolean = true;
   constructor(private followUpService : FollowupService,
+      private alertService : AlertService,
       private listService : ListService, 
       private router : Router) { 
        this.IsAdvisor = ConfigurationSettings.User.RoleId == 2;
@@ -62,6 +66,7 @@ export class FollowupListComponent implements OnInit {
       }
       else if($event.command.commandType == CommandType.Other  && $event.command.content == 'transfer')
       {
+        this.selectedFollowUpDetails =[];
         this.followUpDetails = rowData;
         this.assignAdvisor.sidenav.open();
         
@@ -90,6 +95,17 @@ export class FollowupListComponent implements OnInit {
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
            this.getFollowUp();
+      }
+      else if ($event.toolbarItem == ToolBarItems.Transfer) {
+        this.selectedFollowUpDetails = $event.selectedItems;
+
+        if (this.selectedFollowUpDetails == null || this.selectedFollowUpDetails.length == null || this.selectedFollowUpDetails.length == 0) {
+          this.alertService.showErrorMessage("Please select at least one quotation to transfer");
+        }
+        else {
+          this.followUpDetails = new FollowUpDetails();
+          this.assignAdvisor.sidenav.open();
+        }
       }
     }
 
@@ -126,13 +142,13 @@ export class FollowupListComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems =[ ToolBarItems.Search , ToolBarItems.Refresh]
+    this.tableSettings.ToolBarItems =[ ToolBarItems.Search , ToolBarItems.Refresh ,ToolBarItems.Transfer]
     
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.View },
       { commandType: CommandType.Edit },
-      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true },
-      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
+      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true },
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true }
     ];
     
     this.followUpTableSchema =
@@ -151,6 +167,9 @@ export class FollowupListComponent implements OnInit {
       ];
 
 
+      if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId !== UserRole.Advisor) {
+        this.followUpTableSchema.unshift({ ColumnField: "IsSelected", ColumnHeader: "", Type: "boolean" })
+      }
    
   }
 

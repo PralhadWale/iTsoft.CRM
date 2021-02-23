@@ -14,8 +14,10 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 
 import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
-import { AlertService } from '../_services';
+import { AlertService, AuthenticationService } from '../_services';
 import { AssignRequestAvisorComponent } from '../process/assign-request-advisor/assign-request-advisor.component';
+import { UserRole } from '../_models/userRole';
+import { ConfigurationSettings } from '../_models/configuration';
 
 @Component({
   selector: 'quotation-list',
@@ -25,7 +27,7 @@ import { AssignRequestAvisorComponent } from '../process/assign-request-advisor/
 })
 export class QuotationListComponent implements OnInit {
   @ViewChild("sidenav") sidenav: MatSidenav;
-  @ViewChild("assignAdvisor")  assignAdvisor : AssignRequestAvisorComponent;
+  @ViewChild("assignAdvisor") assignAdvisor: AssignRequestAvisorComponent;
 
   pageTitle: string = 'Quotations';
 
@@ -37,7 +39,8 @@ export class QuotationListComponent implements OnInit {
   quotationTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   requestSelectList: RequestSelectListModel = new RequestSelectListModel();
-  requestDetails : RequestDetails  = new RequestDetails();
+  requestDetails: RequestDetails = new RequestDetails();
+  selectedQuotationList: Array<RequestDetails> = [];
   constructor(
     private requestService: RequestService,
     private listService: ListService,
@@ -62,8 +65,9 @@ export class QuotationListComponent implements OnInit {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
         this.router.navigate(['/quotations/edit/', rowData.RequestId]);
       }
-      else  if ($event.command.content == "transfer") {
+      else if ($event.command.content == "transfer") {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
+        this.selectedQuotationList = [];
         this.requestDetails = rowData;
         this.requestDetails.TransferPendingFollowUp = true;
         this.assignAdvisor.sidenav.open();
@@ -79,6 +83,18 @@ export class QuotationListComponent implements OnInit {
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
         this.getQuotations();
       }
+      else if ($event.toolbarItem == ToolBarItems.Transfer) {
+        this.selectedQuotationList = $event.selectedItems;
+
+        if (this.selectedQuotationList == null || this.selectedQuotationList.length == null || this.selectedQuotationList.length == 0) {
+          this.alertService.showErrorMessage("Please select at least one quotation to transfer");
+        }
+        else {
+          this.requestDetails = new RequestDetails();
+
+          this.assignAdvisor.sidenav.open();
+        }
+      }
     }
 
   }
@@ -88,13 +104,12 @@ export class QuotationListComponent implements OnInit {
     this.sidenav.toggle();
   }
 
-  onAssigned()
-  {
+  onAssigned() {
     this.getQuotations();
   }
 
   searchQuotations(searchFilter: any) {
-   this.getQuotations();
+    this.getQuotations();
   }
 
   LoadSelectListData() {
@@ -121,25 +136,30 @@ export class QuotationListComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search];
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search , ToolBarItems.Transfer];
 
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit },
-      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '30px', 'margin': '5px' } , customstyle : true }
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true }
     ];
 
     this.quotationTableSchema =
       [
+
         { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
         { ColumnField: "Title", ColumnHeader: "Title", Type: "text" },
         { ColumnField: "CompanyName", ColumnHeader: "Company Name", Type: "text" },
         { ColumnField: "LeadSourceName", ColumnHeader: "Source", Type: "text" },
-        { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
+        { ColumnField: "Department", ColumnHeader: "Department", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }
       ];
+
+    if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId !== UserRole.Advisor) {
+      this.quotationTableSchema.unshift({ ColumnField: "IsSelected", ColumnHeader: "", Type: "boolean" })
+    }
   }
 }

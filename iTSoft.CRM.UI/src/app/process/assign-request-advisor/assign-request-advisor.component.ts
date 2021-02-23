@@ -17,6 +17,7 @@ export class AssignRequestAvisorComponent implements OnInit {
   @ViewChild("assignsidenav") sidenav: MatSidenav;
 
   @Input() requestDetails: RequestDetails;
+  @Input() multipleRequestDetails : Array<RequestDetails>;
   @Output() onAssigned = new EventEmitter();
 
   errorMessage: any;
@@ -45,16 +46,23 @@ export class AssignRequestAvisorComponent implements OnInit {
       this.requestDetails = changes.requestDetails.currentValue;
     }
     
+    if(changes.multipleRequestDetails)
+    {
+      this.multipleRequestDetails = changes.multipleRequestDetails.currentValue;
+    }
   }
 
   public SetRequestDefaultData() {
     if (this.requestDetails == null) {
       this.requestDetails = new RequestDetails();
     }
+
+    this.multipleRequestDetails = [];
   }
 
   clearData() {
     this.requestDetails = new RequestDetails();
+    this.multipleRequestDetails = [];
   }
 
   LoadSelectListData() {

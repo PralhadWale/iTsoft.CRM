@@ -16,6 +16,11 @@
     <table mat-table [dataSource]="tableDataSource">
       <ng-container matColumnDef="{{col.ColumnField}}" *ngFor="let col of tableSchema;">
         <th mat-header-cell *matHeaderCellDef>
+          <span *ngIf="col.Type == 'boolean' && col.ColumnField === 'IsSelected'">
+            <mat-checkbox class="form-check-input headerCheckBox" (change)="$event ? masterToggle() : null" style="background-color: white !important;"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+          </span>
           <span *ngIf="col.ColumnField !== '$$edit'">
             {{col.ColumnHeader}}
           </span>
@@ -38,7 +43,12 @@
               <span *ngIf="col.Type == 'datetime'">
                 {{element[col.ColumnField] | date:'dd-MMM-yyyy HH:mm' }}
               </span>
-              <span *ngIf="col.Type == 'boolean'">
+              <span *ngIf="col.Type == 'boolean' && col.ColumnField === 'IsSelected'">
+                <mat-checkbox class="form-check-input" [(ngModel)]="element[col.ColumnField]" (click)="$event.stopPropagation()"
+                (change)="$event ? selection.toggle(element) : null"
+                [checked]="selection.isSelected(element)"></mat-checkbox>
+              </span>
+              <span *ngIf="col.Type == 'boolean' && col.ColumnField !== 'IsSelected'">
                 <mat-checkbox class="form-check-input" [(ngModel)]="element[col.ColumnField]" readonly></mat-checkbox>
               </span>
 

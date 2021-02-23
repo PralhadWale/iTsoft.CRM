@@ -1,4 +1,4 @@
-$bg: #1b2431;
+$bg: #273142;
 $light-text: #738297;
 $dark-text: #273142;
 $light-bg: #313D4F;
@@ -13,13 +13,12 @@ app-line-chart, app-bar-chart, app-radar-chart, app-pie-chart {
 
 /* Table Layout */
 .dashboard-table {
-	background: #273142;
+	background  : $bg;
 	width: 100%;
-	margin-top: 50px;
 	td,
 	th {
 		color: white !important;
-		padding: 10px 22px !important;
+		padding: 5px 11px !important;
 		vertical-align: middle !important;;
 	}
 	
@@ -72,7 +71,7 @@ app-line-chart, app-bar-chart, app-radar-chart, app-pie-chart {
 	.status-text {
 		display: inline-block;
 		font-size: 12px;
-		margin: 11px 0;
+		margin: 5px 0;
 		padding-left: 20px;
 		position: relative;
 		
