@@ -44,7 +44,7 @@ export class ClientlistComponent implements OnInit {
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Search) {
-        this.reset();
+       // this.reset();
         this.searchNav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
@@ -78,6 +78,7 @@ export class ClientlistComponent implements OnInit {
 
 
   Search(clientMaster: ClientMaster) {
+    this.clientList = [];
     if (this.selectedClientType == "Assigned") {
       clientMaster.IsAssigned = true;
     }

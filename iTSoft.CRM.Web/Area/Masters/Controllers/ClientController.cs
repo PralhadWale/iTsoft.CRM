@@ -49,13 +49,9 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             try
             {
                 var CustomerDetails = CustomerMasterService.SearchClient(clientMaster);
-                if (CustomerDetails == null || CustomerDetails.Count < 1)
-                    response.ResponseCode = ResponseCode.NotFound;
-                else
-                {
-                    response.ResponseData = CustomerDetails;
-                    response.ResponseCode = ResponseCode.Success;
-                }
+                response.ResponseData = CustomerDetails;
+                response.ResponseCode = ResponseCode.Success;
+                
             }
             catch (Exception ex)
             {
