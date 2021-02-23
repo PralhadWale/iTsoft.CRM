@@ -80,7 +80,20 @@ export class AssignRequestAvisorComponent implements OnInit {
   onSubmit() {
     if(this.requestDetails.AdvisorId!= null && this.requestDetails.AdvisorId > 0)
     {
-      this.requestService.AssignRequest(this.requestDetails).subscribe(
+      if(this.multipleRequestDetails.length > 0)
+      {
+        this.multipleRequestDetails.forEach(item => 
+        { 
+            item.AdvisorId = this.requestDetails.AdvisorId ; 
+            item.TransferPendingFollowUp = this.requestDetails.TransferPendingFollowUp
+        });
+      }
+      else 
+      {
+        this.multipleRequestDetails.push(this.requestDetails);
+      }
+
+      this.requestService.AssignRequest(this.multipleRequestDetails).subscribe(
         (result)=>
         {
           this.sidenav.close();

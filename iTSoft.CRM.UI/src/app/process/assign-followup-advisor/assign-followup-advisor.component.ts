@@ -84,10 +84,24 @@ export class AssignFollowUpAvisorComponent implements OnInit {
 
  
 
-  onSubmit() {
+  onSubmit() 
+  {
     if(this.followUpDetails.AdvisorId!= null && this.followUpDetails.AdvisorId > 0)
     {
-      this.followUpService.Assign(this.followUpDetails).subscribe(
+      if(this.multipleFollowUpDetails.length > 0)
+      {
+        this.multipleFollowUpDetails.forEach(item => 
+        { 
+            item.AdvisorId = this.followUpDetails.AdvisorId ; 
+            item.TransferWithRequest = this.followUpDetails.TransferWithRequest
+        });
+      }
+      else 
+      {
+        this.multipleFollowUpDetails.push(this.followUpDetails);
+      }
+
+      this.followUpService.Assign(this.multipleFollowUpDetails).subscribe(
         (result)=>
         {
           this.clearData();

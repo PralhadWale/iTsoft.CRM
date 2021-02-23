@@ -17,7 +17,7 @@ namespace iTSoft.CRM.Domain.Services.Process
     {
         ResponseCode SaveRequest(RequestViewModel requestViewModel);
 
-        ResponseCode AssignRequest(AssignAdvisorViewModel requestViewModel);
+        ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels);
         RequestViewModel LoadRequest(long requestId);
 
         List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
@@ -85,15 +85,13 @@ namespace iTSoft.CRM.Domain.Services.Process
             }
         }
 
-        public ResponseCode AssignRequest(AssignAdvisorViewModel requestViewModel)
+        public ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add(nameof(requestViewModel.AdvisorId), requestViewModel.AdvisorId);
-                param.Add(nameof(requestViewModel.RequestId), requestViewModel.RequestId);
-                param.Add(nameof(requestViewModel.UpdatedBy), requestViewModel.UpdatedBy);
-                param.Add(nameof(requestViewModel.TransferPendingFollowUp), requestViewModel.TransferPendingFollowUp);
+                DataTable requests = new ListConverter().ToDataTable<AssignAdvisorViewModel>(assignAdvisorViewModels);
+                param.Add("@RequestDetails", requests.AsTableValuedParameter("AssignAdvisorType"));
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
                 dbConnection.Execute(PROC_AssignRequest, param, commandType: CommandType.StoredProcedure);
                 return (ResponseCode)param.Get<int>("@Result");

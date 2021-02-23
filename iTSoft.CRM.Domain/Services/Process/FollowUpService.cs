@@ -16,9 +16,8 @@ namespace iTSoft.CRM.Domain.Services.Process
     public interface IFollowUpService
     {
         ResponseCode SaveFollowUp(FollowUpMaster followupMaster);
-
         List<FollowUpDetails> SearchFollowUp(FollowUpSerchParameters FollowUpSerchParameters);
-        ResponseCode AssignRequest(AssignAdvisorViewModel assignAdvisorViewModel);
+        ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels);
     }
     public class FollowUpService : GenericRepository<FollowUpMaster>, IFollowUpService
     {
@@ -73,15 +72,13 @@ namespace iTSoft.CRM.Domain.Services.Process
             }
         }
 
-        public ResponseCode AssignRequest(AssignAdvisorViewModel requestViewModel)
+        public ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add(nameof(requestViewModel.AdvisorId), requestViewModel.AdvisorId);
-                param.Add(nameof(requestViewModel.FollowUpId), requestViewModel.FollowUpId);
-                param.Add(nameof(requestViewModel.UpdatedBy), requestViewModel.UpdatedBy);
-                param.Add(nameof(requestViewModel.TransferWithRequest), requestViewModel.TransferWithRequest);
+                DataTable requests = new ListConverter().ToDataTable<AssignAdvisorViewModel>(assignAdvisorViewModels);
+                param.Add("@FollowupDetails", requests.AsTableValuedParameter("AssignAdvisorType"));
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
                 dbConnection.Execute(PROC_AssignFollowUp, param, commandType: CommandType.StoredProcedure);
                 return (ResponseCode)param.Get<int>("@Result");

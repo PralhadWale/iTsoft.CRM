@@ -16,13 +16,19 @@ export class RequestService {
 
   }
 
-  AssignRequest(requestDetails: RequestDetails) {
-    let param = {
-      AdvisorId:requestDetails.AdvisorId,
-      TransferPendingFollowUp:requestDetails.TransferPendingFollowUp,
-      RequestId : requestDetails.RequestId,
-      UpdatedBy : ConfigurationSettings.User.UserId
-    };
+  AssignRequest(requestDetails: Array<RequestDetails>) {
+
+    let param : Array<any> = [];
+
+    requestDetails.forEach(item => {
+      param.push({
+        AdvisorId: item.AdvisorId,
+        TransferPendingFollowUp: item.TransferPendingFollowUp,
+        RequestId: item.RequestId,
+        UpdatedBy: ConfigurationSettings.User.UserId
+      });
+    });
+
     let url = this.RequestController + "assign";
     return this.apiService.PostData(url, param);
   }

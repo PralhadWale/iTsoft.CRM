@@ -32,13 +32,19 @@ export class FollowupService {
     return this.apiService.PostData(url, param);
   }
 
-  Assign(followUpDetails: FollowUpDetails) {
-    let param = {
-      AdvisorId:followUpDetails.AdvisorId,
-      TransferWithRequest:followUpDetails.TransferWithRequest,
-      FollowUpId : followUpDetails.FollowUpId,
-      UpdatedBy : ConfigurationSettings.User.UserId
-    };
+  Assign(followUpDetails: Array<FollowUpDetails>) {
+    
+    let param: Array<any> = []
+
+    followUpDetails.forEach(item => {
+      param.push({
+        AdvisorId: item.AdvisorId,
+        TransferWithRequest: item.TransferWithRequest,
+        FollowUpId: item.FollowUpId,
+        UpdatedBy: ConfigurationSettings.User.UserId
+      });
+    });
+
     let url = this.followUpController + "assign";
     return this.apiService.PostData(url, param);
   }

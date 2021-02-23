@@ -46,12 +46,12 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
         }
 
         [HttpPost("assign")]
-        public IActionResult Assign(AssignAdvisorViewModel assignAdvisorViewModel)
+        public IActionResult Assign(List<AssignAdvisorViewModel> assignAdvisorViewModels)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
-                response.ResponseCode = followUpService.AssignRequest(assignAdvisorViewModel);
+                response.ResponseCode = followUpService.AssignRequest(assignAdvisorViewModels);
             }
             catch (Exception ex)
             {
