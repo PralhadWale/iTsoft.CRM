@@ -5,6 +5,8 @@ import { AlertService } from 'src/app/_services';
 import { ServiceService } from '../service.service';
 
 import { ServiceMaster } from '../service.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from 'src/app/shared';
 
 @Component({
   selector: 'app-servicelist',
@@ -20,7 +22,11 @@ export class ServicelistComponent implements OnInit {
   tableSettings: TableDefaultSettings;
   serviceMaster: ServiceMaster = null;
 
-  constructor(private serviceService: ServiceService, private alertService: AlertService) { }
+  constructor(
+    public dialog: MatDialog,
+    private serviceService: ServiceService,
+     private alertService: AlertService
+     ) { }
 
   ngOnInit(): void {
     this.reset();
@@ -36,6 +42,10 @@ export class ServicelistComponent implements OnInit {
         this.serviceMaster = Object.assign({}, $event.rowData);
         this.serviceNav.open();
       }
+      else if($event.command.commandType == CommandType.Delete)
+      {
+        this.Delete(Object.assign({}, $event.rowData));
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -43,10 +53,35 @@ export class ServicelistComponent implements OnInit {
         this.serviceNav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-
+      this.getAll();
       }
     }
 
+  }
+
+  Delete(data: ServiceMaster) {
+
+    let dialogData =  {title : "Confirm Action", message : "Are you sure ? Do you really want to delete selected record ? "};
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result == "CONFIRMED") {
+        this.serviceService.Delete(data).subscribe(result => {
+          this.alertService.showSuccessMessage("Record Deleted successfully");
+          this.reset();
+          this.getAll();
+        }, error => {
+          this.alertService.showErrorMessage(error.error);
+        });
+      }
+    });
+
+  
   }
 
 
@@ -86,8 +121,8 @@ export class ServicelistComponent implements OnInit {
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
-        // { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-        // { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+         { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
+         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType: CommandType.Delete }] }
       ];
 
 

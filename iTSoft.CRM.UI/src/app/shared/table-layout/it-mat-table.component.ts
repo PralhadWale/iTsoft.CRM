@@ -116,7 +116,7 @@ export class ITMatTableComponent implements OnInit , OnChanges {
   applyFilter(filterValue) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+    this.tableDataSource.filter = filterValue;
   }
 
   addClick($event) {

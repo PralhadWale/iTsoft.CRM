@@ -33,12 +33,10 @@ export class StatusService {
         return this.apiService.GetData(this.getUrl);
     }
 
-    // Delete(statusMaster: Status) {
-    //     return this.apiService.POST(this.deleteURL, statusMaster);
-    // }
-    Delete(StatusId: number) {
-        return this.apiService.PostData(this.deleteURL, StatusId);
+    Delete(statusMaster: StatusMaster) {
+        return this.apiService.PostData(this.deleteURL, statusMaster);
     }
+   
 
     FindStatus(StatusId: number) {
         return this.apiService.GetData(this.getStatusListUrl + "?StatusId=" + StatusId);

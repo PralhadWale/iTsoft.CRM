@@ -5,6 +5,8 @@ import { AlertService } from 'src/app/_services';
 import { DepartmentService } from '../department.service';
 
 import { DepartmentMaster } from '../department.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from 'src/app/shared';
 @Component({
   selector: 'app-departmentlist',
   templateUrl: './departmentlist.component.html',
@@ -20,7 +22,11 @@ export class DepartmentlistComponent implements OnInit {
   tableSettings: TableDefaultSettings;
   departmentMaster: DepartmentMaster = null;
 
-  constructor(private departmentService: DepartmentService, private alertService: AlertService) {
+  constructor(
+    private departmentService: DepartmentService, 
+    private alertService: AlertService,
+    public dialog: MatDialog,
+    ) {
 
   }
 
@@ -37,6 +43,10 @@ export class DepartmentlistComponent implements OnInit {
         this.departmentMaster = Object.assign({}, $event.rowData);
         this.sidenav.open();
       }
+      else if($event.command.commandType == CommandType.Delete)
+      {
+        this.Delete(Object.assign({}, $event.rowData));
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -44,7 +54,7 @@ export class DepartmentlistComponent implements OnInit {
         this.sidenav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-
+        this.getAll();
       }
     }
 
@@ -62,6 +72,29 @@ export class DepartmentlistComponent implements OnInit {
         this.alertService.showErrorMessage(error.error);
       })
     }
+  }
+
+  Delete(data: DepartmentMaster) {
+
+    let dialogData =  {title : "Confirm Action", message : "Are you sure ? Do you really want to delete selected record ? "};
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result == "CONFIRMED") {
+        this.departmentService.Delete(data).subscribe(result => {
+          this.alertService.showSuccessMessage("Record Deleted successfully");
+          this.reset();
+          this.getAll();
+        }, error => {
+          this.alertService.showErrorMessage(error.error);
+        });
+      }
+    });
   }
 
   reset() {
@@ -92,7 +125,7 @@ export class DepartmentlistComponent implements OnInit {
         [
           { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
           { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit },{ commandType: CommandType.Delete }] }
         ];
   }
 }

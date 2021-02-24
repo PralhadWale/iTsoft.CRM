@@ -6,6 +6,8 @@ import { AlertService } from 'src/app/_services';
 import { SourceService } from '../source.service';
 
 import { SourceMaster } from '../source.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from 'src/app/shared';
 
 @Component({
   selector: 'app-sourcelist',
@@ -22,7 +24,11 @@ export class SourcelistComponent implements OnInit {
   tableSettings: TableDefaultSettings;
   sourceMaster: SourceMaster = null;
 
-  constructor(private sourceService: SourceService, private alertService: AlertService) {
+  constructor(
+    public dialog: MatDialog,
+    private sourceService: SourceService,
+     private alertService: AlertService
+     ) {
 
   }
 
@@ -39,6 +45,10 @@ export class SourcelistComponent implements OnInit {
         this.sourceMaster = Object.assign({}, $event.rowData);
         this.sidenav.open();
       }
+      else if($event.command.commandType == CommandType.Delete)
+      {
+        this.Delete(Object.assign({}, $event.rowData));
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -46,7 +56,7 @@ export class SourcelistComponent implements OnInit {
         this.sidenav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-
+        this.getAll();
       }
     }
 
@@ -85,6 +95,33 @@ export class SourcelistComponent implements OnInit {
     });
   }
 
+
+  Delete(data: SourceMaster) {
+
+    let dialogData =  {title : "Confirm Action", message : "Are you sure ? Do you really want to delete selected record ? "};
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result == "CONFIRMED") {
+        this.sourceService.Delete(data).subscribe(result => {
+          this.alertService.showSuccessMessage("Record Deleted successfully");
+          this.reset();
+          this.getAll();
+        }, error => {
+          this.alertService.showErrorMessage(error.error);
+        });
+      }
+    });
+
+  
+  }
+
+
   SetTableSchema() {
       this.tableSettings = new TableDefaultSettings();
       this.tableSettings.ShowToolBar = true;
@@ -94,7 +131,7 @@ export class SourcelistComponent implements OnInit {
         [
           { ColumnField: "LeadSourceName", ColumnHeader: "Lead Source Name", Type: "text" },
           { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType :CommandType.Delete }] }
         ];
   }
 }

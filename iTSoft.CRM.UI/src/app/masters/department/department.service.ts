@@ -34,8 +34,8 @@ export class DepartmentService {
     }
 
    
-    Delete(DepartmentId: number) {
-        return this.apiService.PostData(this.deleteURL, DepartmentId);
+    Delete(record: DepartmentMaster) {
+        return this.apiService.PostData(this.deleteURL, record);
     }
 
     FindDepartment(DepartmentId: number) {

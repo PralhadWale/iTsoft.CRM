@@ -6,6 +6,8 @@ import { AlertService } from 'src/app/_services';
 import { StatusService } from '../status.service';
 
 import { StatusMaster } from '../status.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from 'src/app/shared';
 
 @Component({
   selector: 'app-statuslist',
@@ -22,7 +24,11 @@ export class StatuslistComponent implements OnInit {
   tableSettings: TableDefaultSettings;
   statusMaster: StatusMaster = null;
 
-  constructor(private statusService: StatusService, private alertService: AlertService) {
+  constructor(
+    private statusService: StatusService, 
+    private alertService: AlertService,
+    public dialog: MatDialog,
+    ) {
 
   }
 
@@ -39,6 +45,10 @@ export class StatuslistComponent implements OnInit {
         this.statusMaster = Object.assign({}, $event.rowData);
         this.sidenav.open();
       }
+      else if($event.command.commandType == CommandType.Delete)
+      {
+        this.Delete(Object.assign({}, $event.rowData));
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -46,7 +56,7 @@ export class StatuslistComponent implements OnInit {
         this.sidenav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-
+        this.getAll();
       }
     }
 
@@ -64,6 +74,29 @@ export class StatuslistComponent implements OnInit {
         this.alertService.showErrorMessage(error.error);
       })
     }
+  }
+
+  Delete(data: StatusMaster) {
+
+    let dialogData =  {title : "Confirm Action", message : "Are you sure ? Do you really want to delete selected record ? "};
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result == "CONFIRMED") {
+        this.statusService.Delete(data).subscribe(result => {
+          this.alertService.showSuccessMessage("Record Deleted successfully");
+          this.reset();
+          this.getAll();
+        }, error => {
+          this.alertService.showErrorMessage(error.error);
+        });
+      }
+    });
   }
 
   reset() {
@@ -94,7 +127,7 @@ export class StatuslistComponent implements OnInit {
         [
           { ColumnField: "LeadStatusName", ColumnHeader: "Status Name", Type: "text" },
           { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType : CommandType.Delete }] }
         ];
   }
 }

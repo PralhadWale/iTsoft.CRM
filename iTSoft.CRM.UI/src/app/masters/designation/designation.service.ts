@@ -35,8 +35,8 @@ export class DesignationService {
     }
 
    
-    Delete(DesignationId: number) {
-        return this.apiService.PostData(this.deleteURL, DesignationId);
+    Delete(record: DesignationMaster) {
+        return this.apiService.PostData(this.deleteURL, record);
     }
 
     FindDesignation(DesignationId: number) {

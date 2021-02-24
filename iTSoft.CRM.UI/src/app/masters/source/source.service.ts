@@ -34,8 +34,8 @@ export class SourceService {
     }
 
    
-    Delete(SourceId: number) {
-        return this.apiService.PostData(this.deleteURL, SourceId);
+    Delete(record: any) {
+        return this.apiService.PostData(this.deleteURL, record);
     }
 
     FindSource(SourceId: number) {

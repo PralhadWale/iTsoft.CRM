@@ -34,8 +34,8 @@ export class StageService {
     }
 
    
-    Delete(StageId: number) {
-        return this.apiService.PostData(this.deleteURL, StageId);
+    Delete(record: StageMaster) {
+        return this.apiService.PostData(this.deleteURL, record);
     }
 
     FindStage(StageId: number) {

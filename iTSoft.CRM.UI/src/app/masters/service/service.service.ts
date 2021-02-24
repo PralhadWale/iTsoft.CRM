@@ -31,8 +31,8 @@ export class ServiceService {
     GetAll() {
         return this.apiService.GetData(this.getUrl);
     }
-    Delete(ServiceId: number) {
-        return this.apiService.PostData(this.deleteURL, ServiceId);
+    Delete(serviceMaster: ServiceMaster) {
+        return this.apiService.PostData(this.deleteURL, serviceMaster);
     }
 
     FindService(ServiceId: number) {
