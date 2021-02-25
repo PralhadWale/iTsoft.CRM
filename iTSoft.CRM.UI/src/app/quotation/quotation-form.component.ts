@@ -68,6 +68,9 @@ export class QuotationFormComponent implements OnInit {
     tableSettings: TableDefaultSettings;
     followUpTableSchema: Array<TableColumnModel> = [];
     requestSelectList: RequestSelectListModel = new RequestSelectListModel();
+    minDate : Date = new Date(2020,1,1);
+    maxDate : Date = new Date();
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,

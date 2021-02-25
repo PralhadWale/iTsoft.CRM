@@ -7,7 +7,7 @@
     <span class="title-spacer"></span>
     <mat-form-field appearance="standard" class="search-form-fileld">
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event.target.value)">
+      <input matInput (keyup)="applyFilter($event.target.value)" [(ngModel)]="filterText">
       <mat-icon>filter_list</mat-icon>
     </mat-form-field>
   </mat-toolbar-row>

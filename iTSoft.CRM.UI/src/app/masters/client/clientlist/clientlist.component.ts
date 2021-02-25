@@ -104,15 +104,16 @@ export class ClientlistComponent implements OnInit {
     this.clientTableSchema =
       [
         { ColumnField: "ClientName", ColumnHeader: "Client Name", Type: "text" },
-        { ColumnField: "FirstName", ColumnHeader: "First Name", Type: "text" },
-        { ColumnField: "MiddleName", ColumnHeader: "Middle Name", Type: "text" },
-        { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
+        { ColumnField: "DoB", ColumnHeader: "Date of Birth", Type: "text" },
+        // { ColumnField: "FirstName", ColumnHeader: "First Name", Type: "text" },
+        // { ColumnField: "MiddleName", ColumnHeader: "Middle Name", Type: "text" },
+        // { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
         { ColumnField: "Email", ColumnHeader: "Email", Type: "text" },
         { ColumnField: "MobileNo", ColumnHeader: "Mobile No", Type: "text" },
-        { ColumnField: "AlternateMobileNo", ColumnHeader: "Alternate Mobile", Type: "text" },
+        { ColumnField: "PANNo", ColumnHeader: "PAN", Type: "text" },
         { ColumnField: "CorporateName", ColumnHeader: "Corporate Name", Type: "text" },
-        { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
-        { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
+        // { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
+        // { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
       ];

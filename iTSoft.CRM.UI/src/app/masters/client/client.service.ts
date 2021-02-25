@@ -17,6 +17,9 @@ export class ClientService {
 
     Save(clientMaster: ClientMaster) {
 
+        clientMaster.ClientName = clientMaster.FirstName + " " + clientMaster.MiddleName + " " + clientMaster.LastName;
+        clientMaster.ClientName = clientMaster.ClientName.trim();
+        
         if(clientMaster.ClientId < 1)
         {
             clientMaster.AddedBy = this.userService.GetUserId();

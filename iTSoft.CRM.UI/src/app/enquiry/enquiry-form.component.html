@@ -1,6 +1,4 @@
-<form novalidate (ngSubmit)="saveEnquiry()" [formGroup]="enquiryForm">
-  <input type="hidden" formControlName="RequestId">
-  
+<form  #enquiryForm="ngForm">
   <mat-card>
     <mat-toolbar style="background-color: #FFF">
       <mat-toolbar-row>
@@ -8,7 +6,7 @@
         <span class="title-spacer"></span>
         <mat-card-actions>
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
-            [disabled]='!enquiryForm.valid'>
+          (click)="saveEnquiry(enquiryForm)" [formGroup]="enquiryForm">
             <mat-icon>save</mat-icon>
           </button>
           <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/enquiries']">
@@ -22,60 +20,60 @@
         <mat-grid-list cols="12" rowHeight="80px">
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Enquiry No.</mat-label>
-              <input matInput placeholder="Enquiry No" id="RequestNo" type="text"
-                placeholder="Enquiry No." formControlName="RequestNo" />
-              <mat-error *ngIf="displayMessage.RequestNo">
-                {{displayMessage.RequestNo}}
+              <mat-label>Enquiry No. </mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.RequestNo" name="RequestNo" #RequestNo="ngModel" required readonly>
+              <mat-error *ngIf="(RequestNo.touched || enquiryForm.submitted) && RequestNo.errors?.required">
+                Quotation No Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Enquiry Date.</mat-label>
-              <input matInput [matDatepicker]="requestDateId" placeholder="Enquiry Date" [value]="request.RequestMaster.RequestDate">
-              <mat-datepicker-toggle matSuffix [for]="requestDateId"></mat-datepicker-toggle>
-              <mat-datepicker #requestDateId></mat-datepicker>
+              <mat-label>Enquiry Date. </mat-label>
+              <input matInput [matDatepicker]="datepicker1" [min]="enqMinDate" [max]="maxDate"
+                [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
+              <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+              <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
+              <mat-error>Please select valid date.</mat-error>
             </mat-form-field>
-          </mat-grid-tile>
+            </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Company Name</mat-label>
-              <input matInput placeholder="CompanyName" id="CompanyName" type="text"
-                placeholder="CompanyName" formControlName="CompanyName" />
-              <mat-error *ngIf="displayMessage.CompanyName">
-                {{displayMessage.CompanyName}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.CompanyName" name="CompanyName" maxlength="250" #CompanyName="ngModel" required>
+              <mat-error *ngIf="(CompanyName.touched || enquiryForm.submitted) && CompanyName.errors?.required">
+                Company Name Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Last Name</mat-label>
-              <input matInput placeholder="LastName" id="LastName" type="text"
-                placeholder="LastName" formControlName="LastName" />
-              <mat-error *ngIf="displayMessage.LastName">
-                {{displayMessage.LastName}}
+              <mat-label>Last Name </mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.LastName" name="LastName" #LastName="ngModel"
+              maxlength="50" required pattern="^[a-zA-Z]+$">
+            <mat-error *ngIf="(LastName.touched || enquiryForm.submitted)">
+              Please enter valid last name
+            </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>First Name </mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.FirstName" name="FirstName" #FirstName="ngModel"
+                maxlength="50" required pattern="^[a-zA-Z]+$">
+              <mat-error *ngIf="(FirstName.touched || enquiryForm.submitted)">
+                Please enter valid first name
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>First Name</mat-label>
-              <input matInput placeholder="FirstName" id="FirstName" type="text"
-                placeholder="FirstName" formControlName="FirstName" />
-              <mat-error *ngIf="displayMessage.FirstName">
-                {{displayMessage.FirstName}}
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Middle Name</mat-label>
-              <input matInput placeholder="MiddleName" id="MiddleName" type="text"
-                placeholder="MiddleName" formControlName="MiddleName" />
-              <mat-error *ngIf="displayMessage.MiddleName">
-                {{displayMessage.MiddleName}}
-              </mat-error>
+              <mat-label>Middle Name </mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.MiddleName" name="MiddleName" #MiddleName="ngModel"
+              maxlength="50" required pattern="^[a-zA-Z]+$">
+            <mat-error *ngIf="(MiddleName.touched || enquiryForm.submitted)">
+              Please enter valid middle name
+            </mat-error>
             </mat-form-field>
           </mat-grid-tile>
 
@@ -83,28 +81,32 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Date of birth</mat-label>
-              <input matInput [matDatepicker]="enquiryDOBId" placeholder="Date of birth" [value]="request.RequestMaster.DOB">
+              <input matInput [matDatepicker]="enquiryDOBId" placeholder="Date of birth" [value]="request.RequestMaster.DOB" [min]="minDate" [max]="maxDate">
               <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
               <mat-datepicker #enquiryDOBId></mat-datepicker>
+               <mat-error>
+              Please select valid date
+            </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput placeholder="Email" id="Email" type="text"
-                placeholder="Email" formControlName="Email" />
-              <mat-error *ngIf="displayMessage.Email">
-                {{displayMessage.Email}}
+              <mat-label>Email </mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Email" name="Email" #Email="ngModel" required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
+              <mat-error *ngIf="(Email.touched || enquiryForm.submitted) && Email.errors">
+                Please enter valid email
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Phone No 1</mat-label>
-              <input matInput id="PhoneNo1" type="text" placeholder="Phone No" formControlName="PhoneNo1" maxlength="12" />
-              <mat-error *ngIf="displayMessage.PhoneNo2">
-                {{displayMessage.PhoneNo2}}
+              <mat-label>Phone No 1 </mat-label>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel" required maxlength="13"
+               pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+              <mat-error *ngIf="(PhoneNo1.touched || enquiryForm.submitted) && PhoneNo1.errors">
+                Please enter valid phone number
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
@@ -112,9 +114,10 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>AlterNate No</mat-label>
-              <input matInput placeholder="AlterNate No" id="PhoneNo2" type="text" maxlength="12" formControlName="PhoneNo2" />
-              <mat-error *ngIf="displayMessage.PhoneNo2">
-                {{displayMessage.PhoneNo2}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo2" name="PhoneNo2" #PhoneNo2="ngModel" maxlength="13"
+               pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+              <mat-error *ngIf="(PhoneNo2.touched || enquiryForm.submitted) && PhoneNo2.errors">
+                Please enter valid phone number
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
@@ -122,52 +125,49 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Website</mat-label>
-              <input matInput placeholder="Website" id="Website" type="text"
-                placeholder="Website" formControlName="Website" />
-              <mat-error *ngIf="displayMessage.Website">
-                {{displayMessage.Website}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Website" name="Website" #Website="ngModel"
+              maxlength="150">
+              <mat-error *ngIf="(Website.touched || enquiryForm.submitted) && Website.errors">
+                Please enter valid Website
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile  [colspan]="12">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Address</mat-label>
-              <input matInput placeholder="Address" id="Address" type="text"
-                placeholder="Address" formControlName="Address" />
-              <mat-error *ngIf="displayMessage.Address">
-                {{displayMessage.Address}}
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Address" name="Address" #Address="ngModel"
+              maxlength="450">
+              <mat-error *ngIf="(Website.touched || enquiryForm.submitted) && Website.errors">
+                Please enter valid address
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
-         
-
-          
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Amount</mat-label>
-              <input matInput placeholder="Amount" id="Amount" type="text"
-                placeholder="Amount" formControlName="Amount" />
-              <mat-error *ngIf="displayMessage.Amount">
-                {{displayMessage.Amount}}
+              <mat-label>Amount </mat-label>
+              <input matInput type='number' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel" required>
+              <mat-error *ngIf="(Amount.touched || enquiryForm.submitted) && Amount.errors">
+               Please enter valid amount
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Source</mat-label>
-              <mat-select placeholder="Select Source" #sourceIdId formControlName="SourceId"
-                [(value)]="request.RequestMaster.SourceId">
-                <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value">
+              <mat-select placeholder="Select Source"  [(ngModel)]="request.RequestMaster.SourceId" name="SourceId" #SourceId="ngModel" required>
+                <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value" >
                   {{item.Text}} 
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
+                Please select source
+              </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Client Behaviour</mat-label>
-              <mat-select placeholder="Select ClientBehaviour" #ClientBehaviourId formControlName="ClientBehaviourId"
-                [(value)]="request.RequestMaster.ClientBehaviourId">
+              <mat-select placeholder="Select ClientBehaviour" [(ngModel)]="request.RequestMaster.ClientBehaviourId" name="ClientBehaviourId" #ClientBehaviourId="ngModel">
                 <mat-option *ngFor="let item of requestSelectList.ClientBehaviour" [value]="item.Value">
                   {{item.Text}} 
                 </mat-option>
@@ -177,17 +177,18 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Department</mat-label>
-              <mat-select placeholder="Select Department" #DepartmentId formControlName="DepartmentId"
-                [(value)]="request.RequestMaster.DepartmentId">
+              <mat-select placeholder="Select Department" [(ngModel)]="request.RequestMaster.DepartmentId" name="DepartmentId" #DepartmentId="ngModel" required>
                 <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value">
                   {{item.Text}} 
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
+                Please select department
+              </mat-error>
             </mat-form-field>
           </mat-grid-tile>
         </mat-grid-list>
       </div>
-      <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
     </mat-card-content>
     <!-- </div> -->
   </mat-card>

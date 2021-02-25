@@ -20,7 +20,7 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Quotation No</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.RequestNo" name="RequestNo" #RequestNo="ngModel" required>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.RequestNo" name="RequestNo" #RequestNo="ngModel" required readonly>
               <mat-error *ngIf="(RequestNo.touched || quotationForm.submitted) && RequestNo.errors?.required">
                 Quotation No Is required
               </mat-error>
@@ -29,16 +29,16 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
             <mat-label>Quotation Date</mat-label>
-            <input matInput [matDatepicker]="datepicker1" [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
+            <input matInput [matDatepicker]="datepicker1"  [min]="minDate" [max]="maxDate" [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
             <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
             <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
-            <mat-error>Request Date is required.</mat-error>
+            <mat-error>Please select valid date.</mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Title</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.Title" name="Title" #Title="ngModel" required>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Title" name="Title" #Title="ngModel" maxlength="100" required>
               <mat-error *ngIf="(Title.touched || quotationForm.submitted) && Title.errors?.required">
                 Title Is required
               </mat-error>
@@ -48,7 +48,7 @@
 
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Company Name</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.CompanyName" name="CompanyName" #CompanyName="ngModel" required>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.CompanyName" name="CompanyName" maxlength="250" #CompanyName="ngModel" required>
               <mat-error *ngIf="(CompanyName.touched || quotationForm.submitted) && CompanyName.errors?.required">
                 Company Name Is required
               </mat-error>
@@ -58,20 +58,19 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Phone No</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel" required maxlength="12">
-              <mat-error *ngIf="(PhoneNo1.touched || quotationForm.submitted) && PhoneNo1.errors?.required">
-                Phone No Is required
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel" required maxlength="13"
+               pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+              <mat-error *ngIf="(PhoneNo1.touched || quotationForm.submitted) && PhoneNo1.errors">
+                Please enter valid phone number
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Email</mat-label>
-              <input matInput type='email' [(ngModel)]="request.RequestMaster.Email" name="Email" #Email="ngModel" required>
-              <mat-error *ngIf="(Email.touched || quotationForm.submitted) && Email.errors?.required">
-                Please enter valid email
-              </mat-error>
-              <mat-error *ngIf="(Email.touched || quotationForm.submitted) && Email.errors?.email">
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.Email" name="Email" #Email="ngModel" required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
+              <mat-error *ngIf="(Email.touched || quotationForm.submitted) && Email.errors">
                 Please enter valid email
               </mat-error>
             </mat-form-field>
@@ -99,25 +98,25 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Amount</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel" required>
-              <mat-error *ngIf="(Amount.touched || quotationForm.submitted) && Amount.errors?.required">
-                Amount Is required
+              <input matInput type='number' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel" required>
+              <mat-error *ngIf="(Amount.touched || quotationForm.submitted) && Amount.errors">
+               Please enter valid amount
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Agreed Amount</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.AgreedAmount" name="AgreedAmount" #AgreedAmount="ngModel" required>
-              <mat-error *ngIf="(AgreedAmount.touched || quotationForm.submitted) && AgreedAmount.errors?.required">
-                Agreed Amount Is required
+              <input matInput type='number' [(ngModel)]="request.RequestMaster.AgreedAmount" name="AgreedAmount" #AgreedAmount="ngModel">
+              <mat-error *ngIf="(AgreedAmount.touched || quotationForm.submitted) && AgreedAmount.errors">
+                Please enter valid Agreed Amount Is required
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="12">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Terms & Condition</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.TermsAndCondition" name="TermsAndCondition" #TermsAndCondition="ngModel" required>
+              <input matInput type='text' [(ngModel)]="request.RequestMaster.TermsAndCondition" name="TermsAndCondition" #TermsAndCondition="ngModel" maxlength="2000" required>
               <mat-error *ngIf="(TermsAndCondition.touched || quotationForm.submitted) && TermsAndCondition.errors?.required">
                 Terms And Condition Are required
               </mat-error>

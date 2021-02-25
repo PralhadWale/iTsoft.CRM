@@ -13,7 +13,8 @@ import {
   FormGroup,
   Validators,
   FormControlName,
-  NgForm
+  NgForm,
+  FormControl
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -54,45 +55,25 @@ import { GenericValidator } from "../shared/generic-validator";
 })
 export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
+  @ViewChildren("enquiryForm") enquiryForm: FormGroup;
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
   pageTitle: string = "Update Enquiry";
-  errorMessage: string;
-  enquiryForm: FormGroup;
   request: RequestViewModel;
   showImage: boolean;
   fieldColspan = 4;
   requestTypeId = RequestType.Enquiry;
   // Use with the generic validation messcustomerId class
-  displayMessage: { [key: string]: string } = {};
-  private validationMessages: { [key: string]: { [key: string]: string } } = {
-    reference: {
-      required: "Enquiry reference is required.",
-      minlength: "Enquiry reference must be at least one characters.",
-      maxlength: "Enquiry reference cannot exceed 100 characters."
-    },
-    amount: {
-      required: "Enquiry amount is required.",
-      range:
-        "Amount of the enquiry must be between 1 (lowest) and 9999999 (highest)."
-    },
-    quantity: {
-      required: "Enquiry quantity is required.",
-      range:
-        "Quantity of the enquiry must be between 1 (lowest) and 20 (highest)."
-    },
-    customerId: {
-      required: "Customer is required."
-    }
-  };
+
   private sub: Subscription;
-  private genericValidator: GenericValidator;
 
   requestSelectList: RequestSelectListModel
   followUpTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
+  minDate : Date = new Date(1800,1,1);
+  maxDate : Date = new Date();
+  enqMinDate : Date = new Date(2020,1,1);
 
   constructor(
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private requestService: RequestService,
@@ -114,44 +95,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.onScreensizeChange();
     });
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
 
   ngOnInit(): void {
-    this.enquiryForm = this.fb.group({
-      RequestId: [""],
-      RequestNo: [""],
-      RequestDate: [""],
-      LastName: ["", [Validators.required]],
-      MiddleName: ["", [Validators.required]],
-      FirstName: ["", [Validators.required]],
-      CompanyName: [""],
-      Website: [""],
-      Email: ["",[Validators.required]],
-      Designation: [""],
-      PhoneNo1: ["",[Validators.required]],
-      PhoneNo2: [""],
-      DOB: [""],
-      Address: [""],
-      SourceId: [""],
-      LeadStatusId: [""],
-      StageId: [""],
-      TermsAndCondition: [""],
-      Amount: ["", [Validators.required, NumberValidators.range(1, 999999999999)]],
-      ClientBehaviourId: [""],
-      DepartmentId: [""]
 
-    });
-
-    this.sub = this.route.params.subscribe(
-      params => {
-          let id = +params['id'];
-          this.getRequest(id);
-      }
-  );
-
-
+   
   }
 
   ngOnDestroy(): void {
@@ -159,20 +108,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // Watch for the blur event from any input element on the form.
-    let controlBlurs: Observable<any>[] = this.formInputElements.map(
-      (formControl: ElementRef) =>
-        Observable.fromEvent(formControl.nativeElement, "blur")
-    );
-
-    // Merge the blur event observable with the valueChanges observable
-    Observable.merge(this.enquiryForm.valueChanges, ...controlBlurs)
-      .debounceTime(800)
-      .subscribe(() => {
-        this.displayMessage = this.genericValidator.processMessages(
-          this.enquiryForm
-        );
-      });
+      
   }
 
   getRequest(requestId: number): void {
@@ -185,7 +121,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
           var data = <RequestViewModel>result.Value.ResponseData;
           this.onEnquiryRetrieved(data)
         },
-        (error: any) => (this.errorMessage = <any>error)
+        (error: any) => (this.alertService.showErrorMessage(error))
       );
     }
     else {
@@ -194,16 +130,14 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         var data = result.Value.ResponseData;
         this.request.RequestMaster.RequestNo = data;
         this.onEnquiryRetrieved(this.request)
-      },  (error: any) => (this.errorMessage = <any>error));
+      },  (error: any) => (this.alertService.showErrorMessage(error)));
      
     }
   }
 
 
   onEnquiryRetrieved(request: RequestViewModel): void {
-    if (this.enquiryForm) {
-      this.enquiryForm.reset();
-    }
+    
     this.request = request;
 
     if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
@@ -212,42 +146,15 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pageTitle = `Update Enquiry: ${this.request.RequestMaster.RequestNo} `;
     }
 
-    // Update the data on the form
-    this.enquiryForm.patchValue({
-      RequestId: this.request.RequestMaster.RequestId,
-      RequestNo: this.request.RequestMaster.RequestNo,
-      RequestDate: this.request.RequestMaster.RequestDate != null ? new Date(this.request.RequestMaster.RequestDate): new Date(),
-      LastName: this.request.RequestMaster.LastName,
-      MiddleName: this.request.RequestMaster.MiddleName,
-      FirstName: this.request.RequestMaster.FirstName,
-      CompanyName: this.request.RequestMaster.CompanyName,
-      Website: this.request.RequestMaster.Website,
-      Email: this.request.RequestMaster.Email,
-      Designation: this.request.RequestMaster.Designation,
-      PhoneNo1: this.request.RequestMaster.PhoneNo1,
-      PhoneNo2: this.request.RequestMaster.PhoneNo2,
-      DOB: new Date(this.request.RequestMaster.DOB),
-      Address: this.request.RequestMaster.Address,
-      SourceId: this.request.RequestMaster.SourceId,
-      LeadStatusId: this.request.RequestMaster.LeadStatusId,
-      StageId: this.request.RequestMaster.StageId,
-      TermsAndCondition: this.request.RequestMaster.TermsAndCondition,
-      Amount: this.request.RequestMaster.Amount,
-      ClientBehaviourId: this.request.RequestMaster.ClientBehaviourId,
-      DepartmentId: this.request.RequestMaster.DepartmentId,
-    });
 
   }
 
-  saveEnquiry() {
-    if (this.enquiryForm.valid) {
-      let request = new RequestViewModel();
-      request.RequestMaster = <RequestMaster>this.enquiryForm.value;
-      request.RequestMaster.RequestTypeId = RequestType.Enquiry;
-      this.requestService.Save(request).subscribe(result => {
+  saveEnquiry(enquiryForm: NgForm) {
+    if (enquiryForm && enquiryForm.valid) {
+      this.request.RequestMaster.RequestTypeId = RequestType.Enquiry;
+      this.requestService.Save(this.request).subscribe(result => {
         this.alertService.showSuccessMessage("Enquiry Saved successfully");
         this.SetDefaultRequest();
-        this.enquiryForm.reset();
         this.router.navigate(['/enquiries']);
       }, (error: any) => {
         this.alertService.showSuccessMessage("Failed to save");
@@ -276,7 +183,15 @@ onFollowUpSaved() {
         (result) => {
           this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
         },
-        (error: any) => (this.errorMessage = <any>error)
+        (error: any) => (this.alertService.showErrorMessage(error)),
+        () => {
+          this.route.params.subscribe(
+            params => {
+                let id = +params['id'];
+                this.getRequest(id);
+            }
+        );
+        }
       );
   }
 

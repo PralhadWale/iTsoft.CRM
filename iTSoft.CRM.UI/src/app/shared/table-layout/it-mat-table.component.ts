@@ -37,6 +37,7 @@ export class ITMatTableComponent implements OnInit , OnChanges {
   { icon: 'transfer_within_a_station', style: { 'margin-right': '10px', 'background-color': 'green' } },
 ];
 
+  filterText :string = "";
 
   constructor() {
     
@@ -107,6 +108,8 @@ export class ITMatTableComponent implements OnInit , OnChanges {
 
   // Refresh Table datasource. it will fire change detection and will reflect datasource changes on table.
   RefreshDataSource() {
+    this.tableDataSource.filter = null;
+    this.filterText = "";
     this.tableDataSource.data = this.dataSource;
     if (this.dataSource != null) {
       this.tableDataSource.paginator = this.paginator;

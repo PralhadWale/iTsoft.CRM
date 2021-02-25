@@ -6,6 +6,7 @@ import { AlertService } from 'src/app/_services';
 import { ClientMaster } from '../client.model';
 import { ClientService } from '../client.service';
 import { ListService } from 'src/app/process/services/list.service';
+import 'src/app/_extentions/ng-form.extensions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
@@ -26,6 +27,9 @@ export class AddClientComponent implements OnInit {
 
   clientSelectListModel : any = new Object();
   fieldColspan: number = 6;
+  minDate : Date = new Date(1800,1,1);
+  maxDate : Date = new Date();
+
   constructor(
     private clientService : ClientService,
     private listService: ListService,
@@ -66,8 +70,13 @@ export class AddClientComponent implements OnInit {
 
   }
 
-  clearClientData() {
+  clearClientData(clientForm: NgForm) {
+    
     this.clientMaster = this.clientService.NewClient();
+    clientForm.resetValidation();
+    clientForm.reset();
+    clientForm.form.reset();
+    
   }
 
 
@@ -91,11 +100,12 @@ export class AddClientComponent implements OnInit {
         this.alertService.showErrorMessage("Invalid request");
       }
       else {
+        
         this.clientService.Save(this.clientMaster).subscribe(result => {
           {
             this.alertService.showSuccessMessage("Client Saved successfully");
             this.sidenav.close();
-            this.clearClientData();
+            this.clearClientData(clientForm);
             this.onClientSaved.emit();
           } 
         }, (error: any) => {
@@ -105,9 +115,9 @@ export class AddClientComponent implements OnInit {
     }
   }
  
-  onCancelClick()
+  onCancelClick(clientForm : NgForm)
   {
-    this.clearClientData();
+    this.clearClientData(clientForm);
     this.sidenav.close();
   }
 

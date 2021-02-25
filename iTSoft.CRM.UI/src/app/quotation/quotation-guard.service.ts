@@ -27,7 +27,7 @@ export  class QuotationEditGuard implements CanDeactivate<QuotationFormComponen
 
     canDeactivate(component: QuotationFormComponent): boolean {
         if (component.quotationForm.dirty) {
-            let quotationName = component.quotationForm.get('firstname').value || 'New Quotation';
+            let quotationName = component.quotationForm.get('RequestNo').value || 'New Quotation';
             return confirm(`Navigate away and lose all changes to ${quotationName}?`);
         }
         return true;
