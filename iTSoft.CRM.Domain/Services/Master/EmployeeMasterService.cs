@@ -16,9 +16,9 @@ namespace iTSoft.CRM.Domain.Services.Master
         {
             employeeMasterRepository = new EmployeeMasterRepository();
         }
-        public ResponseCode Save(EmployeeMaster employeeMaster)
+        public ResponseCode Save(EmployeeDetails employeeDetails)
         {
-            return employeeMasterRepository.Save(employeeMaster);
+            return employeeMasterRepository.Save(employeeDetails);
         }
 
         public List<EmployeeMaster> GetAll()
@@ -31,7 +31,7 @@ namespace iTSoft.CRM.Domain.Services.Master
             return employeeMasterRepository.GetEmployeeInfo(searchParam);
         }
 
-        public EmployeeMaster Find(long EmployeeId)
+        public EmployeeDetails Find(long EmployeeId)
         {
             return employeeMasterRepository.Find(EmployeeId);
         }

@@ -173,6 +173,17 @@
                                 #IsActive="ngModel">Is Active</mat-checkbox>
                         </div>
                     </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan" [rowspan]="2">
+                        <div>
+                            <p><small>Select Departments</small></p>
+                            <mat-selection-list appearance="outline" name="departmens" #departments [(ngModel)]="selectedDepartments"
+                                (ngModelChange)="onDepartmentSelectionChange($event)">
+                                <mat-list-option [value]="dept" *ngFor="let dept of employeeSelectList.Departments">
+                                    {{dept.Text}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </div>
+                    </mat-grid-tile>
                 </mat-grid-list>
             </div>
         </mat-card-content>

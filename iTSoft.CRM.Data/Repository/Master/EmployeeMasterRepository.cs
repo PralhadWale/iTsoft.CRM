@@ -2,6 +2,7 @@
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Data.Shared;
 using iTSoft.CRM.Data.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,17 @@ namespace iTSoft.CRM.Data.Repository.Master
         }
         private const string PROC_EmployeeManager = "PROC_EmployeeManager";
 
-        public ResponseCode Save(EmployeeMaster employeeMaster)
+        public ResponseCode Save(EmployeeDetails employeeDetails)
         {
             ResponseCode result = ResponseCode.Failed;
             using (IDbConnection dbConnection = base.GetConnection())
             {
-                string flag = employeeMaster.EmployeeId > 0 ? ActionFlag.Update : ActionFlag.Add;
-                DynamicParameters param = new DynamicParameters(employeeMaster);
+
+                DataTable employeeDepartments = new ListConverter().ToDataTable<DepartmentMaster>(employeeDetails.DepartmentMasters);
+
+                string flag = employeeDetails.EmployeeMaster.EmployeeId > 0 ? ActionFlag.Update : ActionFlag.Add;
+                DynamicParameters param = new DynamicParameters(employeeDetails.EmployeeMaster);
+                param.Add("DepartmentType", employeeDepartments.AsTableValuedParameter("DepartmentType"));
                 param.Add("@Action", flag);
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
                 dbConnection.Execute(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure);
@@ -57,17 +62,20 @@ namespace iTSoft.CRM.Data.Repository.Master
             }
         }
 
-        public EmployeeMaster Find(long EmployeeId)
+        public EmployeeDetails Find(long EmployeeId)
         {
-            EmployeeMaster result;
+            EmployeeDetails employeeDetails = new EmployeeDetails();
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters();
                 param.Add("@EmployeeId", EmployeeId);
                 param.Add("@Action", ActionFlag.Find);
-                result = dbConnection.Query<EmployeeMaster>(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                var result = dbConnection.QueryMultiple(PROC_EmployeeManager, param, commandType: CommandType.StoredProcedure);
+                employeeDetails.EmployeeMaster = result.Read<EmployeeMaster>().FirstOrDefault();
+                employeeDetails.DepartmentMasters = result.Read<DepartmentMaster>().AsList();
+                base.ClearCatche();
             }
-            return result;
+            return employeeDetails;
         }
         public ResponseCode Delete(EmployeeMaster employeeMaster)
         {

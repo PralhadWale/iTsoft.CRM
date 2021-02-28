@@ -31,4 +31,10 @@ namespace iTSoft.CRM.Data.Entity.Master
 
     }
 
+    public class EmployeeDetails
+    {
+        public EmployeeMaster EmployeeMaster { get; set; }
+        public List<DepartmentMaster> DepartmentMasters { get; set; }
+
+    }
 }

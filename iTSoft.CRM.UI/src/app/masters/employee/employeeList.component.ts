@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ConfirmDialog } from '../shared';
+import { ConfirmDialog } from '../../shared';
 import * as _ from 'lodash';
 
-import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../../shared/table-layout/it-mat-table.component';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 import { EmployeeService } from './employee.service';
-import { AlertService } from '../_services';
+import { AlertService } from '../../_services';
 import { EmployeeMaster } from './employeeMaster.model';
 
 

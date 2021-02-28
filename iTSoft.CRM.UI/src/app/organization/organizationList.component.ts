@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { Organization } from './organization';
 import { OrganizationService } from './organization.service';
-import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
-import * as _ from 'lodash';
 
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator';

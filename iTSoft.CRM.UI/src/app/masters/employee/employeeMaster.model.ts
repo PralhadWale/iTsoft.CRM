@@ -1,3 +1,5 @@
+import { DepartmentMaster } from "../department/department.model";
+
 export class EmployeeMaster {
     EmployeeId: number;
     FirstName: string;
@@ -24,4 +26,11 @@ export class EmployeeMaster {
     UpdatedBy: number | null;
     AddedDate: Date | string | null;
     UpdatedDate: Date | string | null;
+}
+
+
+export class EmployeeDetails
+{
+    EmployeeMaster : EmployeeMaster;
+    DepartmentMasters : Array<DepartmentMaster>;
 }

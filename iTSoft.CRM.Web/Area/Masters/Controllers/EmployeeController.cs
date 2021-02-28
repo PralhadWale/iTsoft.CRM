@@ -25,13 +25,13 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost("save")]
-        public IActionResult Save(EmployeeMaster employeeMaster)
+        public IActionResult Save(EmployeeDetails employeeDetails)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
-                employeeMaster.Password = new EncryptionHelper().Encrypt(employeeMaster.Password);
-                response.ResponseCode = employeeMasterService.Save(employeeMaster);
+                employeeDetails.EmployeeMaster.Password = new EncryptionHelper().Encrypt(employeeDetails.EmployeeMaster.Password);
+                response.ResponseCode = employeeMasterService.Save(employeeDetails);
             }
             catch (Exception ex)
             {
@@ -89,12 +89,12 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                EmployeeMaster employeeMaster = employeeMasterService.Find(employeeId);
-                if (employeeMaster != null)
+                EmployeeDetails employeeDetails = employeeMasterService.Find(employeeId);
+                if (employeeDetails.EmployeeMaster != null)
                 {
-                    employeeMaster.Password = new EncryptionHelper().Decrypt(employeeMaster.Password);
+                    employeeDetails.EmployeeMaster.Password = new EncryptionHelper().Decrypt(employeeDetails.EmployeeMaster.Password);
                     response.ResponseCode = ResponseCode.Success;
-                    response.ResponseData = employeeMaster;
+                    response.ResponseData = employeeDetails;
                 }
                 else
                 {

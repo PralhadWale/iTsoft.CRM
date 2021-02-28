@@ -62,6 +62,14 @@ thead {
   overflow-x: scroll;
 }
 
+mat-selection-list {
+  max-height: 125px;
+  font-size: 12px;
+  overflow: auto;
+  width: 100%  !important;
+  border: thick;
+}
+
 
 
 th {

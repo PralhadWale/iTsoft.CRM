@@ -1,5 +1,4 @@
 export * from './authentication.service'
-export * from './pager.service'
 export * from './alertService'
 export * from './apiService'
 export * from './loaderService'

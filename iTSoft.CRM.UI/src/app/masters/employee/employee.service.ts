@@ -6,7 +6,9 @@ import { UserService } from 'src/app/shared/services/UserService';
 import { APIService } from 'src/app/_services';
 
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
-import { EmployeeMaster } from './employeeMaster.model';
+import { EmployeeDetails, EmployeeMaster } from './employeeMaster.model';
+import { DepartmentMaster } from '../department/department.model';
+import { ListModel } from 'src/app/_models/listmodel';
 
 @Injectable() 
 export class EmployeeService {
@@ -22,14 +24,23 @@ export class EmployeeService {
         return this.apiService.PostData(this.getemployeeinfoURL, employee);
     }
 
-    Save(employee: EmployeeMaster) {
+    Save(employee: EmployeeMaster , selectedDepartments : Array<ListModel>) {
 
         employee.AddedBy = this.userService.GetUserId();
         employee.UpdatedBy = this.userService.GetUserId();
         employee.AddedDate = new Date(Date.now());
         employee.UpdatedDate = new Date(Date.now());
 
-        return this.apiService.PostData(this.URLSave, employee);
+        let departments: Array<any> = [];
+        selectedDepartments.forEach((x) => {
+            departments.push ({ DepartmentId: x.Value });
+        });
+
+        let employeeDetails : EmployeeDetails = new EmployeeDetails();
+        employeeDetails.EmployeeMaster= employee;
+        employeeDetails.DepartmentMasters = departments;
+
+        return this.apiService.PostData(this.URLSave, employeeDetails);
     }
 
     GetAll() {

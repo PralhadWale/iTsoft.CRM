@@ -36,6 +36,7 @@ export class AuthInterceptor implements HttpInterceptor {
         console.log("In handleerror");
         if (err.status === 401 || err.status === 403) {
             //navigate /delete cookies or whatever
+            localStorage.removeItem(APP_USER_PROFILE);
             this.router.navigateByUrl("login");
             // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
             return of(err.message); // or EMPTY may be appropriate here

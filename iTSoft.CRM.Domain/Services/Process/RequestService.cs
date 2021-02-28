@@ -70,6 +70,7 @@ namespace iTSoft.CRM.Domain.Services.Process
                 requestViewModel.RequestMaster = result.Read<RequestMaster>().FirstOrDefault();
                 requestViewModel.RequestServiceDetails = result.Read<RequestServiceDetails>().AsList();
                 requestViewModel.RequestFollowup = result.Read<FollowUpDetails>().AsList();
+                base.ClearCatche();
             }
 
             return requestViewModel;

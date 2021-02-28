@@ -4,7 +4,7 @@ import { Product } from './product';
 import { ProductService } from './product.service';
 import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
-import * as _ from 'lodash';
+import * as _ from 'src/app/masters/employee/node_modules/lodash';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';

@@ -10,13 +10,14 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { EmployeeService } from './employee.service';
 
-import { NumberValidators } from '../shared/number.validator';
-import { GenericValidator } from '../shared/generic-validator';
+import { NumberValidators } from '../../shared/number.validator';
+import { GenericValidator } from '../../shared/generic-validator';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { EmployeeMaster } from './employeeMaster.model';
-import { AlertService } from '../_services';
-import { EmployeeSelectListModel } from '../_models/employeeSelectListModel';
-import { ListService } from '../process/services/list.service';
+import { EmployeeDetails, EmployeeMaster } from './employeeMaster.model';
+import { AlertService } from '../../_services';
+import { EmployeeSelectListModel } from '../../_models/employeeSelectListModel';
+import { ListService } from '../../process/services/list.service';
+import { ListModel } from 'src/app/_models/listmodel';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     fieldColspan: number = 4;
 
     employeeSelectList : EmployeeSelectListModel = new EmployeeSelectListModel();
+    selectedDepartments : Array<ListModel> = [];
 
     constructor(private fb: FormBuilder,
         private route: ActivatedRoute,
@@ -113,9 +115,17 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
             );
     }
 
-    onEmployeeRetrieved(employee: EmployeeMaster): void {
-        if (employee != null) {
-            this.employee = employee;
+    onEmployeeRetrieved(employeeDetails: EmployeeDetails): void {
+        this.selectedDepartments = [];
+        if (employeeDetails != null) {
+            this.employee = employeeDetails.EmployeeMaster;
+            employeeDetails.DepartmentMasters.forEach((x) => {
+                let department = this.employeeSelectList.Departments.filter( y=> y.Value == x.DepartmentId);
+                if(department && department.length > 0)
+                {
+                    this.selectedDepartments.push(department[0]);
+                }
+            });
         }
 
         if (this.employee.EmployeeId === 0) {
@@ -142,14 +152,19 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     saveEmployee(employeeForm: NgForm): void {
         if (employeeForm.dirty && employeeForm.valid) {
-            // Copy the form values over the employee object values
-            const employee = Object.assign({}, this.employee, employeeForm.value);
+            if (this.selectedDepartments && this.selectedDepartments.length > 0) {
+                // Copy the form values over the employee object values
+                const employee = Object.assign({}, this.employee, employeeForm.value);
 
-            this.employeeService.Save(employee)
-                .subscribe(
-                    () => this.onSaveComplete(),
-                    (error: any) => this.errorMessage = <any>error
-                );
+                this.employeeService.Save(employee , this.selectedDepartments)
+                    .subscribe(
+                        () => this.onSaveComplete(),
+                        (error: any) => this.errorMessage = <any>error
+                    );
+            }
+            else {
+                this.alertService.showErrorMessage("Please assign at least one department");
+            }
         }
         else if (!employeeForm.dirty) {
             this.onSaveComplete();
@@ -158,6 +173,12 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onSaveComplete(): void {
         this.router.navigate(['/employees']);
+    }
+
+    onDepartmentSelectionChange($event)
+    {
+        console.log($event);
+        console.log(this.selectedDepartments);
     }
 
     onScreensizeChange(result: any) {

@@ -8,9 +8,9 @@ import {
 import { EmployeeFormComponent } from "./employeeForm.component";
 
 import { EmployeeService } from "./employee.service";
-import { SharedModule } from "../shared/shared.module";
+import { SharedModule } from "../../shared/shared.module";
 
-import { MaterialModule } from "../shared/material.module";
+import { MaterialModule } from "../../shared/material.module";
 
 
 @NgModule({
