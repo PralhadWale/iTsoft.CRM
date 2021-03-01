@@ -13,7 +13,7 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 
 import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
-import { AlertService } from '../_services';
+import { AlertService, StorageService } from '../_services';
 import { AssignRequestAvisorComponent } from "../process/assign-request-advisor/assign-request-advisor.component";
 import { ConfigurationSettings } from "../_models/configuration";
 import { UserRole } from "../_models/userRole";
@@ -38,18 +38,25 @@ export class EnquiryListComponent implements OnInit {
   requestDetails : RequestDetails  = new RequestDetails();
 
 
+  storageKey = "ENQUIRYFILTER";
+
   constructor(
     private requestService: RequestService,
+    private storageService : StorageService,
     private listService: ListService,
     private alertService: AlertService,
     private router : Router,
 
   ) {
+  
+    
 
   }
+ 
+
   ngOnInit(): void {
     this.SetTableSchema();
-    this.getEnquiries();
+    this.SetFilter();
     this.LoadSelectListData();
   }
 
@@ -78,7 +85,7 @@ export class EnquiryListComponent implements OnInit {
         this.sidenav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-        this.getEnquiries();
+        this.SetFilter(true);
       }
       else if ($event.toolbarItem == ToolBarItems.Transfer) {
           this.selectedEnquiryList = $event.selectedItems;
@@ -96,6 +103,22 @@ export class EnquiryListComponent implements OnInit {
       }
     }
 
+  }
+
+  private SetFilter(resetToDefault: boolean = false) {
+    if (resetToDefault) {
+      this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
+    }
+    else {
+      let filter = this.storageService.GetItem(this.storageKey);
+      if (filter != null) {
+        this.searchFilter = filter;
+      }
+      else {
+        this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
+      }
+    }
+    this.getEnquiries();
   }
 
   resetSearchFilter(sidenav:any)
@@ -126,7 +149,7 @@ export class EnquiryListComponent implements OnInit {
   }
 
   getEnquiries() {
-
+    this.storageService.SetItem(this.storageKey,this.searchFilter);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.enquiryList = result.Value.ResponseData;
 

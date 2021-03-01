@@ -18,6 +18,8 @@ import { AlertService } from '../../_services';
 import { EmployeeSelectListModel } from '../../_models/employeeSelectListModel';
 import { ListService } from '../../process/services/list.service';
 import { ListModel } from 'src/app/_models/listmodel';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from 'src/app/shared';
 
 
 @Component({
@@ -58,7 +60,8 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
         private alertService: AlertService,
         private listService: ListService,
         private employeeService: EmployeeService,
-        private breakpointObserver: BreakpointObserver
+        private breakpointObserver: BreakpointObserver,
+        public dialog: MatDialog,
     ) {
 
         this.employee = this.employeeService.initializeEmployee();
@@ -74,12 +77,8 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.LoadSelectListData();
-
-
-
-    }
+   }
 
     ngOnDestroy(): void {
 
@@ -87,6 +86,30 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
 
+    }
+
+    Close(employeeForm:NgForm)
+    {
+        if (employeeForm.touched) {
+
+            let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
+            const dialogRef = this.dialog.open(ConfirmDialog, {
+                maxWidth: "400px",
+                data: dialogData
+            });
+
+            dialogRef.afterClosed().subscribe(dialogResult => {
+                let result = dialogResult;
+                if (result == "CONFIRMED") {
+                    this.router.navigate(['/employees']);
+                }
+            }
+            );
+        }
+        else 
+        {
+            this.router.navigate(['/employees']);
+        }
     }
 
     LoadSelectListData() {
@@ -166,9 +189,7 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.alertService.showErrorMessage("Please assign at least one department");
             }
         }
-        else if (!employeeForm.dirty) {
-            this.onSaveComplete();
-        }
+      
     }
 
     onSaveComplete(): void {

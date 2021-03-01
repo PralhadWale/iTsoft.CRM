@@ -9,7 +9,7 @@
                         type="submit" (click)="saveEmployee(employeeForm)">
                         <mat-icon>save</mat-icon>
                     </button>
-                    <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/employees']">
+                    <button mat-mini-fab class="" style="margin-right:10px;" (click)="Close(employeeForm)">
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </mat-card-actions>
@@ -24,9 +24,10 @@
                         <!-- colspan="4"> -->
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>First Name</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.FirstName" name="FirstName" #FirstName="ngModel" maxlength="50" required>
-                            <mat-error *ngIf="(FirstName.touched || employeeForm.submitted) && FirstName.errors?.required">
-                                First Name Is required
+                            <input matInput type='text' [(ngModel)]="employee.FirstName" name="FirstName" #FirstName="ngModel"
+                             maxlength="50" required pattern="^[a-zA-Z]+$">
+                            <mat-error *ngIf="(FirstName.touched || employeeForm.submitted) && FirstName.errors">
+                                Please enter valid first name
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
@@ -34,29 +35,29 @@
                         <!-- colspan="4"> -->
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Middle Name</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.MiddleName" name="MiddleName" #MiddleName="ngModel" maxlength="50" required>
-                            <mat-error *ngIf="(MiddleName.touched || employeeForm.submitted) && MiddleName.errors?.required">
-                                Middle Name Is required
+                            <input matInput type='text' [(ngModel)]="employee.MiddleName" name="MiddleName" #MiddleName="ngModel"
+                             maxlength="50" required pattern="^[a-zA-Z]+$">
+                            <mat-error *ngIf="(MiddleName.touched || employeeForm.submitted) && MiddleName.errors">
+                               Please enter valid Middle Name
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Last Name</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.LastName" name="LastName" #LastName="ngModel" maxlength="50" required>
-                            <mat-error *ngIf="(LastName.touched || employeeForm.submitted) && LastName.errors?.required">
-                                Last Name Is required
+                            <input matInput type='text' [(ngModel)]="employee.LastName" name="LastName" #LastName="ngModel"
+                             maxlength="50" required pattern="^[a-zA-Z]+$">
+                            <mat-error *ngIf="(LastName.touched || employeeForm.submitted) && LastName.errors">
+                               Please enter valid last name
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Mobile No 1</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.MobileNo1" name="MobileNo1" #MobileNo1="ngModel" maxlength="10" minlength="10" required>
-                            <mat-error *ngIf="(MobileNo1.touched || employeeForm.submitted) && MobileNo1.errors?.required">
-                                Mobile No 1 Is required
-                            </mat-error>
-                            <mat-error *ngIf="(MobileNo1.touched) && (MobileNo1.errors?.maxlength || MobileNo1.errors?.minlength)">
+                            <input matInput type='text' [(ngModel)]="employee.MobileNo1" name="MobileNo1" #MobileNo1="ngModel" 
+                            maxlength="13" minlength="10"  pattern="^(?!0+$)(\+\d{1,3}[- ]?)?\d{10}$" required>
+                            <mat-error *ngIf="((MobileNo1.touched || employeeForm.submitted) && MobileNo1.errors)">
                                 Please enter valid value for mobile number
                             </mat-error>
                         </mat-form-field>
@@ -64,21 +65,10 @@
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Mobile No 2</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.MobileNo2" name="MobileNo2" #MobileNo2="ngModel"  maxlength="10" minlength="10" required>
-                            <mat-error *ngIf="(MobileNo2.touched || employeeForm.submitted) && MobileNo2.errors?.required">
-                                Mobile No 2 Is required
-                            </mat-error>
-                            <mat-error *ngIf="(MobileNo2.touched) && (MobileNo2.errors?.maxlength || MobileNo2.errors?.minlength)">
+                            <input matInput type='text' [(ngModel)]="employee.MobileNo2" name="MobileNo2" #MobileNo2="ngModel"  
+                            maxlength="13" minlength="10"  pattern="^(\+\d{1,3}[- ]?)?\d{10}$" >
+                            <mat-error *ngIf="(MobileNo2.touched || employeeForm.submitted) && MobileNo2.errors?.minlength">
                                 Please enter valid value for mobile number
-                            </mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="fieldColspan">
-                        <mat-form-field class="form-field" appearance="outline">
-                            <mat-label>EmailId</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.EmailId" name="EmailId" #EmailId="ngModel" maxlength="70" required>
-                            <mat-error *ngIf="(EmailId.touched || employeeForm.submitted) && EmailId.errors?.required">
-                                Email Id Is required
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
@@ -86,7 +76,7 @@
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Address1</mat-label>
                             <input matInput type='text' [(ngModel)]="employee.Address1" name="Address1" #Address1="ngModel" maxlength="350" required>
-                            <mat-error *ngIf="(Address1.touched || employeeForm.submitted) && Address1.errors?.required">
+                            <mat-error *ngIf="(Address1.touched || employeeForm.submitted) && Address1.errors">
                                 Address1 Is required
                             </mat-error>
                         </mat-form-field>
@@ -95,7 +85,7 @@
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Address2</mat-label>
                             <input matInput type='text' [(ngModel)]="employee.Address2" name="Address2" #Address2="ngModel" maxlength="350" required>
-                            <mat-error *ngIf="(Address2.touched || employeeForm.submitted) && Address2.errors?.required">
+                            <mat-error *ngIf="(Address2.touched || employeeForm.submitted) && Address2.errors">
                                 Address2 Is required
                             </mat-error>
                         </mat-form-field>
@@ -103,58 +93,53 @@
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Postal Code</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.PostalCode" name="PostalCode" #PostalCode="ngModel" maxlength="6" required>
-                            <mat-error *ngIf="(PostalCode.touched || employeeForm.submitted) && PostalCode.errors?.required">
+                            <input matInput type='text' [(ngModel)]="employee.PostalCode" name="PostalCode" #PostalCode="ngModel" maxlength="6" minlength="6" 
+                            required pattern="[0-9]+">
+                            <mat-error *ngIf="(PostalCode.touched || employeeForm.submitted) && PostalCode.errors">
                                 Postal Code Is required
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
-
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Target Amount</mat-label>
                             <input matInput type='number' [(ngModel)]="employee.TargetAmount" name="TargetAmount" #TargetAmount="ngModel" required>
-                            <mat-error *ngIf="(TargetAmount.touched || employeeForm.submitted) && TargetAmount.errors?.required">
+                            <mat-error *ngIf="(TargetAmount.touched || employeeForm.submitted) && TargetAmount.errors">
                                 Target Amount Is required
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
-                            <mat-label>Login Name</mat-label>
-                            <input matInput type='text' [(ngModel)]="employee.LoginName" name="LoginName" #LoginName="ngModel" maxlength="50" required>
-                            <mat-error *ngIf="(LoginName.touched || employeeForm.submitted) && LoginName.errors?.required">
-                                Login Name Is required
+                            <mat-label>EmailId</mat-label>
+                            <input matInput type='text' [(ngModel)]="employee.EmailId" name="EmailId" #EmailId="ngModel" maxlength="100"
+                                minlength="3" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
+                            <mat-error *ngIf="(EmailId.touched || employeeForm.submitted)">
+                                Please enter valid email
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Password</mat-label>
-                            <input matInput type='password' [(ngModel)]="employee.Password" name="Password" #Password="ngModel" required>
-                            <mat-error *ngIf="(LoginName.touched || employeeForm.submitted) && Password.errors?.required">
-                                Password Is required
+                            <input matInput type='password' [(ngModel)]="employee.Password" name="Password" #Password="ngModel" required
+                            minlength="8">
+                            <mat-error *ngIf="(Password.touched || employeeForm.submitted) && Password.errors">
+                               Please enter valid password
                             </mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Designation</mat-label>
-                            <mat-select placeholder="Select Designation"  [(ngModel)]="employee.DesignationId" name="DesignationId" #DesignationId="ngModel">
+                            <mat-select placeholder="Select Designation"  [(ngModel)]="employee.DesignationId" name="DesignationId" #DesignationId="ngModel" required> 
                               <mat-option *ngFor="let item of employeeSelectList.Designations" [value]="item.Value" >
                                 {{item.Text}} 
                               </mat-option>
                             </mat-select>
-                          </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [colspan]="fieldColspan">
-                        <mat-form-field class="form-field" appearance="outline">
-                            <mat-label>Department</mat-label>
-                            <mat-select placeholder="Select Department"  [(ngModel)]="employee.DepartmentId" name="DepartmentId" #DepartmentId="ngModel">
-                              <mat-option *ngFor="let item of employeeSelectList.Departments" [value]="item.Value" >
-                                {{item.Text}} 
-                              </mat-option>
-                            </mat-select>
+                            <mat-error *ngIf="(DesignationId.touched || employeeForm.submitted) && DesignationId.errors">
+                                Please select valid designation
+                             </mat-error>
                           </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">
@@ -165,6 +150,9 @@
                                 {{item.Text}} 
                               </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="(RoleId.touched || employeeForm.submitted) && RoleId.errors">
+                                Please select valid designation
+                             </mat-error>
                           </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [colspan]="fieldColspan">

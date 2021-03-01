@@ -35,6 +35,8 @@ import {
   
   import { NumberValidators } from "../shared/number.validator";
   import { GenericValidator } from "../shared/generic-validator";
+import { ConfirmDialog } from "../shared/dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: 'quotation-form',
@@ -77,6 +79,7 @@ export class QuotationFormComponent implements OnInit {
         private requestService: RequestService,
         private listService: ListService,
         private alertService: AlertService,
+        private dialog : MatDialog,
         private breakpointObserver: BreakpointObserver
     ) {
         this.LoadSelectListData();
@@ -88,6 +91,32 @@ export class QuotationFormComponent implements OnInit {
     ngOnInit(): void {
 
     }
+
+    
+  Close(employeeForm:NgForm)
+  {
+      if (employeeForm.touched) {
+
+          let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
+          const dialogRef = this.dialog.open(ConfirmDialog, {
+              maxWidth: "400px",
+              data: dialogData
+          });
+
+          dialogRef.afterClosed().subscribe(dialogResult => {
+              let result = dialogResult;
+              if (result == "CONFIRMED") {
+                  this.router.navigate(['/quotations']);
+              }
+          }
+          );
+      }
+      else 
+      {
+          this.router.navigate(['/quotations']);
+      }
+  }
+
 
     LoadSelectListData() {
         this.listService

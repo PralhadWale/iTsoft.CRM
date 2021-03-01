@@ -82,7 +82,7 @@ export class EmployeeService {
             DepartmentId:0,
             AddedBy: 0,
             UpdatedBy: 0,
-            TargetAmount:100,
+            TargetAmount:0,
             AddedDate: null,
             UpdatedDate: null
         };

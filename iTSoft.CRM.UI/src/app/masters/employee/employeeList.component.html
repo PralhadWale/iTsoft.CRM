@@ -21,18 +21,13 @@
     </mat-card>
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
-        <mat-label>First Name</mat-label>
-        <input matInput placeholder="FirstName" name="reference" [(ngModel)]="searchFilter.FirstName" #reference />
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="FirstName" name="FirstName" [(ngModel)]="searchFilter.FirstName" #FirstName />
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>Email</mat-label>
         <input matInput appearance="standard" placeholder="Email Id" name="EmailId" [(ngModel)]="searchFilter.EmailId"
           #EmailId />
-      </mat-form-field>
-      <mat-form-field appearance="standard">
-        <mat-label>Login Name</mat-label>
-        <input matInput appearance="standard" placeholder="LoginName" name="LoginName" [(ngModel)]="searchFilter.LoginName"
-          #LoginName />
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>MobileNo1</mat-label>
@@ -48,7 +43,7 @@
         </button>
         <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
           (click)="resetSearchFilter(sidenav)">
-          <mat-icon>refresh</mat-icon>Reset
+          <mat-icon>refresh</mat-icon>Cancel
         </button>
       </mat-action-list>
     </mat-card-header>

@@ -9,7 +9,7 @@
           (click)="saveEnquiry(enquiryForm)" [formGroup]="enquiryForm">
             <mat-icon>save</mat-icon>
           </button>
-          <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/enquiries']">
+          <button mat-mini-fab class="" style="margin-right:10px; " (click)="Close(enquiryForm)">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-card-actions>
@@ -81,12 +81,13 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Date of birth</mat-label>
-              <input matInput [matDatepicker]="enquiryDOBId" placeholder="Date of birth" [value]="request.RequestMaster.DOB" [min]="minDate" [max]="maxDate">
+              <input matInput [matDatepicker]="enquiryDOBId" [min]="minDate" [max]="maxDate"
+              [(ngModel)]="request.RequestMaster.DOB" name="DOB" #DOB="ngModel" required>
               <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
               <mat-datepicker #enquiryDOBId></mat-datepicker>
-               <mat-error>
-              Please select valid date
-            </mat-error>
+              <mat-error>
+                Please select valid date
+              </mat-error>
             </mat-form-field>
           </mat-grid-tile>
           

@@ -30,13 +30,15 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 import { RequestType } from '../_models/requesttype';
 
 import { RequestService } from '../process/services/request.service';
-import { AlertService } from '../_services';
+import { AlertService, StorageService } from '../_services';
 import { ListService } from '../process/services/list.service';
 
 import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
 
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
+import { ConfirmDialog } from "../shared/dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 
 @Component({
@@ -73,13 +75,16 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   maxDate : Date = new Date();
   enqMinDate : Date = new Date(2020,1,1);
 
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private requestService: RequestService,
     private listService: ListService,
     private alertService : AlertService,
-    private breakpointObserver: BreakpointObserver
+    
+    private breakpointObserver: BreakpointObserver,
+    private dialog : MatDialog,
   ) {
 
     this.requestSelectList = new RequestSelectListModel();
@@ -109,6 +114,30 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
       
+  }
+
+  Close(employeeForm:NgForm)
+  {
+      if (employeeForm.touched) {
+
+          let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
+          const dialogRef = this.dialog.open(ConfirmDialog, {
+              maxWidth: "400px",
+              data: dialogData
+          });
+
+          dialogRef.afterClosed().subscribe(dialogResult => {
+              let result = dialogResult;
+              if (result == "CONFIRMED") {
+                  this.router.navigate(['/enquiries']);
+              }
+          }
+          );
+      }
+      else 
+      {
+          this.router.navigate(['/enquiries']);
+      }
   }
 
   getRequest(requestId: number): void {

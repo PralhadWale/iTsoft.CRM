@@ -8,7 +8,7 @@
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit" (click)="onSubmit(quotationForm)">
             <mat-icon>save</mat-icon>
           </button>
-          <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/quotations']">
+          <button mat-mini-fab class="" style="margin-right:10px;" (click)="Close(quotationForm)">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-card-actions>

@@ -13,7 +13,7 @@ import { RequestSelectListModel } from '../_models/requestselectlistmodel';
 
 import { RequestService } from '../process/services/request.service';
 import { ListService } from '../process/services/list.service';
-import { AlertService, AuthenticationService } from '../_services';
+import { AlertService, AuthenticationService, StorageService } from '../_services';
 import { AssignRequestAvisorComponent } from '../process/assign-request-advisor/assign-request-advisor.component';
 import { UserRole } from '../_models/userRole';
 import { ConfigurationSettings } from '../_models/configuration';
@@ -32,7 +32,7 @@ export class QuotationListComponent implements OnInit {
 
   searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Quotation);
 
-
+  storageKey = "QUOTATIONFILTER";
 
   quotationList: Array<any>;
   quotationTableSchema: Array<TableColumnModel> = [];
@@ -43,6 +43,7 @@ export class QuotationListComponent implements OnInit {
   constructor(
     private requestService: RequestService,
     private listService: ListService,
+    private storageService : StorageService,
     private alertService: AlertService,
     private router: Router,
 
@@ -52,7 +53,7 @@ export class QuotationListComponent implements OnInit {
   ngOnInit(): void {
     this.LoadSelectListData();
     this.SetTableSchema();
-    this.getQuotations();
+    this.SetFilter();
   }
 
 
@@ -80,7 +81,7 @@ export class QuotationListComponent implements OnInit {
         this.sidenav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
-        this.getQuotations();
+        this.SetFilter(true);
       }
       else if ($event.toolbarItem == ToolBarItems.Transfer) {
         this.selectedQuotationList = $event.selectedItems;
@@ -98,6 +99,21 @@ export class QuotationListComponent implements OnInit {
 
   }
 
+  private SetFilter(resetToDefault: boolean = false) {
+    if (resetToDefault) {
+      this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
+    }
+    else {
+      let filter = this.storageService.GetItem(this.storageKey);
+      if (filter != null) {
+        this.searchFilter = filter;
+      }
+      else {
+        this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
+      }
+    }
+    this.getQuotations();
+  }
 
   resetSearchFilter(sidenav: any) {
     this.sidenav.toggle();
@@ -124,7 +140,7 @@ export class QuotationListComponent implements OnInit {
   }
 
   getQuotations() {
-
+    this.storageService.SetItem(this.storageKey,this.searchFilter);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.quotationList = result.Value.ResponseData;
       this.sidenav.close();
