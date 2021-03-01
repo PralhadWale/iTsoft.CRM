@@ -12,38 +12,42 @@
 
 
 <mat-sidenav class="search-panel" position="end" dark #sourceNav mode="push" opened="false">
-  <mat-card class="profile-card">
-    <mat-card-header>
-      <div mat-card-avatar class="avatar">
-        <mat-icon>queue</mat-icon>
+  <form #sourceForm="ngForm">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          <mat-icon>queue</mat-icon>
+        </div>
+        <mat-card-title>
+          Add-Update Source
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Source Name</mat-label>
+          <input matInput appearance="standard" placeholder="Source Name" name="LeadSourceName" maxlength="200"
+          [(ngModel)]="sourceMaster.LeadSourceName" required #LeadSourceName="ngModel"/>
+        <mat-error *ngIf="(LeadSourceName.touched || sourceForm.submitted) && LeadSourceName.errors">
+          Please enter valid Source name
+        </mat-error>
+      </mat-form-field>
+      <div class="form-group form-check">
+        <mat-checkbox name="IsActive" id="IsActive" class="form-check-input" [(ngModel)]="sourceMaster.IsActive"
+          #IsActive="ngModel">Is Active</mat-checkbox>
       </div>
-      <mat-card-title>
-        Add-Update Source
-      </mat-card-title>
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-card-header>
+      <mat-action-list>
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="saveSource(sourceForm);">
+          <mat-icon>save</mat-icon>Save
+        </button>
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;" (click)="reset()">
+          <mat-icon>refresh</mat-icon>Cancel
+        </button>
+      </mat-action-list>
     </mat-card-header>
-  </mat-card>
-  <mat-nav-list style="margin-left:50px;">
-    <mat-form-field appearance="standard">
-      <mat-label>Source Name</mat-label>
-      <input matInput appearance="standard" placeholder="Source Name" name="LeadSourceName"
-        [(ngModel)]="sourceMaster.LeadSourceName" />
-    </mat-form-field>
-    <div class="form-group form-check">
-      <mat-checkbox name="IsActive" id="IsActive" class="form-check-input"
-        [(ngModel)]="sourceMaster.IsActive" #IsActive="ngModel">Is Active</mat-checkbox>
-    </div>
-  </mat-nav-list>
-  <mat-divider></mat-divider>
-  <mat-card-header>
-    <mat-action-list>
-      <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-        (click)="saveSource(sourceMaster);">
-        <mat-icon>save</mat-icon>Save
-      </button>
-      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
-        (click)="reset()">
-        <mat-icon>refresh</mat-icon>Cancel
-      </button>
-    </mat-action-list>
-  </mat-card-header>
+  </form>
 </mat-sidenav>

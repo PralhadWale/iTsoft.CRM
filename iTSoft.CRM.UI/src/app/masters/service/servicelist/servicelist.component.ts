@@ -7,6 +7,7 @@ import { ServiceService } from '../service.service';
 import { ServiceMaster } from '../service.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/shared';
+import { NgForm } from '@angular/forms/';
 
 @Component({
   selector: 'app-servicelist',
@@ -15,6 +16,7 @@ import { ConfirmDialog } from 'src/app/shared';
 })
 export class ServicelistComponent implements OnInit {
   @ViewChild("serviceNav") serviceNav: MatSidenav;
+  @ViewChild("serviceForm") serviceForm : NgForm;
   pageTitle:string = "Service List";
 
   serviceList: Array<any>;
@@ -29,7 +31,7 @@ export class ServicelistComponent implements OnInit {
      ) { }
 
   ngOnInit(): void {
-    this.reset();
+    this.reset(this.serviceForm);
     this.SetTableSchema();
     this.getAll();
   }
@@ -49,7 +51,7 @@ export class ServicelistComponent implements OnInit {
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
-        this.reset();
+        this.reset(this.serviceForm);
         this.serviceNav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
@@ -73,7 +75,7 @@ export class ServicelistComponent implements OnInit {
       if (result == "CONFIRMED") {
         this.serviceService.Delete(data).subscribe(result => {
           this.alertService.showSuccessMessage("Record Deleted successfully");
-          this.reset();
+          this.reset(this.serviceForm);
           this.getAll();
         }, error => {
           this.alertService.showErrorMessage(error.error);
@@ -85,12 +87,11 @@ export class ServicelistComponent implements OnInit {
   }
 
 
-  saveService(serviceMaster: ServiceMaster) {
-    if (serviceMaster) {
-    
-      this.serviceService.Save(serviceMaster).subscribe(result => {
+  saveService(serviceForm : NgForm) {
+    if (serviceForm && serviceForm.valid) {
+      this.serviceService.Save(this.serviceMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Service saved successfully");
-        this.reset();
+        this.reset(serviceForm);
         this.getAll();
       }, error => {
         this.alertService.showErrorMessage(error.error);
@@ -98,8 +99,14 @@ export class ServicelistComponent implements OnInit {
     }
   }
 
-  reset() {
+  reset(serviceForm : NgForm) {
     this.serviceMaster = this.serviceService.NewService();
+
+    if (serviceForm) {
+      serviceForm.reset();
+      serviceForm.resetForm();
+    }
+
     if (this.serviceNav != null) {
       this.serviceNav.close();
     }
@@ -121,6 +128,7 @@ export class ServicelistComponent implements OnInit {
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+        { ColumnField: "Price", ColumnHeader: "Default Price", Type: "text" },
          { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType: CommandType.Delete }] }
       ];

@@ -7,6 +7,7 @@ import { DesignationService } from '../designation.service';
 import { DesignationMaster } from '../designation.model';
 import { ConfirmDialog } from 'src/app/shared';
 import { MatDialog } from '@angular/material/dialog';
+import { NgForm } from '@angular/forms/';
 @Component({
   selector: 'app-designationlist',
   templateUrl: './designationlist.component.html',
@@ -15,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class DesignationlistComponent implements OnInit {
 
   @ViewChild("designationNav") sidenav: MatSidenav;
+  @ViewChild("designationForm") designationForm: NgForm;
   pageTitle: string = "Designation List"
 
   designationList: Array<any>;
@@ -61,10 +63,10 @@ this.getAll();
   }
 
 
-  saveDesignation(designationMaster: DesignationMaster) {
-    if (designationMaster) {
+  saveDesignation(form : NgForm) {
+    if (form && form.valid) {
     
-      this.designationService.Save(designationMaster).subscribe(result => {
+      this.designationService.Save(this.designationMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();
         this.getAll();
@@ -99,8 +101,13 @@ this.getAll();
 
   reset() {
 
-
     this.designationMaster = this.designationService.NewDesignation();
+    if(this.designationForm)
+    {
+      this.designationForm.reset();
+      this.designationForm.resetForm();
+    }
+
     if (this.sidenav != null) {
       this.sidenav.close();
     }

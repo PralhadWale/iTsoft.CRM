@@ -8,6 +8,7 @@ import { StatusService } from '../status.service';
 import { StatusMaster } from '../status.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/shared';
+import { NgForm } from '@angular/forms/';
 
 @Component({
   selector: 'app-statuslist',
@@ -17,6 +18,7 @@ import { ConfirmDialog } from 'src/app/shared';
 export class StatuslistComponent implements OnInit {
 
   @ViewChild("statusNav") sidenav: MatSidenav;
+  @ViewChild("statusForm") statusForm: NgForm;
   pageTitle: string = "Lead Status List"
 
   statusList: Array<any>;
@@ -25,10 +27,10 @@ export class StatuslistComponent implements OnInit {
   statusMaster: StatusMaster = null;
 
   constructor(
-    private statusService: StatusService, 
+    private statusService: StatusService,
     private alertService: AlertService,
     public dialog: MatDialog,
-    ) {
+  ) {
 
   }
 
@@ -45,8 +47,7 @@ export class StatuslistComponent implements OnInit {
         this.statusMaster = Object.assign({}, $event.rowData);
         this.sidenav.open();
       }
-      else if($event.command.commandType == CommandType.Delete)
-      {
+      else if ($event.command.commandType == CommandType.Delete) {
         this.Delete(Object.assign({}, $event.rowData));
       }
     }
@@ -63,10 +64,10 @@ export class StatuslistComponent implements OnInit {
   }
 
 
-  saveStatus(statusMaster: StatusMaster) {
-    if (statusMaster) {
-     
-      this.statusService.Save(statusMaster).subscribe(result => {
+  saveStatus(statusForm: NgForm) {
+    if (statusForm && statusForm.valid) {
+
+      this.statusService.Save(this.statusMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();
         this.getAll();
@@ -78,7 +79,7 @@ export class StatuslistComponent implements OnInit {
 
   Delete(data: StatusMaster) {
 
-    let dialogData =  {title : "Confirm Action", message : "Are you sure ? Do you really want to delete selected record ? "};
+    let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to delete selected record ? " };
 
     const dialogRef = this.dialog.open(ConfirmDialog, {
       maxWidth: "400px",
@@ -103,6 +104,12 @@ export class StatuslistComponent implements OnInit {
 
 
     this.statusMaster = this.statusService.NewStatus();
+
+    if (this.statusForm) {
+      this.statusForm.reset();
+      this.statusForm.resetForm();
+    }
+
     if (this.sidenav != null) {
       this.sidenav.close();
     }
@@ -119,15 +126,15 @@ export class StatuslistComponent implements OnInit {
   }
 
   SetTableSchema() {
-      this.tableSettings = new TableDefaultSettings();
-      this.tableSettings.ShowToolBar = true;
-      this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh];
-  
-      this.statusTableSchema =
-        [
-          { ColumnField: "LeadStatusName", ColumnHeader: "Status Name", Type: "text" },
-          { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType : CommandType.Delete }] }
-        ];
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh];
+
+    this.statusTableSchema =
+      [
+        { ColumnField: "LeadStatusName", ColumnHeader: "Status Name", Type: "text" },
+        { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType: CommandType.Delete }] }
+      ];
   }
 }

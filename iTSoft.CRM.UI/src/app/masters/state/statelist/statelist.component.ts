@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms/';
 import { MatSidenav } from '@angular/material/sidenav';
 import { TableColumnModel, TableDefaultSettings } from 'src/app/shared/table-layout/it-mat-table.component';
 import { StateMaster } from '../state.model';
@@ -34,8 +35,8 @@ export class StatelistComponent implements OnInit {
 
   }
 
-  saveState(stateMaster: StateMaster) {
-    if (stateMaster) {
+  saveState(stateForm: NgForm) {
+    if (stateForm && stateForm.valid) {
 
     }
   }

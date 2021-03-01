@@ -8,6 +8,7 @@ import { SourceService } from '../source.service';
 import { SourceMaster } from '../source.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/shared';
+import { NgForm } from '@angular/forms/';
 
 @Component({
   selector: 'app-sourcelist',
@@ -17,6 +18,8 @@ import { ConfirmDialog } from 'src/app/shared';
 export class SourcelistComponent implements OnInit {
 
   @ViewChild("sourceNav") sidenav: MatSidenav;
+  @ViewChild("sourceForm") sourceForm : NgForm;
+  
   pageTitle: string = "Lead Source List"
 
   sourceList: Array<any>;
@@ -63,10 +66,10 @@ export class SourcelistComponent implements OnInit {
   }
 
 
-  saveSource(sourceMaster: SourceMaster) {
-    if (sourceMaster) {
+  saveSource(sourceForm: NgForm) {
+    if (sourceForm && sourceForm.valid) {
    
-      this.sourceService.Save(sourceMaster).subscribe(result => {
+      this.sourceService.Save(this.sourceMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();
         this.getAll();
@@ -80,6 +83,12 @@ export class SourcelistComponent implements OnInit {
 
 
     this.sourceMaster = this.sourceService.NewSource();
+
+    if(this.sourceForm)
+    {
+      this.sourceForm.reset();
+      this.sourceForm.resetForm();
+    }
     if (this.sidenav != null) {
       this.sidenav.close();
     }

@@ -7,13 +7,14 @@ import { DepartmentService } from '../department.service';
 import { DepartmentMaster } from '../department.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/shared';
+import { NgForm } from '@angular/forms/';
 @Component({
   selector: 'app-departmentlist',
   templateUrl: './departmentlist.component.html',
   styleUrls: ['./departmentlist.component.scss']
 })
 export class DepartmentlistComponent implements OnInit {
-
+  @ViewChild("departmentForm") departmentForm: NgForm;
   @ViewChild("departmentNav") sidenav: MatSidenav;
   pageTitle: string = "Department List"
 
@@ -23,10 +24,10 @@ export class DepartmentlistComponent implements OnInit {
   departmentMaster: DepartmentMaster = null;
 
   constructor(
-    private departmentService: DepartmentService, 
+    private departmentService: DepartmentService,
     private alertService: AlertService,
     public dialog: MatDialog,
-    ) {
+  ) {
 
   }
 
@@ -43,8 +44,7 @@ export class DepartmentlistComponent implements OnInit {
         this.departmentMaster = Object.assign({}, $event.rowData);
         this.sidenav.open();
       }
-      else if($event.command.commandType == CommandType.Delete)
-      {
+      else if ($event.command.commandType == CommandType.Delete) {
         this.Delete(Object.assign({}, $event.rowData));
       }
     }
@@ -61,10 +61,9 @@ export class DepartmentlistComponent implements OnInit {
   }
 
 
-  saveDepartment(departmentMaster: DepartmentMaster) {
-    if (departmentMaster) {
-    
-      this.departmentService.Save(departmentMaster).subscribe(result => {
+  saveDepartment(form: NgForm) {
+    if (form && form.valid) {
+      this.departmentService.Save(this.departmentMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();
         this.getAll();
@@ -76,7 +75,7 @@ export class DepartmentlistComponent implements OnInit {
 
   Delete(data: DepartmentMaster) {
 
-    let dialogData =  {title : "Confirm Action", message : "Are you sure ? Do you really want to delete selected record ? "};
+    let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to delete selected record ? " };
 
     const dialogRef = this.dialog.open(ConfirmDialog, {
       maxWidth: "400px",
@@ -99,8 +98,13 @@ export class DepartmentlistComponent implements OnInit {
 
   reset() {
 
-
     this.departmentMaster = this.departmentService.NewDepartment();
+    
+    if (this.departmentForm) {
+      this.departmentForm.reset();
+      this.departmentForm.resetForm();
+    }
+
     if (this.sidenav != null) {
       this.sidenav.close();
     }
@@ -117,15 +121,15 @@ export class DepartmentlistComponent implements OnInit {
   }
 
   SetTableSchema() {
-      this.tableSettings = new TableDefaultSettings();
-      this.tableSettings.ShowToolBar = true;
-      this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh];
-  
-      this.departmentTableSchema =
-        [
-          { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
-          { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
-          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit },{ commandType: CommandType.Delete }] }
-        ];
+    this.tableSettings = new TableDefaultSettings();
+    this.tableSettings.ShowToolBar = true;
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh];
+
+    this.departmentTableSchema =
+      [
+        { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
+        { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType: CommandType.Delete }] }
+      ];
   }
 }

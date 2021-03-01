@@ -11,6 +11,7 @@ namespace iTSoft.CRM.Data.Entity.Master
         [Key]
         public long ServiceId { get; set; }
         public string ServiceName { get; set; }
+        public decimal? Price { get; set; }
         public bool? IsActive { get; set; }
         public long? AddedBy { get; set; }
         public DateTime? AddedOn { get; set; }

@@ -8,6 +8,7 @@ import { StageService } from '../stage.service';
 import { StageMaster } from '../stage.model';
 import { ConfirmDialog } from 'src/app/shared';
 import { MatDialog } from '@angular/material/dialog';
+import { NgForm } from '@angular/forms/';
 
 @Component({
   selector: 'app-stagelist',
@@ -17,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class StagelistComponent implements OnInit {
 
   @ViewChild("stageNav") sidenav: MatSidenav;
+  @ViewChild("stageForm") stageForm : NgForm;
   pageTitle: string = "Lead Stage List"
 
   stageList: Array<any>;
@@ -63,10 +65,10 @@ export class StagelistComponent implements OnInit {
   }
 
 
-  saveStage(stageMaster: StageMaster) {
-    if (stageMaster) {
+  saveStage(stageForm: NgForm) {
+    if (stageForm && stageForm.valid) {
     
-      this.stageService.Save(stageMaster).subscribe(result => {
+      this.stageService.Save(this.stageMaster).subscribe(result => {
         this.alertService.showSuccessMessage("Record saved successfully");
         this.reset();
         this.getAll();
@@ -104,6 +106,13 @@ export class StagelistComponent implements OnInit {
 
 
     this.stageMaster = this.stageService.NewStage();
+
+    if(this.stageForm)
+    {
+      this.stageForm.reset();
+      this.stageForm.resetForm();
+    }
+    
     if (this.sidenav != null) {
       this.sidenav.close();
     }

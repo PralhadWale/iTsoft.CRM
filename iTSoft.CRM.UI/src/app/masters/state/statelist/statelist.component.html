@@ -11,7 +11,8 @@
 
 
 <mat-sidenav class="search-panel" position="end" dark #stateNav mode="push" opened="false">
-    <mat-card class="profile-card">
+  <form #stateForm="ngForm">  
+  <mat-card class="profile-card">
       <mat-card-header>
         <div mat-card-avatar class="avatar">
           <mat-icon>queue</mat-icon>
@@ -24,7 +25,11 @@
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
         <mat-label>State Name</mat-label>
-        <input matInput appearance="standard" placeholder="State Name" name="StateName" [(ngModel)]="stateMaster.StateName" />
+        <input matInput appearance="standard" placeholder="State Name" name="StateName" maxlength="200"
+          [(ngModel)]="stateMaster.StateName" required #StateName="ngModel"/>
+        <mat-error *ngIf="(StateName.touched || stateForm.submitted) && StateName.errors">
+          Please enter valid State name
+        </mat-error>
       </mat-form-field>
 <!--<mat-form-field appearance="standard">  -->
         <mat-checkbox class="checkbox_margin">Is Active</mat-checkbox>
@@ -37,7 +42,7 @@
     <mat-card-header>
       <mat-action-list>
         <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="saveState(stateMaster);sidenav.toggle()">
+          (click)="saveState(stateForm);sidenav.toggle()">
           <mat-icon>save</mat-icon>Save
         </button>
         <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
@@ -46,4 +51,5 @@
         </button>
       </mat-action-list>
     </mat-card-header>
+  </form>
   </mat-sidenav>

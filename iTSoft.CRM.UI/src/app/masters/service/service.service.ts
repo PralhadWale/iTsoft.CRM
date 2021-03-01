@@ -44,6 +44,7 @@ export class ServiceService {
         let serviceMaster = new ServiceMaster();
         serviceMaster.ServiceId = 0;
         serviceMaster.ServiceName = null;
+        serviceMaster.Price = 0;
         serviceMaster.IsActive = false;
 
         return serviceMaster;

@@ -12,6 +12,7 @@
 
 
 <mat-sidenav class="search-panel" position="end" dark #stageNav mode="push" opened="false">
+  <form #stageForm="ngForm">
   <mat-card class="profile-card">
     <mat-card-header>
       <div mat-card-avatar class="avatar">
@@ -25,8 +26,11 @@
   <mat-nav-list style="margin-left:50px;">
     <mat-form-field appearance="standard">
       <mat-label>Stage Name</mat-label>
-      <input matInput appearance="standard" placeholder="Stage Name" name="StageName"
-        [(ngModel)]="stageMaster.StageName" />
+      <input matInput appearance="standard" placeholder="Stage Name" name="StageName" maxlength="200"
+          [(ngModel)]="stageMaster.StageName" required #StageName="ngModel"/>
+        <mat-error *ngIf="(StageName.touched || stageForm.submitted) && StageName.errors">
+          Please enter valid Stage name
+        </mat-error>
     </mat-form-field>
     <div class="form-group form-check">
       <mat-checkbox name="IsActive" id="IsActive" class="form-check-input"
@@ -37,7 +41,7 @@
   <mat-card-header>
     <mat-action-list>
       <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-        (click)="saveStage(stageMaster);">
+        (click)="saveStage(stageForm);">
         <mat-icon>save</mat-icon>Save
       </button>
       <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
@@ -46,4 +50,5 @@
       </button>
     </mat-action-list>
   </mat-card-header>
+</form>
 </mat-sidenav>
