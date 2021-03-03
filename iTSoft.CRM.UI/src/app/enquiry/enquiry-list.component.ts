@@ -17,13 +17,15 @@ import { AlertService, StorageService } from '../_services';
 import { AssignRequestAvisorComponent } from "../process/assign-request-advisor/assign-request-advisor.component";
 import { ConfigurationSettings } from "../_models/configuration";
 import { UserRole } from "../_models/userRole";
+import { NgForm } from "@angular/forms/";
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
-  styleUrls: ["./enquiry-list.component.css"],
+  styleUrls: ["./enquiry-list.component.scss"],
 })
 export class EnquiryListComponent implements OnInit {
 @ViewChild("sidenav")  sidenav : MatSidenav;
+@ViewChild("enquiryForm") enquiryForm : NgForm;
 @ViewChild("assignAdvisor")  assignAdvisor : AssignRequestAvisorComponent;
 
   pageTitle: string = "Enquiry List";
@@ -123,6 +125,7 @@ export class EnquiryListComponent implements OnInit {
 
   resetSearchFilter(sidenav:any)
   {
+    this.SetFilter();
     this.sidenav.toggle();
   }
 
@@ -133,7 +136,9 @@ export class EnquiryListComponent implements OnInit {
 
   searchEnquiries(searchFilter:any)
   {
-    this.getEnquiries();
+    if (this.enquiryForm.valid) {
+      this.getEnquiries();
+    }
   }
 
   LoadSelectListData() {
@@ -152,7 +157,10 @@ export class EnquiryListComponent implements OnInit {
     this.storageService.SetItem(this.storageKey,this.searchFilter);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.enquiryList = result.Value.ResponseData;
-
+      if(this.sidenav)
+      {
+        this.sidenav.close()
+      }
     }, error => { console.log(error); });
 
   }

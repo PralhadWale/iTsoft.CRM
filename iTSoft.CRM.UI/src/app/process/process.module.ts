@@ -8,9 +8,10 @@ import { MaterialModule } from '../shared';
 import { SharedModule } from '../shared/shared.module';
 import { AssignRequestAvisorComponent } from './assign-request-advisor/assign-request-advisor.component';
 import { AssignFollowUpAvisorComponent } from './assign-followup-advisor/assign-followup-advisor.component';
+import { AddServiceComponent } from './add-service/add-service.component';
 
 @NgModule({
-  declarations: [AddFollowupComponent,AssignRequestAvisorComponent,AssignFollowUpAvisorComponent],
+  declarations: [AddFollowupComponent,AssignRequestAvisorComponent,AssignFollowUpAvisorComponent, AddServiceComponent],
   imports: [
     CommonModule,
     SharedModule,

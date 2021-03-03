@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     // this.authenticationService.logout();
     this.model.username = "admin@taxblock.in";
-    this.model.password = "12345";
+    this.model.password = "12345678";
     this.returnUrl =
       this.route.snapshot.queryParams["returnUrl"] || "dashboard";
     // this.isloading = false;

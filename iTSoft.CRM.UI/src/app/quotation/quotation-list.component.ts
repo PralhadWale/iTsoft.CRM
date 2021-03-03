@@ -17,6 +17,7 @@ import { AlertService, AuthenticationService, StorageService } from '../_service
 import { AssignRequestAvisorComponent } from '../process/assign-request-advisor/assign-request-advisor.component';
 import { UserRole } from '../_models/userRole';
 import { ConfigurationSettings } from '../_models/configuration';
+import { NgForm } from '@angular/forms/';
 
 @Component({
   selector: 'quotation-list',
@@ -27,6 +28,7 @@ import { ConfigurationSettings } from '../_models/configuration';
 export class QuotationListComponent implements OnInit {
   @ViewChild("sidenav") sidenav: MatSidenav;
   @ViewChild("assignAdvisor") assignAdvisor: AssignRequestAvisorComponent;
+  @ViewChild("quotationForm") quotationForm: NgForm;
 
   pageTitle: string = 'Quotations';
 
@@ -43,7 +45,7 @@ export class QuotationListComponent implements OnInit {
   constructor(
     private requestService: RequestService,
     private listService: ListService,
-    private storageService : StorageService,
+    private storageService: StorageService,
     private alertService: AlertService,
     private router: Router,
 
@@ -116,6 +118,7 @@ export class QuotationListComponent implements OnInit {
   }
 
   resetSearchFilter(sidenav: any) {
+    this.SetFilter();
     this.sidenav.toggle();
   }
 
@@ -124,7 +127,9 @@ export class QuotationListComponent implements OnInit {
   }
 
   searchQuotations(searchFilter: any) {
-    this.getQuotations();
+    if (this.quotationForm && this.quotationForm.valid) {
+      this.getQuotations();
+    }
   }
 
   LoadSelectListData() {
@@ -140,7 +145,7 @@ export class QuotationListComponent implements OnInit {
   }
 
   getQuotations() {
-    this.storageService.SetItem(this.storageKey,this.searchFilter);
+    this.storageService.SetItem(this.storageKey, this.searchFilter);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.quotationList = result.Value.ResponseData;
       this.sidenav.close();
@@ -151,7 +156,7 @@ export class QuotationListComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search , ToolBarItems.Transfer];
+    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search, ToolBarItems.Transfer];
 
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit },

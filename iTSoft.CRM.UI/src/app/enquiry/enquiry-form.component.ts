@@ -39,6 +39,7 @@ import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { AddServiceComponent } from "../process/add-service/add-service.component";
 
 
 @Component({
@@ -53,6 +54,23 @@ import { MatDialog } from "@angular/material/dialog";
       margin-left: 20px;
       margin-right: 20px;
     }
+    .mat-tab-label {
+      border: 1px solid palevioletred;
+      border-top-left-radius: .95rem;
+      border-top-right-radius: .95rem;
+     width: 200px;
+  }
+  
+  .mat-tab-label-active {
+     color: #495057;
+      background-color: #fff;
+      border-color: #dee2e6 #dee2e6 #fff;
+     
+  }
+  
+  .mat-ink-bar {
+    display: none;
+  }
     `],
 })
 export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -70,7 +88,11 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   requestSelectList: RequestSelectListModel
   followUpTableSchema: Array<TableColumnModel> = [];
-  tableSettings: TableDefaultSettings;
+  serviceTableSchema: Array<TableColumnModel> = [];
+
+  followupTableSettings: TableDefaultSettings;
+  serviceTableSettings : TableDefaultSettings;
+
   minDate : Date = new Date(1800,1,1);
   maxDate : Date = new Date();
   enqMinDate : Date = new Date(2020,1,1);
@@ -191,7 +213,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onCommandClick($event: CommandEventArgs) {
+  onFollowUpCommandClick($event: CommandEventArgs) {
     if ($event.toolbarItem) {
         if ($event.toolbarItem == ToolBarItems.Add) {
             this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
@@ -201,6 +223,28 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 }
+
+onServiceCommandClick($event: CommandEventArgs) {
+  if ($event.toolbarItem) {
+      if ($event.toolbarItem == ToolBarItems.Add) {
+        const dialogRef = this.dialog.open(AddServiceComponent, {
+          data: null
+        });
+
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          let result = dialogResult;
+          if (result.Action == "SAVE") {
+            //this.router.navigate(['/enquiries']);
+          }
+          else {
+
+          }
+        }
+        );
+      }
+  }
+}
+
 onFollowUpSaved() {
     this.getRequest(this.request.RequestMaster.RequestId);
 }
@@ -232,11 +276,16 @@ onFollowUpSaved() {
 
   SetTableSchema() {
 
-    this.tableSettings = new TableDefaultSettings();
-    this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Add];
-  
+    this.followupTableSettings = new TableDefaultSettings();
+    this.followupTableSettings.ShowToolBar = true;
+    this.followupTableSettings.ToolBarItems = [ToolBarItems.Add];
+    this.followupTableSettings.HideFilter = true;
 
+    this.serviceTableSettings = new TableDefaultSettings();
+    this.serviceTableSettings.ShowToolBar = true;
+    this.serviceTableSettings.ToolBarItems = [ToolBarItems.Add];
+    this.serviceTableSettings.HideFilter = true;
+    this.serviceTableSettings.AllowPaging = false;
    
     this.followUpTableSchema =
     [
@@ -248,6 +297,13 @@ onFollowUpSaved() {
       { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
       { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
       { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+      { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+    ];
+
+    this.serviceTableSchema =
+    [
+      { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+      { ColumnField:"Remark" , ColumnHeader: "Remark" , Type: "text"},
       { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
     ];
 

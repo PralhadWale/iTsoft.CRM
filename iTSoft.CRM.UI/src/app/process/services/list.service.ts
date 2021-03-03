@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 import { APIService } from 'src/app/_services';
 
 @Injectable({
@@ -40,6 +41,11 @@ export class ListService {
 
     GetClientSelectList() {
         let getUrl = this.listController + "get-client-select-list";
+        return this.apiService.GetData(getUrl);
+    }
+
+    GetServiceList() {
+        let getUrl = iTCRMSettings.Masters + "/service/getall";;
         return this.apiService.GetData(getUrl);
     }
 

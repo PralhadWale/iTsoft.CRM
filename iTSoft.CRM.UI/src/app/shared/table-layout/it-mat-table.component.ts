@@ -181,6 +181,9 @@ export class TableDefaultSettings {
   AllowEdit: boolean = false;
   ToolBarItems: Array<ToolBarItems> = [];
   ShowTransferToolBarItem: boolean;
+  HideFilter: boolean;
+  AllowPaging:boolean = true;
+  
 }
 
 export class CommandModel

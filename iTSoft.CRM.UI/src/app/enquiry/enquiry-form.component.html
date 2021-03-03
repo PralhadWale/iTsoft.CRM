@@ -1,4 +1,4 @@
-<form  #enquiryForm="ngForm">
+<form #enquiryForm="ngForm">
   <mat-card>
     <mat-toolbar style="background-color: #FFF">
       <mat-toolbar-row>
@@ -6,7 +6,7 @@
         <span class="title-spacer"></span>
         <mat-card-actions>
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
-          (click)="saveEnquiry(enquiryForm)" [formGroup]="enquiryForm">
+            (click)="saveEnquiry(enquiryForm)" [formGroup]="enquiryForm">
             <mat-icon>save</mat-icon>
           </button>
           <button mat-mini-fab class="" style="margin-right:10px; " (click)="Close(enquiryForm)">
@@ -16,187 +16,213 @@
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-card-content style="margin: 5 0 5 0px;">
-      <div class="form-card">
-        <mat-grid-list cols="12" rowHeight="80px">
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Enquiry No. </mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.RequestNo" name="RequestNo" #RequestNo="ngModel" required readonly>
-              <mat-error *ngIf="(RequestNo.touched || enquiryForm.submitted) && RequestNo.errors?.required">
-                Quotation No Is required
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Enquiry Date. </mat-label>
-              <input matInput [matDatepicker]="datepicker1" [min]="enqMinDate" [max]="maxDate"
-                [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
-              <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
-              <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
-              <mat-error>Please select valid date.</mat-error>
-            </mat-form-field>
-            </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Company Name</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.CompanyName" name="CompanyName" maxlength="250" #CompanyName="ngModel" required>
-              <mat-error *ngIf="(CompanyName.touched || enquiryForm.submitted) && CompanyName.errors?.required">
-                Company Name Is required
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Last Name </mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.LastName" name="LastName" #LastName="ngModel"
-              maxlength="50" required pattern="^[a-zA-Z]+$">
-            <mat-error *ngIf="(LastName.touched || enquiryForm.submitted)">
-              Please enter valid last name
-            </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>First Name </mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.FirstName" name="FirstName" #FirstName="ngModel"
-                maxlength="50" required pattern="^[a-zA-Z]+$">
-              <mat-error *ngIf="(FirstName.touched || enquiryForm.submitted)">
-                Please enter valid first name
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Middle Name </mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.MiddleName" name="MiddleName" #MiddleName="ngModel"
-              maxlength="50" required pattern="^[a-zA-Z]+$">
-            <mat-error *ngIf="(MiddleName.touched || enquiryForm.submitted)">
-              Please enter valid middle name
-            </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-
-         
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Date of birth</mat-label>
-              <input matInput [matDatepicker]="enquiryDOBId" [min]="minDate" [max]="maxDate"
-              [(ngModel)]="request.RequestMaster.DOB" name="DOB" #DOB="ngModel" required>
-              <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
-              <mat-datepicker #enquiryDOBId></mat-datepicker>
-              <mat-error>
-                Please select valid date
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
+     
+      <mat-tab-group>
+        <mat-tab label="Basic Details">
+          <br/><br/>
+          <div class="form-card">
+            <mat-grid-list cols="12" rowHeight="80px">
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Enquiry No. </mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.RequestNo" name="RequestNo"
+                    #RequestNo="ngModel" required readonly>
+                  <mat-error *ngIf="(RequestNo.touched || enquiryForm.submitted) && RequestNo.errors?.required">
+                    Quotation No Is required
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Enquiry Date. </mat-label>
+                  <input matInput [matDatepicker]="datepicker1" [min]="enqMinDate" [max]="maxDate"
+                    [(ngModel)]="request.RequestMaster.RequestDate" name="RequestDate" #RequestDate="ngModel" required>
+                  <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+                  <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
+                  <mat-error>Please select valid date.</mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Company Name</mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.CompanyName" name="CompanyName"
+                    maxlength="250" #CompanyName="ngModel" required>
+                  <mat-error *ngIf="(CompanyName.touched || enquiryForm.submitted) && CompanyName.errors?.required">
+                    Company Name Is required
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Last Name </mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.LastName" name="LastName"
+                    #LastName="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+                  <mat-error *ngIf="(LastName.touched || enquiryForm.submitted)">
+                    Please enter valid last name
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>First Name </mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.FirstName" name="FirstName"
+                    #FirstName="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+                  <mat-error *ngIf="(FirstName.touched || enquiryForm.submitted)">
+                    Please enter valid first name
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Middle Name </mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.MiddleName" name="MiddleName"
+                    #MiddleName="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+                  <mat-error *ngIf="(MiddleName.touched || enquiryForm.submitted)">
+                    Please enter valid middle name
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+    
+    
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Date of birth</mat-label>
+                  <input matInput [matDatepicker]="enquiryDOBId" [min]="minDate" [max]="maxDate"
+                    [(ngModel)]="request.RequestMaster.DOB" name="DOB" #DOB="ngModel" required>
+                  <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
+                  <mat-datepicker #enquiryDOBId></mat-datepicker>
+                  <mat-error>
+                    Please select valid date
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+    
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Email </mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.Email" name="Email" #Email="ngModel"
+                    required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
+                  <mat-error *ngIf="(Email.touched || enquiryForm.submitted) && Email.errors">
+                    Please enter valid email
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Phone No 1 </mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo1" name="PhoneNo1"
+                    #PhoneNo1="ngModel" required maxlength="13" pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+                  <mat-error *ngIf="(PhoneNo1.touched || enquiryForm.submitted) && PhoneNo1.errors">
+                    Please enter valid phone number
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+    
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>AlterNate No</mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo2" name="PhoneNo2"
+                    #PhoneNo2="ngModel" maxlength="13" pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+                  <mat-error *ngIf="(PhoneNo2.touched || enquiryForm.submitted) && PhoneNo2.errors">
+                    Please enter valid phone number
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+    
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Website</mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.Website" name="Website" #Website="ngModel"
+                    maxlength="150">
+                  <mat-error *ngIf="(Website.touched || enquiryForm.submitted) && Website.errors">
+                    Please enter valid Website
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="12">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Address</mat-label>
+                  <input matInput type='text' [(ngModel)]="request.RequestMaster.Address" name="Address" #Address="ngModel"
+                    maxlength="450">
+                  <mat-error *ngIf="(Address.touched || enquiryForm.submitted) && Website.errors">
+                    Please enter valid address
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Amount </mat-label>
+                  <input matInput type='number' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel"
+                    required>
+                  <mat-error *ngIf="(Amount.touched || enquiryForm.submitted) && Amount.errors">
+                    Please enter valid amount
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Source</mat-label>
+                  <mat-select placeholder="Select Source" [(ngModel)]="request.RequestMaster.SourceId" name="SourceId"
+                    #SourceId="ngModel" required>
+                    <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value">
+                      {{item.Text}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
+                    Please select source
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Client Behaviour</mat-label>
+                  <mat-select placeholder="Select ClientBehaviour" [(ngModel)]="request.RequestMaster.ClientBehaviourId"
+                    name="ClientBehaviourId" #ClientBehaviourId="ngModel">
+                    <mat-option *ngFor="let item of requestSelectList.ClientBehaviour" [value]="item.Value">
+                      {{item.Text}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Department</mat-label>
+                  <mat-select placeholder="Select Department" [(ngModel)]="request.RequestMaster.DepartmentId"
+                    name="DepartmentId" #DepartmentId="ngModel" required>
+                    <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value">
+                      {{item.Text}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
+                    Please select department
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
           
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Email </mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.Email" name="Email" #Email="ngModel" required
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
-              <mat-error *ngIf="(Email.touched || enquiryForm.submitted) && Email.errors">
-                Please enter valid email
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Phone No 1 </mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel" required maxlength="13"
-               pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
-              <mat-error *ngIf="(PhoneNo1.touched || enquiryForm.submitted) && PhoneNo1.errors">
-                Please enter valid phone number
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>AlterNate No</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.PhoneNo2" name="PhoneNo2" #PhoneNo2="ngModel" maxlength="13"
-               pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
-              <mat-error *ngIf="(PhoneNo2.touched || enquiryForm.submitted) && PhoneNo2.errors">
-                Please enter valid phone number
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Website</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.Website" name="Website" #Website="ngModel"
-              maxlength="150">
-              <mat-error *ngIf="(Website.touched || enquiryForm.submitted) && Website.errors">
-                Please enter valid Website
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile  [colspan]="12">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Address</mat-label>
-              <input matInput type='text' [(ngModel)]="request.RequestMaster.Address" name="Address" #Address="ngModel"
-              maxlength="450">
-              <mat-error *ngIf="(Website.touched || enquiryForm.submitted) && Website.errors">
-                Please enter valid address
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Amount </mat-label>
-              <input matInput type='number' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel" required>
-              <mat-error *ngIf="(Amount.touched || enquiryForm.submitted) && Amount.errors">
-               Please enter valid amount
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Source</mat-label>
-              <mat-select placeholder="Select Source"  [(ngModel)]="request.RequestMaster.SourceId" name="SourceId" #SourceId="ngModel" required>
-                <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value" >
-                  {{item.Text}} 
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
-                Please select source
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Client Behaviour</mat-label>
-              <mat-select placeholder="Select ClientBehaviour" [(ngModel)]="request.RequestMaster.ClientBehaviourId" name="ClientBehaviourId" #ClientBehaviourId="ngModel">
-                <mat-option *ngFor="let item of requestSelectList.ClientBehaviour" [value]="item.Value">
-                  {{item.Text}} 
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Department</mat-label>
-              <mat-select placeholder="Select Department" [(ngModel)]="request.RequestMaster.DepartmentId" name="DepartmentId" #DepartmentId="ngModel" required>
-                <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value">
-                  {{item.Text}} 
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
-                Please select department
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Services">
+           <mat-card>
+            <mat-card-content>
+              <it-mat-table [dataSource]="request.RequestServiceDetails" [tableSettings]="serviceTableSettings"
+                [tableSchema]="serviceTableSchema" (onCommandClick)='onServiceCommandClick($event)'></it-mat-table>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="Follow Up" *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
+          <mat-card>
+            <mat-card-content>
+              <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="followupTableSettings"
+                [tableSchema]="followUpTableSchema" (onCommandClick)='onFollowUpCommandClick($event)'></it-mat-table>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
     </mat-card-content>
     <!-- </div> -->
+
   </mat-card>
 </form>
-<mat-card *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
-  <mat-card-content>
-    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table>
-  </mat-card-content>
-</mat-card>
+
 <app-add-followup [requestType]="requestTypeId" #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>

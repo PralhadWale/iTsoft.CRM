@@ -5,10 +5,12 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <it-mat-table [dataSource]="quotationList" [tableSettings]="tableSettings" (onCommandClick)='onCommandClick($event)' [tableSchema]="quotationTableSchema"></it-mat-table>
+    <it-mat-table [dataSource]="quotationList" [tableSettings]="tableSettings" (onCommandClick)='onCommandClick($event)'
+      [tableSchema]="quotationTableSchema"></it-mat-table>
   </mat-card-content>
 </mat-card>
 <mat-sidenav class="search-panel" position="end" dark #sidenav mode="push" opened="false">
+  <form #quotationForm>
   <mat-card class="profile-card">
     <mat-card-header>
       <div mat-card-avatar class="avatar">
@@ -20,44 +22,53 @@
     </mat-card-header>
   </mat-card>
   <mat-nav-list style="margin-left:10px;">
-    <mat-form-field appearance="outline">
-      <input matInput [matDatepicker]="fromDate" [(ngModel)]="searchFilter.FromDate" name="FromDate" required>
-      <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
-      <mat-datepicker #fromDate color="primary"></mat-datepicker>
-      <mat-error>From Date is required.</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <input matInput [matDatepicker]="toDate" [(ngModel)]="searchFilter.ToDate" name="ToDate" required>
-      <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
-      <mat-datepicker #toDate color="primary"></mat-datepicker>
-      <mat-error>To Date is required.</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Phone</mat-label>
-      <input matInput appearance="outline" placeholder="Phone" name="PhoneNo" [(ngModel)]="searchFilter.PhoneNo" #PhoneNo />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>CustomerName</mat-label>
-      <input matInput placeholder="Customer Name" name="CustomerName" [(ngModel)]="searchFilter.CustomerName" #CustomerName />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Company Name</mat-label>
-      <input matInput appearance="outline" placeholder="Company Name" name="CompanyName" [(ngModel)]="searchFilter.CompanyName"
-        #CompanyName />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Quotation No</mat-label>
-      <input matInput appearance="outline" placeholder="Quotation No" name="RequestNo" [(ngModel)]="searchFilter.RequestNo"
-        #RequestNo />
-    </mat-form-field>
-    <mat-form-field class="form-field" appearance="outline">
-      <mat-label>Source</mat-label>
-      <mat-select placeholder="Select Source"  [(ngModel)]="searchFilter.SourceId" name="SourceId" #SourceId="ngModel">
-        <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value" >
-          {{item.Text}} 
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+   
+      <mat-form-field appearance="outline">
+        <input matInput [matDatepicker]="fromDate" [(ngModel)]="searchFilter.FromDate" name="FromDate" required>
+        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker #fromDate color="primary"></mat-datepicker>
+        <mat-error>From Date is required.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput [matDatepicker]="toDate" [(ngModel)]="searchFilter.ToDate" name="ToDate" required>
+        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker #toDate color="primary"></mat-datepicker>
+        <mat-error>To Date is required.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+          <input matInput type='text' [(ngModel)]="searchFilter.PhoneNo" name="PhoneNo" #PhoneNo="ngModel" 
+          maxlength="13" minlength="10"  pattern="^(?!0+$)(\+\d{1,3}[- ]?)?\d{10}$">
+          <mat-error *ngIf="((PhoneNo.touched || quotationForm.submitted) && PhoneNo.errors)">
+              Please enter valid value for mobile number
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>CustomerName</mat-label>
+          <input matInput type='text' [(ngModel)]="searchFilter.CustomerName" name="CustomerName" #CustomerName="ngModel"
+            maxlength="50" pattern="^[a-zA-Z]+$">
+          <mat-error *ngIf="(CustomerName.touched || quotationForm.submitted) && CustomerName.errors">
+            Please enter valid name
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Company Name</mat-label>
+        <input matInput appearance="outline" placeholder="Company Name" name="CompanyName"
+          [(ngModel)]="searchFilter.CompanyName" #CompanyName maxlength="250" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Quotation No</mat-label>
+        <input matInput appearance="outline" placeholder="Quotation No" name="RequestNo"
+          [(ngModel)]="searchFilter.RequestNo" #RequestNo maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Source</mat-label>
+        <mat-select placeholder="Select Source" [(ngModel)]="searchFilter.SourceId" name="SourceId" #SourceId="ngModel">
+          <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value">
+            {{item.Text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
   </mat-nav-list>
   <mat-divider></mat-divider>
   <mat-card-header>
@@ -72,8 +83,10 @@
       </button>
     </mat-action-list>
   </mat-card-header>
+  </form>
 </mat-sidenav>
 
-<app-assign-request-advisor #assignAdvisor [requestDetails]="requestDetails" [multipleRequestDetails]= "selectedQuotationList" (onAssigned)="onAssigned()"></app-assign-request-advisor>
+<app-assign-request-advisor #assignAdvisor [requestDetails]="requestDetails"
+  [multipleRequestDetails]="selectedQuotationList" (onAssigned)="onAssigned()"></app-assign-request-advisor>
 
 <!-- </mat-sidenav-container> -->

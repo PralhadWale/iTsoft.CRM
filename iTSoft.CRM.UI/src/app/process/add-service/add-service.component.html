@@ -1,0 +1,66 @@
+<form #serviceForm="ngForm">
+    <mat-card style="width: 500px;">
+        <mat-toolbar style="background-color: #FFF">
+            <mat-toolbar-row>
+                <span class="view-card-title">{{pageTitle}}</span>
+                <span class="title-spacer"></span>
+                <mat-card-actions>
+                    <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
+                        (click)="saveService(serviceForm)" [formGroup]="serviceForm">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-mini-fab class="" style="margin-right:10px; " (click)="closeDialog(serviceForm)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-divider style="background-color: chartreuse;"></mat-divider>
+        <mat-card-content style="margin: 5 0 5 0px;">
+            <mat-grid-list cols="12" rowHeight="80px">
+                <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Service Name </mat-label>
+                        <mat-select placeholder="Select Service" [(ngModel)]="requestServiceDetails.ServiceId" name="ServiceId"
+                            #ServiceId="ngModel" required (selectionChange)="onServiceChanged($event)">
+                            <mat-option *ngFor="let service of serviceList" [value]="service.ServiceId">
+                                {{service.ServiceName}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="(ServiceId.touched || serviceForm.submitted) && ServiceId.errors">
+                            Please select service
+                        </mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Quoted Price</mat-label>
+                        <input matInput type='number' [(ngModel)]="requestServiceDetails.QuoatedPrice" name="QuoatedPrice" #QuoatedPrice="ngModel">
+                        <mat-error *ngIf="(QuoatedPrice.touched || serviceForm.submitted) && QuoatedPrice.errors">
+                             Please enter valid value
+                        </mat-error>
+                    </mat-form-field>
+                 </mat-grid-tile>
+                 <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Agreed Price</mat-label>
+                        <input matInput type='number' [(ngModel)]="requestServiceDetails.AgreedPrice" name="AgreedPrice" #AgreedPrice="ngModel">
+                        <mat-error *ngIf="(AgreedPrice.touched || serviceForm.submitted) && AgreedPrice.errors">
+                             Please enter valid value
+                        </mat-error>
+                    </mat-form-field>
+                 </mat-grid-tile>
+                 <mat-grid-tile [colspan]="6">
+                    <mat-form-field class="form-field" appearance="outline">
+                        <mat-label>Remark</mat-label>
+                        <input matInput type='text' [(ngModel)]="requestServiceDetails.Remark" name="Remark" #Remark="ngModel" width="100%">
+                        <mat-error *ngIf="(Remark.touched || serviceForm.submitted) && Remark.errors">
+                             Please enter valid Remark
+                        </mat-error>
+                    </mat-form-field>
+                 </mat-grid-tile>
+                
+           </mat-grid-list>
+        </mat-card-content>
+    </mat-card>
+</form>

@@ -9,6 +9,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { EmployeeService } from './employee.service';
 import { AlertService } from '../../_services';
 import { EmployeeMaster } from './employeeMaster.model';
+import { NgForm } from '@angular/forms/';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { EmployeeMaster } from './employeeMaster.model';
 })
 export class EmployeeListComponent implements OnInit {
     @ViewChild("sidenav") sidenav: MatSidenav;
-
+    @ViewChild("employeeForm") employeeForm: NgForm;
     pageTitle: string = 'Employees';
 
     searchFilter: EmployeeMaster = new EmployeeMaster();
@@ -54,7 +55,7 @@ export class EmployeeListComponent implements OnInit {
             else if ($event.command.commandType == CommandType.Delete) {
 
             }
-          
+
         }
         else {
             if ($event.toolbarItem == ToolBarItems.Add) {
@@ -76,7 +77,9 @@ export class EmployeeListComponent implements OnInit {
     }
 
     searchEmployees(searchFilter: any) {
-       this.getEmployeeList();
+        if (this.employeeForm && this.employeeForm.valid) {
+            this.getEmployeeList();
+        }
     }
 
     getEmployeeList() {

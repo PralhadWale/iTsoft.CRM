@@ -5,6 +5,7 @@ import { AlertService } from 'src/app/_services';
 import { ClientService } from '../client.service';
 import { ClientMaster } from '../client.model';
 import { AddClientComponent } from '../add-client/add-client.component';
+import { NgForm } from '@angular/forms/';
 
 @Component({
   selector: 'app-clientlist',
@@ -14,6 +15,7 @@ import { AddClientComponent } from '../add-client/add-client.component';
 export class ClientlistComponent implements OnInit {
   @ViewChild("addClient") addClient: AddClientComponent;
   @ViewChild("searchClientNav") searchNav: MatSidenav;
+  @ViewChild("clientForm") clientForm: NgForm;
   pageTitle: string = "Client List"
 
   clientList: Array<any>;
@@ -44,7 +46,7 @@ export class ClientlistComponent implements OnInit {
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Search) {
-       // this.reset();
+        // this.reset();
         this.searchNav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
@@ -64,8 +66,10 @@ export class ClientlistComponent implements OnInit {
   }
 
   searchClient(clientMaster: ClientMaster) {
-    if (clientMaster) {
-      this.Search(clientMaster);
+    if (this.clientForm && this.clientForm.valid) {
+      if (clientMaster) {
+        this.Search(clientMaster);
+      }
     }
   }
 

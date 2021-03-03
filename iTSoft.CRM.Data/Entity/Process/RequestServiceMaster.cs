@@ -10,17 +10,18 @@ namespace iTSoft.CRM.Data.Entity.Process
     {
         [Key]
         public long RequestServiceId { get; set; }
-
         public long? RequestId { get; set; }
-
         public long? ServiceId { get; set; }
-
-
+        public decimal? QuoatedPrice { get; set; }
+        public decimal? AgreedPrice { get; set; }
+        public string Remark { get; set; }
+        public long LeadStatusId { get; set; }
     }
 
 
     public class RequestServiceDetails
     {
         public string ServiceName { get; set; }
+        public string LeadStatusName { get; set; }
     }
 }
