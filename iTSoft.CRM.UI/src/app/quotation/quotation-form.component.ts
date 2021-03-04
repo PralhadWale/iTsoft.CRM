@@ -39,6 +39,7 @@ import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { AddServiceComponent } from "../process/add-service/add-service.component";
 import { RequestServiceDetails } from "../_models/requestservice";
+import { ClientMaster } from "../masters/client/client.model";
 
 @Component({
     selector: 'quotation-form',
@@ -140,7 +141,9 @@ export class QuotationFormComponent implements OnInit {
                     this.route.params.subscribe(
                         params => {
                             let id = +params['id'];
-                            this.getRequest(id);
+                            let clientId = +params['clientId'];
+                            
+                            this.getRequest(id, clientId);
                         }
                     );
                 }
@@ -185,7 +188,7 @@ export class QuotationFormComponent implements OnInit {
       
     }
 
-    getRequest(requestId: number): void {
+    getRequest(requestId: number , clientId : number): void {
         if (requestId > 0) {
             this.requestService
                 .Load(requestId)
@@ -201,6 +204,21 @@ export class QuotationFormComponent implements OnInit {
             this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result)=>{
                 var data = result.Value.ResponseData;
                 this.request.RequestMaster.RequestNo = data;
+                this.request.RequestMaster.ClientId = clientId;
+
+                this.requestService.FindClient(clientId).subscribe((result)=>{
+                    var clientDetails = <ClientMaster>result.Value.ResponseData;
+                    if(clientDetails.CorporateName != null)
+                    this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
+                    else if(clientDetails.FirstName != null)
+                    this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
+
+
+                    this.request.RequestMaster.Email = clientDetails.Email;
+                    this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
+                    
+                });
+
                 this.onQuotationRetrieved(this.request);
               },  (error: any) => (this.errorMessage = <any>error));
            
@@ -227,8 +245,9 @@ export class QuotationFormComponent implements OnInit {
             }
         }
     }
+
     onFollowUpSaved() {
-        this.getRequest(this.request.RequestMaster.RequestId);
+        this.getRequest(this.request.RequestMaster.RequestId , this.request.RequestMaster.ClientId);
     }
 
     
@@ -254,6 +273,22 @@ export class QuotationFormComponent implements OnInit {
             if (serviceDetails == null) {
                 this.request.RequestServiceDetails.push(result.Data);
             }
+
+
+            this.request.RequestMaster.Amount = 0;
+            this.request.RequestMaster.AgreedAmount = 0; 
+
+            this.request.RequestServiceDetails.forEach(x => {
+              if (x.QuoatedPrice && x.QuoatedPrice > 0) {
+                this.request.RequestMaster.Amount+= x.QuoatedPrice;
+              }
+
+              if (x.AgreedPrice && x.AgreedPrice > 0) {
+                this.request.RequestMaster.AgreedAmount+= x.AgreedPrice;
+              }
+              
+            });
+
             this.serviceTable.RefreshDataSource();
 
         }

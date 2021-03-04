@@ -31,9 +31,9 @@ namespace iTSoft.CRM.Domain.Services.Master
             return clientRepository.GetCustomerInfo(searchParam);
         }
 
-        public ClientMaster Find(long CustomerId)
+        public ClientMaster Find(long clientId)
         {
-            return clientRepository.Find(CustomerId);
+            return clientRepository.Find(clientId);
         }
         public ResponseCode Delete(ClientMaster Customer)
         {

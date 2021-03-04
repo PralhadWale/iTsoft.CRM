@@ -28,7 +28,7 @@ import { ProcessModule } from '../process/process.module';
         component: QuotationFormComponent
       },
       {
-        path: "edit/:id",
+        path: "edit/:id/:clientId",
         canDeactivate: [QuotationEditGuard],
         component: QuotationFormComponent
       }

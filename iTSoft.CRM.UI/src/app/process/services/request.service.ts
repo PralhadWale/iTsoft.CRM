@@ -7,11 +7,15 @@ import * as moment from 'moment';
 import { RequestDetails } from 'src/app/_models/requestdetails';
 import { ConfigurationSettings } from 'src/app/_models/configuration';
 import { RequestServiceMaster } from 'src/app/_models/requestservice';
+import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
- 
+  GetClientDetails(clientId: Number) {
+    throw new Error("Method not implemented.");
+  }
+
   private RequestController = "/Request/";
   constructor(private apiService: APIService) {
 
@@ -19,7 +23,7 @@ export class RequestService {
 
   AssignRequest(requestDetails: Array<RequestDetails>) {
 
-    let param : Array<any> = [];
+    let param: Array<any> = [];
 
     requestDetails.forEach(item => {
       param.push({
@@ -50,7 +54,7 @@ export class RequestService {
     return this.apiService.PostData(url, param);
   }
 
-  Load(requestId:number) {
+  Load(requestId: number) {
     let url = this.RequestController + "load";
     return this.apiService.GetData(url + "?requestId=" + requestId);
   }
@@ -59,4 +63,10 @@ export class RequestService {
     let url = this.RequestController + "getnextrequestnumber";
     return this.apiService.GetData(url + "?requestTypeId=" + requestTypeId);
   }
+
+  getClientUrl: string = iTCRMSettings.Masters + "/client/findClient";
+  FindClient(ClientId: number) {
+    return this.apiService.GetData(this.getClientUrl + "?clientId=" + ClientId);
+  }
+
 }

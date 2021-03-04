@@ -13,7 +13,7 @@ export class ClientService {
     URLSave: string = iTCRMSettings.Masters + "/client/save";
     searchUrl: string = iTCRMSettings.Masters + "/client/searchclient";
     deleteURL: string = iTCRMSettings.Masters + "/client/delete";
-    getClientListUrl: string = iTCRMSettings.Masters + "/client/findClient";
+    getClientUrl: string = iTCRMSettings.Masters + "/client/findClient";
 
     Save(clientMaster: ClientMaster) {
 
@@ -42,7 +42,7 @@ export class ClientService {
     }
 
     FindClient(ClientId: number) {
-        return this.apiService.GetData(this.getClientListUrl + "?ClientId=" + ClientId);
+        return this.apiService.GetData(this.getClientUrl + "?ClientId=" + ClientId);
     }
 
     NewClient()

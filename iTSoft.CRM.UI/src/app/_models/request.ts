@@ -68,6 +68,8 @@ export class RequestMaster
 
     UpdatedOn: Date ;
 
+    ClientId: number;
+
     constructor(){
         this.RequestDate = new Date();
         this.AddedOn = new Date();

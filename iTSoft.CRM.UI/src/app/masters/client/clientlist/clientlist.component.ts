@@ -6,6 +6,7 @@ import { ClientService } from '../client.service';
 import { ClientMaster } from '../client.model';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { NgForm } from '@angular/forms/';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientlist',
@@ -25,7 +26,11 @@ export class ClientlistComponent implements OnInit {
 
   clientTypes: Array<string> = ['Assigned', 'Un-Assigned', 'All'];
   selectedClientType: string = "Assigned";
-  constructor(private clientService: ClientService, private alertService: AlertService) {
+  constructor(
+    private clientService: ClientService,
+     private alertService: AlertService,
+     private router: Router,
+     ) {
 
   }
 
@@ -42,6 +47,11 @@ export class ClientlistComponent implements OnInit {
         this.addClient.clientMaster = rowData;
         this.addClient.SetClientDefaultData();
         this.addClient.sidenav.open();
+      }
+      else if($event.command.commandType == CommandType.Other && $event.command.content == 'add')
+      {
+
+        this.router.navigate(['/quotations/edit/', 0,rowData.ClientId]);
       }
     }
     else {
@@ -119,7 +129,7 @@ export class ClientlistComponent implements OnInit {
         // { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         // { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }] }
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit },    { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true }] }
       ];
   }
 }

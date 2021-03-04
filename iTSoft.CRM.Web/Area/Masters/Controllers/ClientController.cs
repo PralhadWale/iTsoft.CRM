@@ -84,13 +84,13 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
-        public IActionResult Find(long CustomerId)
+        [HttpGet("findclient")]
+        public IActionResult FindClient(long clientId)
         {
             ServiceResponse response = new ServiceResponse();
             try
             {
-                ClientMaster CustomerMaster = CustomerMasterService.Find(CustomerId);
+                ClientMaster CustomerMaster = CustomerMasterService.Find(clientId);
                 if (CustomerMaster != null)
                 {
                     response.ResponseCode = ResponseCode.Success;

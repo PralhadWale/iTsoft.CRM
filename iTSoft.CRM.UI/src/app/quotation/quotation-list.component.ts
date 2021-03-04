@@ -65,7 +65,7 @@ export class QuotationListComponent implements OnInit {
     if (!$event.toolbarItem) {
       if ($event.command.commandType == CommandType.Edit) {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
-        this.router.navigate(['/quotations/edit/', rowData.RequestId]);
+        this.router.navigate(['/quotations/edit/', rowData.RequestId,0]);
       }
       else if ($event.command.content == "transfer") {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
@@ -77,7 +77,7 @@ export class QuotationListComponent implements OnInit {
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
-        this.router.navigate(['/quotations/edit/', 0]);
+        this.router.navigate(['/quotations/edit/', 0,0]);
       }
       else if ($event.toolbarItem == ToolBarItems.Search) {
         this.sidenav.open();

@@ -52,9 +52,7 @@ export class EmployeeListComponent implements OnInit {
                 let rowData: EmployeeMaster = Object.assign({}, $event.rowData);
                 this.router.navigate(['/employees/edit/', rowData.EmployeeId]);
             }
-            else if ($event.command.commandType == CommandType.Delete) {
-
-            }
+        
 
         }
         else {
@@ -97,7 +95,8 @@ export class EmployeeListComponent implements OnInit {
         this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search];
 
         let gridCommands: Array<CommandModel> = [
-            { commandType: CommandType.Edit }
+            { commandType: CommandType.Edit }  
+        
         ];
 
         this.employeeTableSchema =

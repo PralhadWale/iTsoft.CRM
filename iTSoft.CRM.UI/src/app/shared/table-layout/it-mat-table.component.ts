@@ -194,6 +194,7 @@ export class CommandModel
   style? : object;
   click?: Function;
   icon?:string;
+
 }
 
 export class CommandEventArgs

@@ -1,14 +1,13 @@
 import { FollowUpDetails } from './followupdetails';
 import { RequestMaster } from './request';
-import { RequestDetails } from './requestdetails';
-import { RequestServiceMaster } from './requestservice';
+import { RequestServiceDetails, RequestServiceMaster } from './requestservice';
 
 
 export class RequestViewModel
 {
     RequestMaster: RequestMaster;
     RequestServiceMasters: RequestServiceMaster[];
-    RequestServiceDetails: RequestDetails[];
+    RequestServiceDetails: RequestServiceDetails[];
     RequestFollowup: FollowUpDetails[];
 
     constructor(){

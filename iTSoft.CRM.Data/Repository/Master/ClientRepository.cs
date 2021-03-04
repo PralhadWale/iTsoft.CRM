@@ -60,13 +60,13 @@ namespace iTSoft.CRM.Data.Repository.Master
             }
         }
 
-        public ClientMaster Find(long CustomerId)
+        public ClientMaster Find(long clientId)
         {
             ClientMaster result;
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@CustomerId", CustomerId);
+                param.Add("@ClientId", clientId);
                 param.Add("@Action", ActionFlag.Find);
                 result = dbConnection.Query<ClientMaster>(PROC_ClientManager, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }

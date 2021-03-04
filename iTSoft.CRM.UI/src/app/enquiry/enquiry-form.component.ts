@@ -250,6 +250,15 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (serviceDetails == null) {
           this.request.RequestServiceDetails.push(result.Data);
         }
+
+        this.request.RequestMaster.Amount = 0;
+
+        this.request.RequestServiceDetails.forEach(x => {
+          if (x.QuoatedPrice && x.QuoatedPrice > 0) {
+            this.request.RequestMaster.Amount+= x.QuoatedPrice;
+          }
+          
+        });
       
         this.serviceTable.RefreshDataSource();
 
