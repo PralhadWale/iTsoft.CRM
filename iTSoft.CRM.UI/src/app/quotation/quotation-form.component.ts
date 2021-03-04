@@ -241,7 +241,7 @@ export class QuotationFormComponent implements OnInit {
   }
   OpenServiceDialog(serviceDetails: RequestServiceDetails) {
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: serviceDetails,
+      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails },
       disableClose: true
     });
 

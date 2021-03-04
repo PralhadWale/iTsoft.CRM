@@ -234,7 +234,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   OpenServiceDialog(serviceDetails: RequestServiceDetails) {
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: serviceDetails,
+      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails },
       disableClose: true
     });
 
