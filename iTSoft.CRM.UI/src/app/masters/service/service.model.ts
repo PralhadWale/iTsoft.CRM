@@ -8,4 +8,5 @@ export class ServiceMaster
     AddedOn: Date | string | null;
     UpdatedBy: number | null;
     UpdatedOn: Date | string | null;
+    DepartmentId: number;
 }

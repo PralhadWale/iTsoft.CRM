@@ -25,7 +25,7 @@
   <form #serviceForm="ngForm">
     <mat-nav-list style="margin-left:50px;">
 
-      <mat-form-field appearance="standard">
+      <mat-form-field appearance="outline">
         <mat-label>Service Name</mat-label>
         <input matInput appearance="standard" placeholder="Service Name" name="ServiceName" maxlength="200"
           [(ngModel)]="serviceMaster.ServiceName" required #ServiceName="ngModel"/>
@@ -33,9 +33,20 @@
           Please enter valid service name
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="standard">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Department Name</mat-label>
+        <mat-select placeholder="Select Department"  [(ngModel)]="serviceMaster.DepartmentId" name="DepartmentId" #DepartmentId="ngModel" required>
+          <mat-option *ngFor="let item of departments" [value]="item.DepartmentId">
+            {{item.DepartmentName}} 
+          </mat-option>
+          <mat-error *ngIf="(DepartmentId.touched || serviceForm.submitted)">
+            Please select valid department
+          </mat-error>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Price</mat-label>
-        <input matInput appearance="standard" placeholder="Price" name="Price" [(ngModel)]="serviceMaster.Price"
+        <input matInput placeholder="Price" name="Price" [(ngModel)]="serviceMaster.Price"
           required pattern="((\d+)((\.\d{1,2})?))$" #Price="ngModel"/>
         <mat-error *ngIf="(Price.touched || serviceForm.submitted) && Price.errors">
           Please enter valid Price

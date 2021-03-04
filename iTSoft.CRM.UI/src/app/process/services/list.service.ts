@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
+import { ServiceMaster } from 'src/app/masters/service/service.model';
 import { APIService } from 'src/app/_services';
 
 @Injectable({
@@ -49,4 +50,12 @@ export class ListService {
         return this.apiService.GetData(getUrl);
     }
 
+    
+    GetDepartmentServices(departmentId : number) {
+        let searchServiceURL = iTCRMSettings.Masters + "/service/search-services";
+        let serviceMaster = new ServiceMaster();
+        serviceMaster.DepartmentId  = departmentId;
+        serviceMaster.IsActive  = true;
+        return this.apiService.PostData(searchServiceURL ,serviceMaster);
+    }
 }

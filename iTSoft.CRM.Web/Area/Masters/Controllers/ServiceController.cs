@@ -1,13 +1,15 @@
-﻿using System;
+﻿using iTSoft.CRM.Data.Entity;
+using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Domain.Services.Master;
+using iTSoft.CRM.Web.Controllers;
+using iTSoft.CRM.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using iTSoft.CRM.Data.Entity;
-using iTSoft.CRM.Data.Entity.Master;
-using iTSoft.CRM.Web.Controllers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace iTSoft.CRM.Web.Area.Masters.Controllers
 {
@@ -16,6 +18,17 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
     [Authorize]
     public class ServiceController : GenericBaseController<ServiceMaster>
     {
+
+        ILogger _logger = null;
+        ServicesService servicesService = null;
+
+        public ServiceController()
+        {
+            _logger = Logger.GetLogger();
+            servicesService = new ServicesService();
+        }
+
+
         [HttpPost("save")]
         public IActionResult Save(ServiceMaster service)
         {
@@ -23,7 +36,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             try
             {
 
-                if(service == null)
+                if (service == null)
                 {
                     return BadRequest("Invalid input data");
                 }
@@ -31,9 +44,9 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 if (service.ServiceId == 0)
                 {
 
-                    if (base.genericService.GetAll().Where(c => c.ServiceName == service.ServiceName).Count() == 0)
+                    if (servicesService.GetAll().Where(c => c.ServiceName == service.ServiceName && c.DepartmentId == service.DepartmentId).Count() == 0)
                     {
-                        response.ResponseCode = base.genericService.Add(service) > 0 ? ResponseCode.Success : ResponseCode.DataBaseError;
+                        response.ResponseCode = servicesService.Add(service) > 0 ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }
                     else
                     {
@@ -42,9 +55,9 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 }
                 else
                 {
-                    if (base.genericService.GetAll().Where(c => c.ServiceName == service.ServiceName && c.ServiceId != service.ServiceId).Count() == 0)
+                    if (servicesService.GetAll().Where(c => c.ServiceName == service.ServiceName && c.DepartmentId == service.DepartmentId && c.ServiceId != service.ServiceId).Count() == 0)
                     {
-                        response.ResponseCode = base.genericService.Update(service) == true ? ResponseCode.Success : ResponseCode.DataBaseError;
+                        response.ResponseCode = servicesService.Update(service) == true ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }
                     else
                     {
@@ -60,5 +73,25 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             }
             return Ok(response);
         }
+
+
+        [HttpPost("search-services")]
+        public IActionResult SearchServices(ServiceMaster serviceMaster)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = servicesService.SearchServices(serviceMaster);
+                response.ResponseCode = ResponseCode.Success;
+            }
+
+            catch (Exception ex)
+            {
+                base._logger.Error(ex, "ServiceController - Save");
+                return BadRequest("Internal service error");
+            }
+            return Ok(response);
+        }
+
     }
 }

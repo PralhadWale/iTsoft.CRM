@@ -13,7 +13,8 @@ export class ServiceService {
     getUrl: string = iTCRMSettings.Masters + "/service/getall";
     deleteURL: string = iTCRMSettings.Masters + "/service/delete";
     getServiceListUrl: string = iTCRMSettings.Masters + "/service/findservice";
-
+    searchServiceURL :string = iTCRMSettings.Masters + "/service/search-services";
+    getDepartmentUrl: string = iTCRMSettings.Masters + "/department/getAll";
     Save(serviceMaster: ServiceMaster) {
 
         if(serviceMaster.ServiceId < 1)
@@ -31,12 +32,21 @@ export class ServiceService {
     GetAll() {
         return this.apiService.GetData(this.getUrl);
     }
+
+    GetAllDepartments() {
+        return this.apiService.GetData(this.getDepartmentUrl);
+    }
+
     Delete(serviceMaster: ServiceMaster) {
         return this.apiService.PostData(this.deleteURL, serviceMaster);
     }
 
     FindService(ServiceId: number) {
         return this.apiService.GetData(this.getServiceListUrl + "?ServiceId=" + ServiceId);
+    }
+
+    SearchService(serviceMaster: ServiceMaster) {
+        return this.apiService.PostData(this.searchServiceURL ,serviceMaster);
     }
 
     NewService()
@@ -46,7 +56,7 @@ export class ServiceService {
         serviceMaster.ServiceName = null;
         serviceMaster.Price = 0;
         serviceMaster.IsActive = false;
-
+        serviceMaster.DepartmentId = 0;
         return serviceMaster;
     }
 

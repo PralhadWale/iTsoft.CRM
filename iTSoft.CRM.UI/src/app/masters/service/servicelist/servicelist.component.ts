@@ -8,6 +8,7 @@ import { ServiceMaster } from '../service.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/shared';
 import { NgForm } from '@angular/forms/';
+import { DepartmentMaster } from '../../department/department.model';
 
 @Component({
   selector: 'app-servicelist',
@@ -23,7 +24,7 @@ export class ServicelistComponent implements OnInit {
   serviceTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   serviceMaster: ServiceMaster = null;
-
+  departments : Array<DepartmentMaster> = [];
   constructor(
     public dialog: MatDialog,
     private serviceService: ServiceService,
@@ -32,9 +33,12 @@ export class ServicelistComponent implements OnInit {
 
   ngOnInit(): void {
     this.reset(this.serviceForm);
+    this.LoadDropDowns();
     this.SetTableSchema();
     this.getAll();
   }
+
+ 
 
 
   onCommandClick($event: CommandEventArgs) {
@@ -113,8 +117,16 @@ export class ServicelistComponent implements OnInit {
   }
 
   getAll() {
-    this.serviceService.GetAll().subscribe(result => {
+    this.serviceService.SearchService(new ServiceMaster()).subscribe(result => {
       this.serviceList = result.Value.ResponseData;
+    }, error => {
+      this.alertService.showErrorMessage(error.error);
+    });
+  }
+
+  LoadDropDowns() {
+    this.serviceService.GetAllDepartments().subscribe(result => {
+      this.departments = result.Value.ResponseData;
     }, error => {
       this.alertService.showErrorMessage(error.error);
     });
@@ -128,6 +140,7 @@ export class ServicelistComponent implements OnInit {
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+        { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         { ColumnField: "Price", ColumnHeader: "Default Price", Type: "text" },
          { ColumnField: "IsActive", ColumnHeader: "Active", Type: "boolean" },
          { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, { commandType: CommandType.Delete }] }

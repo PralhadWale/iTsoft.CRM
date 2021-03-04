@@ -91,7 +91,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   saveService(serviceForm: NgForm) {
-    if (serviceForm && serviceForm.valid) {
+    if (serviceForm && serviceForm.valid && this.requestServiceDetails.ServiceId > 0) {
 
       if ((this.isNew && this.requestAllServiceList.filter(x => x.ServiceId == this.requestServiceDetails.ServiceId).length > 0) ||
         (!this.isNew && this.requestAllServiceList.filter(x => x.ServiceId == this.requestServiceDetails.ServiceId && x.RequestServiceId != this.requestServiceDetails.RequestServiceId).length > 0)) {
