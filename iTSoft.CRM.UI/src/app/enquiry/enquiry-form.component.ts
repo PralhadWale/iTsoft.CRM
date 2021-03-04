@@ -20,9 +20,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
-import {  BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { CommandEventArgs,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { CommandEventArgs, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 
 import { RequestMaster } from '../_models';
 import { RequestViewModel } from '../_models/requestviewmodel';
@@ -40,6 +40,7 @@ import { GenericValidator } from "../shared/generic-validator";
 import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { AddServiceComponent } from "../process/add-service/add-service.component";
+import { RequestServiceDetails } from "../_models/requestservice";
 
 
 @Component({
@@ -91,22 +92,22 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   serviceTableSchema: Array<TableColumnModel> = [];
 
   followupTableSettings: TableDefaultSettings;
-  serviceTableSettings : TableDefaultSettings;
+  serviceTableSettings: TableDefaultSettings;
 
-  minDate : Date = new Date(1800,1,1);
-  maxDate : Date = new Date();
-  enqMinDate : Date = new Date(2020,1,1);
-
+  minDate: Date = new Date(1800, 1, 1);
+  maxDate: Date = new Date();
+  enqMinDate: Date = new Date(2020, 1, 1);
+  selectedIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private requestService: RequestService,
     private listService: ListService,
-    private alertService : AlertService,
-    
+    private alertService: AlertService,
+
     private breakpointObserver: BreakpointObserver,
-    private dialog : MatDialog,
+    private dialog: MatDialog,
   ) {
 
     this.requestSelectList = new RequestSelectListModel();
@@ -127,7 +128,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
 
-   
+
   }
 
   ngOnDestroy(): void {
@@ -135,60 +136,57 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-      
+
   }
 
-  Close(employeeForm:NgForm)
-  {
-      if (employeeForm.touched) {
+  Close(employeeForm: NgForm) {
+    if (employeeForm.touched) {
 
-          let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
-          const dialogRef = this.dialog.open(ConfirmDialog, {
-              maxWidth: "400px",
-              data: dialogData
-          });
+      let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
+      const dialogRef = this.dialog.open(ConfirmDialog, {
+        maxWidth: "400px",
+        data: dialogData
+      });
 
-          dialogRef.afterClosed().subscribe(dialogResult => {
-              let result = dialogResult;
-              if (result == "CONFIRMED") {
-                  this.router.navigate(['/enquiries']);
-              }
-          }
-          );
-      }
-      else 
-      {
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        let result = dialogResult;
+        if (result == "CONFIRMED") {
           this.router.navigate(['/enquiries']);
+        }
       }
-  }
-
-  getRequest(requestId: number): void {
-    if(requestId > 0)
-    {
-    this.requestService
-      .Load(requestId)
-      .subscribe(
-        (result) => {
-          var data = <RequestViewModel>result.Value.ResponseData;
-          this.onEnquiryRetrieved(data)
-        },
-        (error: any) => (this.alertService.showErrorMessage(error))
       );
     }
     else {
+      this.router.navigate(['/enquiries']);
+    }
+  }
 
-      this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result)=>{
+  getRequest(requestId: number): void {
+    if (requestId > 0) {
+      this.requestService
+        .Load(requestId)
+        .subscribe(
+          (result) => {
+            var data = <RequestViewModel>result.Value.ResponseData;
+            this.onEnquiryRetrieved(data)
+          },
+          (error: any) => (this.alertService.showErrorMessage(error))
+        );
+    }
+    else {
+
+      this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result) => {
         var data = result.Value.ResponseData;
         this.request.RequestMaster.RequestNo = data;
         this.onEnquiryRetrieved(this.request)
-      },  (error: any) => (this.alertService.showErrorMessage(error)));
-     
+      }, (error: any) => (this.alertService.showErrorMessage(error)));
+
     }
   }
 
 
   onEnquiryRetrieved(request: RequestViewModel): void {
-    
+
     this.request = request;
 
     if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
@@ -211,43 +209,57 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.alertService.showSuccessMessage("Failed to save");
       });
     }
+    else {
+      this.selectedIndex = 0
+    }
   }
 
   onFollowUpCommandClick($event: CommandEventArgs) {
     if ($event.toolbarItem) {
-        if ($event.toolbarItem == ToolBarItems.Add) {
-            this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
-            this.addFollowUp.requestNo = this.request.RequestMaster.RequestNo;
-            this.addFollowUp.SetFollowUpDefaultData();
-            this.addFollowUp.sidenav.open();
-        }
-    }
-}
-
-onServiceCommandClick($event: CommandEventArgs) {
-  if ($event.toolbarItem) {
       if ($event.toolbarItem == ToolBarItems.Add) {
-        const dialogRef = this.dialog.open(AddServiceComponent, {
-          data: null
-        });
-
-        dialogRef.afterClosed().subscribe(dialogResult => {
-          let result = dialogResult;
-          if (result.Action == "SAVE") {
-            //this.router.navigate(['/enquiries']);
-          }
-          else {
-
-          }
-        }
-        );
+        this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
+        this.addFollowUp.requestNo = this.request.RequestMaster.RequestNo;
+        this.addFollowUp.SetFollowUpDefaultData();
+        this.addFollowUp.sidenav.open();
       }
+    }
   }
-}
 
-onFollowUpSaved() {
+  onServiceCommandClick($event: CommandEventArgs) {
+    if ($event.toolbarItem) {
+      if ($event.toolbarItem == ToolBarItems.Add) {
+        this.OpenServiceDialog(null);
+      }
+    }
+  }
+  OpenServiceDialog(serviceDetails: RequestServiceDetails) {
+    const dialogRef = this.dialog.open(AddServiceComponent, {
+      data: serviceDetails,
+      disableClose: true
+    });
+
+    dialogRef.beforeClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result && result.Action == "SAVE") {
+        //this.router.navigate(['/enquiries']);
+
+        if (this.request.RequestServiceDetails == null) {
+          this.request.RequestServiceDetails = [];
+        }
+
+        this.request.RequestServiceDetails.push(result.Data);
+
+      }
+      else {
+
+      }
+    }
+    );
+  }
+
+  onFollowUpSaved() {
     this.getRequest(this.request.RequestMaster.RequestId);
-}
+  }
 
   LoadSelectListData() {
     this.listService
@@ -260,18 +272,18 @@ onFollowUpSaved() {
         () => {
           this.route.params.subscribe(
             params => {
-                let id = +params['id'];
-                this.getRequest(id);
+              let id = +params['id'];
+              this.getRequest(id);
             }
-        );
+          );
         }
       );
   }
 
   SetDefaultRequest() {
-    
+
     this.request = new RequestViewModel();
-  
+
   }
 
   SetTableSchema() {
@@ -285,27 +297,28 @@ onFollowUpSaved() {
     this.serviceTableSettings.ShowToolBar = true;
     this.serviceTableSettings.ToolBarItems = [ToolBarItems.Add];
     this.serviceTableSettings.HideFilter = true;
-    this.serviceTableSettings.AllowPaging = false;
-   
+    //this.serviceTableSettings.AllowPaging = false;
+
     this.followUpTableSchema =
-    [
-      { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
-      { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
-      { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
-      { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
-      { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-      { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
-      { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-      { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-      { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
-    ];
+      [
+        { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
+        { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+        { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
+        { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
+        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+        { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
+        { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+        { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+      ];
 
     this.serviceTableSchema =
-    [
-      { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
-      { ColumnField:"Remark" , ColumnHeader: "Remark" , Type: "text"},
-      { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
-    ];
+      [
+        { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+        { ColumnField: "QuoatedPrice", ColumnHeader: "Price", Type: "text" },
+        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+      ];
 
   }
 

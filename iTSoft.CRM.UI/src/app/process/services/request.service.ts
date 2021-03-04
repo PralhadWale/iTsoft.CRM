@@ -6,6 +6,7 @@ import { APIService } from 'src/app/_services';
 import * as moment from 'moment';
 import { RequestDetails } from 'src/app/_models/requestdetails';
 import { ConfigurationSettings } from 'src/app/_models/configuration';
+import { RequestServiceMaster } from 'src/app/_models/requestservice';
 @Injectable({
   providedIn: 'root'
 })
@@ -39,6 +40,7 @@ export class RequestService {
     request.RequestMaster.AdvisorId = ConfigurationSettings.User.UserId;
     request.RequestMaster.AddedBy = ConfigurationSettings.User.UserId;
     request.RequestMaster.AddedOn = new Date();
+    request.RequestServiceMasters = <Array<any>>request.RequestServiceDetails;
     let url = this.RequestController + "save";
     return this.apiService.PostData(url, request);
   }

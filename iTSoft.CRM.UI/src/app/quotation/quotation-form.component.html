@@ -14,7 +14,11 @@
         </mat-card-actions>
       </mat-toolbar-row>
     </mat-toolbar>
+    <mat-divider class="title-Divider"></mat-divider>
     <mat-card-content style="margin: 5 0 5 10px;">
+      <mat-tab-group [(selectedIndex)]=selectedIndex>
+        <mat-tab label="Basic Details">
+          <br/><br/>
       <div class="form-card">
         <mat-grid-list cols="12" rowHeight="80px">
           <mat-grid-tile [colspan]="fieldColspan">
@@ -124,13 +128,26 @@
           </mat-grid-tile>
         </mat-grid-list>
       </div>
+      </mat-tab>
+      <mat-tab label="Services">
+        <mat-card>
+         <mat-card-content>
+           <it-mat-table [dataSource]="request.RequestServiceDetails" [tableSettings]="serviceTableSettings"
+             [tableSchema]="serviceTableSchema" (onCommandClick)='onServiceCommandClick($event)'></it-mat-table>
+         </mat-card-content>
+       </mat-card>
+     </mat-tab>
+     <mat-tab label="Follow Up" *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
+       <mat-card>
+         <mat-card-content>
+           <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="followupTableSettings"
+             [tableSchema]="followUpTableSchema" (onCommandClick)='onFollowUpCommandClick($event)'></it-mat-table>
+         </mat-card-content>
+       </mat-card>
+     </mat-tab>
+   </mat-tab-group>
     </mat-card-content>
-   
   </mat-card>
 </form>
-<mat-card *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
-  <mat-card-content>
-    <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="tableSettings" [tableSchema]="followUpTableSchema" (onCommandClick)='onCommandClick($event)'></it-mat-table> 
-  </mat-card-content>
-</mat-card>
+
 <app-add-followup [requestType]="requestTypeId" #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>

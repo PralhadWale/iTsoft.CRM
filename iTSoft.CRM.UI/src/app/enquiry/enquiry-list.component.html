@@ -5,6 +5,7 @@
       <h1>{{pageTitle }}</h1>
     </mat-card-title>
   </mat-card-header>
+  <mat-divider class="title-Divider"></mat-divider>
   <mat-card-content>
     <it-mat-table [dataSource]="enquiryList" [tableSettings]="tableSettings" [tableSchema]="enquiryTableSchema"
       (onCommandClick)='onCommandClick($event)'></it-mat-table>

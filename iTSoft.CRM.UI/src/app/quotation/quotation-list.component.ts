@@ -103,7 +103,7 @@ export class QuotationListComponent implements OnInit {
 
   private SetFilter(resetToDefault: boolean = false) {
     if (resetToDefault) {
-      this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
+      this.searchFilter = new RequestSerchParameters(RequestType.Quotation);
     }
     else {
       let filter = this.storageService.GetItem(this.storageKey);
@@ -111,7 +111,7 @@ export class QuotationListComponent implements OnInit {
         this.searchFilter = filter;
       }
       else {
-        this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
+        this.searchFilter = new RequestSerchParameters(RequestType.Quotation);
       }
     }
     this.getQuotations();

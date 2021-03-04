@@ -19,7 +19,7 @@ namespace iTSoft.CRM.Data.Entity.Process
     }
 
 
-    public class RequestServiceDetails
+    public class RequestServiceDetails : RequestServiceMaster
     {
         public string ServiceName { get; set; }
         public string LeadStatusName { get; set; }

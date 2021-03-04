@@ -15,8 +15,9 @@
                 </mat-card-actions>
             </mat-toolbar-row>
         </mat-toolbar>
-        <mat-divider style="background-color: chartreuse;"></mat-divider>
+        <mat-divider class="title-Divider"></mat-divider>
         <mat-card-content style="margin: 5 0 5 0px;">
+            <br/><br/>
             <mat-grid-list cols="12" rowHeight="80px">
                 <mat-grid-tile [colspan]="fieldColspan">
                     <mat-form-field class="form-field" appearance="outline">
@@ -34,7 +35,7 @@
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="fieldColspan">
                     <mat-form-field class="form-field" appearance="outline">
-                        <mat-label>Quoted Price</mat-label>
+                        <mat-label>Service Price</mat-label>
                         <input matInput type='number' [(ngModel)]="requestServiceDetails.QuoatedPrice" name="QuoatedPrice" #QuoatedPrice="ngModel">
                         <mat-error *ngIf="(QuoatedPrice.touched || serviceForm.submitted) && QuoatedPrice.errors">
                              Please enter valid value

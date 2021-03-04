@@ -37,6 +37,8 @@ import {
   import { GenericValidator } from "../shared/generic-validator";
 import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { AddServiceComponent } from "../process/add-service/add-service.component";
+import { RequestServiceDetails } from "../_models/requestservice";
 
 @Component({
     selector: 'quotation-form',
@@ -67,11 +69,18 @@ export class QuotationFormComponent implements OnInit {
     request: RequestViewModel;
     requestTypeId = RequestType.Quotation;
     fieldColspan: number = 4;
-    tableSettings: TableDefaultSettings;
+    
     followUpTableSchema: Array<TableColumnModel> = [];
+    serviceTableSchema: Array<TableColumnModel> = [];
+
+    followupTableSettings: TableDefaultSettings;
+    serviceTableSettings: TableDefaultSettings;
+
     requestSelectList: RequestSelectListModel = new RequestSelectListModel();
     minDate : Date = new Date(2020,1,1);
     maxDate : Date = new Date();
+
+    selectedIndex = 0;
 
     constructor(
         private route: ActivatedRoute,
@@ -82,9 +91,10 @@ export class QuotationFormComponent implements OnInit {
         private dialog : MatDialog,
         private breakpointObserver: BreakpointObserver
     ) {
+        this.SetTableSchema();
         this.LoadSelectListData();
         this.SetDefaultRequest();
-        this.SetTableSchema();
+       
 
     }
 
@@ -139,10 +149,16 @@ export class QuotationFormComponent implements OnInit {
 
     SetTableSchema() {
 
-        this.tableSettings = new TableDefaultSettings();
-        this.tableSettings.ShowToolBar = true;
-        this.tableSettings.ToolBarItems = [ToolBarItems.Add];
+        this.followupTableSettings = new TableDefaultSettings();
+        this.followupTableSettings.ShowToolBar = true;
+        this.followupTableSettings.ToolBarItems = [ToolBarItems.Add];
+        this.followupTableSettings.HideFilter = true;
 
+
+        this.serviceTableSettings = new TableDefaultSettings();
+        this.serviceTableSettings.ShowToolBar = true;
+        this.serviceTableSettings.ToolBarItems = [ToolBarItems.Add];
+        this.serviceTableSettings.HideFilter = true;
 
 
             this.followUpTableSchema =
@@ -155,6 +171,15 @@ export class QuotationFormComponent implements OnInit {
               { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
               { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
               { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+              { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+            ];
+
+            this.serviceTableSchema =
+            [
+              { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+              { ColumnField: "QuoatedPrice", ColumnHeader: "Quoated Price", Type: "text" },
+              { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },
+              { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
               { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
             ];
       
@@ -192,7 +217,7 @@ export class QuotationFormComponent implements OnInit {
         }
     }
 
-    onCommandClick($event: CommandEventArgs) {
+    onFollowUpCommandClick($event: CommandEventArgs) {
         if ($event.toolbarItem) {
             if ($event.toolbarItem == ToolBarItems.Add) {
                 this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
@@ -205,6 +230,39 @@ export class QuotationFormComponent implements OnInit {
     onFollowUpSaved() {
         this.getRequest(this.request.RequestMaster.RequestId);
     }
+
+    
+  onServiceCommandClick($event: CommandEventArgs) {
+    if ($event.toolbarItem) {
+      if ($event.toolbarItem == ToolBarItems.Add) {
+        this.OpenServiceDialog(null);
+      }
+    }
+  }
+  OpenServiceDialog(serviceDetails: RequestServiceDetails) {
+    const dialogRef = this.dialog.open(AddServiceComponent, {
+      data: serviceDetails,
+      disableClose: true
+    });
+
+    dialogRef.beforeClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result && result.Action == "SAVE") {
+        //this.router.navigate(['/enquiries']);
+
+        if (this.request.RequestServiceDetails == null) {
+          this.request.RequestServiceDetails = [];
+        }
+
+        this.request.RequestServiceDetails.push(result.Data);
+
+      }
+      else {
+
+      }
+    }
+    );
+  }
 
 
     onSubmit(quotationForm: NgForm) {
