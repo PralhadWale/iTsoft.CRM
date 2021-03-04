@@ -10,9 +10,8 @@ namespace iTSoft.CRM.Data.Entity.Process
     {
         [Key]
         public long? RequestId { get; set; }
-
+        public long? ClientId { get; set; }
         public long? RequestTypeId { get; set; }
-
         public string RequestNo { get; set; }
 
         public DateTime? RequestDate { get; set; }
