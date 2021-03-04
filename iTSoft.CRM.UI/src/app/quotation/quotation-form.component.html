@@ -132,7 +132,7 @@
       <mat-tab label="Services">
         <mat-card>
          <mat-card-content>
-           <it-mat-table [dataSource]="request.RequestServiceDetails" [tableSettings]="serviceTableSettings"
+           <it-mat-table #serviceTable [dataSource]="request.RequestServiceDetails" [tableSettings]="serviceTableSettings"
              [tableSchema]="serviceTableSchema" (onCommandClick)='onServiceCommandClick($event)'></it-mat-table>
          </mat-card-content>
        </mat-card>

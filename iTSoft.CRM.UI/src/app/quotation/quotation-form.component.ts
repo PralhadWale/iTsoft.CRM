@@ -21,7 +21,7 @@ import {
   import { Subscription } from "rxjs/Subscription";
   import {  BreakpointObserver } from '@angular/cdk/layout';
   
-  import { CommandEventArgs,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+  import { CommandEventArgs,  ITMatTableComponent,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
   
   import { RequestViewModel } from '../_models/requestviewmodel';
   import { RequestSelectListModel } from '../_models/requestselectlistmodel';
@@ -63,7 +63,7 @@ import { RequestServiceDetails } from "../_models/requestservice";
 export class QuotationFormComponent implements OnInit {
     @ViewChildren("quotationForm") quotationForm: FormGroup;
     @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
-
+    @ViewChild("serviceTable") serviceTable : ITMatTableComponent;
     pageTitle: string = 'Update Quotation';
     errorMessage: string;
     request: RequestViewModel;
@@ -241,25 +241,25 @@ export class QuotationFormComponent implements OnInit {
   }
   OpenServiceDialog(serviceDetails: RequestServiceDetails) {
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails },
+      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails , ShowPrice:true},
       disableClose: true
     });
 
     dialogRef.beforeClosed().subscribe(dialogResult => {
       let result = dialogResult;
-      if (result && result.Action == "SAVE") {
-        //this.router.navigate(['/enquiries']);
+        if (result && result.Action == "SAVE") {
+            if (this.request.RequestServiceDetails == null) {
+                this.request.RequestServiceDetails = [];
+            }
+            if (serviceDetails == null) {
+                this.request.RequestServiceDetails.push(result.Data);
+            }
+            this.serviceTable.RefreshDataSource();
 
-        if (this.request.RequestServiceDetails == null) {
-          this.request.RequestServiceDetails = [];
         }
+        else {
 
-        this.request.RequestServiceDetails.push(result.Data);
-
-      }
-      else {
-
-      }
+        }
     }
     );
   }

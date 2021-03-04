@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms/';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { execFile } from 'child_process';
 import { ServiceMaster } from 'src/app/masters/service/service.model';
 import { RequestServiceDetails } from 'src/app/_models/requestservice';
 import { AlertService } from 'src/app/_services';
@@ -25,6 +24,7 @@ export class AddServiceComponent implements OnInit {
 
   serviceList: Array<ServiceMaster> = [];
   isNew: boolean = true;
+  showPrice:boolean = false
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddServiceComponent>,
@@ -35,16 +35,20 @@ export class AddServiceComponent implements OnInit {
 
     this.requestServiceDetails = new RequestServiceDetails();
     this.requestAllServiceList = [];
-    if (data.ServiceDetails != null) {
-      this.requestServiceDetails = data.ServiceDetails;
-      this.isNew = false;
-    }
-    else {
-      this.pageTitle = "Add Service";
-    }
+    this.pageTitle = "Add Service";
+    
+    if (data) {
+      
+      if (data.ServiceDetails != null) {
+        this.requestServiceDetails = data.ServiceDetails;
+        this.isNew = false;
+      }
 
-    if (data.AllServiceList != null) {
-      this.requestAllServiceList = data.AllServiceList;
+      if (data.AllServiceList != null) {
+        this.requestAllServiceList = data.AllServiceList;
+      }
+      this.showPrice = data.ShowPrice
+
     }
 
 

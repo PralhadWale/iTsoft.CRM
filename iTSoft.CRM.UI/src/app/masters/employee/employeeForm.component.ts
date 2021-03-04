@@ -174,7 +174,7 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     saveEmployee(employeeForm: NgForm): void {
-        if (employeeForm.dirty && employeeForm.valid) {
+        if (employeeForm && employeeForm.valid) {
             if (this.selectedDepartments && this.selectedDepartments.length > 0) {
                 // Copy the form values over the employee object values
                 const employee = Object.assign({}, this.employee, employeeForm.value);
@@ -193,6 +193,7 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onSaveComplete(): void {
+        this.alertService.showSuccessMessage("Employee saved successfully");
         this.router.navigate(['/employees']);
     }
 

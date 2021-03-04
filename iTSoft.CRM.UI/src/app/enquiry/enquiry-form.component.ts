@@ -22,7 +22,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { CommandEventArgs, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { CommandEventArgs, ITMatTableComponent, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 
 import { RequestMaster } from '../_models';
 import { RequestViewModel } from '../_models/requestviewmodel';
@@ -77,6 +77,7 @@ import { RequestServiceDetails } from "../_models/requestservice";
 export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
   @ViewChildren("enquiryForm") enquiryForm: FormGroup;
+  @ViewChild("serviceTable") serviceTable : ITMatTableComponent;
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
   pageTitle: string = "Update Enquiry";
   request: RequestViewModel;
@@ -234,20 +235,23 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   OpenServiceDialog(serviceDetails: RequestServiceDetails) {
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails },
+      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails , ShowPrice:false },
       disableClose: true
     });
 
     dialogRef.beforeClosed().subscribe(dialogResult => {
       let result = dialogResult;
       if (result && result.Action == "SAVE") {
-        //this.router.navigate(['/enquiries']);
 
         if (this.request.RequestServiceDetails == null) {
           this.request.RequestServiceDetails = [];
         }
 
-        this.request.RequestServiceDetails.push(result.Data);
+        if (serviceDetails == null) {
+          this.request.RequestServiceDetails.push(result.Data);
+        }
+      
+        this.serviceTable.RefreshDataSource();
 
       }
       else {
