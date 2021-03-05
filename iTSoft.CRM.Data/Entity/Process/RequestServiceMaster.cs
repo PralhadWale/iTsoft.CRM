@@ -12,6 +12,7 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long RequestServiceId { get; set; }
         public long? RequestId { get; set; }
         public long? ServiceId { get; set; }
+        public long? DepartmentId { get; set; }
         public decimal? QuoatedPrice { get; set; }
         public decimal? AgreedPrice { get; set; }
         public string Remark { get; set; }
@@ -22,6 +23,7 @@ namespace iTSoft.CRM.Data.Entity.Process
     public class RequestServiceDetails : RequestServiceMaster
     {
         public string ServiceName { get; set; }
+        public string DepartmentName { get; set; }
         public string LeadStatusName { get; set; }
     }
 }

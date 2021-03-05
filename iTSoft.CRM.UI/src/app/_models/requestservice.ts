@@ -5,6 +5,7 @@ export class RequestServiceMaster
     RequestServiceId: number;
     RequestId: number;
     ServiceId: number;
+    DepartmentId : number;
     QuoatedPrice : number;
     AgreedPrice: number;
     Remark : string;
@@ -20,7 +21,8 @@ export class RequestServiceDetails extends RequestServiceMaster
 {
     ServiceName: string;
     LeadStatusName: string;
-
+    DepartmentName: string;
+    
     public constructor()
     {
         super();

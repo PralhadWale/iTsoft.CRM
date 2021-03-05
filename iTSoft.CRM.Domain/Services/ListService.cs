@@ -18,6 +18,9 @@ namespace iTSoft.HIMS.Service.Shared
 
         List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey);
         List<ListModel> GetAdvisors();
+
+        List<ListModel> GetDepartmentAdvisors(int departmentId);
+        List<ListModel> GetUserDepartments(int userId);
     }
 
     public class ListService : IListService
@@ -32,6 +35,16 @@ namespace iTSoft.HIMS.Service.Shared
         public List<ListModel> GetAdvisors()
         {
             return _listRepository.GetAdvisors();
+        }
+
+        public List<ListModel> GetDepartmentAdvisors(int departmentId)
+        {
+            return _listRepository.GetDepartmentAdvisors(departmentId);
+        }
+
+        public List<ListModel> GetUserDepartments(int userId)
+        {
+            return _listRepository.GetUserDepartments(userId);
         }
 
         public List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters)

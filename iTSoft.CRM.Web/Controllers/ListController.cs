@@ -135,5 +135,42 @@ namespace iTSoft.CRM.Web.Controllers
             }
             return Ok(response);
         }
+
+
+        [HttpGet("get-department-advisor-list")]
+        public IActionResult GetDepartmentAdvisors(int departmentId)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.GetDepartmentAdvisors(departmentId);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetDepartmentAdvisors");
+            }
+            return Ok(response);
+        }
+
+
+        [HttpGet("get-user-department-list")]
+        public IActionResult GetUserDepartments(int userId)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.GetUserDepartments(userId);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetUserDepartments");
+            }
+            return Ok(response);
+        }
+
     }
 }

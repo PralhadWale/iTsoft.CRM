@@ -21,6 +21,20 @@
             <mat-grid-list cols="12" rowHeight="80px">
                 <mat-grid-tile [colspan]="fieldColspan">
                     <mat-form-field class="form-field" appearance="outline">
+                      <mat-label>Department</mat-label>
+                      <mat-select placeholder="Select Department" [(ngModel)]="requestServiceDetails.DepartmentId" [(value)]="requestServiceDetails.DepartmentId"
+                      (selectionChange)="onDepartmentChanged($event)" name="DepartmentId" #DepartmentId="ngModel" required>
+                        <mat-option *ngFor="let item of departmentList" [value]="item.Value">
+                          {{item.Text}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="(DepartmentId.touched || serviceForm.submitted)">
+                        Please select department
+                      </mat-error>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
                         <mat-label>Service Name </mat-label>
                         <mat-select placeholder="Select Service" [(ngModel)]="requestServiceDetails.ServiceId" name="ServiceId"
                             #ServiceId="ngModel" (selectionChange)="onServiceChanged($event)" required>

@@ -13,12 +13,35 @@ namespace iTSoft.CRM.Data.Repository
         List<ListModel> ListAll<T>(string textField, string valueField);
         List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey);
         List<ListModel> GetAdvisors();
+        List<ListModel> GetDepartmentAdvisors(int departmentId);
+        List<ListModel> GetUserDepartments(int userId);
     }
     public class ListRepository : BaseRepository , IListRepository
     {
+        public const string PROC_ADVISORMANAGER = "PROC_ADVISORMANAGER";
+        public const string PROC_EmployeeManager = "PROC_EmployeeManager";
         public List<ListModel> GetAdvisors()
         {
-            return base.GetConnection().Query<ListModel>("Select U.LastName + ' ' + U.FirstName As Text, U.UserId As Value From UserMaster U Join IdentityUserRole IUR on U.UserId = IUR.UserId and IUR.RoleId = 2").AsList();
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@Action", "ActiveOnly");
+            return base.GetConnection().Query<ListModel>(PROC_ADVISORMANAGER, parameters , commandType: System.Data.CommandType.StoredProcedure).AsList();
+        }
+
+
+        public List<ListModel> GetDepartmentAdvisors(int departmentId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@Action", "DepartmentWise");
+            parameters.Add("DepartmentId", departmentId);
+            return base.GetConnection().Query<ListModel>(PROC_ADVISORMANAGER, parameters,commandType: System.Data.CommandType.StoredProcedure).AsList();
+        }
+
+        public List<ListModel> GetUserDepartments(int userId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("Action", "UserDepartments");
+            parameters.Add("EmployeeId", userId);
+            return base.GetConnection().Query<ListModel>(PROC_EmployeeManager, parameters, commandType: System.Data.CommandType.StoredProcedure).AsList();
         }
 
         public List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters)

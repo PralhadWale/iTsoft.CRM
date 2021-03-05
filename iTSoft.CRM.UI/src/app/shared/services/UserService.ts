@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { ChangePasswordModel } from 'src/app/administration/models/changePassword.model';
 import { iTCRMAPIService } from 'src/app/core/services/ITSoftAPIService';
+import { User } from "src/app/_models";
 // import { StorageService } from 'src/app/shared/services/storage.service';
-
+const APP_USER_PROFILE = "IT_CRM_USER_DATA_1.0"
 @Injectable({ providedIn: 'root', })
 export class UserService {
     
@@ -76,5 +77,12 @@ export class UserService {
     GetAdvisorName(UserId: number) {
         return this.apiService.GETData(this.GetAdvisorNameURL + "?UserId=" + UserId);
     }
+
+    
+  getCurrentUser() {
+    let user = <User>JSON.parse(localStorage.getItem(APP_USER_PROFILE));
+    return user;
+  }
+
 
 }

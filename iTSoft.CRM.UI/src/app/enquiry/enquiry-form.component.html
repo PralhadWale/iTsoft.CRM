@@ -185,20 +185,7 @@
                   </mat-select>
                 </mat-form-field>
               </mat-grid-tile>
-              <mat-grid-tile [colspan]="fieldColspan">
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Department</mat-label>
-                  <mat-select placeholder="Select Department" [(ngModel)]="request.RequestMaster.DepartmentId"
-                    name="DepartmentId" #DepartmentId="ngModel" required>
-                    <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value">
-                      {{item.Text}}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="(SourceId.touched || enquiryForm.submitted) && SourceId.errors">
-                    Please select department
-                  </mat-error>
-                </mat-form-field>
-              </mat-grid-tile>
+             
             </mat-grid-list>
           
           </div>

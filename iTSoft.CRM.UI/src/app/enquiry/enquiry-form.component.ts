@@ -328,6 +328,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+        { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         { ColumnField: "QuoatedPrice", ColumnHeader: "Price", Type: "text" },
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }

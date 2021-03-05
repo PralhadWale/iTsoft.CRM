@@ -58,4 +58,16 @@ export class ListService {
         serviceMaster.IsActive  = true;
         return this.apiService.PostData(searchServiceURL ,serviceMaster);
     }
+
+    GetDepartmentAdvisors(departmentId : number)
+    {
+        let getUrl = this.listController + "get-department-advisor-list?departmentId="+ departmentId;
+        return this.apiService.GetData(getUrl);
+    }
+
+    GetUserDepartments(userId : number)
+    {
+        let getUrl = this.listController + "get-user-department-list?userId="+ userId;
+        return this.apiService.GetData(getUrl);
+    }
 }
