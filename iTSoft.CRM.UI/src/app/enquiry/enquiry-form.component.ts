@@ -22,7 +22,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { CommandEventArgs, ITMatTableComponent, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import { CommandEventArgs, CommandModel, CommandType, ITMatTableComponent, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 
 import { RequestMaster } from '../_models';
 import { RequestViewModel } from '../_models/requestviewmodel';
@@ -77,7 +77,7 @@ import { RequestServiceDetails } from "../_models/requestservice";
 export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
   @ViewChildren("enquiryForm") enquiryForm: FormGroup;
-  @ViewChild("serviceTable") serviceTable : ITMatTableComponent;
+  @ViewChild("serviceTable") serviceTable: ITMatTableComponent;
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
   pageTitle: string = "Update Enquiry";
   request: RequestViewModel;
@@ -232,10 +232,35 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.OpenServiceDialog(null);
       }
     }
+    else {
+      let rowData: RequestServiceDetails = Object.assign({}, $event.rowData);
+      if ($event.command.commandType == CommandType.Edit) {
+        this.OpenServiceDialog(rowData);
+      }
+      else if ($event.command.commandType == CommandType.Delete) {
+
+        let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to Delete selected service ? " };
+        const dialogRef = this.dialog.open(ConfirmDialog, {
+          maxWidth: "400px",
+          data: dialogData
+        });
+
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          let result = dialogResult;
+          if (result == "CONFIRMED") {
+                this.requestService.RemoveService(rowData,this.request.RequestServiceDetails);
+                this.serviceTable.RefreshDataSource();
+          }
+        }
+        );
+
+      }
+
+    }
   }
   OpenServiceDialog(serviceDetails: RequestServiceDetails) {
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails , ShowPrice:false },
+      data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: false },
       disableClose: true
     });
 
@@ -250,16 +275,17 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (serviceDetails == null) {
           this.request.RequestServiceDetails.push(result.Data);
         }
+        else 
+        {
+            this.requestService.UpdateService(result.Data,this.request.RequestServiceDetails);
+        }
 
         this.request.RequestMaster.Amount = 0;
-
         this.request.RequestServiceDetails.forEach(x => {
           if (x.QuoatedPrice && x.QuoatedPrice > 0) {
-            this.request.RequestMaster.Amount+= x.QuoatedPrice;
+            this.request.RequestMaster.Amount += x.QuoatedPrice;
           }
-          
         });
-      
         this.serviceTable.RefreshDataSource();
 
       }
@@ -312,6 +338,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.serviceTableSettings.HideFilter = true;
     //this.serviceTableSettings.AllowPaging = false;
 
+    let serviceGridCommand: Array<CommandModel> = [
+      { commandType: CommandType.Edit },
+      { commandType: CommandType.Delete }
+    ];
+
+
     this.followUpTableSchema =
       [
         { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
@@ -331,7 +363,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         { ColumnField: "QuoatedPrice", ColumnHeader: "Price", Type: "text" },
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: serviceGridCommand }
       ];
 
   }

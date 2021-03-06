@@ -91,16 +91,6 @@
           </mat-grid-tile>
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
-              <mat-label>Department</mat-label>
-              <mat-select placeholder="Select Department"  [(ngModel)]="request.RequestMaster.DepartmentId" name="DepartmentId" #DepartmentId="ngModel">
-                <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value" >
-                  {{item.Text}} 
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
               <mat-label>Amount</mat-label>
               <input matInput type='number' [(ngModel)]="request.RequestMaster.Amount" name="Amount" #Amount="ngModel" required>
               <mat-error *ngIf="(Amount.touched || quotationForm.submitted) && Amount.errors">

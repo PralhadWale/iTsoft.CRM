@@ -6,6 +6,7 @@ import { UserService } from 'src/app/shared/services/UserService';
 import { ListModel } from 'src/app/_models/listmodel';
 import { RequestServiceDetails } from 'src/app/_models/requestservice';
 import { AlertService } from 'src/app/_services';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 import { ListService } from '../services/list.service';
 
 @Component({
@@ -32,7 +33,7 @@ export class AddServiceComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddServiceComponent>,
     private listService: ListService,
-    private userService: UserService,
+    private userService: UserProfilService,
     private alertService: AlertService
 
   ) {
@@ -71,8 +72,12 @@ export class AddServiceComponent implements OnInit {
       this.pageTitle = "Add service";
     }
 
-    this.listService.GetUserDepartments(this.userService.getCurrentUser().UserId).subscribe(result => {
-      this.departmentList = result.Value.ResponseData;
+    this.userService.CurrentUserDepartments.subscribe((result : Array<ListModel>) => {
+      this.departmentList = result;
+      if(this.requestServiceDetails.RequestServiceId > 0)
+      {
+          this.GetDepartmentServices(this.requestServiceDetails.DepartmentId);
+      }
     }, error => {
       this.alertService.showErrorMessage(error.error);
     });
@@ -83,19 +88,22 @@ export class AddServiceComponent implements OnInit {
     if ($event != null) {
       let departmentId = $event.value;
       this.requestServiceDetails.ServiceId = null;
-
-      let data: ListModel = this.departmentList.filter(f => f.Value == departmentId)[0];
-      this.requestServiceDetails.DepartmentName = data.Text;
-
-      this.serviceList = [];
-
-      this.listService.GetDepartmentServices(departmentId).subscribe(result => {
-        this.serviceList = result.Value.ResponseData;
-      }, error => {
-        this.alertService.showErrorMessage(error.error);
-      });
+      this.GetDepartmentServices(departmentId);
     }
 
+  }
+
+  private GetDepartmentServices(departmentId: number) {
+    let data: ListModel = this.departmentList.filter(f => f.Value == departmentId)[0];
+    this.requestServiceDetails.DepartmentName = data.Text;
+
+    this.serviceList = [];
+
+    this.listService.GetDepartmentServices(departmentId).subscribe(result => {
+      this.serviceList = result.Value.ResponseData;
+    }, error => {
+      this.alertService.showErrorMessage(error.error);
+    });
   }
 
   onServiceChanged($event: any) {

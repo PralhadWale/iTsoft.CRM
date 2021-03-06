@@ -6,19 +6,41 @@ import { APIService } from 'src/app/_services';
 import * as moment from 'moment';
 import { RequestDetails } from 'src/app/_models/requestdetails';
 import { ConfigurationSettings } from 'src/app/_models/configuration';
-import { RequestServiceMaster } from 'src/app/_models/requestservice';
+import { RequestServiceDetails, RequestServiceMaster } from 'src/app/_models/requestservice';
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
-  GetClientDetails(clientId: Number) {
-    throw new Error("Method not implemented.");
-  }
+ 
 
   private RequestController = "/Request/";
   constructor(private apiService: APIService) {
 
+  }
+
+  
+  UpdateService(data: any, requestServiceDetails: RequestServiceDetails[]) {
+    let matchedIndex = -1;
+    requestServiceDetails.forEach((item, index) => {
+      if (item.ServiceId == data.ServiceId) {
+        matchedIndex = index;
+      }
+    });
+
+    if (matchedIndex != -1) {
+      requestServiceDetails[matchedIndex] = data;
+    }
+  }
+
+  RemoveService(service:RequestServiceDetails, services : Array<RequestServiceDetails>)
+  {
+    services.forEach((item, index) => {
+      if (item.ServiceId === service.ServiceId) 
+       {
+         services.splice(index, 1);
+       }
+    });
   }
 
   AssignRequest(requestDetails: Array<RequestDetails>) {

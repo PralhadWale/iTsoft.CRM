@@ -6,40 +6,41 @@ import {
     ViewChildren,
     ElementRef,
     ViewChild,
-  
-  } from "@angular/core";
-  import {
+
+} from "@angular/core";
+import {
     FormBuilder,
     FormGroup,
     Validators,
     FormControlName,
     NgForm
-  } from "@angular/forms";
-  import { ActivatedRoute, Router } from "@angular/router";
-  
-  import { Observable } from "rxjs/Observable";
-  import { Subscription } from "rxjs/Subscription";
-  import {  BreakpointObserver } from '@angular/cdk/layout';
-  
-  import { CommandEventArgs,  ITMatTableComponent,  TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
-  
-  import { RequestViewModel } from '../_models/requestviewmodel';
-  import { RequestSelectListModel } from '../_models/requestselectlistmodel';
-  import { RequestType } from '../_models/requesttype';
-  
-  import { RequestService } from '../process/services/request.service';
-  import { AlertService } from '../_services';
-  import { ListService } from '../process/services/list.service';
-  
-  import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
-  
-  import { NumberValidators } from "../shared/number.validator";
-  import { GenericValidator } from "../shared/generic-validator";
+} from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import { BreakpointObserver } from '@angular/cdk/layout';
+
+import { CommandEventArgs, CommandModel, CommandType, ITMatTableComponent, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+
+import { RequestViewModel } from '../_models/requestviewmodel';
+import { RequestSelectListModel } from '../_models/requestselectlistmodel';
+import { RequestType } from '../_models/requesttype';
+
+import { RequestService } from '../process/services/request.service';
+import { AlertService } from '../_services';
+import { ListService } from '../process/services/list.service';
+
+import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
+
+import { NumberValidators } from "../shared/number.validator";
+import { GenericValidator } from "../shared/generic-validator";
 import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { AddServiceComponent } from "../process/add-service/add-service.component";
 import { RequestServiceDetails } from "../_models/requestservice";
 import { ClientMaster } from "../masters/client/client.model";
+import { UserProfilService } from "../_services/userProfile.Service";
 
 @Component({
     selector: 'quotation-form',
@@ -64,13 +65,13 @@ import { ClientMaster } from "../masters/client/client.model";
 export class QuotationFormComponent implements OnInit {
     @ViewChildren("quotationForm") quotationForm: FormGroup;
     @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
-    @ViewChild("serviceTable") serviceTable : ITMatTableComponent;
+    @ViewChild("serviceTable") serviceTable: ITMatTableComponent;
     pageTitle: string = 'Update Quotation';
     errorMessage: string;
     request: RequestViewModel;
     requestTypeId = RequestType.Quotation;
     fieldColspan: number = 4;
-    
+
     followUpTableSchema: Array<TableColumnModel> = [];
     serviceTableSchema: Array<TableColumnModel> = [];
 
@@ -78,8 +79,8 @@ export class QuotationFormComponent implements OnInit {
     serviceTableSettings: TableDefaultSettings;
 
     requestSelectList: RequestSelectListModel = new RequestSelectListModel();
-    minDate : Date = new Date(2020,1,1);
-    maxDate : Date = new Date();
+    minDate: Date = new Date(2020, 1, 1);
+    maxDate: Date = new Date();
 
     selectedIndex = 0;
 
@@ -89,13 +90,14 @@ export class QuotationFormComponent implements OnInit {
         private requestService: RequestService,
         private listService: ListService,
         private alertService: AlertService,
-        private dialog : MatDialog,
+        private UserProfileService: UserProfilService,
+        private dialog: MatDialog,
         private breakpointObserver: BreakpointObserver
     ) {
         this.SetTableSchema();
         this.LoadSelectListData();
         this.SetDefaultRequest();
-       
+
 
     }
 
@@ -103,30 +105,28 @@ export class QuotationFormComponent implements OnInit {
 
     }
 
-    
-  Close(employeeForm:NgForm)
-  {
-      if (employeeForm.touched) {
 
-          let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
-          const dialogRef = this.dialog.open(ConfirmDialog, {
-              maxWidth: "400px",
-              data: dialogData
-          });
+    Close(employeeForm: NgForm) {
+        if (employeeForm.touched) {
 
-          dialogRef.afterClosed().subscribe(dialogResult => {
-              let result = dialogResult;
-              if (result == "CONFIRMED") {
-                  this.router.navigate(['/quotations']);
-              }
-          }
-          );
-      }
-      else 
-      {
-          this.router.navigate(['/quotations']);
-      }
-  }
+            let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
+            const dialogRef = this.dialog.open(ConfirmDialog, {
+                maxWidth: "400px",
+                data: dialogData
+            });
+
+            dialogRef.afterClosed().subscribe(dialogResult => {
+                let result = dialogResult;
+                if (result == "CONFIRMED") {
+                    this.router.navigate(['/quotations']);
+                }
+            }
+            );
+        }
+        else {
+            this.router.navigate(['/quotations']);
+        }
+    }
 
 
     LoadSelectListData() {
@@ -142,7 +142,7 @@ export class QuotationFormComponent implements OnInit {
                         params => {
                             let id = +params['id'];
                             let clientId = +params['clientId'];
-                            
+
                             this.getRequest(id, clientId);
                         }
                     );
@@ -157,38 +157,44 @@ export class QuotationFormComponent implements OnInit {
         this.followupTableSettings.ToolBarItems = [ToolBarItems.Add];
         this.followupTableSettings.HideFilter = true;
 
-
         this.serviceTableSettings = new TableDefaultSettings();
         this.serviceTableSettings.ShowToolBar = true;
         this.serviceTableSettings.ToolBarItems = [ToolBarItems.Add];
         this.serviceTableSettings.HideFilter = true;
 
 
-            this.followUpTableSchema =
+        let serviceGridCommand: Array<CommandModel> = [
+            { commandType: CommandType.Edit },
+            { commandType: CommandType.Delete }
+        ];
+
+
+
+        this.followUpTableSchema =
             [
-              { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
-              { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
-              { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
-              { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
-              { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-              { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
-              { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-              { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-              { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+                { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
+                { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+                { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
+                { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
+                { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+                { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
+                { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
+                { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+                { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
             ];
 
-            this.serviceTableSchema =
+        this.serviceTableSchema =
             [
-              { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
-              { ColumnField: "QuoatedPrice", ColumnHeader: "Quoated Price", Type: "text" },
-              { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },
-              { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-              { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+                { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+                { ColumnField: "QuoatedPrice", ColumnHeader: "Quoated Price", Type: "text" },
+                { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },
+                { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+                { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command: serviceGridCommand }
             ];
-      
+
     }
 
-    getRequest(requestId: number , clientId : number): void {
+    getRequest(requestId: number, clientId: number): void {
         if (requestId > 0) {
             this.requestService
                 .Load(requestId)
@@ -201,29 +207,29 @@ export class QuotationFormComponent implements OnInit {
                 );
         }
         else {
-            this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result)=>{
+            this.requestService.GetNextrequestNumber(this.requestTypeId).subscribe((result) => {
                 var data = result.Value.ResponseData;
                 this.request.RequestMaster.RequestNo = data;
                 this.request.RequestMaster.ClientId = clientId;
 
-                this.requestService.FindClient(clientId).subscribe((result)=>{
+                this.requestService.FindClient(clientId).subscribe((result) => {
                     var clientDetails = <ClientMaster>result.Value.ResponseData;
-                    if(clientDetails.CorporateName != null)
-                    this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
-                    else if(clientDetails.FirstName != null)
-                    this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
+                    if (clientDetails.CorporateName != null)
+                        this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
+                    else if (clientDetails.FirstName != null)
+                        this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
 
 
                     this.request.RequestMaster.Email = clientDetails.Email;
                     this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
 
                     this.request.RequestMaster.SourceId = 2;
-                    
+
                 });
 
                 this.onQuotationRetrieved(this.request);
-              },  (error: any) => (this.errorMessage = <any>error));
-           
+            }, (error: any) => (this.errorMessage = <any>error));
+
         }
     }
 
@@ -249,57 +255,96 @@ export class QuotationFormComponent implements OnInit {
     }
 
     onFollowUpSaved() {
-        this.getRequest(this.request.RequestMaster.RequestId , this.request.RequestMaster.ClientId);
+        this.getRequest(this.request.RequestMaster.RequestId, this.request.RequestMaster.ClientId);
     }
 
-    
-  onServiceCommandClick($event: CommandEventArgs) {
-    if ($event.toolbarItem) {
-      if ($event.toolbarItem == ToolBarItems.Add) {
-        this.OpenServiceDialog(null);
-      }
-    }
-  }
-  OpenServiceDialog(serviceDetails: RequestServiceDetails) {
-    const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails : serviceDetails , AllServiceList : this.request.RequestServiceDetails , ShowPrice:true},
-      disableClose: true
-    });
 
-    dialogRef.beforeClosed().subscribe(dialogResult => {
-      let result = dialogResult;
-        if (result && result.Action == "SAVE") {
-            if (this.request.RequestServiceDetails == null) {
-                this.request.RequestServiceDetails = [];
+    onServiceCommandClick($event: CommandEventArgs) {
+        if ($event.toolbarItem) {
+            if ($event.toolbarItem == ToolBarItems.Add) {
+                this.OpenServiceDialog(null);
             }
-            if (serviceDetails == null) {
-                this.request.RequestServiceDetails.push(result.Data);
-            }
-
-
-            this.request.RequestMaster.Amount = 0;
-            this.request.RequestMaster.AgreedAmount = 0; 
-
-            this.request.RequestServiceDetails.forEach(x => {
-              if (x.QuoatedPrice && x.QuoatedPrice > 0) {
-                this.request.RequestMaster.Amount+= x.QuoatedPrice;
-              }
-
-              if (x.AgreedPrice && x.AgreedPrice > 0) {
-                this.request.RequestMaster.AgreedAmount+= x.AgreedPrice;
-              }
-              
-            });
-
-            this.serviceTable.RefreshDataSource();
-
         }
         else {
 
+            let rowData: RequestServiceDetails = Object.assign({}, $event.rowData);
+            this.UserProfileService.IsUserDepartment(rowData.DepartmentId).subscribe((result) => {
+            if (result == true)
+            {
+                    if ($event.command.commandType == CommandType.Edit) {
+                        this.OpenServiceDialog(rowData);
+                    }
+                    else if ($event.command.commandType == CommandType.Delete) 
+                    {
+
+                        let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to Delete selected service ? " };
+                        const dialogRef = this.dialog.open(ConfirmDialog, {
+                            maxWidth: "400px",
+                            data: dialogData
+                        });
+
+                        dialogRef.afterClosed().subscribe(dialogResult => {
+                            let result = dialogResult;
+                            if (result == "CONFIRMED") {
+                                this.requestService.RemoveService(rowData, this.request.RequestServiceDetails);
+                                this.serviceTable.RefreshDataSource();
+                            }
+                        });
+                    }
+                }
+                else 
+                {
+                    this.alertService.showErrorMessage("You are not authorize to modify service of this department");
+                }
+            });
+
+          
         }
     }
-    );
-  }
+    OpenServiceDialog(serviceDetails: RequestServiceDetails) {
+        const dialogRef = this.dialog.open(AddServiceComponent, {
+            data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: true },
+            disableClose: true
+        });
+
+        dialogRef.beforeClosed().subscribe(dialogResult => {
+            let result = dialogResult;
+            if (result && result.Action == "SAVE") {
+                
+                if (this.request.RequestServiceDetails == null) {
+                    this.request.RequestServiceDetails = [];
+                }
+                if (serviceDetails == null) {
+                    this.request.RequestServiceDetails.push(result.Data);
+                }
+                else 
+                {
+                    this.requestService.UpdateService(result.Data,this.request.RequestServiceDetails);
+                }
+
+                this.request.RequestMaster.Amount = 0;
+                this.request.RequestMaster.AgreedAmount = 0;
+
+                this.request.RequestServiceDetails.forEach(x => {
+                    if (x.QuoatedPrice && x.QuoatedPrice > 0) {
+                        this.request.RequestMaster.Amount += x.QuoatedPrice;
+                    }
+
+                    if (x.AgreedPrice && x.AgreedPrice > 0) {
+                        this.request.RequestMaster.AgreedAmount += x.AgreedPrice;
+                    }
+
+                });
+
+                this.serviceTable.RefreshDataSource();
+
+            }
+            else {
+
+            }
+        }
+        );
+    }
 
 
     onSubmit(quotationForm: NgForm) {
