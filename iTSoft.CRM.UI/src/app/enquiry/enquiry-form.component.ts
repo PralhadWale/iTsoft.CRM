@@ -305,7 +305,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       .GetRequestSelectList()
       .subscribe(
         (result) => {
-          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+          this.requestSelectList = result;
         },
         (error: any) => (this.alertService.showErrorMessage(error)),
         () => {

@@ -137,7 +137,7 @@ export class QuotationListComponent implements OnInit {
       .GetRequestSelectList()
       .subscribe(
         (result) => {
-          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+          this.requestSelectList = result;
 
         },
 

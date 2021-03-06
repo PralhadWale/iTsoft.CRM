@@ -9,7 +9,10 @@ import { Observable, observable, of } from 'rxjs';
 
 
 const APP_USER_PROFILE = "IT_CRM_USER_DATA_1.0"
-@Injectable()
+
+@Injectable({
+  providedIn: 'root'
+})
 export class UserProfilService {
 
   private listController = "/List/";

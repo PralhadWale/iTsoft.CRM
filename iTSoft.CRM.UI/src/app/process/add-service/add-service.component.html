@@ -22,29 +22,31 @@
                 <mat-grid-tile [colspan]="fieldColspan">
                     <mat-form-field class="form-field" appearance="outline">
                       <mat-label>Department</mat-label>
-                      <mat-select placeholder="Select Department" [(ngModel)]="requestServiceDetails.DepartmentId" [(value)]="requestServiceDetails.DepartmentId"
+                      <mat-select *ngIf="isNew" placeholder="Select Department" [(ngModel)]="requestServiceDetails.DepartmentId" [(value)]="requestServiceDetails.DepartmentId"
                       (selectionChange)="onDepartmentChanged($event)" name="DepartmentId" #DepartmentId="ngModel" required>
                         <mat-option *ngFor="let item of departmentList" [value]="item.Value">
                           {{item.Text}}
                         </mat-option>
                       </mat-select>
-                      <mat-error *ngIf="(DepartmentId.touched || serviceForm.submitted)">
+                      <mat-error *ngIf="serviceForm.submitted">
                         Please select department
                       </mat-error>
+                      <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.DepartmentName" name="DepartmentName" #DepartmentName="ngModel" readonly>
                     </mat-form-field>
                   </mat-grid-tile>
                 <mat-grid-tile [colspan]="fieldColspan">
                     <mat-form-field class="form-field" appearance="outline">
                         <mat-label>Service Name </mat-label>
-                        <mat-select placeholder="Select Service" [(ngModel)]="requestServiceDetails.ServiceId" name="ServiceId"
+                        <mat-select *ngIf="isNew" placeholder="Select Service" [(ngModel)]="requestServiceDetails.ServiceId" name="ServiceId"
                             #ServiceId="ngModel" (selectionChange)="onServiceChanged($event)" required>
                             <mat-option *ngFor="let service of serviceList" [value]="service.ServiceId">
                                 {{service.ServiceName}}
                             </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="(ServiceId.touched || serviceForm.submitted)">
+                        <mat-error *ngIf="serviceForm.submitted">
                             Please select service
                         </mat-error>
+                        <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.ServiceName" name="ServiceName" #ServiceName="ngModel" readonly>
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="fieldColspan">

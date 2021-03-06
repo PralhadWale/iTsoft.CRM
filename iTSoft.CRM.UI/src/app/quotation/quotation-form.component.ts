@@ -134,7 +134,7 @@ export class QuotationFormComponent implements OnInit {
             .GetRequestSelectList()
             .subscribe(
                 (result) => {
-                    this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+                    this.requestSelectList = result;
                 },
                 (error: any) => (this.errorMessage = <any>error), () => {
                     // Read the quotation Id from the route parameter

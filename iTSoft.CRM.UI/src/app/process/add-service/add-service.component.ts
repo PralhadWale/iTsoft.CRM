@@ -70,17 +70,17 @@ export class AddServiceComponent implements OnInit {
     }
     else {
       this.pageTitle = "Add service";
-    }
 
-    this.userService.CurrentUserDepartments.subscribe((result : Array<ListModel>) => {
-      this.departmentList = result;
-      if(this.requestServiceDetails.RequestServiceId > 0)
-      {
+      this.userService.CurrentUserDepartments.subscribe((result: Array<ListModel>) => {
+        this.departmentList = result;
+        if (this.requestServiceDetails.RequestServiceId > 0) {
           this.GetDepartmentServices(this.requestServiceDetails.DepartmentId);
-      }
-    }, error => {
-      this.alertService.showErrorMessage(error.error);
-    });
+        }
+      }, error => {
+        this.alertService.showErrorMessage(error.error);
+      });
+
+    }
 
   }
 

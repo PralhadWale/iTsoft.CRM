@@ -77,7 +77,7 @@ export class AddFollowupComponent implements OnInit {
       .GetFollowupSelectList()
       .subscribe(
         (result) => {
-          this.requestSelectList = <RequestSelectListModel>result.Value.ResponseData;
+          this.requestSelectList = result;
         },
         (error: any) => (this.errorMessage = <any>error)
       );
