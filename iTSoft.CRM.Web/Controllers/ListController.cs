@@ -35,11 +35,11 @@ namespace iTSoft.CRM.Web.Controllers
             {
                
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
-                requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId));
-                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId));
-                requestSelectListModel.Sources = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId));
-                requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId));
-                requestSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId));
+                requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId), true);
+                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId),true);
+                requestSelectListModel.Sources = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId),true);
+                requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId),true);
+                requestSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId),true);
 
                 response.ResponseData = requestSelectListModel;
                 response.ResponseCode = ResponseCode.Success;
@@ -60,9 +60,9 @@ namespace iTSoft.CRM.Web.Controllers
             try
             {
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
-                requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId));
-                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId));
-                requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId));
+                requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId), true);
+                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId),true);
+                requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId), true);
 
                 response.ResponseData = requestSelectListModel;
                 response.ResponseCode = ResponseCode.Success;
@@ -83,8 +83,8 @@ namespace iTSoft.CRM.Web.Controllers
             {
                 EmployeeSelectListModel employeeSelectListModel = new EmployeeSelectListModel();
                 employeeSelectListModel.Roles = _listService.ListAll<IdentityRole>(nameof(IdentityRole.Name), nameof(IdentityRole.RoleId));
-                employeeSelectListModel.Designations = _listService.ListAll<DesignationMaster>(nameof(DesignationMaster.DesignationName), nameof(DesignationMaster.DesignationId));
-                employeeSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId));
+                employeeSelectListModel.Designations = _listService.ListAll<DesignationMaster>(nameof(DesignationMaster.DesignationName), nameof(DesignationMaster.DesignationId), true);
+                employeeSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId), true);
 
                 response.ResponseData = employeeSelectListModel;
                 response.ResponseCode = ResponseCode.Success;
@@ -124,7 +124,7 @@ namespace iTSoft.CRM.Web.Controllers
                 response.ResponseData = new
                 {
                     Advisors = _listService.GetAdvisors(),
-                    Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId))
+                    Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId), true)
                 };
                 response.ResponseCode = ResponseCode.Success;
             }
@@ -168,6 +168,60 @@ namespace iTSoft.CRM.Web.Controllers
             {
                 response.ResponseCode = ResponseCode.ApplicationError;
                 _logger.Error(ex, "List - GetUserDepartments");
+            }
+            return Ok(response);
+        }
+
+
+        [HttpGet("get-lead-status-list")]
+        public IActionResult GetLeadStatusList(bool activeOnly)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId),activeOnly);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetLeadStatusList");
+            }
+            return Ok(response);
+        }
+
+
+        [HttpGet("get-stage-list")]
+        public IActionResult GetStageList(bool activeOnly)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId),activeOnly);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetStageList");
+            }
+            return Ok(response);
+        }
+
+
+        [HttpGet("get-department-list")]
+        public IActionResult GetDepartmentList(bool activeOnly)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId), activeOnly);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetDepartmentList");
             }
             return Ok(response);
         }

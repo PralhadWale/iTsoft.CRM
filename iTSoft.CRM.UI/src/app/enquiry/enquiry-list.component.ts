@@ -18,6 +18,7 @@ import { AssignRequestAvisorComponent } from "../process/assign-request-advisor/
 import { ConfigurationSettings } from "../_models/configuration";
 import { UserRole } from "../_models/userRole";
 import { NgForm } from "@angular/forms/";
+import { UserProfilService } from "../_services/userProfile.Service";
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
@@ -41,11 +42,12 @@ export class EnquiryListComponent implements OnInit {
 
 
   storageKey = "ENQUIRYFILTER";
-
+  fieldColspan = 6;
   constructor(
+    private userProfileService:UserProfilService,
     private requestService: RequestService,
     private storageService : StorageService,
-    private listService: ListService,
+    public listService: ListService,
     private alertService: AlertService,
     private router : Router,
 
@@ -151,7 +153,30 @@ export class EnquiryListComponent implements OnInit {
       );
   }
 
+  
+  onDepartmentChanged($event: any) {
+    if ($event != null) {
+      let departmentId = $event.value;
+      this.searchFilter.AdvisorId = null;
+      this.GetDepartmentAdvisor(departmentId);
+    }
+
+  }
+  GetDepartmentAdvisor(departmentId: any) {
+    this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
+        this.requestSelectList.Advisors = result.Value.ResponseData;
+    });
+  }
+
+
   getEnquiries() {
+ 
+    this.searchFilter.UserId = this.userProfileService.CurrentUser.UserId;
+    if(this.userProfileService.IsAdvisor)
+    {
+      this.searchFilter.AdvisorId = this.userProfileService.CurrentUser.UserId;
+    }
+
     this.storageService.SetItem(this.storageKey,this.searchFilter);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.enquiryList = result.Value.ResponseData;
@@ -181,7 +206,8 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
         { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
         { ColumnField: "FirstName", ColumnHeader: "FirstName", Type: "text" },
-        { ColumnField: "PhoneNo2", ColumnHeader: "Phone No 2", Type: "text" },
+        { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
+        { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
         { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },

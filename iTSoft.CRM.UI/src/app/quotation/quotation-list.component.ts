@@ -18,6 +18,7 @@ import { AssignRequestAvisorComponent } from '../process/assign-request-advisor/
 import { UserRole } from '../_models/userRole';
 import { ConfigurationSettings } from '../_models/configuration';
 import { NgForm } from '@angular/forms/';
+import { UserProfilService } from '../_services/userProfile.Service';
 
 @Component({
   selector: 'quotation-list',
@@ -42,9 +43,11 @@ export class QuotationListComponent implements OnInit {
   requestSelectList: RequestSelectListModel = new RequestSelectListModel();
   requestDetails: RequestDetails = new RequestDetails();
   selectedQuotationList: Array<RequestDetails> = [];
+  fieldColspan = 6;
   constructor(
+    public userProfileService:UserProfilService,
     private requestService: RequestService,
-    private listService: ListService,
+    public listService: ListService,
     private storageService: StorageService,
     private alertService: AlertService,
     private router: Router,
@@ -127,7 +130,8 @@ export class QuotationListComponent implements OnInit {
   }
 
   searchQuotations(searchFilter: any) {
-    if (this.quotationForm && this.quotationForm.valid) {
+    //if (this.quotationForm && this.quotationForm.valid)
+     {
       this.getQuotations();
     }
   }
@@ -144,7 +148,29 @@ export class QuotationListComponent implements OnInit {
       );
   }
 
+  onDepartmentChanged($event: any) {
+    if ($event != null) {
+      let departmentId = $event.value;
+      this.searchFilter.AdvisorId = null;
+      this.GetDepartmentAdvisor(departmentId);
+    }
+
+  }
+  GetDepartmentAdvisor(departmentId: any) {
+    this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
+        this.requestSelectList.Advisors = result.Value.ResponseData;
+    });
+  }
+
+
   getQuotations() {
+    
+    this.searchFilter.UserId = this.userProfileService.CurrentUser.UserId;
+    if(this.userProfileService.IsAdvisor)
+    {
+      this.searchFilter.AdvisorId = this.userProfileService.CurrentUser.UserId;
+    }
+
     this.storageService.SetItem(this.storageKey, this.searchFilter);
     this.requestService.Search(this.searchFilter).subscribe(result => {
       this.quotationList = result.Value.ResponseData;

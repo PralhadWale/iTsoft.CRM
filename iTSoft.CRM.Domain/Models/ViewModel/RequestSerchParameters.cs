@@ -22,5 +22,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public long? StageId { get; set; }
         public decimal? Amount { get; set; }
         public long? ClientBehaviourId { get; set; }
+        public long? UserId { get; set; }
+        public long? AdvisorId { get; set; }
+        public long? DepartmentId { get; set; }
     }
 }

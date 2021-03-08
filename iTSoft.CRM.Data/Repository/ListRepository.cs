@@ -9,6 +9,7 @@ namespace iTSoft.CRM.Data.Repository
 {
     public interface IListRepository
     {
+        List<ListModel> ListAll<T>(string textField, string valueField, bool activeOnly);
         List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters);
         List<ListModel> ListAll<T>(string textField, string valueField);
         List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey);
@@ -73,6 +74,9 @@ namespace iTSoft.CRM.Data.Repository
             return base.GetConnection().Query<ListModelWithForeignKey>("select " + textField + " as Text," + valueField + " as Value," + foreignKey + " as ForeignKey from " + typeof(T).Name + " Order by " + textField + " asc").AsList();
         }
 
-       
+        public List<ListModel> ListAll<T>(string textField, string valueField, bool activeOnly)
+        {
+            return base.GetConnection().Query<ListModel>("Select " + textField + " as Text," + valueField + " as Value From " + typeof(T).Name + " Where IsActive=1").AsList();
+        }
     }
 }

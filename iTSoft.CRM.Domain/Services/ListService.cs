@@ -12,6 +12,9 @@ namespace iTSoft.HIMS.Service.Shared
 
         List<ListModel> ListAll<T>(string textField, string valueField);
 
+        List<ListModel> ListAll<T>(string textField, string valueField , bool activeOnly );
+
+
         List<ListModel> ListAll<T>(string[] textField, string valueField);
 
         List<ListModel> ListEnum<T>();
@@ -67,6 +70,11 @@ namespace iTSoft.HIMS.Service.Shared
         public List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey)
         {
             return _listRepository.ListAll<T>(textField, valueField, foreignKey);
+        }
+
+        public List<ListModel> ListAll<T>(string textField, string valueField, bool activeOnly)
+        {
+            return _listRepository.ListAll<T>(textField, valueField, activeOnly);
         }
 
         public List<ListModel> ListEnum<T>()

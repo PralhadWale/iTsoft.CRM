@@ -52,7 +52,8 @@ export class RequestService {
         AdvisorId: item.AdvisorId,
         TransferPendingFollowUp: item.TransferPendingFollowUp,
         RequestId: item.RequestId,
-        UpdatedBy: ConfigurationSettings.User.UserId
+        UpdatedBy: ConfigurationSettings.User.UserId,
+        RequestServiceId : item.RequestServiceId
       });
     });
 

@@ -8,4 +8,5 @@ export class RequestDetails extends RequestMaster
     AdvisorName: string;
     ClientBehaviourName: string;
     TransferPendingFollowUp:boolean;
+    RequestServiceId: number;
 }

@@ -127,14 +127,14 @@
          </mat-card-content>
        </mat-card>
      </mat-tab>
-     <mat-tab label="Follow Up" *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
+     <!-- <mat-tab label="Follow Up" *ngIf="request.RequestFollowup.length > 0 || request.RequestMaster.RequestId > 0">
        <mat-card>
          <mat-card-content>
            <it-mat-table [dataSource]="request.RequestFollowup" [tableSettings]="followupTableSettings"
              [tableSchema]="followUpTableSchema" (onCommandClick)='onFollowUpCommandClick($event)'></it-mat-table>
          </mat-card-content>
        </mat-card>
-     </mat-tab>
+     </mat-tab> -->
    </mat-tab-group>
     </mat-card-content>
   </mat-card>

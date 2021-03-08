@@ -17,6 +17,10 @@ namespace iTSoft.CRM.Data.Entity.Process
         public decimal? AgreedPrice { get; set; }
         public string Remark { get; set; }
         public long LeadStatusId { get; set; }
+        public long StageId { get; set; }
+        public  string TermsAndConditions { get; set; }
+        public long AdvisorId { get; set; }
+
     }
 
 
@@ -25,5 +29,6 @@ namespace iTSoft.CRM.Data.Entity.Process
         public string ServiceName { get; set; }
         public string DepartmentName { get; set; }
         public string LeadStatusName { get; set; }
+        public string StageName { get; set; }
     }
 }

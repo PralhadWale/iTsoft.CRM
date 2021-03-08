@@ -13,6 +13,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string AdvisorName { get; set; }
         public string ClientBehaviourName { get; set; }
         public string Department { get; set; }
+        public string ServiceName { get; set; }
+        public long RequestServiceId { get; set; }
 
     }
 

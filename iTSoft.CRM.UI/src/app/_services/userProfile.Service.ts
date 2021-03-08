@@ -6,6 +6,7 @@ import { User } from '../_models'
 import { APIService } from './apiService';
 import { ListModel } from '../_models/listmodel';
 import { Observable, observable, of } from 'rxjs';
+import { UserRole } from '../_models/userRole';
 
 
 const APP_USER_PROFILE = "IT_CRM_USER_DATA_1.0"
@@ -18,6 +19,7 @@ export class UserProfilService {
   private listController = "/List/";
   public dashboardURL: string = "/profile/userevenuedashboard";
   constructor(private apiService: APIService) { }
+
 
 
   private userDepartments: Array<ListModel> = [];
@@ -39,6 +41,7 @@ export class UserProfilService {
     }
   }
 
+
   IsUserDepartment(departmentId: number): Observable<boolean> {
    return this.CurrentUserDepartments.map((result) => {
        return result.filter( c=> c.Value == departmentId).length > 0;
@@ -54,6 +57,11 @@ export class UserProfilService {
   getUser() {
     let user = <User>JSON.parse(localStorage.getItem(APP_USER_PROFILE));
     return user;
+  }
+
+  public get IsAdvisor()
+  {
+    return this.CurrentUser.RoleId == <Number>UserRole.Advisor;
   }
 
 }

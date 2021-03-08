@@ -188,6 +188,8 @@ export class QuotationFormComponent implements OnInit {
                 { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
                 { ColumnField: "QuoatedPrice", ColumnHeader: "Quoated Price", Type: "text" },
                 { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },
+                { ColumnField: "LeadStatusName", ColumnHeader: "Lead Status", Type: "text" },
+                { ColumnField: "StageName", ColumnHeader: "Lead Stage", Type: "text" },
                 { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
                 { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command: serviceGridCommand }
             ];

@@ -67,6 +67,34 @@
                         </mat-error>
                     </mat-form-field>
                  </mat-grid-tile>
+                 <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
+                      <mat-label>Lead Status</mat-label>
+                      <mat-select placeholder="Select Status" [(ngModel)]="requestServiceDetails.LeadStatusId" [(value)]="requestServiceDetails.LeadStatusId"
+                      name="LeadStatusId" #LeadStatusId="ngModel" required>
+                        <mat-option *ngFor="let item of listService.ActiveLeadStatusList | async" [value]="item.Value">
+                          {{item.Text}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="serviceForm.submitted">
+                        Please select lead status
+                      </mat-error>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
+                      <mat-label>Stage</mat-label>
+                      <mat-select placeholder="Select Stage" [(ngModel)]="requestServiceDetails.StageId" [(value)]="requestServiceDetails.StageId"
+                      name="StageId" #StageId="ngModel" required>
+                        <mat-option *ngFor="let item of listService.ActiveStageList | async" [value]="item.Value">
+                          {{item.Text}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="serviceForm.submitted">
+                        Please select Stage
+                      </mat-error>
+                    </mat-form-field>
+                  </mat-grid-tile>
                  <mat-grid-tile [colspan]="6">
                     <mat-form-field class="form-field" appearance="outline">
                         <mat-label>Remark</mat-label>

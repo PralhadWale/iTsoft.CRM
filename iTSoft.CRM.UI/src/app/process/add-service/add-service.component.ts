@@ -27,12 +27,13 @@ export class AddServiceComponent implements OnInit {
 
   departmentList: Array<ListModel> = [];
   serviceList: Array<ServiceMaster> = [];
+
   isNew: boolean = true;
   showPrice: boolean = false
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddServiceComponent>,
-    private listService: ListService,
+    public listService: ListService,
     private userService: UserProfilService,
     private alertService: AlertService
 
@@ -71,6 +72,8 @@ export class AddServiceComponent implements OnInit {
     else {
       this.pageTitle = "Add service";
 
+      this.requestServiceDetails.LeadStatusId = 1;
+      this.requestServiceDetails.StageId = 1;
       this.userService.CurrentUserDepartments.subscribe((result: Array<ListModel>) => {
         this.departmentList = result;
         if (this.requestServiceDetails.RequestServiceId > 0) {
@@ -129,6 +132,10 @@ export class AddServiceComponent implements OnInit {
         this.alertService.showErrorMessage("Service alreary present in list");
       }
       else {
+
+        this.requestServiceDetails.LeadStatusName = this.listService.GetLeadStatusName(this.requestServiceDetails.LeadStatusId);
+        this.requestServiceDetails.StageName = this.listService.GetStageName(this.requestServiceDetails.StageId);
+        
         this.dialogRef.close({ Action: this.ACTION_SAVE, Data: this.requestServiceDetails });
       }
     }
