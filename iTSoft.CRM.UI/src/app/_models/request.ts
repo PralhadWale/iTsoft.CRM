@@ -77,6 +77,5 @@ export class RequestMaster
         this.LeadStatusId = 1;
         this.SourceId = 1;
         this.StageId = 1;
-        this.DepartmentId = 1;
     }
 }

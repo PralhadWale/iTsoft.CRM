@@ -16,12 +16,24 @@
       <input matInput appearance="outline" placeholder="RequestNo" name="RequestNo" [(ngModel)]="requestDetails.RequestNo" #RequestNo readonly/>
     </mat-form-field>
     <mat-form-field class="form-field" appearance="outline">
+      <mat-label>Department</mat-label>
+      <mat-select placeholder="Select Department"  [(ngModel)]="requestDetails.DepartmentId" name="DepartmentId"
+      [(value)]="requestDetails.DepartmentId" #DepartmentId="ngModel" (selectionChange)="onDepartmentChanged($event)" required>
+        <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value" >
+          {{item.Text}} 
+        </mat-option>
+      </mat-select>
+      <mat-error>Please select department</mat-error>
+    </mat-form-field>
+    <mat-form-field class="form-field" appearance="outline">
       <mat-label>Assign To</mat-label>
-      <mat-select placeholder="Select Advisor"  [(ngModel)]="requestDetails.AdvisorId" name="AdvisorId" #AdvisorId="ngModel">
+      <mat-select placeholder="Select Advisor"  [(ngModel)]="requestDetails.AdvisorId"
+      [(value)]="requestDetails.AdvisorId" name="AdvisorId" #AdvisorId="ngModel" required>
         <mat-option *ngFor="let item of requestSelectList.Advisors" [value]="item.Value" >
           {{item.Text}} 
         </mat-option>
       </mat-select>
+      <mat-error>Please select advisor</mat-error>
     </mat-form-field>
     <div class="form-group form-check">
       <mat-checkbox name="TransferPendingFollowUp" id="TransferPendingFollowUp" class="form-check-input"

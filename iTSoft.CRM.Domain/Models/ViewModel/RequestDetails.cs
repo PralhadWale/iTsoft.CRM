@@ -15,6 +15,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string Department { get; set; }
         public string ServiceName { get; set; }
         public long RequestServiceId { get; set; }
+        public decimal ServiceRate { get; set; }
+        public decimal ServiceAgreedRate { get; set; }
 
     }
 

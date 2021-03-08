@@ -66,20 +66,38 @@ export class AssignFollowUpAvisorComponent implements OnInit {
   clearData() {
     this.followUpDetails = new FollowUpDetails();
     this.multipleFollowUpDetails =[];
+    this.followUpDetails.DepartmentId = null;
+    this.followUpDetails.AdvisorId = null;
+
   }
 
 
 
   LoadSelectListData() {
     this.listService
-      .GetAdvisorSelectList()
+      .GetActiveDepartments()
       .subscribe(
         (result) => {
           this.requestSelectList = new RequestSelectListModel();
-          this.requestSelectList.Advisors = <Array<ListModel>>result.Value.ResponseData;
+          this.requestSelectList.Departments = <Array<ListModel>>result.Value.ResponseData;
         },
         (error: any) => (this.errorMessage = <any>error)
       );
+  }
+
+  
+  onDepartmentChanged($event: any) {
+    if ($event != null) {
+      let departmentId = $event.value;
+      this.followUpDetails.AdvisorId = null;
+      this.GetDepartmentAdvisor(departmentId);
+    }
+
+  }
+  GetDepartmentAdvisor(departmentId: any) {
+    this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
+        this.requestSelectList.Advisors = result.Value.ResponseData;
+    });
   }
 
  

@@ -63,18 +63,38 @@ export class AssignRequestAvisorComponent implements OnInit {
   clearData() {
     this.requestDetails = new RequestDetails();
     this.multipleRequestDetails = [];
+    this.requestDetails.DepartmentId = null;
+    this.requestDetails.AdvisorId = null;
   }
+
+
 
   LoadSelectListData() {
     this.listService
-      .GetAdvisorSelectList()
+      .GetActiveDepartments()
       .subscribe(
         (result) => {
           this.requestSelectList = new RequestSelectListModel();
-          this.requestSelectList.Advisors = <Array<ListModel>>result.Value.ResponseData;
+          this.requestSelectList.Departments = <Array<ListModel>>result.Value.ResponseData;
         },
         (error: any) => (this.errorMessage = <any>error)
       );
+  }
+
+  
+    
+  onDepartmentChanged($event: any) {
+    if ($event != null) {
+      let departmentId = $event.value;
+      this.requestDetails.AdvisorId = null;
+      this.GetDepartmentAdvisor(departmentId);
+    }
+
+  }
+  GetDepartmentAdvisor(departmentId: any) {
+    this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
+        this.requestSelectList.Advisors = result.Value.ResponseData;
+    });
   }
 
   onSubmit() {
@@ -96,6 +116,7 @@ export class AssignRequestAvisorComponent implements OnInit {
       this.requestService.AssignRequest(this.multipleRequestDetails).subscribe(
         (result)=>
         {
+          
           this.sidenav.close();
           this.alertService.showSuccessMessage("Request assigned successfully");
           this.onAssigned.emit();
