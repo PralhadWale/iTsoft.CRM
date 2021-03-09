@@ -19,6 +19,9 @@ import { ConfigurationSettings } from "../_models/configuration";
 import { UserRole } from "../_models/userRole";
 import { NgForm } from "@angular/forms/";
 import { UserProfilService } from "../_services/userProfile.Service";
+import { AddFollowupComponent } from "../process/add-followup/add-followup.component";
+import { FollowUp } from "../_models/followup";
+import { FollowUpDetails } from "../_models/followupdetails";
 @Component({
   selector: 'enquiry-list',
   templateUrl: "./enquiry-list.component.html",
@@ -26,6 +29,7 @@ import { UserProfilService } from "../_services/userProfile.Service";
 })
 export class EnquiryListComponent implements OnInit {
 @ViewChild("sidenav")  sidenav : MatSidenav;
+@ViewChild("addFollowUp") addFollowUp : AddFollowupComponent;
 @ViewChild("enquiryForm") enquiryForm : NgForm;
 @ViewChild("assignAdvisor")  assignAdvisor : AssignRequestAvisorComponent;
 
@@ -68,6 +72,7 @@ export class EnquiryListComponent implements OnInit {
   onCommandClick($event: CommandEventArgs) {
    
     if (!$event.toolbarItem) {
+
       if ($event.command.commandType == CommandType.Edit) {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
         this.router.navigate(['/enquiries/edit/', rowData.RequestId]);
@@ -79,7 +84,14 @@ export class EnquiryListComponent implements OnInit {
         this.requestDetails.TransferPendingFollowUp = true;
         this.assignAdvisor.sidenav.open();
       }
-    
+      else if($event.command.commandType == CommandType.Other && $event.command.content == 'add')
+      {
+        
+        let rowData: FollowUpDetails = Object.assign({}, $event.rowData);
+        this.addFollowUp.followUpDetails = rowData;
+        this.addFollowUp.SetFollowUpDefaultData();
+        this.addFollowUp.sidenav.open();
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -108,6 +120,7 @@ export class EnquiryListComponent implements OnInit {
     }
 
   }
+
 
   private SetFilter(resetToDefault: boolean = false) {
     if (resetToDefault) {
@@ -188,6 +201,11 @@ export class EnquiryListComponent implements OnInit {
 
   }
 
+  onFollowUpSaved() {
+    //this.getFollowUp();
+}
+
+
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
@@ -195,7 +213,7 @@ export class EnquiryListComponent implements OnInit {
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit},
       //{ commandType: CommandType.View},
-    // { commandType: CommandType.Other,icon:'transfer_within_a_station'}
+      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true },
       { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true }
     ];
 

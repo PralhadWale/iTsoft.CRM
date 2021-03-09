@@ -137,7 +137,7 @@
     </mat-card-header>
   </form>
 </mat-sidenav>
-
+<app-add-followup  #addFollowUp (onFollowUpSaved)="onFollowUpSaved()"></app-add-followup>
 <app-assign-request-advisor #assignAdvisor [requestDetails]="requestDetails"
   [multipleRequestDetails]="selectedEnquiryList" (onAssigned)="onAssigned()"></app-assign-request-advisor>
 <!-- </mat-sidenav-container> -->

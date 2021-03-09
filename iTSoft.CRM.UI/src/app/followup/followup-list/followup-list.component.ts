@@ -13,6 +13,7 @@ import { ListModel } from 'src/app/_models/listmodel';
 import { RequestType } from 'src/app/_models/requesttype';
 import { UserRole } from 'src/app/_models/userRole';
 import { AlertService } from 'src/app/_services';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 
 @Component({
   selector: 'app-followup-list',
@@ -36,6 +37,7 @@ export class FollowupListComponent implements OnInit {
   constructor(private followUpService : FollowupService,
       private alertService : AlertService,
       private listService : ListService, 
+      private userProfileService : UserProfilService,
       private router : Router) { 
        this.IsAdvisor = ConfigurationSettings.User.RoleId == 2;
   }
@@ -133,6 +135,12 @@ export class FollowupListComponent implements OnInit {
   }
   
   getFollowUp() {
+    this.followUpSearchParam.UserId = this.userProfileService.CurrentUser.UserId;
+    if(this.userProfileService.IsAdvisor)
+    {
+      this.followUpSearchParam.AdvisorId = this.userProfileService.CurrentUser.UserId;
+    }
+
     this.followUpService.Search(this.followUpSearchParam).subscribe(result => {
       this.followUpList = result.Value.ResponseData;
       this.searchBar.close();
@@ -143,7 +151,7 @@ export class FollowupListComponent implements OnInit {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
     this.tableSettings.ToolBarItems =[ ToolBarItems.Search , ToolBarItems.Refresh ,ToolBarItems.Transfer]
-    
+        
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.View },
       { commandType: CommandType.Edit },
@@ -157,10 +165,13 @@ export class FollowupListComponent implements OnInit {
         { ColumnField: "RequestNo", ColumnHeader: "Request No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Request Date", Type: "date" },
         { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+        { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
+        { ColumnField: "ServiceRate", ColumnHeader: "Service Rate", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
-        { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
+        { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
+        { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
+        { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-        { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
         { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
         { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command:gridCommands }

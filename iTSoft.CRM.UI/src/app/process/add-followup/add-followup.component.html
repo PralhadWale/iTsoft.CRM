@@ -15,7 +15,16 @@
     </mat-card>
     <mat-nav-list style="margin-left:20px;"> 
       <input type="hidden" [(ngModel)]="followUP.FollowUpId" name="FollowUpId" />
-       <input type="hidden" [(ngModel)]="followUP.RequestId" name="RequestId" />
+      <input type="hidden" [(ngModel)]="followUP.RequestId" name="RequestId" />
+      <input type="hidden" [(ngModel)]="followUP.RequestServiceId" name="RequestServiceId" />
+      <mat-form-field>
+        <input matInput type="text" placeholder="Service Name" name="Service Name" [(ngModel)]="followUP.ServiceName"
+          #ServiceRate readonly />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="number" placeholder="Rate" name="Service Rate" [(ngModel)]="followUP.ServiceRate" #ServiceRate
+          readonly />
+      </mat-form-field>
       <mat-form-field>
         <input matInput [matDatepicker]="followUpDate" [(ngModel)]="followUP.FollowUpDate" name="FollowUpDate" required>
         <mat-datepicker-toggle matSuffix [for]="followUpDate"></mat-datepicker-toggle>
@@ -27,11 +36,11 @@
           #Remark required/>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Attempt" name="Attempt" [(ngModel)]="followUP.Attempt"
+        <input matInput type="number" placeholder="Attempt" name="Attempt" [(ngModel)]="followUP.Attempt"
           #Attempt required/>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Client Rating" name="ClientRating" [(ngModel)]="followUP.ClientRating"
+        <input matInput type="number" placeholder="Client Rating" name="ClientRating" [(ngModel)]="followUP.ClientRating"
           #ClientRating required/>
       </mat-form-field>
       <mat-form-field>

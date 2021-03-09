@@ -7,6 +7,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
 {
     public class FollowUpDetails : RequestMaster
     {
+        public string Department{ get; set; }
         public string LeadSourceName { get; set; }
         public string LeadStatusName { get; set; }
         public string StageName { get; set; }
@@ -20,6 +21,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public long FollowUpId { get; set; }
         public long IsCompleted { get; set; }
         public string ServiceName { get; set; }
+        public decimal ServiceRate { get; set; }
+        public decimal ServiceAgreedRate { get; set; }
 
     }
 }

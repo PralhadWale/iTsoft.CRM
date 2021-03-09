@@ -15,4 +15,8 @@ export class FollowUpDetails extends RequestMaster
     ClientRating: number;
     IsCompleted:boolean;
     TransferWithRequest:boolean;
+    RequestServiceId : number;
+    ServiceRate : number;
+    ServiceName : string;
+
 }

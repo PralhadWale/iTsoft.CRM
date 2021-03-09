@@ -19,6 +19,8 @@ import { UserRole } from '../_models/userRole';
 import { ConfigurationSettings } from '../_models/configuration';
 import { NgForm } from '@angular/forms/';
 import { UserProfilService } from '../_services/userProfile.Service';
+import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
+import { FollowUpDetails } from '../_models/followupdetails';
 
 @Component({
   selector: 'quotation-list',
@@ -28,6 +30,7 @@ import { UserProfilService } from '../_services/userProfile.Service';
 })
 export class QuotationListComponent implements OnInit {
   @ViewChild("sidenav") sidenav: MatSidenav;
+  @ViewChild("addFollowUp") addFollowUp : AddFollowupComponent;
   @ViewChild("assignAdvisor") assignAdvisor: AssignRequestAvisorComponent;
   @ViewChild("quotationForm") quotationForm: NgForm;
 
@@ -77,6 +80,14 @@ export class QuotationListComponent implements OnInit {
         this.requestDetails.TransferPendingFollowUp = true;
         this.assignAdvisor.sidenav.open();
       }
+      else if($event.command.commandType == CommandType.Other && $event.command.content == 'add')
+      {
+        
+        let rowData: FollowUpDetails = Object.assign({}, $event.rowData);
+        this.addFollowUp.followUpDetails = rowData;
+        this.addFollowUp.SetFollowUpDefaultData();
+        this.addFollowUp.sidenav.open();
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -102,6 +113,11 @@ export class QuotationListComponent implements OnInit {
       }
     }
 
+  }
+
+  onFollowUpSaved()
+  {
+    
   }
 
   private SetFilter(resetToDefault: boolean = false) {
@@ -186,6 +202,7 @@ export class QuotationListComponent implements OnInit {
 
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit },
+      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true },
       { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true }
     ];
 
