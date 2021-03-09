@@ -4,7 +4,7 @@
       <mat-toolbar-row>
         <span class="view-card-title"> {{pageTitle}}</span>
         <span class="title-spacer"></span>
-        <mat-card-actions>
+        <mat-card-actions *ngIf="request && request.RequestServiceDetails && request.RequestServiceDetails.length > 0">
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit" (click)="onSubmit(quotationForm)">
             <mat-icon>save</mat-icon>
           </button>
@@ -107,7 +107,7 @@
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
-          <mat-grid-tile [colspan]="12">
+          <mat-grid-tile [colspan]="10">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Terms & Condition</mat-label>
               <input matInput type='text' [(ngModel)]="request.RequestMaster.TermsAndCondition" name="TermsAndCondition" #TermsAndCondition="ngModel" maxlength="2000" required>
@@ -116,6 +116,14 @@
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
+          <mat-grid-tile [colspan]="2">
+            <mat-card-actions>
+              <button mat-mini-fab matTooltip="Navigate to add services" class="primary" style="margin-right:10px; background-color:blue" type="button"
+                (click)="selectedIndex=1;">
+                <mat-icon>navigate_next</mat-icon>
+              </button>
+            </mat-card-actions>
+           </mat-grid-tile>
         </mat-grid-list>
       </div>
       </mat-tab>

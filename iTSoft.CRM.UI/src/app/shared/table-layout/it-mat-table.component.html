@@ -1,7 +1,7 @@
 <mat-toolbar class="primary" *ngIf="tableSettings.ShowToolBar == true">
   <mat-toolbar-row>
     <button type="button" mat-mini-fab *ngFor="let index of tableSettings.ToolBarItems" [ngStyle]="toolBarItems[index].style"
-      (click)="toolBarCommandClick($event,toolBarItems[index],index)">
+      (click)="toolBarCommandClick($event,toolBarItems[index],index)"  [matTooltip]="toolBarItems[index].toolTip">
       <mat-icon *ngIf="toolBarItems[index].icon">{{toolBarItems[index].icon}}</mat-icon>
     </button>
     <span class="title-spacer"></span>
@@ -29,7 +29,7 @@
           <div *ngIf="!element.isEdit">
             <div class="btn-edit" *ngIf="col.Command != null;else spanfield" style="justify-content:right;">
               <button type="button"  mat-icon-button class="cell-fab_U" *ngFor="let command of col.Command;" [ngStyle]="command.style"
-                (click)="commandClick($event , element,col,command)">
+                (click)="commandClick($event , element,col,command)" [matTooltip]="command.toolTip">
                 <mat-icon *ngIf="command.icon">{{command.icon}}</mat-icon>
               </button>
             </div>

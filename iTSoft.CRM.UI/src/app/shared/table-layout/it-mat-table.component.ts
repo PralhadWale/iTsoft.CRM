@@ -26,15 +26,15 @@ export class ITMatTableComponent implements OnInit , OnChanges {
   tableDataSource = new MatTableDataSource<any>([]);
   selection = new SelectionModel<any>(true, []);
  
-  commandDefaultStyles: Array<CommandModel> = [{},{ click: null, commandType: CommandType.Edit, icon: 'edit', content: 'edit', style: { 'background-color': 'teal',  'margin': '5px' } },
-  { click: null, commandType: CommandType.Delete, icon: 'delete', content: 'delete', style: { 'background-color': 'lightblue',  'margin': '5px' } },
-  { click: null, commandType: CommandType.Delete, icon: 'visibility', content: 'view', style: { 'background-color': 'pink',  'margin': '5px' } }];
+  commandDefaultStyles: Array<CommandModel> = [{},{ click: null, commandType: CommandType.Edit, icon: 'edit', content: 'edit', style: { 'background-color': 'teal',  'margin': '5px' } , toolTip:'Edit Record' },
+  { click: null, commandType: CommandType.Delete, icon: 'delete', content: 'delete', style: { 'background-color': 'lightblue',  'margin': '5px' } , toolTip:'Delete selected record' },
+  { click: null, commandType: CommandType.Delete, icon: 'visibility', content: 'view', style: { 'background-color': 'pink',  'margin': '5px' } , toolTip:'View details' }];
 
 
-  toolBarItems: Array<CommandModel> = [{}, { icon: 'queue', style: { 'margin-right': '10px', 'background-color': '#e07c9e' } },
-  { icon: 'search', style: { 'margin-right': '10px', 'background-color': '#a28b6e' } },
-  { icon: 'refresh', style: { 'margin-right': '10px', 'background-color': '#darkgray' } },
-  { icon: 'transfer_within_a_station', style: { 'margin-right': '10px', 'background-color': 'green' } },
+  toolBarItems: Array<CommandModel> = [{}, { icon: 'queue', style: { 'margin-right': '10px', 'background-color': '#e07c9e' } , toolTip:'Add New Record' },
+  { icon: 'search', style: { 'margin-right': '10px', 'background-color': '#a28b6e' } , toolTip:'Advance search' },
+  { icon: 'refresh', style: { 'margin-right': '10px', 'background-color': '#darkgray' } , toolTip:'Refresh filter to default' },
+  { icon: 'transfer_within_a_station', style: { 'margin-right': '10px', 'background-color': 'green' }, toolTip:'Transfer to other' },
 ];
 
   filterText :string = "";
@@ -194,7 +194,7 @@ export class CommandModel
   style? : object;
   click?: Function;
   icon?:string;
-
+  toolTip?:string;
 }
 
 export class CommandEventArgs
