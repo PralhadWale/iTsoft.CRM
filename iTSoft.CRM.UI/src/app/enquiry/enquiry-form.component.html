@@ -4,7 +4,7 @@
       <mat-toolbar-row>
         <span class="view-card-title"> {{pageTitle}}</span>
         <span class="title-spacer"></span>
-        <mat-card-actions>
+        <mat-card-actions *ngIf="request && request.RequestServiceDetails && request.RequestServiceDetails.length > 0">
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
             (click)="saveEnquiry(enquiryForm)">
             <mat-icon>save</mat-icon>
@@ -164,7 +164,7 @@
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Source</mat-label>
                   <mat-select placeholder="Select Source" [(ngModel)]="request.RequestMaster.SourceId" name="SourceId"
-                    #SourceId="ngModel" required [(value)]="request.RequestMaster.SourceId">
+                    #SourceId="ngModel" required>
                     <mat-option *ngFor="let item of requestSelectList.Sources" [value]="item.Value">
                       {{item.Text}}
                     </mat-option>
@@ -178,17 +178,29 @@
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Client Behaviour</mat-label>
                   <mat-select placeholder="Select ClientBehaviour" [(ngModel)]="request.RequestMaster.ClientBehaviourId"
-                    name="ClientBehaviourId" #ClientBehaviourId="ngModel">
+                    name="ClientBehaviourId" #ClientBehaviourId="ngModel" required>
                     <mat-option *ngFor="let item of requestSelectList.ClientBehaviour" [value]="item.Value">
                       {{item.Text}}
                     </mat-option>
                   </mat-select>
+                  <mat-error *ngIf="(ClientBehaviourId.touched || enquiryForm.submitted)">
+                    Please select client behaviour
+                  </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
-             
+             <mat-grid-tile>
+              <mat-card-actions>
+                
+                <button mat-mini-fab matTooltip="Navigate to add services" class="primary" style="margin-right:10px; background-color:blue" type="button"
+                  (click)="selectedIndex=1;">
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </mat-card-actions>
+             </mat-grid-tile>
             </mat-grid-list>
           
           </div>
+       
         </mat-tab>
         <mat-tab label="Services">
            <mat-card>

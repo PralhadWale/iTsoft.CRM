@@ -351,17 +351,27 @@ export class QuotationFormComponent implements OnInit {
 
     onSubmit(quotationForm: NgForm) {
         if (quotationForm && quotationForm.valid) {
-            this.request.RequestMaster.RequestTypeId = RequestType.Quotation;
-            this.requestService.Save(this.request).subscribe(result => {
-                {
-                    this.alertService.showSuccessMessage("Quotation Saved successfully");
-                    this.SetDefaultRequest();
-                    //this.quotationForm.reset();
-                    this.router.navigate(['/quotations']);
-                }
-            }, (error: any) => {
-                { this.alertService.showSuccessMessage("Failed to save"); }
-            });
+            if (this.request.RequestServiceDetails && this.request.RequestServiceDetails.length > 0) {
+                this.request.RequestMaster.RequestTypeId = RequestType.Quotation;
+                this.requestService.Save(this.request).subscribe(result => {
+                    {
+                        this.alertService.showSuccessMessage("Quotation Saved successfully");
+                        this.SetDefaultRequest();
+                        //this.quotationForm.reset();
+                        this.router.navigate(['/quotations']);
+                    }
+                }, (error: any) => {
+                    { this.alertService.showSuccessMessage("Failed to save"); }
+                });
+            }
+            else 
+            {
+                this.alertService.showSuccessMessage("Please select at least one service");
+            }
+        }
+        else 
+        {
+            this.selectedIndex = 0
         }
     }
 

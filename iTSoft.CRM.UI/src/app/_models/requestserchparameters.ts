@@ -24,6 +24,6 @@ export class RequestSerchParameters {
     var todaysDate = new Date();
     this.FromDate = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1);
     this.ToDate = new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 0);
-    this.LeadStatusId = 1;
+    //this.LeadStatusId = 1;
   }
 }

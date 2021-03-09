@@ -74,8 +74,8 @@ export class RequestMaster
         this.RequestDate = new Date();
         this.AddedOn = new Date();
         this.UpdatedOn = new Date();
-        this.LeadStatusId = 1;
-        this.SourceId = 1;
-        this.StageId = 1;
+        // this.LeadStatusId = 1;
+        // this.SourceId = 1;
+        // this.StageId = 1;
     }
 }

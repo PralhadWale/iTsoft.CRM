@@ -145,7 +145,7 @@
                     <mat-grid-tile [colspan]="fieldColspan">
                         <mat-form-field class="form-field" appearance="outline">
                             <mat-label>Role</mat-label>
-                            <mat-select placeholder="Select Role"  [(ngModel)]="employee.RoleId" name="RoleId" #RoleId="ngModel">
+                            <mat-select placeholder="Select Role"  [(ngModel)]="employee.RoleId" name="RoleId" #RoleId="ngModel" required>
                               <mat-option *ngFor="let item of employeeSelectList.Roles" [value]="item.Value" >
                                 {{item.Text}} 
                               </mat-option>
