@@ -135,8 +135,8 @@ export class ClientlistComponent implements OnInit {
         // { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, 
-        { click: null, commandType: CommandType.Other, icon: 'queue', content: 'addEnquiry', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Enquiry' }, 
-        { click: null, commandType: CommandType.Other, icon: 'queue', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Quoatation' }] }
+        { click: null, commandType: CommandType.Other, icon: 'point_of_sale', content: 'addEnquiry', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Enquiry' }, 
+        { click: null, commandType: CommandType.Other, icon: 'add_shopping_cart', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Quoatation' }] }
       ];
   }
 }

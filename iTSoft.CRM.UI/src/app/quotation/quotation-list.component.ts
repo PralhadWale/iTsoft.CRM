@@ -202,8 +202,8 @@ export class QuotationListComponent implements OnInit {
 
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit },
-      { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true },
-      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true }
+      { click: null, commandType: CommandType.Other, icon: 'note_add', content: 'add', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip : 'Add followup note' },
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true  , toolTip : 'Single request transfer'}
     ];
 
     this.quotationTableSchema =
