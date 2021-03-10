@@ -214,20 +214,23 @@ export class QuotationFormComponent implements OnInit {
                 this.request.RequestMaster.RequestNo = data;
                 this.request.RequestMaster.ClientId = clientId;
 
-                this.requestService.FindClient(clientId).subscribe((result) => {
-                    var clientDetails = <ClientMaster>result.Value.ResponseData;
-                    if (clientDetails.CorporateName != null)
-                        this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
-                    else if (clientDetails.FirstName != null)
-                        this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
+                if (clientId > 0) {
+                    this.requestService.FindClient(clientId).subscribe((result) => {
+                        var clientDetails = <ClientMaster>result.Value.ResponseData;
+                        if (clientDetails.CorporateName != null)
+                            this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
+                        else if (clientDetails.FirstName != null)
+                            this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
 
 
-                    this.request.RequestMaster.Email = clientDetails.Email;
-                    this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
+                        this.request.RequestMaster.Email = clientDetails.Email;
+                        this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
 
-                    this.request.RequestMaster.SourceId = 2;
+                        this.request.RequestMaster.SourceId = 2;
 
-                });
+                    });
+
+                }
 
                 this.onQuotationRetrieved(this.request);
             }, (error: any) => (this.errorMessage = <any>error));

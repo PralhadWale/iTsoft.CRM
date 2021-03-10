@@ -48,10 +48,15 @@ export class ClientlistComponent implements OnInit {
         this.addClient.SetClientDefaultData();
         this.addClient.sidenav.open();
       }
-      else if($event.command.commandType == CommandType.Other && $event.command.content == 'add')
+      else if($event.command.commandType == CommandType.Other && $event.command.content == 'addQuotation')
       {
 
         this.router.navigate(['/quotations/edit/', 0,rowData.ClientId]);
+      }
+      else if($event.command.commandType == CommandType.Other && $event.command.content == 'addEnquiry')
+      {
+
+        this.router.navigate(['/enquiries/edit/', 0,rowData.ClientId]);
       }
     }
     else {
@@ -129,7 +134,9 @@ export class ClientlistComponent implements OnInit {
         // { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         // { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit },    { click: null, commandType: CommandType.Other, icon: 'queue', content: 'add', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true }] }
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, 
+        { click: null, commandType: CommandType.Other, icon: 'queue', content: 'addEnquiry', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Enquiry' }, 
+        { click: null, commandType: CommandType.Other, icon: 'queue', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Quoatation' }] }
       ];
   }
 }

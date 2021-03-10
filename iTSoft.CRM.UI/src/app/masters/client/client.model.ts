@@ -7,7 +7,7 @@ export class ClientMaster {
     FirstName: string;
     MiddleName: string;
     LastName: string;
-    DoB: string | null;
+    DoB: Date;
     FatherFirstName: string;
     FMiddleName: string;
     FLastName: string;

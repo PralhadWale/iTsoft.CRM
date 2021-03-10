@@ -4,8 +4,9 @@
       <mat-toolbar-row>
         <span class="view-card-title"> {{pageTitle}}</span>
         <span class="title-spacer"></span>
-        <mat-card-actions *ngIf="request && request.RequestServiceDetails && request.RequestServiceDetails.length > 0">
-          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit" (click)="onSubmit(quotationForm)">
+        <mat-card-actions>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit" 
+          (click)="onSubmit(quotationForm)" *ngIf="request && request.RequestServiceDetails && request.RequestServiceDetails.length > 0">
             <mat-icon>save</mat-icon>
           </button>
           <button mat-mini-fab class="" style="margin-right:10px;" (click)="Close(quotationForm)">

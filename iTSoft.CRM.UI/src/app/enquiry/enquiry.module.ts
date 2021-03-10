@@ -17,7 +17,7 @@ import { FollowupModule } from '../followup/followup.module';
     RouterModule.forChild([
       { path: "", component: EnquiryListComponent },
       {
-        path: "edit/:id",
+        path: "edit/:id/:clientId",
         canDeactivate: [EnquiryEditGuard],
         component: EnquiryFormComponent
       }

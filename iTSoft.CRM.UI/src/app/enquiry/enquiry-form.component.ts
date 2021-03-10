@@ -41,6 +41,7 @@ import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { AddServiceComponent } from "../process/add-service/add-service.component";
 import { RequestServiceDetails } from "../_models/requestservice";
+import { ClientMaster } from "../masters/client/client.model";
 
 
 @Component({
@@ -162,7 +163,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getRequest(requestId: number): void {
+  getRequest(requestId: number , clientId : number): void {
     if (requestId > 0) {
       this.requestService
         .Load(requestId)
@@ -181,6 +182,25 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.request.RequestMaster.RequestNo = data;
         this.onEnquiryRetrieved(this.request)
       }, (error: any) => (this.alertService.showErrorMessage(error)));
+
+      if (clientId > 0) {
+        this.requestService.FindClient(clientId).subscribe((result) => {
+          var clientDetails = <ClientMaster>result.Value.ResponseData;
+          if (clientDetails.CorporateName != null)
+            this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
+          else if (clientDetails.FirstName != null)
+            this.request.RequestMaster.FirstName = clientDetails.LastName;
+          this.request.RequestMaster.MiddleName = clientDetails.MiddleName;
+          this.request.RequestMaster.LastName = clientDetails.LastName;
+          this.request.RequestMaster.DOB = clientDetails.DoB;
+
+          this.request.RequestMaster.Email = clientDetails.Email;
+          this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
+
+          this.request.RequestMaster.SourceId = 2;
+
+        });
+      }
 
     }
   }
@@ -297,7 +317,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onFollowUpSaved() {
-    this.getRequest(this.request.RequestMaster.RequestId);
+    this.getRequest(this.request.RequestMaster.RequestId,this.request.RequestMaster.ClientId);
   }
 
   LoadSelectListData() {
@@ -312,7 +332,8 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
           this.route.params.subscribe(
             params => {
               let id = +params['id'];
-              this.getRequest(id);
+              let clientId = +params['clientId'];
+              this.getRequest(id,clientId);
             }
           );
         }
@@ -322,6 +343,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   SetDefaultRequest() {
 
     this.request = new RequestViewModel();
+
 
   }
 
