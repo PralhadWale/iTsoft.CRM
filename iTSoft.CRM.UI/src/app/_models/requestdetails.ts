@@ -1,12 +1,42 @@
-import { RequestMaster } from './request';
-
-export class RequestDetails extends RequestMaster
-{
+export class RequestDetails {
+    ClientTypeName: string;
+    OrganizationTypeName: string;
+    ClientName: string;
+    Designation: string;
+    PhoneNo1: string;
+    PhoneNo2: string;
+    Email: string;
+    PANNO: string;
+    RequestId: number;
+    RequestTypeId: number
+    RequestNo: string;
+    RequestDate: string
+    SourceId: number
+    ClientBehaviourId: number
+    AddedBy: number
+    AddedOn: string
+    UpdatedBy: number
+    UpdatedOn: string
     LeadSourceName: string;
     LeadStatusName: string;
     StageName: string;
     AdvisorName: string;
+    AssignedOn: string
     ClientBehaviourName: string;
-    TransferPendingFollowUp:boolean;
+    Department: string;
+    ServiceName: string;
+    ServiceId: number
+    DepartmentId: number
+    LeadStatusId: number
+    ServiceRate: number
+    ServiceAgreedRate: number
+    Remark: string;
+    StageId: number
+    TermsAndConditions: string;
+    AdvisorId: number
     RequestServiceId: number;
+    AgreedAmount: number
+    RevenueAmount: number
+    ClientTypeId: number
+    TransferPendingFollowUp : boolean;
 }

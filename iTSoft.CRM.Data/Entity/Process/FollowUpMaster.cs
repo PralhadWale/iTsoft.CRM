@@ -24,7 +24,8 @@ namespace iTSoft.CRM.Data.Entity.Process
         public DateTime? AddedOn { get; set; }
         public long? UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
-
+        public decimal? AgreedAmount { get; set; }
+        public DateTime NextFollowupDate { get; set; }
     }
 
 }

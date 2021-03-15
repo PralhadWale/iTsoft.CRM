@@ -40,7 +40,7 @@ namespace iTSoft.CRM.Web.Controllers
                 requestSelectListModel.Sources = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId),true);
                 requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId),true);
                 requestSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId),true);
-
+                requestSelectListModel.OrganizationTypes = _listService.ListAll<OrganizationTypeMaster>(nameof(OrganizationTypeMaster.OrganizationTypeName), nameof(OrganizationTypeMaster.OrganizationTypeId));
                 response.ResponseData = requestSelectListModel;
                 response.ResponseCode = ResponseCode.Success;
             }

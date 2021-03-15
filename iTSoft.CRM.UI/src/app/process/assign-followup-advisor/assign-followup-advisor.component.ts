@@ -66,7 +66,7 @@ export class AssignFollowUpAvisorComponent implements OnInit {
   clearData() {
     this.followUpDetails = new FollowUpDetails();
     this.multipleFollowUpDetails =[];
-    this.followUpDetails.DepartmentId = null;
+    //this.followUpDetails.DepartmentId = null;
     this.followUpDetails.AdvisorId = null;
 
   }

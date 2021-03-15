@@ -67,7 +67,17 @@ export class RequestService {
     request.RequestMaster.AdvisorId = ConfigurationSettings.User.UserId;
     request.RequestMaster.AddedBy = ConfigurationSettings.User.UserId;
     request.RequestMaster.AddedOn = new Date();
+    request.RequestMaster.UpdatedBy = ConfigurationSettings.User.UserId;
+    request.RequestMaster.UpdatedOn = new Date();
+
+
     request.RequestServiceMasters = <Array<any>>request.RequestServiceDetails;
+
+    request.ContactPersonMasters = [];
+    request.ContactPersonMasters.push(request.ContactPersonMaster);
+    //request.ContactPersonMaster = null;
+
+
     let url = this.RequestController + "save";
     return this.apiService.PostData(url, request);
   }

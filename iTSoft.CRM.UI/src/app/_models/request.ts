@@ -1,74 +1,26 @@
 export class RequestMaster
 {
     RequestId: number;
-
-    RequestTypeId: number;
-
+    ParentRequestId?: number;
+    RequestTypeId?: number;
     RequestNo: string;
-
-    RequestDate: Date ;
-
-    Title: string;
-
-    CustomerName: string;
-
-    LastName: string;
-
-    FirstName: string;
-
-    MiddleName: string;
-
-    CompanyName: string;
-
-    Website: string;
-
-    Designation: string;
-
-    PhoneNo1: string;
-
-    PhoneNo2: string;
-
-    Email: string;
-
-    DOB: Date ;
-
-    SourceId: number;
-
-    LeadStatusId: number;
-
-    StageId: number;
-
-    StateId: number;
-
-    CityId: number;
-
-    Address: string;
-
+    RequestDate?: Date;
+    OrganizationId?: number;
+    ClientId?: number;
+    ClientTypeId: string;
+    SourceId?: number;
+    Amount?: number;
+    AgreedAmount?: number;
+    RevenueAmount?: number;
     TermsAndCondition: string;
+    ClientBehaviourId?: number;
+    AdvisorId?: number;
+    AssignedOn?: string;
+    AddedBy?: number;
+    AddedOn?: Date;
+    UpdatedBy?: number;
+    UpdatedOn?: Date;
 
-    Amount: number;
-
-    AgreedAmount : number;
-    
-    RevenueAmount:number;
-
-    ClientBehaviourId: number;
-
-    DepartmentId : number;
-
-    AdvisorId: number;
-
-    AssignedOn: Date ;
-
-    AddedBy: number;
-
-    AddedOn: Date ;
-
-    UpdatedBy: number;
-
-    UpdatedOn: Date ;
-
-    ClientId: number;
 
     constructor(){
         this.RequestDate = new Date();

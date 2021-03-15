@@ -8,6 +8,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
     public class RequestViewModel
     {
         public RequestMaster RequestMaster { get; set; }
+        public OrganizationMaster OrganizationMaster { get; set; }
+        public List<ContactPersonMaster> ContactPersonMasters { get; set; }
         public List<RequestServiceMaster> RequestServiceMasters { get; set; }
         public List<RequestServiceDetails> RequestServiceDetails { get; set; }
         public List<FollowUpDetails> RequestFollowup { get; set; }

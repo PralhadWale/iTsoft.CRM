@@ -12,5 +12,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public List<ListModel> Sources { get; set; }
         public List<ListModel> ClientBehaviour { get; set; }
         public List<ListModel> Departments { get; set; }
+        public List<ListModel> OrganizationTypes { get; set; }
+
     }
 }

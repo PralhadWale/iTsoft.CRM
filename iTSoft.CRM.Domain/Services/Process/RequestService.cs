@@ -38,11 +38,15 @@ namespace iTSoft.CRM.Domain.Services.Process
             {
                 string flag = requestViewModel.RequestMaster.RequestId > 0 ? ActionFlag.Update : ActionFlag.Add;
                 DynamicParameters param = new DynamicParameters(requestViewModel.RequestMaster);
+                param.AddDynamicParams(requestViewModel.OrganizationMaster);
 
                 DataTable requestServices = new ListConverter().ToDataTable<RequestServiceMaster>(requestViewModel.RequestServiceMasters);
+                DataTable contractPersons = new ListConverter().ToDataTable<ContactPersonMaster>(requestViewModel.ContactPersonMasters);
 
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
                 param.Add("@RequestServiceMasterType", requestServices.AsTableValuedParameter("RequestServiceMasterType"));
+                param.Add("@ContactPersonMasterType", contractPersons.AsTableValuedParameter("ContactPersonMasterType"));
+
                 dbConnection.Execute(PROC_RequestManager, param, commandType: CommandType.StoredProcedure);
                 return (ResponseCode)param.Get<int>("@Result");
             }
@@ -68,6 +72,8 @@ namespace iTSoft.CRM.Domain.Services.Process
                 param.Add("RequestId",requestId);
                 var result = dbConnection.QueryMultiple(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure);
                 requestViewModel.RequestMaster = result.Read<RequestMaster>().FirstOrDefault();
+                requestViewModel.OrganizationMaster = result.Read<OrganizationMaster>().FirstOrDefault();
+                requestViewModel.ContactPersonMasters = result.Read<ContactPersonMaster>().AsList();
                 requestViewModel.RequestServiceDetails = result.Read<RequestServiceDetails>().AsList();
                 requestViewModel.RequestFollowup = result.Read<FollowUpDetails>().AsList();
                 base.ClearCatche();

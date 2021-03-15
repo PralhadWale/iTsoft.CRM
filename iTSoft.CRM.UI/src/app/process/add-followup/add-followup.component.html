@@ -18,12 +18,16 @@
       <input type="hidden" [(ngModel)]="followUP.RequestId" name="RequestId" />
       <input type="hidden" [(ngModel)]="followUP.RequestServiceId" name="RequestServiceId" />
       <mat-form-field>
-        <input matInput type="text" placeholder="Service Name" name="Service Name" [(ngModel)]="followUP.ServiceName"
+        <input matInput type="text" placeholder="Service Name" name="ServiceName" [(ngModel)]="followUP.ServiceName"
           #ServiceRate readonly />
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="number" placeholder="Rate" name="Service Rate" [(ngModel)]="followUP.ServiceRate" #ServiceRate
+        <input matInput type="number" placeholder="Rate" name="ServiceRate" [(ngModel)]="followUP.ServiceRate" #ServiceRate
           readonly />
+      </mat-form-field>
+      <mat-form-field *ngIf="followUP.ServiceAgreedRate > 0">
+        <input matInput type="number" placeholder="Agreed Rate" name="ServiceAgreedRate" [(ngModel)]="followUP.ServiceAgreedRate" #ServiceAgreedRate
+          />
       </mat-form-field>
       <mat-form-field>
         <input matInput [matDatepicker]="followUpDate" [(ngModel)]="followUP.FollowUpDate" name="FollowUpDate" required>
@@ -32,12 +36,8 @@
         <mat-error>FollowUp Date is required.</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"
-          #Remark required/>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="number" placeholder="Attempt" name="Attempt" [(ngModel)]="followUP.Attempt"
-          #Attempt required/>
+          <textarea matInput placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"  #Remark required
+            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
       </mat-form-field>
       <mat-form-field>
         <input matInput type="number" placeholder="Client Rating" name="ClientRating" [(ngModel)]="followUP.ClientRating"
@@ -57,13 +57,19 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <div class="form-group form-check" *ngIf="!IsCompleted">
+    <mat-form-field *ngIf="(!(followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013))">
+      <input matInput [matDatepicker]="nextFollowupDate" [(ngModel)]="followUP.NextFollowupDate" name="NextFollowupDate" required>
+      <mat-datepicker-toggle matSuffix [for]="nextFollowupDate"></mat-datepicker-toggle>
+      <mat-datepicker #nextFollowupDate color="primary"></mat-datepicker>
+      <mat-error>Next Date is required.</mat-error>
+    </mat-form-field>
+    <!-- <div class="form-group form-check" *ngIf="!IsCompleted">
       <mat-checkbox name="IsCompleted" id="IsCompleted" class="form-check-input"
         [(ngModel)]="followUP.IsCompleted" #IsCompleted="ngModel">Mark Completed</mat-checkbox>
     </div>
     <mat-form-field *ngIf="IsCompleted">
       <input matInput type="text" placeholder="Follow up Status" name="IsCompleted" value="Completed"   #IsCompleted readonly/>
-    </mat-form-field>
+    </mat-form-field> -->
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>

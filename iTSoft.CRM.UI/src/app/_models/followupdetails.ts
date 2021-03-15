@@ -1,22 +1,24 @@
+import { FollowUp } from './followup';
 import { RequestMaster } from './request';
 
-export class FollowUpDetails extends RequestMaster
+export class FollowUpDetails extends FollowUp
 {
-    FollowUpId : number;
-    FollowUpDate: Date;
+    RequestTypeId: number;
+    RequestNo : string;
+    ClientTypeName : string;
+    OrganizationTypeName: string;
+    ClientName : string;
+    PANNo:string;
+    GSTNo:string;
+    PhoneNo1:string;
+    PhoneNo2:string;
     LeadSourceName: string;
     LeadStatusName: string;
     StageName: string;
     AdvisorName: string;
     ClientBehaviourName: string;
     RequestTypeName: string;
-    Remark: string;
-    Attempt: string;
-    ClientRating: number;
-    IsCompleted:boolean;
     TransferWithRequest:boolean;
-    RequestServiceId : number;
-    ServiceRate : number;
-    ServiceName : string;
+    DepartmentId:number;
 
 }

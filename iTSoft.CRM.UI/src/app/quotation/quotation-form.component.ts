@@ -41,6 +41,7 @@ import { AddServiceComponent } from "../process/add-service/add-service.componen
 import { RequestServiceDetails } from "../_models/requestservice";
 import { ClientMaster } from "../masters/client/client.model";
 import { UserProfilService } from "../_services/userProfile.Service";
+import { LeadStatus } from "../_models/leadStatus";
 
 @Component({
     selector: 'quotation-form',
@@ -191,7 +192,7 @@ export class QuotationFormComponent implements OnInit {
                 { ColumnField: "LeadStatusName", ColumnHeader: "Lead Status", Type: "text" },
                 { ColumnField: "StageName", ColumnHeader: "Lead Stage", Type: "text" },
                 { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-                { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command: serviceGridCommand }
+                { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: serviceGridCommand }
             ];
 
     }
@@ -217,14 +218,14 @@ export class QuotationFormComponent implements OnInit {
                 if (clientId > 0) {
                     this.requestService.FindClient(clientId).subscribe((result) => {
                         var clientDetails = <ClientMaster>result.Value.ResponseData;
-                        if (clientDetails.CorporateName != null)
-                            this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
-                        else if (clientDetails.FirstName != null)
-                            this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
+                        // if (clientDetails.CorporateName != null)
+                        //     this.request.RequestMaster.CompanyName = clientDetails.CorporateName;
+                        // else if (clientDetails.FirstName != null)
+                        //     this.request.RequestMaster.CompanyName = clientDetails.LastName + ' ' + clientDetails.FirstName;
 
 
-                        this.request.RequestMaster.Email = clientDetails.Email;
-                        this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
+                        // this.request.RequestMaster.Email = clientDetails.Email;
+                        // this.request.RequestMaster.PhoneNo1 = clientDetails.MobileNo;
 
                         this.request.RequestMaster.SourceId = 2;
 
@@ -273,37 +274,39 @@ export class QuotationFormComponent implements OnInit {
         else {
 
             let rowData: RequestServiceDetails = Object.assign({}, $event.rowData);
-            this.UserProfileService.IsUserDepartment(rowData.DepartmentId).subscribe((result) => {
-            if (result == true)
-            {
-                    if ($event.command.commandType == CommandType.Edit) {
-                        this.OpenServiceDialog(rowData);
+            if (!(rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.Dropped)) {
+                this.UserProfileService.IsUserDepartment(rowData.DepartmentId).subscribe((result) => {
+                    if (result == true) {
+                        if ($event.command.commandType == CommandType.Edit) {
+                            this.OpenServiceDialog(rowData);
+                        }
+                        else if ($event.command.commandType == CommandType.Delete) {
+
+                            let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to Delete selected service ? " };
+                            const dialogRef = this.dialog.open(ConfirmDialog, {
+                                maxWidth: "400px",
+                                data: dialogData
+                            });
+
+                            dialogRef.afterClosed().subscribe(dialogResult => {
+                                let result = dialogResult;
+                                if (result == "CONFIRMED") {
+                                    this.requestService.RemoveService(rowData, this.request.RequestServiceDetails);
+                                    this.serviceTable.RefreshDataSource();
+                                }
+                            });
+                        }
                     }
-                    else if ($event.command.commandType == CommandType.Delete) 
-                    {
-
-                        let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to Delete selected service ? " };
-                        const dialogRef = this.dialog.open(ConfirmDialog, {
-                            maxWidth: "400px",
-                            data: dialogData
-                        });
-
-                        dialogRef.afterClosed().subscribe(dialogResult => {
-                            let result = dialogResult;
-                            if (result == "CONFIRMED") {
-                                this.requestService.RemoveService(rowData, this.request.RequestServiceDetails);
-                                this.serviceTable.RefreshDataSource();
-                            }
-                        });
+                    else {
+                        this.alertService.showErrorMessage("You are not authorize to modify service of this department");
                     }
-                }
-                else 
-                {
-                    this.alertService.showErrorMessage("You are not authorize to modify service of this department");
-                }
-            });
+                });
 
-          
+            }
+            else {
+                this.alertService.showWarningMessage("Operation not allowed");
+            }
+
         }
     }
     OpenServiceDialog(serviceDetails: RequestServiceDetails) {
@@ -315,16 +318,15 @@ export class QuotationFormComponent implements OnInit {
         dialogRef.beforeClosed().subscribe(dialogResult => {
             let result = dialogResult;
             if (result && result.Action == "SAVE") {
-                
+
                 if (this.request.RequestServiceDetails == null) {
                     this.request.RequestServiceDetails = [];
                 }
                 if (serviceDetails == null) {
                     this.request.RequestServiceDetails.push(result.Data);
                 }
-                else 
-                {
-                    this.requestService.UpdateService(result.Data,this.request.RequestServiceDetails);
+                else {
+                    this.requestService.UpdateService(result.Data, this.request.RequestServiceDetails);
                 }
 
                 this.request.RequestMaster.Amount = 0;
@@ -367,13 +369,11 @@ export class QuotationFormComponent implements OnInit {
                     { this.alertService.showSuccessMessage("Failed to save"); }
                 });
             }
-            else 
-            {
+            else {
                 this.alertService.showSuccessMessage("Please select at least one service");
             }
         }
-        else 
-        {
+        else {
             this.selectedIndex = 0
         }
     }

@@ -20,6 +20,8 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long StageId { get; set; }
         public  string TermsAndConditions { get; set; }
         public long AdvisorId { get; set; }
+        public DateTime? LastFollowupDate { get; set; }
+        public DateTime? NextFollowupDate { get; set; }
 
     }
 
@@ -30,5 +32,10 @@ namespace iTSoft.CRM.Data.Entity.Process
         public string DepartmentName { get; set; }
         public string LeadStatusName { get; set; }
         public string StageName { get; set; }
+        public int Attemps { get; set; }
+        public string Advisor { get; set; }
+        public DateTime? CompletedOn { get; set; }
+        public DateTime? AssignedOn { get; set; }
+
     }
 }

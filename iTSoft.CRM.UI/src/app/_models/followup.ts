@@ -3,6 +3,7 @@ export class FollowUp {
     RequestId: number;
     RequestServiceId : number;
     FollowUpDate: Date;
+    NextFollowupDate : Date;
     LeadStatusId: number;
     StageId: number;
     Remark: string;
@@ -15,6 +16,7 @@ export class FollowUp {
     AdvisorId:number;
     IsCompleted:boolean;
     ServiceRate : number;
+    ServiceAgreedRate : number;
     ServiceName : string;
     
 }

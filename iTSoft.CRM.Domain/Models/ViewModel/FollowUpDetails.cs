@@ -23,6 +23,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string ServiceName { get; set; }
         public decimal ServiceRate { get; set; }
         public decimal ServiceAgreedRate { get; set; }
+        public decimal NextFollowupDate { get; set; }
 
     }
 }

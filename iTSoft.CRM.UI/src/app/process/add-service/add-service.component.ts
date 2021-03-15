@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms/';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceMaster } from 'src/app/masters/service/service.model';
 import { UserService } from 'src/app/shared/services/UserService';
+import { LeadStage } from 'src/app/_models/leadStage';
+import { LeadStatus } from 'src/app/_models/leadStatus';
 import { ListModel } from 'src/app/_models/listmodel';
 import { RequestServiceDetails } from 'src/app/_models/requestservice';
 import { AlertService } from 'src/app/_services';
@@ -72,8 +74,8 @@ export class AddServiceComponent implements OnInit {
     else {
       this.pageTitle = "Add service";
 
-      this.requestServiceDetails.LeadStatusId = 1;
-      this.requestServiceDetails.StageId = 1;
+      this.requestServiceDetails.LeadStatusId = LeadStatus.NotAttended;
+      this.requestServiceDetails.StageId = LeadStage.Warm;
       this.userService.CurrentUserDepartments.subscribe((result: Array<ListModel>) => {
         this.departmentList = result;
         if (this.requestServiceDetails.RequestServiceId > 0) {
