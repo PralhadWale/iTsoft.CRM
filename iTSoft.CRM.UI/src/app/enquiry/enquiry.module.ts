@@ -9,6 +9,7 @@ import { SharedModule } from "../shared/shared.module";
 import { MaterialModule } from "../shared/material.module";
 import { ProcessModule } from '../process/process.module';
 import { FollowupModule } from '../followup/followup.module';
+import { RequestServiceDetailsComponent } from "../process/request-service-details/request-service-details.component";
 @NgModule({
   imports: [
     SharedModule,
@@ -20,6 +21,11 @@ import { FollowupModule } from '../followup/followup.module';
         path: "edit/:id/:clientId/:requestTypeId",
         canDeactivate: [EnquiryEditGuard],
         component: EnquiryFormComponent
+      },
+      {
+        path: "followUp/:requestServiceId",
+        canDeactivate: [EnquiryEditGuard],
+        component: RequestServiceDetailsComponent
       }
     ])
   ],
