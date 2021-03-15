@@ -66,6 +66,16 @@
                   </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan" *ngIf="requestTypeId == 2">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Amount </mat-label>
+                  <input matInput type='number' [(ngModel)]="request.RequestMaster.AgreedAmount" name="AgreedAmount"
+                    #AgreedAmount="ngModel" readonly>
+                  <mat-error *ngIf="(AgreedAmount.touched || enquiryForm.submitted) && AgreedAmount.errors">
+                    Please enter valid agreed amount
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Source</mat-label>
@@ -95,7 +105,7 @@
                 </mat-form-field>
               </mat-grid-tile>
             </mat-grid-list>
-            <mat-grid-list cols="12" rowHeight="80px" *ngIf="request.RequestMaster.ClientTypeId == 1">
+            <mat-grid-list cols="12" rowHeight="80px" *ngIf="request.RequestMaster.ClientTypeId == '1'">
               <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Company Name</mat-label>
@@ -226,7 +236,7 @@
                   </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
-              <mat-grid-tile [colspan]="fieldColspan" *ngIf="request.RequestMaster.ClientTypeId == 1">
+              <mat-grid-tile [colspan]="fieldColspan" *ngIf="request.RequestMaster.ClientTypeId == '1'">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Designation</mat-label>
                   <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.Designation" name="Designation"
@@ -236,7 +246,7 @@
                   </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
-              <mat-grid-tile [colspan]="fieldColspan" *ngIf="request.RequestMaster.ClientTypeId != 1">
+              <mat-grid-tile [colspan]="fieldColspan" *ngIf="request.RequestMaster.ClientTypeId != '1'">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Date of birth</mat-label>
                   <input matInput [matDatepicker]="enquiryDOBId" [min]="minDate" [max]="maxDate"

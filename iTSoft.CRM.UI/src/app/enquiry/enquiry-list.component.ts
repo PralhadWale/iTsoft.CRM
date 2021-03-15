@@ -75,7 +75,7 @@ export class EnquiryListComponent implements OnInit {
 
       if ($event.command.commandType == CommandType.Edit) {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
-        this.router.navigate(['/enquiries/edit/', rowData.RequestId , 0]);
+        this.router.navigate(['/enquiries/edit/', rowData.RequestId , 0,RequestType.Enquiry]);
       }
       else  if ($event.command.content == "transfer") {
         this.selectedEnquiryList =[];
@@ -95,7 +95,7 @@ export class EnquiryListComponent implements OnInit {
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
-        this.router.navigate(['/enquiries/edit/', 0,0]);
+        this.router.navigate(['/enquiries/edit/', 0,0,RequestType.Enquiry]);
       }
       else if ($event.toolbarItem == ToolBarItems.Search) {
         this.sidenav.open();

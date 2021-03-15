@@ -1,5 +1,6 @@
 export class ContactPersonMaster {
     ContactPersonId: number;
+    Salutation : string;
     ClientId: number | null;
     RequestId: number | null;
     LastName: string;

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, CanDeactivate } from '@angular/router';
-
-import { QuotationFormComponent } from './quotation-form.component';
+import { EnquiryFormComponent } from '../enquiry/enquiry-form.component';
 
 @Injectable()
 export  class QuotationDetailGuard implements CanActivate {
@@ -23,11 +22,11 @@ export  class QuotationDetailGuard implements CanActivate {
 }
 
 @Injectable()
-export  class QuotationEditGuard implements CanDeactivate<QuotationFormComponent> {
+export  class QuotationEditGuard implements CanDeactivate<EnquiryFormComponent> {
 
-    canDeactivate(component: QuotationFormComponent): boolean {
-        if (component.quotationForm.dirty) {
-            let quotationName = component.quotationForm.get('RequestNo').value || 'New Quotation';
+    canDeactivate(component: EnquiryFormComponent): boolean {
+        if (component.enquiryForm.dirty) {
+            let quotationName = component.enquiryForm.get('RequestNo').value || 'New Quotation';
             return confirm(`Navigate away and lose all changes to ${quotationName}?`);
         }
         return true;

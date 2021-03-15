@@ -82,11 +82,11 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren("enquiryForm") enquiryForm: FormGroup;
   @ViewChild("serviceTable") serviceTable: ITMatTableComponent;
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
-  pageTitle: string = "Update Enquiry";
+  pageTitle: string = "Update";
   request: RequestViewModel;
   showImage: boolean;
   fieldColspan = 4;
-  requestTypeId = RequestType.Enquiry;
+  requestTypeId =0;
   // Use with the generic validation messcustomerId class
 
   private sub: Subscription;
@@ -102,7 +102,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   maxDate: Date = new Date();
   enqMinDate: Date = new Date(2020, 1, 1);
   selectedIndex = 0;
-
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -119,7 +119,6 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.LoadSelectListData();
     this.SetDefaultRequest();
     this.SetTableSchema();
-
     breakpointObserver.observe([
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait
@@ -155,16 +154,17 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       dialogRef.afterClosed().subscribe(dialogResult => {
         let result = dialogResult;
         if (result == "CONFIRMED") {
-          this.router.navigate(['/enquiries']);
+          this.NavigateToList();
+         
         }
       }
       );
     }
     else {
-      this.router.navigate(['/enquiries']);
+      this.NavigateToList();
     }
   }
-
+ 
   getRequest(requestId: number, clientId: number): void {
     if (requestId > 0) {
       this.requestService
@@ -220,10 +220,11 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.request.ContactPersonMaster = new ContactPersonMaster();
     }
 
+    let requestTypeName: string = this.requestTypeId == RequestType.Enquiry ? "Enquiry" : "Quotation"
     if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
-      this.pageTitle = "Add Enquiry";
+      this.pageTitle = "Add " + requestTypeName;
     } else {
-      this.pageTitle = `Update Enquiry: ${this.request.RequestMaster.RequestNo} `;
+      this.pageTitle = 'Update ' + requestTypeName + ' : ' + this.request.RequestMaster.RequestNo;
     }
 
 
@@ -231,11 +232,11 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   saveEnquiry(enquiryForm: NgForm) {
     if (enquiryForm && enquiryForm.valid) {
-      this.request.RequestMaster.RequestTypeId = RequestType.Enquiry;
+      this.request.RequestMaster.RequestTypeId = this.requestTypeId;
       this.requestService.Save(this.request).subscribe(result => {
-        this.alertService.showSuccessMessage("Enquiry Saved successfully");
+        this.alertService.showSuccessMessage("Request Saved successfully");
         this.SetDefaultRequest();
-        this.router.navigate(['/enquiries']);
+        this.NavigateToList();
       }, (error: any) => {
         this.alertService.showSuccessMessage("Failed to save");
       });
@@ -304,8 +305,13 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   OpenServiceDialog(serviceDetails: RequestServiceDetails) {
+    let showPrice : boolean = false;
+    if(this.requestTypeId == RequestType.Quotation)
+    {
+      showPrice = true;
+    }
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: false },
+      data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: showPrice },
       disableClose: true
     });
 
@@ -330,6 +336,14 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.request.RequestMaster.Amount += x.QuoatedPrice;
           }
         });
+
+        this.request.RequestMaster.AgreedAmount = 0;
+        this.request.RequestServiceDetails.forEach(x => {
+          if (x.AgreedPrice && x.AgreedPrice > 0) {
+            this.request.RequestMaster.AgreedAmount += x.AgreedPrice;
+          }
+        });
+
         this.serviceTable.RefreshDataSource();
 
       }
@@ -357,6 +371,9 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
             params => {
               let id = +params['id'];
               let clientId = +params['clientId'];
+              this.requestTypeId = +params["requestTypeId"];
+              this.SetTableSchema();
+
               this.getRequest(id, clientId);
             }
           );
@@ -365,10 +382,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   SetDefaultRequest() {
-
     this.request = new RequestViewModel();
-
-
   }
 
   SetTableSchema() {
@@ -403,6 +417,9 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
       ];
 
+
+
+
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
@@ -414,6 +431,20 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: serviceGridCommand }
       ];
 
+    if (this.requestTypeId == RequestType.Quotation) {
+      this.serviceTableSchema.splice(3, 0, { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },)
+    }
+    
+
+  }
+
+  NavigateToList() {
+    if (this.requestTypeId == RequestType.Enquiry) {
+      this.router.navigate(['/enquiries']);
+    }
+    else if (this.requestTypeId == RequestType.Quotation) {
+      this.router.navigate(['/quotations']);
+    }
   }
 
   onScreensizeChange() {

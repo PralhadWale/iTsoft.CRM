@@ -11,6 +11,7 @@ import { SharedModule } from "../shared/shared.module";
 
 import { MaterialModule } from "../shared/material.module";
 import { ProcessModule } from '../process/process.module';
+import { EnquiryFormComponent } from "../enquiry/enquiry-form.component";
 
 
 @NgModule({
@@ -28,9 +29,9 @@ import { ProcessModule } from '../process/process.module';
         component: QuotationFormComponent
       },
       {
-        path: "edit/:id/:clientId",
+        path: "edit/:id/:clientId/:requestTypeId",
         canDeactivate: [QuotationEditGuard],
-        component: QuotationFormComponent
+        component: EnquiryFormComponent
       }
     ])
   ],
