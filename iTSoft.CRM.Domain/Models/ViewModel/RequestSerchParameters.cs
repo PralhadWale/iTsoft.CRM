@@ -6,6 +6,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
 {
     public class RequestSerchParameters
     {
+        public int RequestServiceId { get; set; }
         public int RequestTypeId { get; set; }
         public string RequestNo { get; set; }
         public DateTime? FromDate { get; set; }

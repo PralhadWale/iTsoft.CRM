@@ -98,6 +98,23 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             return Ok(response);
         }
 
+        [HttpGet("loadrequestservice")]
+        public IActionResult LoadRequestServiceDetails(long requestServiceId)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = requestService.LoadRequestServiceDetails(requestServiceId);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - LoadRequest");
+            }
+            return Ok(response);
+        }
+
         [HttpGet("getnextrequestnumber")]
         public IActionResult GetNextRequestNumber(long requestTypeId)
         {

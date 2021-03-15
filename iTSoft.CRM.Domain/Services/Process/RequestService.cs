@@ -19,6 +19,7 @@ namespace iTSoft.CRM.Domain.Services.Process
 
         ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels);
         RequestViewModel LoadRequest(long requestId);
+        RequestViewModel LoadRequestServiceDetails(long requestServiceId);
 
         List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
         string GetNextrequestNumber(long requestTypeId);
@@ -70,6 +71,26 @@ namespace iTSoft.CRM.Domain.Services.Process
                 DynamicParameters param = new DynamicParameters();
                 param.Add("Action", "LoadRequest");
                 param.Add("RequestId",requestId);
+                var result = dbConnection.QueryMultiple(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure);
+                requestViewModel.RequestMaster = result.Read<RequestMaster>().FirstOrDefault();
+                requestViewModel.OrganizationMaster = result.Read<OrganizationMaster>().FirstOrDefault();
+                requestViewModel.ContactPersonMasters = result.Read<ContactPersonMaster>().AsList();
+                requestViewModel.RequestServiceDetails = result.Read<RequestServiceDetails>().AsList();
+                requestViewModel.RequestFollowup = result.Read<FollowUpDetails>().AsList();
+                base.ClearCatche();
+            }
+
+            return requestViewModel;
+        }
+
+        public RequestViewModel LoadRequestServiceDetails(long requestServiceId)
+        {
+            RequestViewModel requestViewModel = new RequestViewModel();
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("Action", "LoadRequestService");
+                param.Add("RequestServiceId", requestServiceId);
                 var result = dbConnection.QueryMultiple(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure);
                 requestViewModel.RequestMaster = result.Read<RequestMaster>().FirstOrDefault();
                 requestViewModel.OrganizationMaster = result.Read<OrganizationMaster>().FirstOrDefault();

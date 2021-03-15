@@ -92,6 +92,12 @@ export class RequestService {
     return this.apiService.GetData(url + "?requestId=" + requestId);
   }
 
+  LoadRequestService(requestServiceId : number)
+  {
+    let url = this.RequestController + "loadrequestservice";
+    return this.apiService.GetData(url + "?requestServiceId=" + requestServiceId);
+  }
+
   GetNextrequestNumber(requestTypeId: number) {
     let url = this.RequestController + "getnextrequestnumber";
     return this.apiService.GetData(url + "?requestTypeId=" + requestTypeId);
