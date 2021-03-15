@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms/';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceMaster } from 'src/app/masters/service/service.model';
@@ -37,7 +37,8 @@ export class AddServiceComponent implements OnInit {
     public dialogRef: MatDialogRef<AddServiceComponent>,
     public listService: ListService,
     private userService: UserProfilService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private changeDetector : ChangeDetectorRef 
 
   ) {
 
@@ -66,6 +67,9 @@ export class AddServiceComponent implements OnInit {
 
     this.SetDefaultData();
   }
+
+  ngAfterViewChecked(){ this.changeDetector.detectChanges(); }
+
 
   SetDefaultData() {
     if (this.requestServiceDetails.RequestServiceId && this.requestServiceDetails.RequestServiceId > 0) {

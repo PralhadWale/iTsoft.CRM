@@ -68,7 +68,7 @@
               </mat-grid-tile>
               <mat-grid-tile [colspan]="fieldColspan" *ngIf="requestTypeId == 2">
                 <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Amount </mat-label>
+                  <mat-label>Agreed Amount </mat-label>
                   <input matInput type='number' [(ngModel)]="request.RequestMaster.AgreedAmount" name="AgreedAmount"
                     #AgreedAmount="ngModel" readonly>
                   <mat-error *ngIf="(AgreedAmount.touched || enquiryForm.submitted) && AgreedAmount.errors">

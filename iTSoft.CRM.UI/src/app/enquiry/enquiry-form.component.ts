@@ -265,7 +265,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     else {
       let rowData: RequestServiceDetails = Object.assign({}, $event.rowData);
-      if (!(rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.Dropped)) {
+      if (!(rowData.RequestServiceId > 0 && (rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.Dropped))) {
         this.userProfileService.IsUserDepartment(rowData.DepartmentId).subscribe((result) => {
           if (result == true) {
             if ($event.command.commandType == CommandType.Edit) {
@@ -295,8 +295,6 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.alertService.showErrorMessage("You are not authorize to modify service of this department");
           }
         });
-
-
       }
       else {
         this.alertService.showWarningMessage("Action not allowed");
