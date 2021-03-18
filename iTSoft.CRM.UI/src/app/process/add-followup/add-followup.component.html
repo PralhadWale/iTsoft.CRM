@@ -17,48 +17,57 @@
       <input type="hidden" [(ngModel)]="followUP.FollowUpId" name="FollowUpId" />
       <input type="hidden" [(ngModel)]="followUP.RequestId" name="RequestId" />
       <input type="hidden" [(ngModel)]="followUP.RequestServiceId" name="RequestServiceId" />
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Service</mat-label>
         <input matInput type="text" placeholder="Service Name" name="ServiceName" [(ngModel)]="followUP.ServiceName"
-          #ServiceRate readonly />
+          #Amount readonly />
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="number" placeholder="Rate" name="ServiceRate" [(ngModel)]="followUP.ServiceRate" #ServiceRate
+      <mat-form-field appearance="outline">
+        <mat-label>Lead Status</mat-label>
+        <mat-select placeholder="Deal Status"  [(ngModel)]="followUP.LeadStatusId" name="LeadStatusId" [(value)]="followUP.LeadStatusId" #LeadStatusId="ngModel" required>
+          <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.Value" >
+            {{item.Text}} 
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Stage</mat-label>
+        <mat-select placeholder="Stage"  [(ngModel)]="followUP.StageId" name="StageId" [(value)]="followUP.StageId" #StageId="ngModel" required>
+          <mat-option *ngFor="let item of requestSelectList.Stages" [value]="item.Value" >
+            {{item.Text}} 
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Service Rate</mat-label>
+        <input matInput type="number" placeholder="Rate" name="Amount" [(ngModel)]="followUP.Amount" #Amount
           readonly />
       </mat-form-field>
-      <mat-form-field *ngIf="followUP.ServiceAgreedRate > 0">
-        <input matInput type="number" placeholder="Agreed Rate" name="ServiceAgreedRate" [(ngModel)]="followUP.ServiceAgreedRate" #ServiceAgreedRate
-          />
+      <mat-form-field *ngIf="followUP.AgreedAmount > 0 || (followUP.LeadStatusId == 10010 || followUP.LeadStatusId == 10011 || followUP.LeadStatusId == 10012)" appearance="outline">
+        <mat-label>Agreed Rate</mat-label>
+        <input matInput type="number" placeholder="Agreed Rate" name="AgreedAmount" [(ngModel)]="followUP.AgreedAmount" #AgreedAmount required/>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput [matDatepicker]="followUpDate" [(ngModel)]="followUP.FollowUpDate" name="FollowUpDate" required>
+      <mat-form-field appearance="outline">
+        <mat-label>Follow up date</mat-label>
+        <input matInput [matDatepicker]="followUpDate" [min]="minDate" [(ngModel)]="followUP.FollowUpDate" name="FollowUpDate" required>
         <mat-datepicker-toggle matSuffix [for]="followUpDate"></mat-datepicker-toggle>
         <mat-datepicker #followUpDate color="primary"></mat-datepicker>
         <mat-error>FollowUp Date is required.</mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Remark</mat-label>
           <textarea matInput placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"  #Remark required
             cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Client Rating</mat-label>
         <input matInput type="number" placeholder="Client Rating" name="ClientRating" [(ngModel)]="followUP.ClientRating"
           #ClientRating required/>
       </mat-form-field>
-      <mat-form-field>
-      <mat-select placeholder="Deal Status"  [(ngModel)]="followUP.LeadStatusId" name="LeadStatusId" [(value)]="followUP.LeadStatusId" #LeadStatusId="ngModel" required>
-        <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.Value" >
-          {{item.Text}} 
-        </mat-option>
-      </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-      <mat-select placeholder="Stage"  [(ngModel)]="followUP.StageId" name="StageId" [(value)]="followUP.StageId" #StageId="ngModel" required>
-        <mat-option *ngFor="let item of requestSelectList.Stages" [value]="item.Value" >
-          {{item.Text}} 
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field *ngIf="(!(followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013))">
-      <input matInput [matDatepicker]="nextFollowupDate" [(ngModel)]="followUP.NextFollowupDate" name="NextFollowupDate" required>
+
+    <mat-form-field *ngIf="(!(followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013))" appearance="outline">
+      <mat-label>Next follow up date</mat-label>
+      <input matInput [matDatepicker]="nextFollowupDate" [min]="nextMinDate" [(ngModel)]="followUP.NextFollowupDate" name="NextFollowupDate" required>
       <mat-datepicker-toggle matSuffix [for]="nextFollowupDate"></mat-datepicker-toggle>
       <mat-datepicker #nextFollowupDate color="primary"></mat-datepicker>
       <mat-error>Next Date is required.</mat-error>

@@ -35,8 +35,8 @@
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
         <mat-label>Company Name</mat-label>
-        <input matInput appearance="standard" placeholder="Client Name" name="CorporateName"
-          [(ngModel)]="clientMaster.CorporateName" maxlength="250" />
+        <input matInput appearance="standard" placeholder="Client Name" name="OrganizationName"
+          [(ngModel)]="clientMaster.OrganizationName" maxlength="250" />
       </mat-form-field>
 
     </mat-nav-list>
@@ -54,9 +54,9 @@
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
         <mat-label>Mobile No</mat-label>
-        <input matInput type='text' [(ngModel)]="clientMaster.MobileNo" name="MobileNo" #MobileNo="ngModel"
+        <input matInput type='text' [(ngModel)]="clientMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel"
           maxlength="13" minlength="10" pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
-        <mat-error *ngIf="(MobileNo.touched || clientForm.submitted)">
+        <mat-error *ngIf="(PhoneNo1.touched || clientForm.submitted)">
           Please enter valid mobile number
         </mat-error>
       </mat-form-field>

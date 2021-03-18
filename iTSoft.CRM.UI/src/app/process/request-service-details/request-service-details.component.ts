@@ -33,6 +33,8 @@ import { RequestType } from "src/app/_models/requesttype";
 import { ConfirmDialog } from "src/app/shared";
 import { AlertService } from "src/app/_services";
 import { ContactPersonMaster } from "src/app/_models/contactPerson";
+import { FollowUpDetails } from "src/app/_models/followupdetails";
+import { LeadStatus } from "src/app/_models/leadStatus";
 
 
 @Component({
@@ -71,10 +73,10 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
   @ViewChildren("enquiryForm") enquiryForm: FormGroup;
   @ViewChild("serviceTable") serviceTable: ITMatTableComponent;
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
-  pageTitle: string = "Update";
+  pageTitle: string = "";
   request: RequestViewModel;
   showImage: boolean;
-  fieldColspan = 4;
+  fieldColspan = 6;
   requestTypeId =0;
   // Use with the generic validation messcustomerId class
   private sub: Subscription;
@@ -82,6 +84,7 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
   followupTableSettings: TableDefaultSettings;
   selectedIndex = 0;
   
+  allowSave : boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -167,6 +170,15 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
   onEnquiryRetrieved(request: RequestViewModel): void {
 
     this.request = request;
+    this.request.RequestServiceDetail = this.request.RequestServiceDetails[0];
+
+    if(this.request.RequestServiceDetail.LeadStatusId == LeadStatus.Dropped || this.request.RequestServiceDetail.LeadStatusId == LeadStatus.Converted)
+    {
+      this.allowSave = false;
+    }
+    else {
+      this.allowSave = true;
+    }
 
     if(this.request.RequestMaster.ClientTypeId)
     {
@@ -178,15 +190,7 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
     else {
       this.request.ContactPersonMaster = new ContactPersonMaster();
     }
-
-    let requestTypeName: string = this.requestTypeId == RequestType.Enquiry ? "Enquiry" : "Quotation"
-    if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
-      this.pageTitle = "Add " + requestTypeName;
-    } else {
-      this.pageTitle = 'Update ' + requestTypeName + ' : ' + this.request.RequestMaster.RequestNo;
-    }
-
-
+      this.pageTitle = 'Service Follow up : ' + this.request.RequestMaster.RequestNo;
   }
 
   saveEnquiry(enquiryForm: NgForm) {
@@ -205,20 +209,25 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
     }
   }
 
-  onFollowUpCommandClick($event: CommandEventArgs) {
-    if ($event.toolbarItem) {
-      if ($event.toolbarItem == ToolBarItems.Add) {
-        this.addFollowUp.requestId = this.request.RequestMaster.RequestId;
-        this.addFollowUp.requestNo = this.request.RequestMaster.RequestNo;
-        this.addFollowUp.SetFollowUpDefaultData();
-        this.addFollowUp.sidenav.open();
-      }
-    }
+  onFollowupClick() {
+   
+    let rowData = this.request.RequestServiceDetail;
+    this.addFollowUp.followUpDetails = <any>rowData;
+    this.addFollowUp.followUpDetails.Amount = rowData.QuoatedPrice;;
+    this.addFollowUp.followUpDetails.AgreedAmount = rowData.AgreedPrice;
+    let nextFollowUpDate = new Date();
+    nextFollowUpDate.setDate(nextFollowUpDate.getDate() + 7);
+    this.addFollowUp.followUpDetails.NextFollowupDate = nextFollowUpDate;
+    this.addFollowUp.followUpDetails.FollowUpDate = new Date();
+    this.addFollowUp.SetFollowUpDefaultData();
+    this.addFollowUp.sidenav.open();
+
+
   }
 
 
   onFollowUpSaved() {
-    this.getRequestService(this.request.RequestMaster.RequestId);
+    this.getRequestService(this.request.RequestServiceDetail.RequestServiceId);
     this.NavigateToList();
   }
 
@@ -229,20 +238,20 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
   SetTableSchema() {
 
     this.followupTableSettings = new TableDefaultSettings();
-    this.followupTableSettings.ShowToolBar = true;
-    this.followupTableSettings.ToolBarItems = [ToolBarItems.Add];
+    this.followupTableSettings.ShowToolBar = false;
     this.followupTableSettings.HideFilter = true;
 
     this.followUpTableSchema =
       [
-        { ColumnField: "AddedOn", ColumnHeader: "Created Date", Type: "date" },
+        
         { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
+        { ColumnField: "NextFollowupDate", ColumnHeader: "Next Follow up", Type: "date" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
-        { ColumnField: "LeadStatusName", ColumnHeader: "Deal Status", Type: "text" },
+        { ColumnField: "LeadStatusName", ColumnHeader: "Lead Status", Type: "text" },
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-        { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
+        { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-        { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+        { ColumnField: "ClientRating", ColumnHeader: "Rating", Type: "text" },
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
       ];
 
@@ -277,7 +286,7 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
       }
     }
     else {
-      this.fieldColspan = 3;
+      this.fieldColspan = 6;
     }
   }
 

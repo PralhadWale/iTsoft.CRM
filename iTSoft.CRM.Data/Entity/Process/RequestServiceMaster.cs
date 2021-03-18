@@ -32,7 +32,7 @@ namespace iTSoft.CRM.Data.Entity.Process
         public string DepartmentName { get; set; }
         public string LeadStatusName { get; set; }
         public string StageName { get; set; }
-        public int Attemps { get; set; }
+        public int Attempts { get; set; }
         public string Advisor { get; set; }
         public DateTime? CompletedOn { get; set; }
         public DateTime? AssignedOn { get; set; }

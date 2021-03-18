@@ -21,7 +21,7 @@ namespace iTSoft.CRM.Domain.Services.Process
     }
     public class FollowUpService : GenericRepository<FollowUpMaster>, IFollowUpService
     {
-        public const string PROC_FollowUpManager = "PROC_FollowUpLookUpManager";
+        public const string PROC_FollowUpManager = "PROC_FollowUpManager";
         public const string PROC_FollowUpLookUpManager = "PROC_FollowUpLookUpManager";
         public const string PROC_AssignFollowUp = "PROC_AssignFollowUp";
         public const string PROC_EnrollClient = "PROC_EnrollClient";
@@ -31,7 +31,8 @@ namespace iTSoft.CRM.Domain.Services.Process
             {
                 DynamicParameters param = new DynamicParameters(followupMaster);
                 param.Add("Result", dbType: DbType.Int64, direction: ParameterDirection.InputOutput);
-                dbConnection.Execute(PROC_EnrollClient, param, commandType: CommandType.StoredProcedure);
+                param.Add("ChildRequestNo", dbType: DbType.String, size:50, direction: ParameterDirection.InputOutput);
+                dbConnection.Execute(PROC_FollowUpManager, param, commandType: CommandType.StoredProcedure);
                 return (ResponseCode)param.Get<long>("Result");
             }
         }

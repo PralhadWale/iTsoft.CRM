@@ -82,11 +82,14 @@ export class QuotationListComponent implements OnInit {
       }
       else if($event.command.commandType == CommandType.Other && $event.command.content == 'add')
       {
-        
+          
         let rowData: FollowUpDetails = Object.assign({}, $event.rowData);
-        this.addFollowUp.followUpDetails = rowData;
-        this.addFollowUp.SetFollowUpDefaultData();
-        this.addFollowUp.sidenav.open();
+        this.router.navigate(['/quotations/followUp/', rowData.RequestServiceId]);
+
+        // let rowData: FollowUpDetails = Object.assign({}, $event.rowData);
+        // this.addFollowUp.followUpDetails = rowData;
+        // this.addFollowUp.SetFollowUpDefaultData();
+        // this.addFollowUp.sidenav.open();
       }
     }
     else {

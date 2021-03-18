@@ -88,9 +88,7 @@ export class EnquiryListComponent implements OnInit {
       {
         
         let rowData: FollowUpDetails = Object.assign({}, $event.rowData);
-        this.addFollowUp.followUpDetails = rowData;
-        this.addFollowUp.SetFollowUpDefaultData();
-        this.addFollowUp.sidenav.open();
+        this.router.navigate(['/enquiries/followUp/', rowData.RequestServiceId]);
       }
     }
     else {

@@ -12,12 +12,15 @@ export class RequestViewModel
     ContactPersonMaster : ContactPersonMaster;
     ContactPersonMasters : ContactPersonMaster[];
     RequestServiceMasters: RequestServiceMaster[];
+
+    RequestServiceDetail: RequestServiceDetails
     RequestServiceDetails: RequestServiceDetails[];
     RequestFollowup: FollowUpDetails[];
 
     constructor(){
         this.RequestMaster = new RequestMaster();
         this.ContactPersonMaster = new ContactPersonMaster();
+        this.RequestServiceDetail = new RequestServiceDetails();
         this.OrganizationMaster = new OrganizationMaster();
         this.ContactPersonMasters = [];
         this.RequestServiceMasters = [];

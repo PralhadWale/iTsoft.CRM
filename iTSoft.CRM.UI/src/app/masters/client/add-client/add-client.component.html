@@ -54,16 +54,15 @@
         <!-- colspan="4"> -->
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Corporate Name</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.CorporateName" name="CorporateName"
-            #CorporateName="ngModel" maxlength="250">
-          <mat-error *ngIf="(CorporateName.touched || clientForm.submitted)">
-            Please enter valid corporate name
+          <input matInput type='text' [(ngModel)]="clientMaster.OrganizationName" name="OrganizationName"
+            #OrganizationName="ngModel" maxlength="250">
+          <mat-error *ngIf="(OrganizationName.touched || clientForm.submitted)">
+            Please enter valid Organization name
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
+      <!-- <mat-grid-tile [colspan]="fieldColspan">
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>PAN No</mat-label>
           <input matInput type='text' [(ngModel)]="clientMaster.PANNo" name="PANNo" #PANNo="ngModel" maxlength="250"
@@ -72,15 +71,15 @@
            Please enter valid PAN No
           </mat-error>
         </mat-form-field>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 
       <mat-grid-tile [colspan]="fieldColspan">
         <!-- colspan="4"> -->
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Mobile No</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.MobileNo" name="MobileNo" #MobileNo="ngModel"
+          <input matInput type='text' [(ngModel)]="clientMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel"
             maxlength="13" minlength="10"  pattern="^(\+\d{1,3}[- ]?)?\d{10}$" required>
-          <mat-error *ngIf="(MobileNo.touched || clientForm.submitted)">
+          <mat-error *ngIf="(PhoneNo1.touched || clientForm.submitted)">
             Please enter valid mobile number
           </mat-error>
         </mat-form-field>
@@ -104,9 +103,9 @@
         <!-- colspan="4"> -->
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Date of birth</mat-label>
-          <input matInput [matDatepicker]="doB" [(ngModel)]="clientMaster.DoB" name="DoB" [min]="minDate" [max]="maxDate">
-          <mat-datepicker-toggle matSuffix [for]="doB"></mat-datepicker-toggle>
-          <mat-datepicker #doB color="primary"></mat-datepicker>
+          <input matInput [matDatepicker]="dOB" [(ngModel)]="clientMaster.DOB" name="DOB" [min]="minDate" [max]="maxDate">
+          <mat-datepicker-toggle matSuffix [for]="dOB"></mat-datepicker-toggle>
+          <mat-datepicker #dOB color="primary"></mat-datepicker>
           <mat-error *ngIf="(clientForm.submitted)">Please select valid date of birth.</mat-error>
         </mat-form-field>
       </mat-grid-tile>

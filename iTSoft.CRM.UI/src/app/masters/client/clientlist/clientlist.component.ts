@@ -7,6 +7,7 @@ import { ClientMaster } from '../client.model';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { NgForm } from '@angular/forms/';
 import { Router } from '@angular/router';
+import { RequestType } from 'src/app/_models/requesttype';
 
 @Component({
   selector: 'app-clientlist',
@@ -51,12 +52,12 @@ export class ClientlistComponent implements OnInit {
       else if($event.command.commandType == CommandType.Other && $event.command.content == 'addQuotation')
       {
 
-        this.router.navigate(['/quotations/edit/', 0,rowData.ClientId]);
+        this.router.navigate(['/quotations/edit/', 0,rowData.ClientId , RequestType.Quotation]);
       }
       else if($event.command.commandType == CommandType.Other && $event.command.content == 'addEnquiry')
       {
 
-        this.router.navigate(['/enquiries/edit/', 0,rowData.ClientId]);
+        this.router.navigate(['/enquiries/edit/', 0,rowData.ClientId,RequestType.Enquiry]);
       }
     }
     else {
@@ -122,15 +123,15 @@ export class ClientlistComponent implements OnInit {
 
     this.clientTableSchema =
       [
+        { ColumnField: "ClientTypeName", ColumnHeader: "Client Type", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader: "Client Name", Type: "text" },
         { ColumnField: "DoB", ColumnHeader: "Date of Birth", Type: "text" },
-        // { ColumnField: "FirstName", ColumnHeader: "First Name", Type: "text" },
         // { ColumnField: "MiddleName", ColumnHeader: "Middle Name", Type: "text" },
         // { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
         { ColumnField: "Email", ColumnHeader: "Email", Type: "text" },
-        { ColumnField: "MobileNo", ColumnHeader: "Mobile No", Type: "text" },
+        { ColumnField: "PhoneNo1", ColumnHeader: "Mobile No", Type: "text" },
         { ColumnField: "PANNo", ColumnHeader: "PAN", Type: "text" },
-        { ColumnField: "CorporateName", ColumnHeader: "Corporate Name", Type: "text" },
+        { ColumnField: "OrganizationName", ColumnHeader: "Corporate Name", Type: "text" },
         // { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         // { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },

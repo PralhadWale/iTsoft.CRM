@@ -20,14 +20,14 @@ export class ClientService {
         clientMaster.ClientName = clientMaster.FirstName + " " + clientMaster.MiddleName + " " + clientMaster.LastName;
         clientMaster.ClientName = clientMaster.ClientName.trim();
         
-        if(clientMaster.ClientId < 1)
-        {
-            clientMaster.AddedBy = this.userService.GetUserId();
-            clientMaster.AddedDate = new Date(Date.now());
-        }
+        // if(clientMaster.ClientId < 1)
+        // {
+        //     clientMaster.AddedBy = this.userService.GetUserId();
+        //     clientMaster.AddedDate = new Date(Date.now());
+        // }
 
-        clientMaster.UpdatedBy = this.userService.GetUserId();
-        clientMaster.UpdatedDate = new Date(Date.now());
+        // clientMaster.UpdatedBy = this.userService.GetUserId();
+        // clientMaster.UpdatedDate = new Date(Date.now());
 
         return this.apiService.PostData(this.URLSave, clientMaster);
     }

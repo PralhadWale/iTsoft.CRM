@@ -15,8 +15,8 @@ export class FollowUp {
     UpdatedOn: Date;
     AdvisorId:number;
     IsCompleted:boolean;
-    ServiceRate : number;
-    ServiceAgreedRate : number;
+    Amount : number;
+    AgreedAmount : number;
     ServiceName : string;
     
 }

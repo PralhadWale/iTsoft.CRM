@@ -27,11 +27,14 @@ export class AddFollowupComponent implements OnInit {
   requestSelectList: RequestSelectListModel;
   requestTypeName: string;
   public IsCompleted :boolean = false;
+  minDate = new Date();
+  nextMinDate = new Date();
   constructor(
     private followUpService: FollowupService,
     private listService: ListService,
     private alertService: AlertService,
   ) {
+    this.nextMinDate.setDate(this.nextMinDate.getDate() + 1);
     this.requestSelectList = new RequestSelectListModel();
     this.SetFollowUpDefaultData();
     this.LoadSelectListData();
@@ -61,7 +64,7 @@ export class AddFollowupComponent implements OnInit {
       this.IsCompleted = this.followUpDetails.IsCompleted;
     }
 
-    this.requestTypeName = this.requestType == RequestType.Enquiry ? "Enquiry" : "Quotation"
+    this.requestTypeName = "Add"
   }
 
   clearFollowUpData() {

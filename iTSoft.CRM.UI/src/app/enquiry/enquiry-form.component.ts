@@ -41,6 +41,7 @@ import { AlertService, StorageService } from '../_services';
 import { ListService } from '../process/services/list.service';
 import { UserProfilService } from "../_services/userProfile.Service";
 import { ContactPersonMaster } from "../_models/contactPerson";
+import { ClientType } from "../_models/clientType";
 
 
 
@@ -188,13 +189,29 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       if (clientId > 0) {
         this.requestService.FindClient(clientId).subscribe((result) => {
           var clientDetails = <ClientMaster>result.Value.ResponseData;
-          if (clientDetails.CorporateName != null) {
-            this.request.OrganizationMaster.OrganizationName = clientDetails.CorporateName;
+          if (clientDetails.ClientTypeId == ClientType.Corporate) {
+            this.request.OrganizationMaster.OrganizationName = clientDetails.OrganizationName;
             this.request.OrganizationMaster.OrganizationId = clientDetails.OrganizationId;
+            this.request.OrganizationMaster.OrganizationTypeId = clientDetails.OrganizationTypeId;
+            this.request.OrganizationMaster.Website = clientDetails.Website;
+            this.request.OrganizationMaster.TotalEmployees = clientDetails.TotalEmployees;
+            this.request.OrganizationMaster.PANNO = clientDetails.PANNO;
+            this.request.OrganizationMaster.GSTNO = clientDetails.GSTNO;
+
           }
-          else if (clientDetails.FirstName != null) {
-            //this.request.ContactPersonMasters.push(clientDetails);
-          }
+         
+          this.request.RequestMaster.ClientId = clientDetails.ClientId;
+          
+          this.request.ContactPersonMaster = new ContactPersonMaster();
+          this.request.ContactPersonMaster.ContactPersonId = clientDetails.ContactPersonId;
+          this.request.ContactPersonMaster.FirstName = clientDetails.FirstName;
+          this.request.ContactPersonMaster.MiddleName = clientDetails.MiddleName;
+          this.request.ContactPersonMaster.LastName = clientDetails.LastName;
+          this.request.ContactPersonMaster.PhoneNo1 = clientDetails.PhoneNo1;
+          this.request.ContactPersonMaster.PhoneNo2 = clientDetails.PhoneNo2;
+          this.request.ContactPersonMaster.Email = clientDetails.Email;
+          this.request.ContactPersonMaster.PANNO = clientDetails.PANNO;
+          this.request.ContactPersonMaster.Address = clientDetails.ContactPersonAddress;
 
           this.request.RequestMaster.SourceId = 2;
 
