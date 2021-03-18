@@ -119,7 +119,7 @@ export class ClientlistComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Search, ToolBarItems.Refresh];
+    this.tableSettings.ToolBarItems = [ToolBarItems.Search, ToolBarItems.Refresh];
 
     this.clientTableSchema =
       [

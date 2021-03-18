@@ -52,6 +52,7 @@ export class RequestService {
         AdvisorId: item.AdvisorId,
         TransferPendingFollowUp: item.TransferPendingFollowUp,
         RequestId: item.RequestId,
+        DepartmentId : item.DepartmentId,
         UpdatedBy: ConfigurationSettings.User.UserId,
         RequestServiceId : item.RequestServiceId
       });

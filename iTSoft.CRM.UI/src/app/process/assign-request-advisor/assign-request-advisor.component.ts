@@ -105,6 +105,7 @@ export class AssignRequestAvisorComponent implements OnInit {
         this.multipleRequestDetails.forEach(item => 
         { 
             item.AdvisorId = this.requestDetails.AdvisorId ; 
+            item.DepartmentId = this.requestDetails.DepartmentId;
             item.TransferPendingFollowUp = this.requestDetails.TransferPendingFollowUp
         });
       }
