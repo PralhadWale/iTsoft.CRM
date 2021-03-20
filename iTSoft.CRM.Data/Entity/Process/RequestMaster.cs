@@ -12,12 +12,13 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long RequestId { get; set; }
         public long? ParentRequestId { get; set; }
         public long? RequestTypeId { get; set; }
+        public string Subject { get; set; }
         public string RequestNo { get; set; }
         public DateTime? RequestDate { get; set; }
         public long? OrganizationId { get; set; }
         public long? ClientId { get; set; }
         public long? ClientTypeId { get; set; }
-        public long? SourceId { get; set; }
+        public long? LeadStatusId { get; set; }
         public decimal? Amount { get; set; }
         public decimal? AgreedAmount { get; set; }
         public decimal? RevenueAmount { get; set; }

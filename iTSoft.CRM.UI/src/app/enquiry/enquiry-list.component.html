@@ -70,6 +70,9 @@
           <mat-select placeholder="Select Department" [(ngModel)]="searchFilter.DepartmentId"
             [(value)]="searchFilter.DepartmentId" name="DepartmentId" #DepartmentId="ngModel"
             (selectionChange)="onDepartmentChanged($event)">
+            <mat-option  [value]="-1">
+             All
+            </mat-option>
             <mat-option *ngFor="let item of requestSelectList.Departments" [value]="item.Value">
               {{item.Text}}
             </mat-option>

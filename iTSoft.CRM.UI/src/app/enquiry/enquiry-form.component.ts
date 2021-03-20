@@ -43,6 +43,7 @@ import { UserProfilService } from "../_services/userProfile.Service";
 import { ContactPersonMaster } from "../_models/contactPerson";
 import { ClientType } from "../_models/clientType";
 import { ResponseCode } from "../core/models/ServiceResponse.model";
+import { OrganizationMaster } from "../_models/organization";
 
 
 
@@ -105,7 +106,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   maxDate: Date = new Date();
   enqMinDate: Date = new Date(2020, 1, 1);
   selectedIndex = 0;
-  
+  requestTypeName : string = "";
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -239,18 +240,23 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.request.ContactPersonMaster = new ContactPersonMaster();
     }
 
-    let requestTypeName: string = this.requestTypeId == RequestType.Enquiry ? "Enquiry" : "Quotation"
+    this.requestTypeName = this.requestTypeId == RequestType.Enquiry ? "Enquiry" : "Quotation"
     if (this.request.RequestMaster.RequestId == undefined || this.request.RequestMaster.RequestId === 0) {
-      this.pageTitle = "Add " + requestTypeName;
-    } else {
-      this.pageTitle = 'Update ' + requestTypeName + ' : ' + this.request.RequestMaster.RequestNo;
-
+      this.pageTitle = "Add " + this.requestTypeName;
+    }
+    else
+    {
+      this.pageTitle = 'Update ' + this.requestTypeName + ' : ' + this.request.RequestMaster.RequestNo;
       if(this.request.RequestMaster.StatusId == LeadStatus.Converted || this.request.RequestMaster.StatusId == LeadStatus.Dropped)
       {
         this.allowSave = false;
       }
     }
 
+    if(this.request.OrganizationMaster == null)
+    {
+      this.request.OrganizationMaster = new OrganizationMaster();
+    }
 
   }
 
@@ -480,6 +486,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         { ColumnField: "LeadSourceName", ColumnHeader: "Lead Source", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Lead Status", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Lead Stage", Type: "text" },
+        { ColumnField : "NextFollowupDate" , ColumnHeader:"Next Follow up date" , Type: "date"},
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" }
 
       ];

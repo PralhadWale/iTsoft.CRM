@@ -33,6 +33,9 @@ export class AddServiceComponent implements OnInit {
   isNew: boolean = true;
   showPrice: boolean = false
   showNumberOfEmployees : boolean = true;
+
+  enqMinDate: Date = new Date();
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddServiceComponent>,

@@ -3,6 +3,7 @@ export class RequestMaster
     RequestId: number;
     ParentRequestId?: number;
     RequestTypeId?: number;
+    Subject : string;
     RequestNo: string;
     RequestDate?: Date;
     OrganizationId?: number;

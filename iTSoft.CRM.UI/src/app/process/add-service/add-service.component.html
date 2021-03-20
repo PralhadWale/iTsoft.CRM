@@ -118,6 +118,16 @@
                       </mat-error>
                     </mat-form-field>
                   </mat-grid-tile>
+                  <mat-grid-tile [colspan]="fieldColspan">
+                    <mat-form-field class="form-field" appearance="outline">
+                      <mat-label>Next Follow up Date. </mat-label>
+                      <input matInput [matDatepicker]="datepicker1" [min]="enqMinDate"
+                        [(ngModel)]="requestServiceDetails.NextFollowupDate" name="NextFollowupDate" #NextFollowupDate="ngModel" required>
+                      <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+                      <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
+                      <mat-error>Please select valid date.</mat-error>
+                    </mat-form-field>
+                  </mat-grid-tile>
                  <mat-grid-tile [colspan]="6">
                     <mat-form-field class="form-field" appearance="outline">
                         <mat-label>Remark</mat-label>
