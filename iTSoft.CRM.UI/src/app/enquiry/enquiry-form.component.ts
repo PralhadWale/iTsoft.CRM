@@ -42,6 +42,7 @@ import { ListService } from '../process/services/list.service';
 import { UserProfilService } from "../_services/userProfile.Service";
 import { ContactPersonMaster } from "../_models/contactPerson";
 import { ClientType } from "../_models/clientType";
+import { ResponseCode } from "../core/models/ServiceResponse.model";
 
 
 
@@ -88,6 +89,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   showImage: boolean;
   fieldColspan = 4;
   requestTypeId =0;
+  allowSave : boolean = true;
   // Use with the generic validation messcustomerId class
 
   private sub: Subscription;
@@ -242,6 +244,11 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pageTitle = "Add " + requestTypeName;
     } else {
       this.pageTitle = 'Update ' + requestTypeName + ' : ' + this.request.RequestMaster.RequestNo;
+
+      if(this.request.RequestMaster.StatusId == LeadStatus.Converted || this.request.RequestMaster.StatusId == LeadStatus.Dropped)
+      {
+        this.allowSave = false;
+      }
     }
 
 
@@ -251,9 +258,27 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     if (enquiryForm && enquiryForm.valid) {
       this.request.RequestMaster.RequestTypeId = this.requestTypeId;
       this.requestService.Save(this.request).subscribe(result => {
-        this.alertService.showSuccessMessage("Request Saved successfully");
-        this.SetDefaultRequest();
-        this.NavigateToList();
+
+
+        let response= result.Value;
+        if (response.ResponseCode == ResponseCode.Success) {
+  
+          if (response.ResponseData.RequestNo && response.ResponseData.RequestNo != '') {
+             this.alertService.showInfoMessage("Saved successfully. Quotation numbered " + response.ResponseData.RequestNo + " created for converted services",
+             10000);
+          }
+          else {
+            this.alertService.showSuccessMessage("Request Saved successfully");
+          }
+
+                 
+          this.SetDefaultRequest();
+          this.NavigateToList();
+        }
+        else {
+          this.alertService.showErrorMessage("Failed to save due to application error");
+        }
+       
       }, (error: any) => {
         this.alertService.showSuccessMessage("Failed to save");
       });
@@ -275,6 +300,10 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onServiceCommandClick($event: CommandEventArgs) {
+
+    if(!this.allowSave)
+      return;
+
     if ($event.toolbarItem) {
       if ($event.toolbarItem == ToolBarItems.Add) {
         this.OpenServiceDialog(null);
@@ -325,8 +354,15 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       showPrice = true;
     }
+
+    let showNumberOfEmployees : boolean = false;
+    if(this.request.RequestMaster.ClientTypeId == ClientType.Corporate.toString())
+    {
+        showNumberOfEmployees = true;
+    }
+
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: showPrice },
+      data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: showPrice , ShowNumberOfEmployees : showNumberOfEmployees },
       disableClose: true
     });
 
@@ -440,16 +476,22 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
         { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         { ColumnField: "QuoatedPrice", ColumnHeader: "Price", Type: "text" },
+        { ColumnField: "NoOfEmployees", ColumnHeader: "No Of Employees", Type: "text" },
+        { ColumnField: "LeadSourceName", ColumnHeader: "Lead Source", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Lead Status", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Lead Stage", Type: "text" },
-        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: serviceGridCommand }
+        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" }
+
       ];
 
     if (this.requestTypeId == RequestType.Quotation) {
       this.serviceTableSchema.splice(3, 0, { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },)
     }
     
+    if(this.allowSave)
+    {
+      this.serviceTableSchema.push({ ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: serviceGridCommand });
+    }
 
   }
 

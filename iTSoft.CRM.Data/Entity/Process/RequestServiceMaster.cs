@@ -13,9 +13,14 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long? RequestId { get; set; }
         public long? ServiceId { get; set; }
         public long? DepartmentId { get; set; }
+        public long Quantity { get; set; }
+        public long NoOfEmployees { get; set; }
         public decimal? QuoatedPrice { get; set; }
         public decimal? AgreedPrice { get; set; }
+        public decimal? TotalQuoatedPrice { get; set; }
+        public decimal? TotalAgreedPrice { get; set; }
         public string Remark { get; set; }
+        public long SourceId { get; set; }
         public long LeadStatusId { get; set; }
         public long StageId { get; set; }
         public  string TermsAndConditions { get; set; }
@@ -30,6 +35,7 @@ namespace iTSoft.CRM.Data.Entity.Process
     {
         public string ServiceName { get; set; }
         public string DepartmentName { get; set; }
+        public string LeadSourceName { get; set; }
         public string LeadStatusName { get; set; }
         public string StageName { get; set; }
         public int Attempts { get; set; }

@@ -15,7 +15,7 @@ namespace iTSoft.CRM.Domain.Services.Process
 {
     public interface IRequestService
     {
-        ResponseCode SaveRequest(RequestViewModel requestViewModel);
+        RequestMaster SaveRequest(RequestViewModel requestViewModel);
 
         ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels);
         RequestViewModel LoadRequest(long requestId);
@@ -33,8 +33,9 @@ namespace iTSoft.CRM.Domain.Services.Process
 
 
 
-        public ResponseCode SaveRequest(RequestViewModel requestViewModel)
+        public RequestMaster SaveRequest(RequestViewModel requestViewModel)
         {
+            RequestMaster requestMaster = new RequestMaster();
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 string flag = requestViewModel.RequestMaster.RequestId > 0 ? ActionFlag.Update : ActionFlag.Add;
@@ -45,12 +46,16 @@ namespace iTSoft.CRM.Domain.Services.Process
                 DataTable contractPersons = new ListConverter().ToDataTable<ContactPersonMaster>(requestViewModel.ContactPersonMasters);
 
                 param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
+                param.Add("ChildRequestNo", dbType: DbType.String, size: 50, direction: ParameterDirection.InputOutput);
                 param.Add("@RequestServiceMasterType", requestServices.AsTableValuedParameter("RequestServiceMasterType"));
                 param.Add("@ContactPersonMasterType", contractPersons.AsTableValuedParameter("ContactPersonMasterType"));
 
                 dbConnection.Execute(PROC_RequestManager, param, commandType: CommandType.StoredProcedure);
-                return (ResponseCode)param.Get<int>("@Result");
+                //requestMaster.RequestId =  param.Get<int>("@Result");
+                requestMaster.RequestNo = param.Get<string>("ChildRequestNo");
             }
+
+            return requestMaster;
         }
 
         public List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters)

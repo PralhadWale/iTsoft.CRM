@@ -17,9 +17,9 @@ export class AlertService {
         private _snackBar: MatSnackBar) {
     }
 
-    showInfoMessage(message: any) {
+    showInfoMessage(message: any , duration : number = 2000) {
         this._snackBar.open(message, '', {
-            duration: 2000,
+            duration: duration,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
             panelClass: 'snackbar-info-class',

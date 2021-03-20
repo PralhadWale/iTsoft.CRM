@@ -7,7 +7,7 @@
         <mat-card-actions>
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
             (click)="saveEnquiry(enquiryForm)"
-            *ngIf="request && request.RequestServiceDetails && request.RequestServiceDetails.length > 0">
+            *ngIf="request && allowSave == true && request.RequestServiceDetails && request.RequestServiceDetails.length > 0">
             <mat-icon>save</mat-icon>
           </button>
           <button mat-mini-fab class="" style="margin-right:10px; " (click)="Close(enquiryForm)">

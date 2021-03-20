@@ -4,11 +4,16 @@ export class RequestServiceMaster {
     RequestServiceId: number;
     RequestId: number;
     ServiceId: number;
+    SourceId : number;
     LeadStatusId: number;
     StageId: number;
     DepartmentId: number;
+    Quantity : number;
+    NoOfEmployees:number;
     QuoatedPrice: number;
     AgreedPrice: number;
+    TotalQuoatedPrice: number;
+    TotalAgreedPrice: number;
     Remark: string;
     TermsAndConditions: string;
     AdvisorId: number;
@@ -24,6 +29,7 @@ export class RequestServiceMaster {
 export class RequestServiceDetails extends RequestServiceMaster {
     ServiceName: string;
     LeadStatusName: string;
+    LeadSourceName:string;
     DepartmentName: string;
     StageName: string;
     Attempts: number;

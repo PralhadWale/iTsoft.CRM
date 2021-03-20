@@ -54,12 +54,6 @@ const routes: Routes = [
     , canActivate: [AuthGuard]
   },
   {
-    path: "organizations",
-    loadChildren: () =>
-      import('./organization/organization.module').then(m => m.OrganizationModule)
-    , canActivate: [AuthGuard]
-  },
-  {
     path: "employees",
     loadChildren: () =>
       import('./masters/employee/employee.module').then(m => m.EmployeeModule)
@@ -77,18 +71,6 @@ const routes: Routes = [
       import('./enquiry/enquiry.module').then(m => m.EnquiryModule)
     , canActivate: [AuthGuard]
   },
-  // {
-  //   path: "orders",
-  //   loadChildren: () =>
-  //     import('./order/order.module').then(m => m.OrderModule)
-  //   , canActivate: [AuthGuard]
-  // },
-  // {
-  //   path: "products",
-  //   loadChildren: () =>
-  //     import('./product/product.module').then(m => m.ProductModule)
-  //   , canActivate: [AuthGuard]
-  // },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
     path: "**",

@@ -35,7 +35,8 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             try
             {
 
-                response.ResponseCode = followUpService.SaveFollowUp(followupMaster);
+                response.ResponseData = followUpService.SaveFollowUp(followupMaster);
+                response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)
             {

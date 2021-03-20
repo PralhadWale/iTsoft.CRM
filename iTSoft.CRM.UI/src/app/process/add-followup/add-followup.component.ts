@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
+import { ResponseCode } from 'src/app/core/models/ServiceResponse.model';
 import { FollowUp } from 'src/app/_models/followup';
 import { FollowUpDetails } from 'src/app/_models/followupdetails';
 import { RequestSelectListModel } from 'src/app/_models/requestselectlistmodel';
@@ -26,7 +27,7 @@ export class AddFollowupComponent implements OnInit {
   followUP: FollowUp;
   requestSelectList: RequestSelectListModel;
   requestTypeName: string;
-  public IsCompleted :boolean = false;
+  public IsCompleted: boolean = false;
   minDate = new Date();
   nextMinDate = new Date();
   constructor(
@@ -86,7 +87,7 @@ export class AddFollowupComponent implements OnInit {
       );
   }
 
- 
+
 
   onSubmit(followUpForm: NgForm) {
     if (followUpForm && followUpForm.valid) {
@@ -96,20 +97,32 @@ export class AddFollowupComponent implements OnInit {
       else {
         this.followUpService.Save(this.followUP).subscribe(result => {
           {
-            this.alertService.showSuccessMessage("FollowUp Saved successfully");
-            this.sidenav.close();
-            this.clearFollowUpData();
-            this.onFollowUpSaved.emit();
-          } 
+            var response = result.Value;
+            if (response.ResponseCode == ResponseCode.Success) {
+              if (response.ResponseData && response.ResponseData != '') {
+                this.alertService.showInfoMessage("Saved successfully. Quotation numbered " + response.ResponseData + " created for converted services",
+                  10000);
+              }
+              else {
+                this.alertService.showSuccessMessage("Saved successfully");
+              }
+              this.sidenav.close();
+              this.clearFollowUpData();
+              this.onFollowUpSaved.emit();
+            }
+            else {
+              this.alertService.showErrorMessage("Failed to save");
+            }
+
+          }
         }, (error: any) => {
           { this.alertService.showSuccessMessage("Failed to save"); }
         });
       }
     }
   }
- 
-  onCancelClick()
-  {
+
+  onCancelClick() {
     this.clearFollowUpData();
     this.sidenav.close();
   }

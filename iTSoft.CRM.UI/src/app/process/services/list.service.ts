@@ -10,6 +10,7 @@ import { APIService } from 'src/app/_services';
     providedIn: 'root'
 })
 export class ListService {
+ 
     private listController = "/List/";
 
     // private requestSelectList :Array<any>= null;
@@ -19,7 +20,9 @@ export class ListService {
     followUpSelectList: RequestSelectListModel;
     requestSelectList: RequestSelectListModel;
 
+    private leadsourceList : Array<ListModel> = [];
     private leadStatusList : Array<ListModel> = [];
+    private nonDecisiveLeadStatusList : Array<ListModel> = [];
     private stageList:Array<ListModel> = [];
     
     constructor(private apiService: APIService) { }
@@ -107,8 +110,38 @@ export class ListService {
     }
   }
 
+  public get ActiveNotDecisiveLeadStatusList() : Observable<Array<ListModel>>{
+    if (this.nonDecisiveLeadStatusList == null || this.nonDecisiveLeadStatusList.length == 0) {
+      let getUrl = this.listController + "get-lead-status-list?activeOnly=true";
+      return this.apiService.GetData(getUrl).map((result: any) => {
+        this.nonDecisiveLeadStatusList = <Array<ListModel>>result.Value.ResponseData;
+        this.nonDecisiveLeadStatusList = this.nonDecisiveLeadStatusList.filter(f=>f.Value <= 10009);
+        return this.nonDecisiveLeadStatusList;
+      });
+    }
+    else {
+      return of(this.nonDecisiveLeadStatusList)
+    }
+  }
+
+  
+  public get ActiveLeadSourceList() : Observable<Array<ListModel>>{
+    if (this.leadsourceList == null || this.leadsourceList.length == 0) {
+      let getUrl = this.listController + "get-lead-source-list?activeOnly=true";
+      return this.apiService.GetData(getUrl).map((result: any) => {
+        this.leadsourceList = <Array<ListModel>>result.Value.ResponseData;
+        return this.leadsourceList;
+      });
+    }
+    else {
+      return of(this.leadsourceList)
+    }
+  }
+
   public GetLeadStatusName(leadStatusId : number)
   {
+    if(this.leadStatusList && this.leadStatusList.length > 0)
+    {
       let leadStatus = this.leadStatusList.filter(f => f.Value == leadStatusId);
       if(leadStatus && leadStatus.length > 0)
       {
@@ -118,6 +151,19 @@ export class ListService {
       {
           return "";
       }
+    }
+    else 
+    {
+        let leadStatus = this.nonDecisiveLeadStatusList.filter(f => f.Value == leadStatusId);
+        if (leadStatus && leadStatus.length > 0) {
+            return leadStatus[0].Text;
+        }
+        else {
+            return "";
+        }
+
+    }
+    return "";
   }
   
   public get ActiveStageList() : Observable<Array<ListModel>>{
@@ -144,6 +190,18 @@ export class ListService {
       {
           return "";
       }
+  }
+
+  GetSourceName(sourceId: number): string {
+    let d = this.leadsourceList.filter(f => f.Value == sourceId);
+    if(d && d.length > 0)
+    {
+        return d[0].Text;
+    }
+    else 
+    {
+        return "";
+    }
   }
 
 }

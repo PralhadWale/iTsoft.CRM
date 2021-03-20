@@ -190,6 +190,22 @@ namespace iTSoft.CRM.Web.Controllers
             return Ok(response);
         }
 
+        [HttpGet("get-lead-source-list")]
+        public IActionResult GetLeadSourceList(bool activeOnly)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId), activeOnly);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetLeadSourceList");
+            }
+            return Ok(response);
+        }
 
         [HttpGet("get-stage-list")]
         public IActionResult GetStageList(bool activeOnly)

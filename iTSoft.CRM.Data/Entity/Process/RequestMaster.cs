@@ -29,7 +29,7 @@ namespace iTSoft.CRM.Data.Entity.Process
         public DateTime? AddedOn { get; set; }
         public long? UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
-
+        public long? StatusId { get; set; }
 
     }
 

@@ -15,6 +15,7 @@ export class RequestMaster
     TermsAndCondition: string;
     ClientBehaviourId?: number;
     AdvisorId?: number;
+    StatusId : number;
     AssignedOn?: string;
     AddedBy?: number;
     AddedOn?: Date;

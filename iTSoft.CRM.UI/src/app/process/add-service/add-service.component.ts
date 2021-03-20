@@ -32,6 +32,7 @@ export class AddServiceComponent implements OnInit {
 
   isNew: boolean = true;
   showPrice: boolean = false
+  showNumberOfEmployees : boolean = true;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddServiceComponent>,
@@ -57,6 +58,7 @@ export class AddServiceComponent implements OnInit {
         this.requestAllServiceList = data.AllServiceList;
       }
       this.showPrice = data.ShowPrice
+      this.showNumberOfEmployees = data.ShowNumberOfEmployees;
 
     }
 
@@ -141,7 +143,8 @@ export class AddServiceComponent implements OnInit {
 
         this.requestServiceDetails.LeadStatusName = this.listService.GetLeadStatusName(this.requestServiceDetails.LeadStatusId);
         this.requestServiceDetails.StageName = this.listService.GetStageName(this.requestServiceDetails.StageId);
-        
+        this.requestServiceDetails.LeadSourceName = this.listService.GetSourceName(this.requestServiceDetails.SourceId);
+      
         this.dialogRef.close({ Action: this.ACTION_SAVE, Data: this.requestServiceDetails });
       }
     }

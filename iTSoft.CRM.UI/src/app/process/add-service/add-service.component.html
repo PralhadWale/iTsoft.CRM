@@ -1,5 +1,5 @@
 <form #serviceForm="ngForm">
-    <mat-card style="width: 500px;">
+    <mat-card style="width: 600px;">
         <mat-toolbar style="background-color: #FFF">
             <mat-toolbar-row>
                 <span class="view-card-title">{{pageTitle}}</span>
@@ -67,12 +67,35 @@
                         </mat-error>
                     </mat-form-field>
                  </mat-grid-tile>
+                 <mat-grid-tile [colspan]="fieldColspan" *ngIf="showNumberOfEmployees">
+                  <mat-form-field class="form-field" appearance="outline">
+                      <mat-label>No Of Employees</mat-label>
+                      <input matInput type='number' [(ngModel)]="requestServiceDetails.NoOfEmployees" name="NoOfEmployees" #NoOfEmployees="ngModel">
+                      <mat-error *ngIf="(NoOfEmployees.touched || serviceForm.submitted) && NoOfEmployees.errors">
+                           Please enter valid value
+                      </mat-error>
+                  </mat-form-field>
+               </mat-grid-tile>
+                 <mat-grid-tile [colspan]="fieldColspan">
+                  <mat-form-field class="form-field" appearance="outline">
+                    <mat-label>Lead Source</mat-label>
+                    <mat-select SourceId="Select Source" [(ngModel)]="requestServiceDetails.SourceId" [(value)]="requestServiceDetails.SourceId"
+                    name="SourceId" #LeadStatusId="ngModel" required>
+                      <mat-option *ngFor="let item of listService.ActiveLeadSourceList | async" [value]="item.Value">
+                        {{item.Text}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="serviceForm.submitted">
+                      Please select lead status
+                    </mat-error>
+                  </mat-form-field>
+                </mat-grid-tile>
                  <mat-grid-tile [colspan]="fieldColspan">
                     <mat-form-field class="form-field" appearance="outline">
                       <mat-label>Lead Status</mat-label>
                       <mat-select placeholder="Select Status" [(ngModel)]="requestServiceDetails.LeadStatusId" [(value)]="requestServiceDetails.LeadStatusId"
                       name="LeadStatusId" #LeadStatusId="ngModel" required>
-                        <mat-option *ngFor="let item of listService.ActiveLeadStatusList | async" [value]="item.Value">
+                        <mat-option *ngFor="let item of listService.ActiveNotDecisiveLeadStatusList | async" [value]="item.Value">
                           {{item.Text}}
                         </mat-option>
                       </mat-select>

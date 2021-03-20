@@ -15,7 +15,7 @@ namespace iTSoft.CRM.Domain.Services.Process
 {
     public interface IFollowUpService
     {
-        ResponseCode SaveFollowUp(FollowUpMaster followupMaster);
+        string SaveFollowUp(FollowUpMaster followupMaster);
         List<FollowUpDetails> SearchFollowUp(FollowUpSerchParameters FollowUpSerchParameters);
         ResponseCode AssignRequest(List<AssignAdvisorViewModel> assignAdvisorViewModels);
     }
@@ -25,7 +25,7 @@ namespace iTSoft.CRM.Domain.Services.Process
         public const string PROC_FollowUpLookUpManager = "PROC_FollowUpLookUpManager";
         public const string PROC_AssignFollowUp = "PROC_AssignFollowUp";
         public const string PROC_EnrollClient = "PROC_EnrollClient";
-        public ResponseCode SaveFollowUp(FollowUpMaster followupMaster)
+        public string SaveFollowUp(FollowUpMaster followupMaster)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
@@ -33,7 +33,7 @@ namespace iTSoft.CRM.Domain.Services.Process
                 param.Add("Result", dbType: DbType.Int64, direction: ParameterDirection.InputOutput);
                 param.Add("ChildRequestNo", dbType: DbType.String, size:50, direction: ParameterDirection.InputOutput);
                 dbConnection.Execute(PROC_FollowUpManager, param, commandType: CommandType.StoredProcedure);
-                return (ResponseCode)param.Get<long>("Result");
+                return param.Get<string>("ChildRequestNo");
             }
         }
 
