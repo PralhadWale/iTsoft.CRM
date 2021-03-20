@@ -210,8 +210,7 @@ export class QuotationListComponent implements OnInit {
     ];
 
     this.quotationTableSchema =
-      [
-
+      [ { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands },
         { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
@@ -222,8 +221,7 @@ export class QuotationListComponent implements OnInit {
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
         { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "ServiceRate", ColumnHeader: "Service Rate", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }
+        { ColumnField: "ServiceRate", ColumnHeader: "Service Rate", Type: "text" }
       ];
 
     if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId !== UserRole.Advisor) {

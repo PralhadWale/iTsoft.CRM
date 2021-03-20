@@ -21,12 +21,11 @@ namespace iTSoft.Communication.Models
         public string MailBody { get; set; }
         public bool IsHTML { get; set; }
         public string[] Attachments { get; set; }
-        public string FromEmailPassword { get; set; }
-        public string SmtpClientHostName { get; set; }
-        public string SmtpClientHostServerAddress { get; set; }
-        public int SmtpClientPort { get; set; }
         public bool IsBase64Attachment { get; set; }
+
+        public SMTPSettings SMTPSettings { get; set; }
         public List<Attachments> AttachmentList { get; set; }
+        public string FromEmailPassword { get; internal set; }
     }
 
     public class Attachments

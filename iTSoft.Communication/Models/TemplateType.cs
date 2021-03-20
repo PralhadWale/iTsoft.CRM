@@ -8,14 +8,9 @@ namespace iTSoft.Communication.Models
 {
     public enum TemplateType
     {
-        ChangePassword = 1,
-        ForgotPassword = 2,
-        EFillingRequestCreation = 3,
-        RequestUpdated = 4,
-        Registration = 5,
-        PaymentSuccessfull = 6,
-        PaymentFailed = 7,
-        SendOTP=8,
-        PaymentCancelled=9
+        ForgotPassword = 1,
+        ChangePassword = 2,
+        WorkAssigned = 3,
+        SendOTP = 4,
     }
 }

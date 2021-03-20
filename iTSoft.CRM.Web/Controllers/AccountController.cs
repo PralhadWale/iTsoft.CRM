@@ -8,6 +8,11 @@ using iTSoft.CRM.Domain.Services;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Web.Helpers;
 using System.Security.Claims;
+using iTSoft.Communication.Service.Helpers;
+using iTSoft.CRM.Core.Helpers;
+using iTSoft.CRM.Domain.Models;
+using iTSoft.Communication.Models;
+using iTSoft.CRM.Core.Cryptography;
 
 namespace iTSoft.CRM.Web.Controllers
 {
@@ -40,6 +45,86 @@ namespace iTSoft.CRM.Web.Controllers
         }
 
 
+        [HttpPost("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword(LoginModel loginModel)
+        {
+            // throw new Exception("Test");
+            loginModel.Password = new EncryptionHelper().Encrypt(loginModel.Password);
+            var result = await _iLoginDetailService.ResetPassword(loginModel);
+            if (result == ResponseCode.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("User not found.Invalid user details");
+            }
+
+        }
+
+
+        [HttpPost("changepassword")]
+        public async Task<IActionResult> ChangePassword(LoginModel loginModel)
+        {
+            // throw new Exception("Test");
+            loginModel.Password = new EncryptionHelper().Encrypt(loginModel.Password);
+            loginModel.NewPassword = new EncryptionHelper().Encrypt(loginModel.NewPassword);
+            var result = await _iLoginDetailService.ChangePassword(loginModel);
+            if (result == ResponseCode.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Please enter valid old password");
+            }
+
+        }
+
+        [HttpGet("verifyaccount")]
+        public async Task<IActionResult> VerifyAccount(string userName)
+        {
+            UserMasterVM user = await _iLoginDetailService.FindUser(userName);
+            if (user != null)
+            {
+                LoginModel loginModel = new LoginModel();
+                OTPGenerator oTPGenerator = new OTPGenerator();
+                string OTP = oTPGenerator.GenerateOTP();
+                NotificationHelper notificationHelper = new NotificationHelper(NotificationTemplateList.EmailTemplateMasters, NotificationTemplateList.SMSTemplateMaster);
+                user.OTP = OTP;
+                notificationHelper.SendNotification<UserMasterVM>(user, TemplateType.SendOTP, user.Email, user.MobileNo, true, null);
+
+                loginModel.OTP = OTP;
+                loginModel.UserID = user.UserId;
+
+                if (loginModel != null)
+                {
+                    await _iLoginDetailService.SaveOTP(loginModel);
+                }
+
+                loginModel.OTP = string.Empty;
+                return Ok(loginModel);
+            }
+            else
+            {
+                return BadRequest("User Not Found");
+            }
+        }
+
+
+        [HttpPost("verifyotp")]
+        public async Task<IActionResult> VerifyOTP(LoginModel loginModel)
+        {
+            var result = await _iLoginDetailService.VerifyOTP(loginModel);
+            if (result == ResponseCode.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("User not found.Invalid user details");
+            }
+        }
 
         private string SetTokenData(IdentityUserDetails userDetails)
         {

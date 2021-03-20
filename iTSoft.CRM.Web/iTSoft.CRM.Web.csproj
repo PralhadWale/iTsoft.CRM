@@ -26,6 +26,8 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\iTSoft.Communication\iTSoft.Communication.csproj" />
+    <ProjectReference Include="..\iTSoft.CRM.Core\iTSoft.CRM.Core.csproj" />
     <ProjectReference Include="..\iTSoft.CRM.Data\iTSoft.CRM.Data.csproj" />
     <ProjectReference Include="..\iTSoft.CRM.Domain\iTSoft.CRM.Domain.csproj" />
   </ItemGroup>

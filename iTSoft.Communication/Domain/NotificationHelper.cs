@@ -13,21 +13,30 @@ namespace iTSoft.Communication.Service.Helpers
 
         public string MailSignature = string.Empty;
 
+        public List<EmailTemplateMasterVM> EmailTemplates { get; set; }
 
+        public List<SMSTemplateMasterVM> SMSTemplates { get; set; }
         public NotificationHelper()
         {
 
         }
 
+        public NotificationHelper(List<EmailTemplateMasterVM> _emailTemplates, List<SMSTemplateMasterVM> _smsTemplates)
+        {
+            EmailTemplates = _emailTemplates;
+            SMSTemplates = _smsTemplates;
+        }
+
+
         public bool SendNotification<T>(T Parameter, TemplateType tempalteType, string email, string mobile, bool mailonly, List<string> attachmentFilePath = null)
         {
             try
             {
-                EmailTemplateMasterVM emailTemplateMaster = ApplicationList.EmailTemplateMasters.Where(t => t.TemplateTypeId == (int)tempalteType).FirstOrDefault();
+                EmailTemplateMasterVM emailTemplateMaster = EmailTemplates.Where(t => t.TemplateTypeId == (int)tempalteType).FirstOrDefault();
                 this.SendMail<T>(emailTemplateMaster, email, Parameter, attachmentFilePath);
                 if (!mailonly)
                 {
-                    SMSTemplateMasterVM smsTemplateMaster = ApplicationList.SMSTemplateMaster.Where(t => t.TemplateTypeId == (int)tempalteType).FirstOrDefault();
+                    SMSTemplateMasterVM smsTemplateMaster = SMSTemplates.Where(t => t.TemplateTypeId == (int)tempalteType).FirstOrDefault();
                     this.SendSMS<T>(smsTemplateMaster, mobile, Parameter);
                 }
                 return true;
@@ -45,9 +54,11 @@ namespace iTSoft.Communication.Service.Helpers
                 EmailDataVM emailConfig = new EmailDataVM();
                 emailConfig.From = template.Email;
                 emailConfig.FromEmailPassword = template.Password;
+                emailConfig.SMTPSettings = template.SMTPSettings;
+
                 if (attachmentFilePath != null)
                     emailConfig.Attachments = attachmentFilePath.ToArray();
-                EmailHelper emailHelper = new EmailHelper(null);
+                EmailHelper emailHelper = new EmailHelper();
                 emailConfig.To = To;
                 emailConfig.Subject = template.Subject;
 

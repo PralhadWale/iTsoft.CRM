@@ -14,6 +14,8 @@ namespace iTSoft.Communication.Models
         public long? TemplateTypeId { get; set; }
         public string Subject { get; set; }
         public bool? IsActive { get; set; }
+        public int SMTPSettingId { get; set; }
+
     }
 
     public class EmailTemplateMasterVM : EmailTemplateMaster
@@ -21,5 +23,6 @@ namespace iTSoft.Communication.Models
         public string TemplateType { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public SMTPSettings SMTPSettings {get;set;}
     }
 }

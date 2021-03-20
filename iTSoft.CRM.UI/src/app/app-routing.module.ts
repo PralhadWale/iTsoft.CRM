@@ -6,6 +6,7 @@ import { AuthGuard } from './_guard';
 import { NotFoundPageComponent } from './notfoundpage';
 import { LoginComponent } from './login';
 import { LoadingComponent } from './loading';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 // const routes: Routes = [];
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent,
+  },
+  {
+    path: "changepassword",
+    component: ChangePasswordComponent,
   },
   {
     path: "loading",

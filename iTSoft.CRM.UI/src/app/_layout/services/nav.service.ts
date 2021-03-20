@@ -35,11 +35,11 @@ export class NavService {
           route: 'dashboard',
 
         },
-        {
-          displayName: 'Follow Up',
-          iconName: 'account_tree',
-          route: 'followup',
-        },
+        // {
+        //   displayName: 'Follow Up',
+        //   iconName: 'account_tree',
+        //   route: 'followup',
+        // },
         {
           displayName: 'Enquiries',
           iconName: 'perm_phone_msg',
@@ -121,11 +121,11 @@ export class NavService {
           route: 'dashboard',
 
         },
-        {
-          displayName: 'Follow Up',
-          iconName: 'account_tree',
-          route: 'followup',
-        },
+        // {
+        //   displayName: 'Follow Up',
+        //   iconName: 'account_tree',
+        //   route: 'followup',
+        // },
         {
           displayName: 'Enquiries',
           iconName: 'perm_phone_msg',

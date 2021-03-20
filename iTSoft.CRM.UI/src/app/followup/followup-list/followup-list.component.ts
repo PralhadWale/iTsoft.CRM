@@ -161,6 +161,7 @@ export class FollowupListComponent implements OnInit {
     
     this.followUpTableSchema =
       [
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command:gridCommands },
         { ColumnField: "RequestTypeName", ColumnHeader: "Request Type", Type: "text" },
         { ColumnField: "RequestNo", ColumnHeader: "Request No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Request Date", Type: "date" },
@@ -174,7 +175,7 @@ export class FollowupListComponent implements OnInit {
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
         { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
         { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command:gridCommands }
+        
       ];
 
 

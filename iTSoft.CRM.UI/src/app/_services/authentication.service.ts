@@ -10,6 +10,12 @@ const APP_USER_PROFILE = "IT_CRM_USER_DATA_1.0"
 export class AuthenticationService {
 
   public loginURL: string = "/account/login";
+  public verifyotpURL: string = "/account/verifyotp";
+  public forgotpasswordURL : string = "/account/forgotpassword";
+  public changepasswordURL : string = "/account/changepassword";
+  public verifyaccountURL : string = "/account/verifyaccount";
+ 
+
   constructor(private apiService: APIService) { }
 
   login(user: any) {
@@ -23,6 +29,22 @@ export class AuthenticationService {
       }
     });
 
+  }
+
+  forgotPassword(user: any) {
+    return this.apiService.PostData(this.forgotpasswordURL, user);
+  }
+
+  changePassword(user: any) {
+    return this.apiService.PostData(this.changepasswordURL, user);
+  }
+
+  verifyOTP(user: any) {
+    return this.apiService.PostData(this.verifyotpURL, user);
+  }
+
+  verifyAccount(userName: string) {
+    return this.apiService.GetData(this.verifyaccountURL +"?userName=" + userName);
   }
 
   logout() {

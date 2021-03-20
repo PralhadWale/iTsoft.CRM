@@ -11,7 +11,6 @@ namespace iTSoft.CRM.Data.Entity
         public string Password { get; set; }
         public List<IdentityUserRole> usrRoles { get; set; }
         public string OTP { get; set; }
-        public string ClientName { get; set; }
 
     }
 }

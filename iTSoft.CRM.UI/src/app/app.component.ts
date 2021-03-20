@@ -109,7 +109,10 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
     this.router.navigate(['login']);
   }
 
-
+  changePassword()
+  {
+    this.router.navigate(['changepassword']);
+  }
 
   isAuth(isAuth?: any) {
     if (isAuth) {

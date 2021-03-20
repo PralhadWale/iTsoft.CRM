@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTSoft.CRM.Web.Helpers
+namespace iTSoft.CRM.Core.Cryptography
 {
     public class EncryptionHelper
     {

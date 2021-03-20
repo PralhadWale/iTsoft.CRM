@@ -22,10 +22,12 @@ import { iTCRMLoaderService } from './core/services/ITSoftLoaderService';
 import { NavLayoutModule } from './_layout/layout-module';
 import { Router } from '@angular/router';
 import { UserProfilService } from './_services/userProfile.Service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
+    ChangePasswordComponent,
     AboutComponent,
     NotFoundPageComponent,
     ConfirmDialog,

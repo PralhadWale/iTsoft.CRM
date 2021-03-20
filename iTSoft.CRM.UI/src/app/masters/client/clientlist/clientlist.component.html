@@ -63,8 +63,8 @@
 
     </mat-nav-list>
     <mat-nav-list style="margin-left:50px;">
-      <mat-radio-group aria-labelledby="client-radio-group-label" class="client-radio-group"
-        [(ngModel)]="selectedClientType">
+      <mat-radio-group aria-labelledby="client-radio-group-label" class="client-radio-group" name="clientType"
+        [(ngModel)]="selectedClientType" [(value)]="selectedClientType">
         <mat-radio-button class="client-radio-button" *ngFor="let clientType of clientTypes" [value]="clientType">
           {{clientType}}
         </mat-radio-button>

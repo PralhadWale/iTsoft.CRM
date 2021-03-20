@@ -22,7 +22,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
         `
         .confirm-dialog {
             min-width: 350px;
-            font-family: sans-serif;
+            font-family: Quicksand;
             }
         .confirm-dialog-title {
             margin-top:0px;

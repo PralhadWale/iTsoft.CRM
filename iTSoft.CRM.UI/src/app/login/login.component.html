@@ -4,7 +4,7 @@
       style="stroke: none; fill: #08f;"></path>
   </svg></div>
 <div  id="container" class="container">
-  <mat-card class="login-card" >
+  <mat-card class="login-card" *ngIf="isForgotPassword == false" >
     <form class="loginForm" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
       <!-- <div> -->
       <mat-card-header>
@@ -26,7 +26,71 @@
       </mat-card-content>
 
       <mat-card-actions class="action-item">
-        <button mat-raised-button [disabled]="isValidating">Login</button>
+        <button mat-raised-button [disabled]="isValidating">Login</button> <br/><br/>
+        <a href="javascript:;" (click)="isForgotPassword = true;isUserVerified=false;isOTPVerified=false;">Forgot Password ? </a>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+  <mat-card class="login-card" *ngIf="isForgotPassword == true" >
+    <form *ngIf="isUserVerified == false && isOTPVerified == false" class="loginForm" name="form" (ngSubmit)="verifyUserForm.form.valid && verifyUser()" #verifyUserForm="ngForm" novalidate>
+      <!-- <div> -->
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <h2>Forgot Password ?</h2>
+      </mat-card-header>
+      <mat-card-content class="field-item">
+        <mat-form-field style="display: block" [ngClass]="{  'mat-input-error': verifyUserForm.submitted && !username.valid }">
+          <input matInput type="text" placeholder="User Name" name="username" [(ngModel)]="model.username"
+            #username="ngModel" required />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions class="action-item">
+        <button mat-raised-button [disabled]="isValidating">Verfiy User</button> <br/><br/>
+        <a href="javascript:;" (click)="isForgotPassword = false;isUserVerified=false;isOTPVerified=false;">Login </a>
+      </mat-card-actions>
+    </form>
+    <form *ngIf="isUserVerified == true" class="loginForm" name="form" (ngSubmit)="f.form.valid && verifyOTP()" #f="ngForm" novalidate>
+      <!-- <div> -->
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <h2>Verify OTP</h2>
+      </mat-card-header>
+      <mat-card-content class="field-item">
+        <mat-form-field style="display: block"
+          [ngClass]="{ 'display': 'block','mat-input-error': f.submitted && !OTP.valid }">
+          <input matInput type="text" placeholder="OTP" name="OTP" [(ngModel)]="model.OTP"
+            #OTP="ngModel" required />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions class="action-item">
+        <button mat-raised-button [disabled]="isValidating">Verify OTP</button> <br/><br/>
+        <a href="javascript:;" (click)="isForgotPassword = false;isUserVerified=false;isOTPVerified=false;">Login</a>
+      </mat-card-actions>
+    </form>
+    <form *ngIf="isOTPVerified == true" class="loginForm" name="form" (ngSubmit)="f.form.valid && resetPassword()" #f="ngForm" novalidate>
+      <!-- <div> -->
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <h2>Reset Password</h2>
+      </mat-card-header>
+    
+      <mat-card-content class="field-item">
+        <mat-form-field style="display: block"
+          [ngClass]="{ 'display': 'block','mat-input-error': f.submitted && !password.valid }">
+          <input matInput type="password" placeholder="New Password" name="password" [(ngModel)]="model.password"
+            #password="ngModel" required minlength="8"/>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-content class="field-item">
+        <mat-form-field style="display: block"
+          [ngClass]="{ 'display': 'block','mat-input-error': f.submitted && !confirmPassword.valid }">
+          <input matInput type="password" placeholder="Confirm New Password" name="confirmPassword" [(ngModel)]="model.confirmPassword"
+            #confirmPassword="ngModel" required minlength="8"/>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions class="action-item">
+        <button mat-raised-button [disabled]="isValidating">Reset Password</button> <br/><br/>
+        <a href="javascript:;" (click)="isForgotPassword = false;isUserVerified=false;isOTPVerified=false;">Login</a>
       </mat-card-actions>
     </form>
   </mat-card>

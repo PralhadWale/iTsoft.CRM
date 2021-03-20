@@ -1,31 +1,26 @@
 ﻿using iTSoft.Communication.Models;
+using iTSoft.Communication.Service.Helpers;
+using iTSoft.CRM.Domain.Services.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTSoft.Communication.Service.Helpers
+namespace iTSoft.CRM.Domain.Models
 {
-    public class ApplicationList
+    public class NotificationTemplateList
     {
        
-
         private static List<EmailTemplateMasterVM> _EmailTemplateMasters;
         public static List<EmailTemplateMasterVM> EmailTemplateMasters
         {
             get
             {
-                if (_EmailTemplateMasters == null)
+                if( _EmailTemplateMasters == null)
                 {
-                    try
-                    {
-                       // _EmailTemplateMasters = new TemplateRepository().GetAllEmailTemplate();
-                    }
-                    catch
-                    {
-
-                    }
+                    NotificationService notificationService = new NotificationService();
+                    notificationService.SetNotificationSettings();
                 }
                 return _EmailTemplateMasters;
             }
@@ -40,17 +35,6 @@ namespace iTSoft.Communication.Service.Helpers
         {
             get
             {
-                if (_SMSTemplateMaster == null)
-                {
-                    try
-                    {
-                    //    _SMSTemplateMaster = new TemplateRepository().GetAllSMSTemplate();
-                    }
-                    catch
-                    {
-
-                    }
-                }
                 return _SMSTemplateMaster;
             }
             set

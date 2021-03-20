@@ -1,4 +1,5 @@
-﻿using iTSoft.CRM.Data.Entity;
+﻿using iTSoft.CRM.Core.Cryptography;
+using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
 using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Services.Master;

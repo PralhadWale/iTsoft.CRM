@@ -13,22 +13,15 @@ namespace iTSoft.Communication.Service.Helpers
     public class EmailHelper
     {
 
-        private ISMTPSetings SMTPSetings { get; set; }
 
-        public  EmailHelper(ISMTPSetings _SMTPSetings)
+        public  EmailHelper()
         {
-            SMTPSetings = _SMTPSetings;
         }
         public bool SendEmail(EmailDataVM emailConfig)
         {
             bool MailStatus = false;
             try
-            {
-
-                emailConfig.SmtpClientHostName = SMTPSetings.SmtpClientHostName;
-                emailConfig.SmtpClientHostServerAddress = SMTPSetings.SmtpClientHostServerAddress;
-                emailConfig.SmtpClientPort = SMTPSetings.SmtpClientPort;
-
+            { 
                 if (emailConfig.From != "")
                 {
                     MailMessage newmsg = new MailMessage(emailConfig.From, emailConfig.To);
@@ -62,8 +55,8 @@ namespace iTSoft.Communication.Service.Helpers
                         }
                     }
 
-                    SmtpClient smtp = new SmtpClient(emailConfig.SmtpClientHostName, emailConfig.SmtpClientPort);
-                    smtp.Host = emailConfig.SmtpClientHostServerAddress; //Or Your SMTP Server Address  
+                    SmtpClient smtp = new SmtpClient(emailConfig.SMTPSettings.SmtpClientHostName, emailConfig.SMTPSettings.SmtpClientPort);
+                    smtp.Host = emailConfig.SMTPSettings.SmtpClientHostServerAddress; //Or Your SMTP Server Address  
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
                     smtp.Credentials = new NetworkCredential(emailConfig.From, emailConfig.FromEmailPassword);
