@@ -17,7 +17,7 @@ export class AssignRequestAvisorComponent implements OnInit {
   @ViewChild("assignsidenav") sidenav: MatSidenav;
 
   @Input() requestDetails: RequestDetails;
-  @Input() multipleRequestDetails : Array<RequestDetails>;
+  @Input() multipleRequestDetails: Array<RequestDetails>;
   @Output() onAssigned = new EventEmitter();
 
   errorMessage: any;
@@ -41,13 +41,11 @@ export class AssignRequestAvisorComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.requestDetails)
-    {
+    if (changes.requestDetails) {
       this.requestDetails = changes.requestDetails.currentValue;
     }
-    
-    if(changes.multipleRequestDetails)
-    {
+
+    if (changes.multipleRequestDetails) {
       this.multipleRequestDetails = changes.multipleRequestDetails.currentValue;
     }
   }
@@ -81,8 +79,8 @@ export class AssignRequestAvisorComponent implements OnInit {
       );
   }
 
-  
-    
+
+
   onDepartmentChanged($event: any) {
     if ($event != null) {
       let departmentId = $event.value;
@@ -93,48 +91,38 @@ export class AssignRequestAvisorComponent implements OnInit {
   }
   GetDepartmentAdvisor(departmentId: any) {
     this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
-        this.requestSelectList.Advisors = result.Value.ResponseData;
+      this.requestSelectList.Advisors = result.Value.ResponseData;
     });
   }
 
-  onSubmit() {
-    if(this.requestDetails.AdvisorId!= null && this.requestDetails.AdvisorId > 0)
-    {
-      if(this.multipleRequestDetails.length > 0)
-      {
-        this.multipleRequestDetails.forEach(item => 
-        { 
-            item.AdvisorId = this.requestDetails.AdvisorId ; 
+  onSubmit(assignForm: NgForm) {
+    if (assignForm.valid) {
+        if (this.multipleRequestDetails.length > 0) {
+          this.multipleRequestDetails.forEach(item => {
+            item.AdvisorId = this.requestDetails.AdvisorId;
             item.DepartmentId = this.requestDetails.DepartmentId;
             item.TransferPendingFollowUp = this.requestDetails.TransferPendingFollowUp
-        });
-      }
-      else 
-      {
-        this.multipleRequestDetails.push(this.requestDetails);
-      }
+          });
+        }
+        else {
+          this.multipleRequestDetails.push(this.requestDetails);
+        }
 
-      this.requestService.AssignRequest(this.multipleRequestDetails).subscribe(
-        (result)=>
-        {
-          
-          this.sidenav.close();
-          this.alertService.showSuccessMessage("Request assigned successfully");
-          this.onAssigned.emit();
-          this.clearData();
-        } , (error)=>
-        { 
+        this.requestService.AssignRequest(this.multipleRequestDetails).subscribe(
+          (result) => {
+
+            this.sidenav.close();
+            this.alertService.showSuccessMessage("Request assigned successfully");
+            this.onAssigned.emit();
+            this.clearData();
+          }, (error) => {
           this.alertService.showErrorMessage(error.error)
         });
-    }
-    else 
-    {
-      this.alertService.showErrorMessage("Please select valid advisor");
+     
     }
   }
- 
-  onCancelClick()
-  {
+
+  onCancelClick() {
     this.clearData();
     this.sidenav.close();
   }

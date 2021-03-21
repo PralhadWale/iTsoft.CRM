@@ -8,6 +8,7 @@ import { AddClientComponent } from '../add-client/add-client.component';
 import { NgForm } from '@angular/forms/';
 import { Router } from '@angular/router';
 import { RequestType } from 'src/app/_models/requesttype';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 
 @Component({
   selector: 'app-clientlist',
@@ -29,6 +30,7 @@ export class ClientlistComponent implements OnInit {
   selectedClientType: string = "Assigned";
   constructor(
     private clientService: ClientService,
+    public userProfileService : UserProfilService,
      private alertService: AlertService,
      private router: Router,
      ) {
@@ -108,6 +110,8 @@ export class ClientlistComponent implements OnInit {
     else {
       clientMaster.IsAssigned = null;
     }
+
+    clientMaster.AdvisorId = this.userProfileService.CurrentUser.UserId;
     this.clientService.SearchClient(clientMaster).subscribe(result => {
       this.clientList = result.Value.ResponseData;
       this.searchNav.close();
@@ -125,17 +129,14 @@ export class ClientlistComponent implements OnInit {
       [
         { ColumnField: "ClientTypeName", ColumnHeader: "Client Type", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader: "Client Name", Type: "text" },
-        { ColumnField: "DoB", ColumnHeader: "Date of Birth", Type: "text" },
-        // { ColumnField: "MiddleName", ColumnHeader: "Middle Name", Type: "text" },
-        // { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
         { ColumnField: "Email", ColumnHeader: "Email", Type: "text" },
-        { ColumnField: "PhoneNo1", ColumnHeader: "Mobile No", Type: "text" },
+        { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
         { ColumnField: "PANNo", ColumnHeader: "PAN", Type: "text" },
-        { ColumnField: "OrganizationName", ColumnHeader: "Corporate Name", Type: "text" },
-        // { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
-        // { ColumnField: "Amount", ColumnHeader: "Amount", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [{ commandType: CommandType.Edit }, 
+        { ColumnField: "Address", ColumnHeader: "Adress", Type: "text" },
+        { ColumnField: "State", ColumnHeader: "State", Type: "text" },
+        { ColumnField: "Country", ColumnHeader: "Country", Type: "text" },
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [ 
         { click: null, commandType: CommandType.Other, icon: 'point_of_sale', content: 'addEnquiry', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Enquiry' }, 
         { click: null, commandType: CommandType.Other, icon: 'add_shopping_cart', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Quoatation' }] }
       ];

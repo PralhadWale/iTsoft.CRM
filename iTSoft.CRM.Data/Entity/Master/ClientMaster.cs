@@ -63,5 +63,8 @@ namespace iTSoft.CRM.Data.Entity.Master
         public string   DepartmentName { get; set; }
         public decimal? Amount { get; set; }
         public  string  AdvisorName { get; set; }
+        public string ServiceName { get; set; }
+
+        public string RequestNo { get; set; }
     }
 }

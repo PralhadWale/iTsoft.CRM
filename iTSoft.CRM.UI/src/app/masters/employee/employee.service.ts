@@ -1,18 +1,15 @@
  
 
 import { Injectable } from '@angular/core';
-
-import { UserService } from 'src/app/shared/services/UserService';
 import { APIService } from 'src/app/_services';
-
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
 import { EmployeeDetails, EmployeeMaster } from './employeeMaster.model';
-import { DepartmentMaster } from '../department/department.model';
 import { ListModel } from 'src/app/_models/listmodel';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 
 @Injectable() 
 export class EmployeeService {
-    constructor(private apiService: APIService, private userService: UserService) { }
+    constructor(private apiService: APIService, private userService: UserProfilService) { }
 
     URLSave: string = iTCRMSettings.Masters + "/employee/save";
     getUrl: string = iTCRMSettings.Masters + "/employee/getAll";
@@ -21,16 +18,19 @@ export class EmployeeService {
     getemployeeinfoURL : string =  iTCRMSettings.Masters + "/employee/getemployeeinfo";
 
     GetEmployeeInfo(employee: EmployeeMaster) {
+
+        employee.RoleId = this.userService.CurrentUser.RoleId;
+        employee.AddedBy = this.userService.CurrentUser.UserId;
+
         return this.apiService.PostData(this.getemployeeinfoURL, employee);
     }
 
     Save(employee: EmployeeMaster , selectedDepartments : Array<ListModel>) {
 
-        employee.AddedBy = this.userService.GetUserId();
-        employee.UpdatedBy = this.userService.GetUserId();
+        employee.AddedBy = this.userService.CurrentUser.UserId;
+        employee.UpdatedBy = this.userService.CurrentUser.UserId;
         employee.AddedDate = new Date(Date.now());
         employee.UpdatedDate = new Date(Date.now());
-
         let departments: Array<any> = [];
         selectedDepartments.forEach((x) => {
             departments.push ({ DepartmentId: x.Value });

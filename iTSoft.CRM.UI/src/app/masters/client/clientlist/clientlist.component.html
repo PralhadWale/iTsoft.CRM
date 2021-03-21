@@ -30,15 +30,6 @@
           Please enter valid name
         </mat-error>
       </mat-form-field>
-
-    </mat-nav-list>
-    <mat-nav-list style="margin-left:50px;">
-      <mat-form-field appearance="standard">
-        <mat-label>Company Name</mat-label>
-        <input matInput appearance="standard" placeholder="Client Name" name="OrganizationName"
-          [(ngModel)]="clientMaster.OrganizationName" maxlength="250" />
-      </mat-form-field>
-
     </mat-nav-list>
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
@@ -49,7 +40,6 @@
           Please enter valid email
         </mat-error>
       </mat-form-field>
-
     </mat-nav-list>
     <mat-nav-list style="margin-left:50px;">
       <mat-form-field appearance="standard">
@@ -60,9 +50,8 @@
           Please enter valid mobile number
         </mat-error>
       </mat-form-field>
-
     </mat-nav-list>
-    <mat-nav-list style="margin-left:50px;">
+    <mat-nav-list style="margin-left:50px;" *ngIf="userProfileService.IsAdmin == true">
       <mat-radio-group aria-labelledby="client-radio-group-label" class="client-radio-group" name="clientType"
         [(ngModel)]="selectedClientType" [(value)]="selectedClientType">
         <mat-radio-button class="client-radio-button" *ngFor="let clientType of clientTypes" [value]="clientType">

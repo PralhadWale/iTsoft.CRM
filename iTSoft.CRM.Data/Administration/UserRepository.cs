@@ -6,6 +6,7 @@ using System.Data;
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Shared;
+using iTSoft.CRM.Data.Entity.Master;
 
 namespace iTSoft.CRM.Data.Administration
 {
@@ -144,7 +145,14 @@ namespace iTSoft.CRM.Data.Administration
             {
                 queryText += "and I.PasswordHash = '" + password + "'";
             }
-            return base.QueryList<IdentityUserDetails>(queryText, commandTimeout: 0, commandType: CommandType.Text, param: null).FirstOrDefault();
+            
+            var identityUser = base.QueryList<IdentityUserDetails>(queryText, commandTimeout: 0, commandType: CommandType.Text, param: null).FirstOrDefault();
+            if(identityUser != null)
+            {
+                 identityUser.UserDepartments = base.QueryList<DepartmentMaster>("Select  DepartmentMaster.* From DepartmentMaster Join EmployeeDepartmentMaster on DepartmentMaster.DepartmentId = EmployeeDepartmentMaster.DepartmentId Where EmployeeId = " + identityUser.UserId +"", commandTimeout: 0, commandType: CommandType.Text, param: null);
+            }
+
+            return identityUser;
         }
 
         public LoginModel CheckOldPassword(LoginModel loginModel)

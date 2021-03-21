@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTSoft.CRM.Data.Entity.Master;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -35,5 +36,6 @@ namespace iTSoft.CRM.Data.Entity
         public long RoleId { get; set; }
         public long OrganizationId { get; set; }
         public object Token { get; set; }
+        public List<DepartmentMaster> UserDepartments { get; set; }
     }
 }

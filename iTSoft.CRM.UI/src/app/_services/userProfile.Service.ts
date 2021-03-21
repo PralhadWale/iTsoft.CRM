@@ -7,6 +7,7 @@ import { APIService } from './apiService';
 import { ListModel } from '../_models/listmodel';
 import { Observable, observable, of } from 'rxjs';
 import { UserRole } from '../_models/userRole';
+import { Router } from '@angular/router';
 
 
 const APP_USER_PROFILE = "IT_CRM_USER_DATA_1.0"
@@ -18,14 +19,20 @@ export class UserProfilService {
 
   private listController = "/List/";
   public dashboardURL: string = "/profile/userevenuedashboard";
-  constructor(private apiService: APIService) { }
+  constructor(private apiService: APIService ,private router : Router) { }
 
 
 
   private userDepartments: Array<ListModel> = [];
 
   public get CurrentUser() {
-    return <User>JSON.parse(localStorage.getItem(APP_USER_PROFILE));
+    let user = <User>JSON.parse(localStorage.getItem(APP_USER_PROFILE));
+    if(user == null)
+    {
+        localStorage.clear();
+        this.router.navigate(['login']);
+    }
+    return user;
   }
 
   public get CurrentUserDepartments() : Observable<Array<ListModel>>{
@@ -62,6 +69,16 @@ export class UserProfilService {
   public get IsAdvisor()
   {
     return this.CurrentUser.RoleId == <Number>UserRole.Advisor;
+  }
+
+  public get IsAdmin()
+  {
+    return this.CurrentUser.RoleId == <Number>UserRole.Admin;
+  }
+
+  public get IsManager()
+  {
+    return this.CurrentUser.RoleId == <Number>UserRole.Manager;
   }
 
 }

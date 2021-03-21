@@ -1,6 +1,7 @@
 <mat-sidenav class="search-panel" position="end" position="end" dark #assignsidenav mode="push" opened="false">
-
+  <form #assignForm="ngForm">
   <mat-card class="profile-card">
+    
     <mat-card-header>
       <div mat-card-avatar class="avatar">
         <mat-icon>transfer_within_a_station</mat-icon>
@@ -11,6 +12,7 @@
     </mat-card-header>
   </mat-card>
   <mat-nav-list style="margin-left:10px;">
+   
     <mat-form-field appearance="outline" *ngIf="requestDetails!= null && requestDetails.RequestId > 0">
       <mat-label>Request No</mat-label>
       <input matInput appearance="outline" placeholder="RequestNo" name="RequestNo" [(ngModel)]="requestDetails.RequestNo" #RequestNo readonly/>
@@ -28,7 +30,8 @@
     <mat-form-field class="form-field" appearance="outline">
       <mat-label>Assign To</mat-label>
       <mat-select placeholder="Select Advisor"  [(ngModel)]="requestDetails.AdvisorId"
-      [(value)]="requestDetails.AdvisorId" name="AdvisorId" #AdvisorId="ngModel" required>
+      [(value)]="requestDetails.AdvisorId" name="AdvisorId" #AdvisorId="ngModel">
+      <mat-option>None</mat-option>
         <mat-option *ngFor="let item of requestSelectList.Advisors" [value]="item.Value" >
           {{item.Text}} 
         </mat-option>
@@ -44,7 +47,7 @@
   <mat-card-header>
     <mat-action-list>
       <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-        (click)="onSubmit();">
+        (click)="onSubmit(assignForm);">
         <mat-icon>save</mat-icon>Assign
       </button>
       <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
@@ -53,4 +56,5 @@
       </button>
     </mat-action-list>
   </mat-card-header>
+</form>
 </mat-sidenav>
