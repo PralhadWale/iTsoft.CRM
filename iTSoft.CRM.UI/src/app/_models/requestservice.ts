@@ -33,9 +33,11 @@ export class RequestServiceDetails extends RequestServiceMaster {
     DepartmentName: string;
     StageName: string;
     Attempts: number;
-    Advisor: string;
+    AdvisorName: string;
     CompletedOn: Date | string | null;
     AssignedOn: Date | string | null;
+    RelatedRequestNo : string;
+    RelatedRequestId : number;
     public constructor() {
         super();
         this.ServiceName = '';

@@ -33,15 +33,18 @@ namespace iTSoft.CRM.Data.Entity.Process
 
     public class RequestServiceDetails : RequestServiceMaster
     {
+        public string AdvisorName { get; set; }
         public string ServiceName { get; set; }
         public string DepartmentName { get; set; }
         public string LeadSourceName { get; set; }
         public string LeadStatusName { get; set; }
         public string StageName { get; set; }
         public int Attempts { get; set; }
-        public string Advisor { get; set; }
         public DateTime? CompletedOn { get; set; }
         public DateTime? AssignedOn { get; set; }
+        public string RelatedRequestNo { get; set; }
+        public long RelatedRequestId { get; set; }
+
 
     }
 }

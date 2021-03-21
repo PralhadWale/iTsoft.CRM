@@ -191,6 +191,11 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
       this.request.ContactPersonMaster = new ContactPersonMaster();
     }
       this.pageTitle = 'Service Follow up : ' + this.request.RequestMaster.RequestNo;
+
+      if(this.request.RequestServiceDetail.RelatedRequestId && this.request.RequestServiceDetail.RelatedRequestId > 0)
+      {
+        this.pageTitle += "| Related Request : " + this.request.RequestServiceDetail.RelatedRequestNo;
+      }
   }
 
   saveEnquiry(enquiryForm: NgForm) {

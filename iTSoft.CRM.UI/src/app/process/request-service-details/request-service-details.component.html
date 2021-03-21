@@ -23,8 +23,8 @@
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-card style="width: 99%;">
                   <h3>{{request.RequestServiceDetail.ServiceName}}</h3>
-                  <mat-card-subtitle>Department : {{request.RequestServiceDetail.DepartmentName}} <br /> Attempts :
-                    {{request.RequestServiceDetail.Attempts}}</mat-card-subtitle>
+                  <mat-card-subtitle>Department : {{request.RequestServiceDetail.DepartmentName}}
+                     <br /> Advisor :  {{request.RequestServiceDetail.AdvisorName}} |  Attempts :  {{request.RequestServiceDetail.Attempts}}</mat-card-subtitle>
                   <mat-divider></mat-divider>
                   <mat-list>
                     <mat-list-item>
@@ -134,7 +134,7 @@
                     </mat-list-item>
                     <mat-list-item>
                       <mat-icon matListAvatar>access_time</mat-icon>
-                      <h4 matLine>{{request.ContactPersonMaster.DOB}}</h4>
+                      <h4 matLine>{{request.ContactPersonMaster.DOB | date}}</h4>
                       <p matLine>Date of Birth</p>
                     </mat-list-item>
                   </mat-list>

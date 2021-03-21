@@ -10,4 +10,5 @@ export interface User {
     RoleId: number;
     OrganizationId: number;
     Token: any;
+    UserDepartments:[];
 }

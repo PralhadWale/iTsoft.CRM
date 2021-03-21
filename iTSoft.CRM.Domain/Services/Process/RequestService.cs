@@ -39,8 +39,8 @@ namespace iTSoft.CRM.Domain.Services.Process
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 string flag = requestViewModel.RequestMaster.RequestId > 0 ? ActionFlag.Update : ActionFlag.Add;
-                DynamicParameters param = new DynamicParameters(requestViewModel.RequestMaster);
-                param.AddDynamicParams(requestViewModel.OrganizationMaster);
+                DynamicParameters param = new DynamicParameters(requestViewModel.OrganizationMaster);
+                param.AddDynamicParams(requestViewModel.RequestMaster);
 
                 DataTable requestServices = new ListConverter().ToDataTable<RequestServiceMaster>(requestViewModel.RequestServiceMasters);
                 DataTable contractPersons = new ListConverter().ToDataTable<ContactPersonMaster>(requestViewModel.ContactPersonMasters);
