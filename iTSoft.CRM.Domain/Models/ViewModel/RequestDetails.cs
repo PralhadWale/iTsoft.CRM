@@ -55,7 +55,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
 
         public string ClientBehaviourName { get; set; }
 
-        public string Department { get; set; }
+        public string DepartmentName { get; set; }
 
         public string ServiceName { get; set; }
 
@@ -79,7 +79,9 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
 
         public long RequestServiceId { get; set; }
 
-        public decimal? AgreedAmount { get; set; }
+        public decimal? QuoatedPrice { get; set; }
+
+        public decimal? AgreedPrice { get; set; }
 
         public decimal? RevenueAmount { get; set; }
 
