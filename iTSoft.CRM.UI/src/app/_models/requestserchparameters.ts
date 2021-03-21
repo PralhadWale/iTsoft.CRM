@@ -18,6 +18,7 @@ export class RequestSerchParameters {
   UserId: number;
   AdvisorId: number;
   DepartmentId : number;
+  ServiceId: number;
 
   constructor(requestTypeId: number) {
     this.RequestTypeId = requestTypeId;

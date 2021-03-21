@@ -18,6 +18,7 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string CompanyName { get; set; }
         public string PhoneNo { get; set; }
         public string Email { get; set; }
+        public long? ServiceId { get; set; }
         public long? SourceId { get; set; }
         public long? LeadStatusId { get; set; }
         public long? StageId { get; set; }

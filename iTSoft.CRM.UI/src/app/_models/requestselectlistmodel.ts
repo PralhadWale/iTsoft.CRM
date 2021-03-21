@@ -9,6 +9,7 @@ export class RequestSelectListModel
     Advisors : ListModel[];
     Departments : ListModel[];
     OrganizationTypes : ListModel[];
+    Services: ListModel[];
     constructor()
     {
         this.LeadStatuses=[];
@@ -18,5 +19,6 @@ export class RequestSelectListModel
         this.Advisors = [];
         this.Departments = [];
         this.OrganizationTypes = [];
+        this.Services = [];
     }
 }

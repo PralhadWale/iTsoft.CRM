@@ -133,7 +133,13 @@ export class EnquiryListComponent implements OnInit {
         this.searchFilter = new RequestSerchParameters(RequestType.Enquiry);
       }
     }
+
     this.getEnquiries();
+    this.GetDepartmentServices(this.searchFilter.DepartmentId);
+    if(this.searchFilter.DepartmentId > 0)
+    {
+      this.GetDepartmentAdvisor(this.searchFilter.DepartmentId);
+    }
   }
 
   resetSearchFilter(sidenav:any)
@@ -169,13 +175,23 @@ export class EnquiryListComponent implements OnInit {
     if ($event != null) {
       let departmentId = $event.value;
       this.searchFilter.AdvisorId = null;
+      this.searchFilter.ServiceId = null;
       this.GetDepartmentAdvisor(departmentId);
+      this.GetDepartmentServices(departmentId);
     }
 
   }
   GetDepartmentAdvisor(departmentId: any) {
+    this.requestSelectList.Advisors =[];
     this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
         this.requestSelectList.Advisors = result.Value.ResponseData;
+    });
+  }
+
+  GetDepartmentServices(departmentId: any) {
+    this.requestSelectList.Services=[];
+    this.listService.GetDepartmentServices(departmentId).subscribe((result) => {
+        this.requestSelectList.Services = result.Value.ResponseData;
     });
   }
 

@@ -23,7 +23,7 @@ export class RequestDetails {
     AdvisorName: string;
     AssignedOn: string
     ClientBehaviourName: string;
-    Department: string;
+    DepartmentName: string;
     ServiceName: string;
     ServiceId: number
     DepartmentId: number
@@ -35,8 +35,9 @@ export class RequestDetails {
     TermsAndConditions: string;
     AdvisorId: number
     RequestServiceId: number;
-    AgreedAmount: number
-    RevenueAmount: number
-    ClientTypeId: number
+    QuoatedPrice: number;
+    AgreedAmount: number;
+    RevenueAmount: number;
+    ClientTypeId: number;
     TransferPendingFollowUp : boolean;
 }
