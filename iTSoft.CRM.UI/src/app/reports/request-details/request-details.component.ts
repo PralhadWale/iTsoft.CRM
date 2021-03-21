@@ -1,21 +1,19 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-
-
-
-import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
-
-import { RequestSerchParameters } from '../_models/Requestserchparameters';
-import { RequestType } from '../_models/requesttype';
-import { RequestDetails } from '../_models/requestdetails';
-import { RequestSelectListModel } from '../_models/requestselectlistmodel';
-
-import { RequestService } from '../process/services/request.service';
-import { ListService } from '../process/services/list.service';
-import { AlertService } from '../_services';
 import { NgForm } from "@angular/forms/";
-import { UserProfilService } from "../_services/userProfile.Service";
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
+
+import { RequestType } from "src/app/_models/requesttype";
+import { RequestDetails } from "src/app/_models/requestdetails";
+import { RequestSerchParameters } from "src/app/_models/Requestserchparameters";
+import { RequestSelectListModel } from "src/app/_models/requestselectlistmodel";
+
+import { AlertService } from "src/app/_services";
+import { UserProfilService } from "src/app/_services/userProfile.Service";
+import { ListService } from "src/app/process/services/list.service";
+import { RequestService } from "src/app/process/services/request.service";
+
 @Component({
   selector: 'request-details-report',
   templateUrl: "./request-details.component.html",

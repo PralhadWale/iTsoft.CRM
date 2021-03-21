@@ -21,7 +21,8 @@ namespace iTSoft.CRM.Domain.Services.Process
         RequestViewModel LoadRequest(long requestId);
         RequestViewModel LoadRequestServiceDetails(long requestServiceId);
 
-        List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters);
+        List<RequestDetails> SearchRequestServices(RequestSerchParameters requestSerchParameters);
+        List<RequestSummery> SearchRequest(RequestSerchParameters requestSerchParameters);
         string GetNextrequestNumber(long requestTypeId);
     }
     public class RequestService : GenericRepository<RequestMaster>, IRequestService
@@ -58,15 +59,26 @@ namespace iTSoft.CRM.Domain.Services.Process
             return requestMaster;
         }
 
-        public List<RequestDetails> SearchRequest(RequestSerchParameters requestSerchParameters)
+        public List<RequestDetails> SearchRequestServices(RequestSerchParameters requestSerchParameters)
+        {
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters(requestSerchParameters);
+                param.Add("Action", "SearchRequestServices");
+                return dbConnection.Query<RequestDetails>(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure).AsList();
+            }
+        }
+
+        public List<RequestSummery> SearchRequest(RequestSerchParameters requestSerchParameters)
         {
             using (IDbConnection dbConnection = base.GetConnection())
             {
                 DynamicParameters param = new DynamicParameters(requestSerchParameters);
                 param.Add("Action", "SearchRequest");
-                return dbConnection.Query<RequestDetails>(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure).AsList();
+                return dbConnection.Query<RequestSummery>(PROC_RequestLookUpManager, param, commandType: CommandType.StoredProcedure).AsList();
             }
         }
+
 
         public RequestViewModel LoadRequest(long requestId)
         {

@@ -84,9 +84,15 @@ export class RequestService {
   }
 
   Search(param: RequestSerchParameters) {
-    let url = this.RequestController + "search";
+    let url = this.RequestController + "search-request-services";
     return this.apiService.PostData(url, param);
   }
+
+  SearchRequest(param: RequestSerchParameters) {
+    let url = this.RequestController + "search-request";
+    return this.apiService.PostData(url, param);
+  }
+
 
   Load(requestId: number) {
     let url = this.RequestController + "load";

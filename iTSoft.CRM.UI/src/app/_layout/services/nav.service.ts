@@ -104,9 +104,19 @@ export class NavService {
           route: 'reports',
           children: [
             {
+              displayName: 'Enquiry Report',
+              iconName: 'account_tree',
+              route: 'reports/enquiry-report',
+            },
+            {
               displayName: 'Enquiry Service Report',
               iconName: 'account_tree',
               route: 'reports/enquiry-service-report',
+            },
+            {
+              displayName: 'Quotation Report',
+              iconName: 'account_tree',
+              route: 'reports/quotation-report',
             },
             {
               displayName: 'Quotation Service Report',

@@ -62,8 +62,26 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             return Ok(response);
         }
 
-        [HttpPost("search")]
-        public IActionResult Search(RequestSerchParameters requestSerchParameters)
+        [HttpPost("search-request-services")]
+        public IActionResult SearchRequestServices(RequestSerchParameters requestSerchParameters)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+
+                response.ResponseData = requestService.SearchRequestServices(requestSerchParameters);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - SearchRequest");
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("search-request")]
+        public IActionResult SearchRequest(RequestSerchParameters requestSerchParameters)
         {
             ServiceResponse response = new ServiceResponse();
             try
