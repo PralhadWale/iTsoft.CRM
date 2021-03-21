@@ -137,6 +137,11 @@ export class QuotationListComponent implements OnInit {
       }
     }
     this.getQuotations();
+    this.GetDepartmentServices(this.searchFilter.DepartmentId);
+    if(this.searchFilter.DepartmentId > 0)
+    {
+      this.GetDepartmentAdvisor(this.searchFilter.DepartmentId);
+    }
   }
 
   resetSearchFilter(sidenav: any) {
@@ -176,11 +181,18 @@ export class QuotationListComponent implements OnInit {
 
   }
   GetDepartmentAdvisor(departmentId: any) {
+    this.requestSelectList.Advisors =[];
     this.listService.GetDepartmentAdvisors(departmentId).subscribe((result) => {
         this.requestSelectList.Advisors = result.Value.ResponseData;
     });
   }
 
+  GetDepartmentServices(departmentId: any) {
+    this.requestSelectList.Services=[];
+    this.listService.GetDepartmentServices(departmentId).subscribe((result) => {
+        this.requestSelectList.Services = result.Value.ResponseData;
+    });
+  }
 
   getQuotations() {
     
@@ -214,11 +226,11 @@ export class QuotationListComponent implements OnInit {
         { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
-        { ColumnField: "ClientTypeName", ColumnHeader: "Client Type", Type: "text" },
-        { ColumnField: "ClientName", ColumnHeader: "ClientName", Type: "text" },
+        { ColumnField: "ClientTypeName", ColumnHeader: "Quotation Type", Type: "text" },
+        { ColumnField: "ClientName", ColumnHeader: "Quotation Name", Type: "text" },
         { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
-        { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
+        { ColumnField: "LeadStatusName", ColumnHeader: "Quotation Status", Type: "text" },
         { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "ServiceRate", ColumnHeader: "Service Rate", Type: "text" }

@@ -77,6 +77,17 @@
       </mat-grid-tile>
       <mat-grid-tile [colspan]="fieldColspan">
         <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Service Name </mat-label>
+          <mat-select placeholder="Select Service" [(ngModel)]="searchFilter.ServiceId" name="ServiceId"
+            #ServiceId="ngModel">
+            <mat-option *ngFor="let service of requestSelectList.Services" [value]="service.ServiceId">
+              {{service.ServiceName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
           <mat-label>Advisor</mat-label>
           <mat-select placeholder="Select AdvisorId" [(ngModel)]="searchFilter.AdvisorId"
             [(value)]="searchFilter.AdvisorId" name="AdvisorId" #AdvisorId="ngModel">
