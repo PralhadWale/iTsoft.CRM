@@ -101,12 +101,17 @@ export class NavService {
         {
           displayName: 'Reports',
           iconName: 'videocam',
-          route: '',
+          route: 'reports',
           children: [
             {
-              displayName: 'Follow up report',
+              displayName: 'Enquiry Service Report',
               iconName: 'account_tree',
-              route: 'follow-up-report',
+              route: 'reports/enquiry-service-report',
+            },
+            {
+              displayName: 'Quotation Service Report',
+              iconName: 'account_tree',
+              route: 'reports/quotation-service-report',
             }
           ]
         }
