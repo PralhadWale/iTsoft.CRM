@@ -2,6 +2,7 @@
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Data.Entity.Process;
 using System;
 using System.Collections.Generic;
 using System.Data;

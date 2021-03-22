@@ -124,8 +124,9 @@ namespace iTSoft.CRM.Web.Controllers
                 response.ResponseData = new
                 {
                     Advisors = _listService.GetAdvisors(),
-                    Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId), true)
-                };
+                    Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId), true),
+                    OrganizationTypes = _listService.ListAll<OrganizationTypeMaster>(nameof(OrganizationTypeMaster.OrganizationTypeName), nameof(OrganizationTypeMaster.OrganizationTypeId))
+            };
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)

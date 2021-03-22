@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { CommandEventArgs, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
 import { AlertService } from 'src/app/_services';
 import { ClientService } from '../client.service';
 import { ClientMaster } from '../client.model';
@@ -16,7 +16,6 @@ import { UserProfilService } from 'src/app/_services/userProfile.Service';
   styleUrls: ['./clientlist.component.scss']
 })
 export class ClientlistComponent implements OnInit {
-  @ViewChild("addClient") addClient: AddClientComponent;
   @ViewChild("searchClientNav") searchNav: MatSidenav;
   @ViewChild("clientForm") clientForm: NgForm;
   pageTitle: string = "Client List"
@@ -29,8 +28,8 @@ export class ClientlistComponent implements OnInit {
   clientTypes: Array<string> = ['Assigned', 'Un-Assigned', 'All'];
   selectedClientType: string = "Assigned";
   constructor(
-    private clientService: ClientService,
-    public userProfileService : UserProfilService,
+     private clientService: ClientService,
+     public userProfileService : UserProfilService,
      private alertService: AlertService,
      private router: Router,
      ) {
@@ -47,9 +46,7 @@ export class ClientlistComponent implements OnInit {
     let rowData: ClientMaster = Object.assign({}, $event.rowData);
     if (!$event.toolbarItem) {
       if ($event.command.commandType == CommandType.Edit) {
-        this.addClient.clientMaster = rowData;
-        this.addClient.SetClientDefaultData();
-        this.addClient.sidenav.open();
+        this.router.navigate(['/clients/edit/', rowData.ClientId]);
       }
       else if($event.command.commandType == CommandType.Other && $event.command.content == 'addQuotation')
       {
@@ -71,8 +68,7 @@ export class ClientlistComponent implements OnInit {
         this.searchClient(this.clientMaster);
       }
       else if ($event.toolbarItem == ToolBarItems.Add) {
-        this.addClient.SetClientDefaultData();
-        this.addClient.sidenav.open();
+        this.router.navigate(['/clients/edit/', 0]);
       }
 
     }
@@ -123,7 +119,29 @@ export class ClientlistComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Search, ToolBarItems.Refresh];
+
+
+    
+    let commands :Array<CommandModel> = [];
+
+
+    if (this.userProfileService.IsAdmin) {
+      this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Search, ToolBarItems.Refresh];
+      commands = [
+        { commandType: CommandType.Edit},
+        { click: null, commandType: CommandType.Other, icon: 'point_of_sale', content: 'addEnquiry', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' }, customstyle: true, toolTip: 'Add Enquiry' },
+        { click: null, commandType: CommandType.Other, icon: 'add_shopping_cart', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true, toolTip: 'Add Quoatation' }]
+    }
+
+    else {
+
+      this.tableSettings.ToolBarItems = [ToolBarItems.Search, ToolBarItems.Refresh];
+      commands = [
+        { click: null, commandType: CommandType.Other, icon: 'point_of_sale', content: 'addEnquiry', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' }, customstyle: true, toolTip: 'Add Enquiry' },
+        { click: null, commandType: CommandType.Other, icon: 'add_shopping_cart', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true, toolTip: 'Add Quoatation' }]
+    }
+
+    
 
     this.clientTableSchema =
       [
@@ -136,9 +154,6 @@ export class ClientlistComponent implements OnInit {
         { ColumnField: "Address", ColumnHeader: "Adress", Type: "text" },
         { ColumnField: "State", ColumnHeader: "State", Type: "text" },
         { ColumnField: "Country", ColumnHeader: "Country", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: [ 
-        { click: null, commandType: CommandType.Other, icon: 'point_of_sale', content: 'addEnquiry', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Enquiry' }, 
-        { click: null, commandType: CommandType.Other, icon: 'add_shopping_cart', content: 'addQuotation', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip:'Add Quoatation' }] }
-      ];
+        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : commands }];
   }
 }

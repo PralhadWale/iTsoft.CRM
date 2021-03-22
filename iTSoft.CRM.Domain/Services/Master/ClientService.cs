@@ -1,5 +1,6 @@
 ﻿using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Data.Entity.ViewModel;
 using iTSoft.CRM.Data.Repository.Master;
 using iTSoft.CRM.Data.ViewModel;
 using System;
@@ -16,9 +17,9 @@ namespace iTSoft.CRM.Domain.Services.Master
         {
             clientRepository = new ClientRepository();
         }
-        public ResponseCode Save(ClientMaster Customer)
+        public ResponseCode Save(ClientViewModel clientViewModel)
         {
-            return clientRepository.Save(Customer);
+            return clientRepository.Save(clientViewModel);
         }
 
         public List<ClientDetails> SearchClient(ClientDetails clientMaster)
@@ -31,7 +32,7 @@ namespace iTSoft.CRM.Domain.Services.Master
             return clientRepository.GetCustomerInfo(searchParam);
         }
 
-        public ClientMaster Find(long clientId)
+        public ClientViewModel Find(long clientId)
         {
             return clientRepository.Find(clientId);
         }

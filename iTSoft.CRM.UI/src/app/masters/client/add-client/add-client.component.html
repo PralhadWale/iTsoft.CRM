@@ -1,142 +1,282 @@
 <form #clientForm="ngForm">
-  <mat-sidenav class="big-search-panel" position="end" position="end" dark #sidenav mode="push" opened="false">
-    <mat-card class="profile-card">
-      <mat-card-header>
-        <div mat-card-avatar class="avatar">
-          <mat-icon>queue</mat-icon>
-        </div>
-        <mat-card-title>
-
-        </mat-card-title>
-        <mat-card-title>
-          {{title}}
-        </mat-card-title>
-      </mat-card-header>
+  <mat-card>
+    <mat-toolbar style="background-color: #FFF">
+      <mat-toolbar-row>
+        <span class="view-card-title"> {{pageTitle}}</span>
+        <span class="title-spacer"></span>
+        <mat-card-actions>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
+            (click)="onSubmit(clientForm)" *ngIf="userProfileService.IsAdmin == true">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-mini-fab class="" style="margin-right:10px; " (click)="onCancelClick(clientForm)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider class="title-Divider"></mat-divider>
+    <mat-card-content style="margin: 5 0 5 0px;">
+      <br/>
+      <div class="form-card">
+        <mat-grid-list cols="12" rowHeight="80px">
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput type='text' style="display:none;">
+              <mat-radio-group aria-label="Select an client type" [(ngModel)]="client.ClientMaster.ClientTypeId"
+                [(value)]="client.ClientMaster.ClientTypeId" name="ClientTypeId" #ClientTypeId="ngModel" required>
+                <mat-radio-button value="1">Corporate</mat-radio-button> &nbsp;&nbsp;&nbsp;
+                <mat-radio-button value="2">Non Corporate</mat-radio-button>
+              </mat-radio-group>
+              <mat-error *ngIf="(ClientTypeId.touched || clientForm.submitted) && ClientTypeId.errors?.required">
+                Please select valid client type
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-divider *ngIf="client.ClientMaster.ClientTypeId == '1'"></mat-divider>
+        <br />
+        <mat-grid-list cols="12" rowHeight="80px" *ngIf="client.ClientMaster.ClientTypeId == '1'">
+          <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Company Name</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.OrganizationName"
+                name="OrganizationName" maxlength="250" #OrganizationName="ngModel" required>
+              <mat-error
+                *ngIf="(OrganizationName.touched || clientForm.submitted) && OrganizationName.errors?.required">
+                Company Name Is required
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Website</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.Website" name="Website"
+                #Website="ngModel" maxlength="150">
+              <mat-error *ngIf="(Website.touched || clientForm.submitted) && Website.errors">
+                Please enter valid Website
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Company Type</mat-label>
+              <mat-select placeholder="Select Company type" [(ngModel)]="client.OrganizationMaster.OrganizationTypeId"
+                name="OrganizationTypeId" #OrganizationTypeId="ngModel" required>
+                <mat-option *ngFor="let item of clientSelectListModel.OrganizationTypes" [value]="item.Value">
+                  {{item.Text}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="(OrganizationTypeId.touched || clientForm.submitted)">
+                Please select source
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Industry Type</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.IndustryType" name="IndustryType"
+                #IndustryType="ngModel" maxlength="450">
+              <mat-error *ngIf="(IndustryType.touched || clientForm.submitted) && IndustryType.errors">
+                Please enter valid Industry type
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Total Employees</mat-label>
+              <input matInput type='number' [(ngModel)]="client.OrganizationMaster.TotalEmployees"
+                name="TotalEmployees" #TotalEmployees="ngModel">
+              <mat-error *ngIf="(TotalEmployees.touched || clientForm.submitted) && TotalEmployees.errors">
+                Please enter valid employees count
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>PAN No</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.PANNO" name="PANNO" #PANNO="ngModel">
+              <mat-error *ngIf="(PANNO.touched || clientForm.submitted) && PANNO.errors"
+                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                Please enter valid PAN Number
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>GST No</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.GSTNO" name="GSTNO" #GSTNO="ngModel">
+              <mat-error *ngIf="(GSTNO.touched || clientForm.submitted) && GSTNO.errors"
+                pattern="\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}">
+                Please enter valid GST Number
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Address</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.Address" name="Address"
+                #Address="ngModel" maxlength="450">
+              <mat-error *ngIf="(Address.touched || clientForm.submitted) && Address.errors">
+                Please enter valid address
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>State</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.State" name="State" #State="ngModel"
+                maxlength="50">
+              <mat-error *ngIf="(State.touched || clientForm.submitted) && State.errors">
+                Please enter valid state
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Country</mat-label>
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.Country" name="Country"
+                #Country="ngModel" maxlength="50">
+              <mat-error *ngIf="(Country.touched || clientForm.submitted) && Country.errors">
+                Please enter valid Country
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-divider></mat-divider>
+        <br />
+        <mat-grid-list cols="12" rowHeight="80px">
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Salutation </mat-label>
+              <mat-select placeholder="Select Salutation" [(ngModel)]="client.ContactPersonMaster.Salutation"
+              [(value)]="client.ContactPersonMaster.Salutation" name="Salutation" #Salutation="ngModel" required>
+              <mat-option [value]="'Mr'">Mr</mat-option>
+              <mat-option [value]="'Mrs'">Mrs</mat-option>
+              <mat-option [value]="'Miss'">Miss</mat-option>
+            </mat-select>
+            <mat-error *ngIf="(Salutation.touched || clientForm.submitted)">
+                Please select valid Salutation
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Last Name </mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.LastName" name="LastName"
+                #LastName="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+              <mat-error *ngIf="(LastName.touched || clientForm.submitted)">
+                Please enter valid last name
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>First Name </mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.FirstName" name="FirstName"
+                #FirstName="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+              <mat-error *ngIf="(FirstName.touched || clientForm.submitted)">
+                Please enter valid first name
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Middle Name </mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.MiddleName" name="MiddleName"
+                #MiddleName="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+              <mat-error *ngIf="(MiddleName.touched || clientForm.submitted)">
+                Please enter valid middle name
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan" *ngIf="client.ClientMaster.ClientTypeId == '1'">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Designation</mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.Designation" name="Designation"
+                #Designation="ngModel" maxlength="50">
+              <mat-error *ngIf="(Designation.touched || clientForm.submitted) && Designation.errors">
+                Please enter valid designation
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan" *ngIf="client.ClientMaster.ClientTypeId != '1'">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Date of birth</mat-label>
+              <input matInput [matDatepicker]="enquiryDOBId" [min]="minDate" [max]="maxDate"
+                [(ngModel)]="client.ContactPersonMaster.DOB" name="DOB" #DOB="ngModel" required>
+              <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
+              <mat-datepicker #enquiryDOBId></mat-datepicker>
+              <mat-error>
+                Please select valid date
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Email </mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.Email" name="Email" #Email="ngModel"
+                required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
+              <mat-error *ngIf="(Email.touched || clientForm.submitted) && Email.errors">
+                Please enter valid email
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Phone No 1 </mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.PhoneNo1" name="PhoneNo1"
+                #PhoneNo1="ngModel" required maxlength="13" pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+              <mat-error *ngIf="(PhoneNo1.touched || clientForm.submitted) && PhoneNo1.errors">
+                Please enter valid phone number
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>AlterNate No</mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.PhoneNo2" name="PhoneNo2"
+                #PhoneNo2="ngModel" maxlength="13" pattern="^(\+\d{1,3}[- ]?)?\d{10}$">
+              <mat-error *ngIf="(PhoneNo2.touched || clientForm.submitted) && PhoneNo2.errors">
+                Please enter valid phone number
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Address</mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.Address"
+                name="ContactPersonMasterAddress" #ContactPersonMasterAddress="ngModel" maxlength="450">
+              <mat-error
+                *ngIf="(ContactPersonMasterAddress.touched || clientForm.submitted) && ContactPersonMasterAddress.errors">
+                Please enter valid address
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>State</mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.State"
+                name="ContactPersonMasterState" #ContactPersonMasterState="ngModel" maxlength="50">
+              <mat-error
+                *ngIf="(ContactPersonMasterState.touched || clientForm.submitted) && ContactPersonMasterState.errors">
+                Please enter valid state
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Country</mat-label>
+              <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.Country"
+                name="ContactPersonMasterCountry" #ContactPersonMasterCountry="ngModel" maxlength="50">
+              <mat-error
+                *ngIf="(ContactPersonMasterCountry.touched || clientForm.submitted) && ContactPersonMasterCountry.errors">
+                Please enter valid Country
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </mat-card-content>
     </mat-card>
-    <input type="hidden" [(ngModel)]="clientMaster.ClientId" name="ClientId" />
-    <mat-grid-list cols="12" rowHeight="80px" style="padding-top: 20px;">
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>First Name</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.FirstName" name="FirstName" #FirstName="ngModel"
-            maxlength="50" required pattern="^[a-zA-Z]+$">
-          <mat-error *ngIf="(FirstName.touched || clientForm.submitted)">
-            Please enter valid first name
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Middle Name</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.MiddleName" name="MiddleName" #MiddleName="ngModel"
-            maxlength="50" required  required pattern="^[a-zA-Z]+$">
-          <mat-error *ngIf="(MiddleName.touched || clientForm.submitted)">
-            Please enter valid middle name
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Last Name</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.LastName" name="LastName" #LastName="ngModel"
-            maxlength="50" required  required pattern="^[a-zA-Z]+$">
-          <mat-error *ngIf="(LastName.touched || clientForm.submitted)">
-           Please enter valid last name
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Corporate Name</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.OrganizationName" name="OrganizationName"
-            #OrganizationName="ngModel" maxlength="250">
-          <mat-error *ngIf="(OrganizationName.touched || clientForm.submitted)">
-            Please enter valid Organization name
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <!-- <mat-grid-tile [colspan]="fieldColspan">
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>PAN No</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.PANNo" name="PANNo" #PANNo="ngModel" maxlength="250"
-          pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
-          <mat-error *ngIf="(PANNo.touched || clientForm.submitted)">
-           Please enter valid PAN No
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile> -->
-
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Mobile No</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.PhoneNo1" name="PhoneNo1" #PhoneNo1="ngModel"
-            maxlength="13" minlength="10"  pattern="^(\+\d{1,3}[- ]?)?\d{10}$" required>
-          <mat-error *ngIf="(PhoneNo1.touched || clientForm.submitted)">
-            Please enter valid mobile number
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput type='text' [(ngModel)]="clientMaster.Email" name="Email" #Email="ngModel" maxlength="100"
-            minlength="3" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
-          <mat-error *ngIf="(Email.touched || clientForm.submitted)">
-            Please enter valid email
-          </mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Date of birth</mat-label>
-          <input matInput [matDatepicker]="dOB" [(ngModel)]="clientMaster.DOB" name="DOB" [min]="minDate" [max]="maxDate">
-          <mat-datepicker-toggle matSuffix [for]="dOB"></mat-datepicker-toggle>
-          <mat-datepicker #dOB color="primary"></mat-datepicker>
-          <mat-error *ngIf="(clientForm.submitted)">Please select valid date of birth.</mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile [colspan]="fieldColspan">
-        <!-- colspan="4"> -->
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Advisor</mat-label>
-          <mat-select placeholder="Advisor" [(ngModel)]="clientMaster.AdvisorId" name="AdvisorId"
-            [(value)]="clientMaster.AdvisorId" #AdvisorId="ngModel" required>
-            <mat-option *ngFor="let item of clientSelectListModel.Advisors" [value]="item.Value">
-              {{item.Text}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="(AdvisorId.touched || clientForm.submitted)">Please select advisor.</mat-error>
-        </mat-form-field>
-      </mat-grid-tile>
-
-    </mat-grid-list>
-    <mat-divider></mat-divider>
-    <mat-card-header>
-      <mat-action-list>
-        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="onSubmit(clientForm)">
-          <mat-icon>save</mat-icon>Save
-        </button>
-        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
-          (click)="onCancelClick(clientForm)">
-          <mat-icon>cancel</mat-icon>Cancel
-        </button>
-      </mat-action-list>
-    </mat-card-header>
-  </mat-sidenav>
 </form>

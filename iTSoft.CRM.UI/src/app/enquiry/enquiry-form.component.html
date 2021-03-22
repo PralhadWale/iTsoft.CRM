@@ -26,8 +26,8 @@
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <input matInput type='text' style="display:none;">
-                  <mat-radio-group aria-label="Select an client type"  [(ngModel)]="request.RequestMaster.ClientTypeId" [(value)]="request.RequestMaster.ClientTypeId" name="ClientTypeId" #ClientTypeId="ngModel"
-                    required>
+                  <mat-radio-group aria-label="Select an client type" [(ngModel)]="request.RequestMaster.ClientTypeId"
+                    [(value)]="request.RequestMaster.ClientTypeId" name="ClientTypeId" #ClientTypeId="ngModel" required>
                     <mat-radio-button value="1">Corporate</mat-radio-button> &nbsp;&nbsp;&nbsp;
                     <mat-radio-button value="2">Non Corporate</mat-radio-button>
                   </mat-radio-group>
@@ -80,10 +80,10 @@
                   </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
-            
+
             </mat-grid-list>
             <mat-divider *ngIf="request.RequestMaster.ClientTypeId == '1'"></mat-divider>
-            <br/>
+            <br />
             <mat-grid-list cols="12" rowHeight="80px" *ngIf="request.RequestMaster.ClientTypeId == '1'">
               <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
@@ -195,16 +195,20 @@
               </mat-grid-tile>
             </mat-grid-list>
             <mat-divider></mat-divider>
-            <br/>
+            <br />
             <mat-grid-list cols="12" rowHeight="80px">
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Salutation </mat-label>
-                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.Salutation" name="Salutation"
-                    #Salutation="ngModel" maxlength="50" required pattern="^[a-zA-Z]+$">
+                    <mat-label>Salutation </mat-label>
+                    <mat-select placeholder="Select Salutation" [(ngModel)]="request.ContactPersonMaster.Salutation"
+                    [(value)]="request.ContactPersonMaster.Salutation" name="Salutation" #Salutation="ngModel" required>
+                    <mat-option [value]="'Mr'">Mr</mat-option>
+                    <mat-option [value]="'Mrs'">Mrs</mat-option>
+                    <mat-option [value]="'Miss'">Miss</mat-option>
+                  </mat-select>
                   <mat-error *ngIf="(Salutation.touched || enquiryForm.submitted)">
-                    Please enter valid Salutation
-                  </mat-error>
+                      Please select valid Salutation
+                    </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
               <mat-grid-tile [colspan]="fieldColspan">
@@ -292,9 +296,10 @@
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Address</mat-label>
-                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.Address" name="ContactPersonMasterAddress"
-                    #ContactPersonMasterAddress="ngModel" maxlength="450">
-                  <mat-error *ngIf="(ContactPersonMasterAddress.touched || enquiryForm.submitted) && ContactPersonMasterAddress.errors">
+                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.Address"
+                    name="ContactPersonMasterAddress" #ContactPersonMasterAddress="ngModel" maxlength="450">
+                  <mat-error
+                    *ngIf="(ContactPersonMasterAddress.touched || enquiryForm.submitted) && ContactPersonMasterAddress.errors">
                     Please enter valid address
                   </mat-error>
                 </mat-form-field>
@@ -302,9 +307,10 @@
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>State</mat-label>
-                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.State" name="ContactPersonMasterState"
-                    #ContactPersonMasterState="ngModel" maxlength="50">
-                  <mat-error *ngIf="(ContactPersonMasterState.touched || enquiryForm.submitted) && ContactPersonMasterState.errors">
+                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.State"
+                    name="ContactPersonMasterState" #ContactPersonMasterState="ngModel" maxlength="50">
+                  <mat-error
+                    *ngIf="(ContactPersonMasterState.touched || enquiryForm.submitted) && ContactPersonMasterState.errors">
                     Please enter valid state
                   </mat-error>
                 </mat-form-field>
@@ -312,9 +318,10 @@
               <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Country</mat-label>
-                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.Country" name="ContactPersonMasterCountry"
-                    #ContactPersonMasterCountry="ngModel" maxlength="50">
-                  <mat-error *ngIf="(ContactPersonMasterCountry.touched || enquiryForm.submitted) && ContactPersonMasterCountry.errors">
+                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.Country"
+                    name="ContactPersonMasterCountry" #ContactPersonMasterCountry="ngModel" maxlength="50">
+                  <mat-error
+                    *ngIf="(ContactPersonMasterCountry.touched || enquiryForm.submitted) && ContactPersonMasterCountry.errors">
                     Please enter valid Country
                   </mat-error>
                 </mat-form-field>

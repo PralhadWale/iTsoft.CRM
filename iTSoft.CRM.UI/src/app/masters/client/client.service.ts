@@ -1,35 +1,35 @@
 import { Injectable } from '@angular/core';
 
-import { UserService } from 'src/app/shared/services/UserService';
 import { APIService } from 'src/app/_services';
 
 import { ClientMaster } from './client.model';
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
+import { ClientViewModel } from 'src/app/_models/clientViewModel';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 
 @Injectable() 
 export class ClientService {
-    constructor(private apiService: APIService, private userService: UserService) { }
+    constructor(private apiService: APIService, private userProfileService: UserProfilService) { }
 
     URLSave: string = iTCRMSettings.Masters + "/client/save";
     searchUrl: string = iTCRMSettings.Masters + "/client/searchclient";
     deleteURL: string = iTCRMSettings.Masters + "/client/delete";
     getClientUrl: string = iTCRMSettings.Masters + "/client/findClient";
 
-    Save(clientMaster: ClientMaster) {
+    Save(clientViewModel: ClientViewModel) {
 
-        clientMaster.ClientName = clientMaster.FirstName + " " + clientMaster.MiddleName + " " + clientMaster.LastName;
-        clientMaster.ClientName = clientMaster.ClientName.trim();
-        
-        // if(clientMaster.ClientId < 1)
-        // {
-        //     clientMaster.AddedBy = this.userService.GetUserId();
-        //     clientMaster.AddedDate = new Date(Date.now());
-        // }
+    
+        clientViewModel.ClientMaster.AddedBy = this.userProfileService.CurrentUser.UserId;
+        clientViewModel.ClientMaster.AddedOn = new Date();
+        clientViewModel.ClientMaster.UpdatedBy = this.userProfileService.CurrentUser.UserId;
+        clientViewModel.ClientMaster.UpdatedOn = new Date();
 
-        // clientMaster.UpdatedBy = this.userService.GetUserId();
-        // clientMaster.UpdatedDate = new Date(Date.now());
 
-        return this.apiService.PostData(this.URLSave, clientMaster);
+
+    clientViewModel.ContactPersonMasters = [];
+    clientViewModel.ContactPersonMasters.push(clientViewModel.ContactPersonMaster);
+
+        return this.apiService.PostData(this.URLSave, clientViewModel);
     }
 
     SearchClient(clientMaster:ClientMaster) {
@@ -42,7 +42,7 @@ export class ClientService {
     }
 
     FindClient(ClientId: number) {
-        return this.apiService.GetData(this.getClientUrl + "?ClientId=" + ClientId);
+        return this.apiService.GetData(this.getClientUrl + "?clientId=" + ClientId);
     }
 
     NewClient()

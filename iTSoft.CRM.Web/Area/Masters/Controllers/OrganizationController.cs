@@ -1,5 +1,6 @@
 ﻿using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Data.Entity.Process;
 using iTSoft.CRM.Domain.Services.Master;
 using iTSoft.CRM.Web.Controllers;
 using iTSoft.CRM.Web.Helpers;

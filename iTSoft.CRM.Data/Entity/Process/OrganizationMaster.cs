@@ -32,4 +32,10 @@ namespace iTSoft.CRM.Data.Entity.Process
 
     }
 
+
+    public class OrganizationMasterVM : OrganizationMaster
+    {
+
+    }
+
 }

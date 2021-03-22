@@ -8,6 +8,7 @@ import { RequestDetails } from 'src/app/_models/requestdetails';
 import { ConfigurationSettings } from 'src/app/_models/configuration';
 import { RequestServiceDetails, RequestServiceMaster } from 'src/app/_models/requestservice';
 import { iTCRMSettings } from 'src/app/core/models/iTSOFT.iTCRM.Configuration';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class RequestService {
  
 
   private RequestController = "/Request/";
-  constructor(private apiService: APIService) {
+  constructor(private apiService: APIService , private userProfileService : UserProfilService) {
 
   }
 
@@ -65,10 +66,10 @@ export class RequestService {
   Save(request: RequestViewModel) {
     // request.RequestMaster.RequestDate = moment(request.RequestMaster.RequestDate).format('dd-MMM-yyyy');
     // request.RequestMaster.DOB = moment(request.RequestMaster.DOB).format('dd-MMM-yyyy');
-    request.RequestMaster.AdvisorId = ConfigurationSettings.User.UserId;
-    request.RequestMaster.AddedBy = ConfigurationSettings.User.UserId;
+    request.RequestMaster.AdvisorId = this.userProfileService.CurrentUser.UserId;
+    request.RequestMaster.AddedBy = this.userProfileService.CurrentUser.UserId;
     request.RequestMaster.AddedOn = new Date();
-    request.RequestMaster.UpdatedBy = ConfigurationSettings.User.UserId;
+    request.RequestMaster.UpdatedBy = this.userProfileService.CurrentUser.UserId;
     request.RequestMaster.UpdatedOn = new Date();
 
 

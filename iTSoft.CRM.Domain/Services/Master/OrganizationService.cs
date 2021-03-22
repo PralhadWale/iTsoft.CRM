@@ -1,5 +1,6 @@
 ﻿using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Data.Entity.Process;
 using iTSoft.CRM.Data.Repository.Master;
 using System;
 using System.Collections.Generic;

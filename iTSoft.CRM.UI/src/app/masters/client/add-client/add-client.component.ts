@@ -8,33 +8,66 @@ import { ClientService } from '../client.service';
 import { ListService } from 'src/app/process/services/list.service';
 import 'src/app/_extentions/ng-form.extensions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ClientViewModel } from 'src/app/_models/clientViewModel';
+import { ContactPersonMaster } from 'src/app/_models/contactPerson';
+import { OrganizationMaster } from 'src/app/_models/organization';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserProfilService } from 'src/app/_services/userProfile.Service';
 
 
 @Component({
   selector: 'app-add-client',
   templateUrl: './add-client.component.html',
-  styleUrls: ['./add-client.component.scss']
+  styles: [`
+  .title-spacer {
+      flex: 1 1 auto;
+    }
+  .form-field{
+      width: 100%;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .mat-tab-label {
+      border: 1px solid palevioletred;
+      border-top-left-radius: .95rem;
+      border-top-right-radius: .95rem;
+     width: 200px;
+  }
+  
+  .mat-tab-label-active {
+     color: #495057;
+      background-color: #fff;
+      border-color: #dee2e6 #dee2e6 #fff;
+     
+  }
+  
+  .mat-ink-bar {
+    display: none;
+  }
+    `],
 })
 export class AddClientComponent implements OnInit {
   @ViewChild("sidenav") sidenav: MatSidenav;
-  @Input() clientMaster: ClientMaster;
-  @Output() onClientSaved = new EventEmitter();
 
   errorMessage: any;
-  requestTypeName: string;
-  public IsCompleted :boolean = false;
-  title : string = "Add Client";
+  public IsCompleted: boolean = false;
+  title: string = "Add Client";
 
-  clientSelectListModel : any = new Object();
-  fieldColspan: number = 6;
-  minDate : Date = new Date(1800,1,1);
-  maxDate : Date = new Date();
+  clientSelectListModel: any = new Object();
+  fieldColspan: number = 3;
+  minDate: Date = new Date(1800, 1, 1);
+  maxDate: Date = new Date();
 
+  client: ClientViewModel = new ClientViewModel();
+  pageTitle: string;
   constructor(
-    private clientService : ClientService,
+    private clientService: ClientService,
     private listService: ListService,
     private alertService: AlertService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private router : Router,
+    public userProfileService: UserProfilService,
+    private route: ActivatedRoute,
   ) {
     this.SetClientDefaultData();
     this.LoadSelectListData();
@@ -42,16 +75,22 @@ export class AddClientComponent implements OnInit {
     breakpointObserver.observe([
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait
-  ]).subscribe(result => {
+    ]).subscribe(result => {
       // console.log(result)
       this.onScreensizeChange(result);
-  });
-  
+    });
+
   }
 
 
   ngOnInit(): void {
 
+    this.route.params.subscribe(
+      params => {
+        let id = +params['id'];
+        this.getClientDetails(id);
+      }
+    );
 
   }
 
@@ -60,23 +99,17 @@ export class AddClientComponent implements OnInit {
   }
 
   public SetClientDefaultData() {
-    if (this.clientMaster == null || this.clientMaster.ClientId == null || this.clientMaster.ClientId == 0) {
-      this.clientMaster = this.clientService.NewClient();
-      this.title = "Add Client";
-    }
-    else {
-      this.title = "Update Client";
-    }
+    this.client = new ClientViewModel();
 
   }
 
   clearClientData(clientForm: NgForm) {
-    
-    this.clientMaster = this.clientService.NewClient();
+
+    this.SetClientDefaultData();
     clientForm.resetValidation();
     clientForm.reset();
     clientForm.form.reset();
-    
+
   }
 
 
@@ -92,33 +125,73 @@ export class AddClientComponent implements OnInit {
       );
   }
 
- 
+
+  getClientDetails(clientId: number): void {
+    if (clientId > 0) {
+      this.clientService
+        .FindClient(clientId)
+        .subscribe(
+          (result) => {
+            var data = <ClientViewModel>result.Value.ResponseData;
+            this.onClientRetrieved(data)
+          },
+          (error: any) => (this.alertService.showErrorMessage(error))
+        );
+    }
+    else 
+    {
+      this.onClientRetrieved(this.client);
+    }
+  }
+
+
 
   onSubmit(clientForm: NgForm) {
     if (clientForm && clientForm.valid) {
-      if (isNaN(this.clientMaster.ClientId)) {
-        this.alertService.showErrorMessage("Invalid request");
-      }
-      else {
-        
-        this.clientService.Save(this.clientMaster).subscribe(result => {
+        this.clientService.Save(this.client).subscribe(result => {
           {
             this.alertService.showSuccessMessage("Client Saved successfully");
             this.sidenav.close();
             this.clearClientData(clientForm);
-            this.onClientSaved.emit();
-          } 
+            this.router.navigate(['clients']);
+          }
         }, (error: any) => {
           { this.alertService.showSuccessMessage("Failed to save"); }
         });
-      }
     }
   }
- 
-  onCancelClick(clientForm : NgForm)
-  {
-    this.clearClientData(clientForm);
-    this.sidenav.close();
+
+  
+  onClientRetrieved(data: ClientViewModel) {
+    this.client = data;
+
+    if (this.client.ClientMaster.ClientTypeId) {
+      this.client.ClientMaster.ClientTypeId = this.client.ClientMaster.ClientTypeId.toString();
+    }
+    if (this.client.ContactPersonMasters && this.client.ContactPersonMasters.length > 0) {
+      this.client.ContactPersonMaster = this.client.ContactPersonMasters[0];
+    }
+    else {
+      this.client.ContactPersonMaster = new ContactPersonMaster();
+    }
+
+    if (this.client.ClientMaster.ClientId == undefined || this.client.ClientMaster.ClientId === 0) {
+      this.pageTitle = "Add Client";
+    }
+    else {
+      this.pageTitle = 'Update Client';
+
+    }
+
+    if (this.client.OrganizationMaster == null) {
+      this.client.OrganizationMaster = new OrganizationMaster();
+    }
+
+  }
+
+
+  onCancelClick(clientForm: NgForm) {
+    this.router.navigate(['clients']);
   }
 
   onScreensizeChange(result: any) {
@@ -126,20 +199,22 @@ export class AddClientComponent implements OnInit {
     const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
     const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
     console.log(
-        ` isLess600  ${isLess600} 
+      ` isLess600  ${isLess600} 
         isLess1000 ${isLess1000}  `
     )
     if (isLess1000) {
-        if (isLess600) {
-            this.fieldColspan = 12;
-        }
-        else {
-            this.fieldColspan = 6;
-        }
+      if (isLess600) {
+        this.fieldColspan = 12;
+      }
+      else {
+        this.fieldColspan = 6;
+      }
     }
     else {
-        this.fieldColspan = 6;
+      this.fieldColspan = 3;
     }
-}
+  }
 
 }
+
+

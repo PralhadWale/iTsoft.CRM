@@ -12,7 +12,8 @@ import { ClientlistComponent } from './clientlist/clientlist.component';
     CommonModule,
     SharedModule,
     RouterModule.forChild([
-      { path: "", component: ClientlistComponent }
+      { path: "", component: ClientlistComponent },
+      { path:"edit/:id" , component:AddClientComponent}
   ])
   ],
   providers:[ClientService]

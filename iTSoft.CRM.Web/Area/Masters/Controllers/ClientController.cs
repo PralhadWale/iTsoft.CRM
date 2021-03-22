@@ -1,5 +1,6 @@
 ﻿using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
+using iTSoft.CRM.Data.Entity.ViewModel;
 using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Services.Master;
 using iTSoft.CRM.Web.Controllers;
@@ -26,7 +27,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
         }
 
         [HttpPost("save")]
-        public IActionResult Save(ClientMaster CustomerMaster)
+        public IActionResult Save(ClientViewModel CustomerMaster)
         {
             ServiceResponse response = new ServiceResponse();
             try
@@ -90,7 +91,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                ClientMaster CustomerMaster = CustomerMasterService.Find(clientId);
+                ClientViewModel CustomerMaster = CustomerMasterService.Find(clientId);
                 if (CustomerMaster != null)
                 {
                     response.ResponseCode = ResponseCode.Success;
