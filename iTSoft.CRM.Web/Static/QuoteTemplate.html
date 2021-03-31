@@ -157,43 +157,47 @@
 
 				<tr>
 				<td colspan="2">
-				   <table>
-				     <tr class="heading">
-					     <td>SR NO.</td>
-					     <td>DESCRIPTION OF ITEMS</td>
-						 <td>QTY</td>
-						 <td>PRICE (₹)</td>
-						 <td>TOTAL (₹)</td>
-				      </tr>
-					  <tr class="detailRow">
-					     <td>{{SRNo}}</td>
-					     <td>{{Description}}</td>
-						 <td>{{QTY}}</td>
-						 <td>{{PRICE}} (₹)</td>
-						 <td>{{TOTAL}} (₹)</td>
-					  </tr>
-					   <tr class="heading">
-					     <td></td>
-					     <td>Sub Total</td>
-						 <td></td>
-						 <td></td>
-						 <td>{{SUBTOTAL}}</td>
-					   </tr>
-					    <tr>
-					     <td></td>
-					     <td>GST</td>
-						 <td>18%</td>
-						 <td></td>
-						 <td>{{TOTALGST}}</td>
-					   </tr>
-					   <tr class="heading">
-					     <td></td>
-					     <td>GRAND Total</td>
-						 <td></td>
-						 <td></td>
-						 <td>{{SUBTOTAL}}</td>
-					   </tr>
-				   </table>
+					<table>
+						<tr class="heading">
+							<td>SR NO.</td>
+							<td>DESCRIPTION OF ITEMS</td>
+							<td>QTY</td>
+							<td>PRICE (₹)</td>
+							<td>TOTAL (₹)</td>
+						</tr>
+						<tr class="detailRow">
+							<td>{{SRNo}}</td>
+							<td>{{Description}}</td>
+							<td>{{QTY}}</td>
+							<td> (₹) {{PRICE}}</td>
+							<td> (₹) {{TOTAL}}</td>
+						</tr>
+						<tr class="heading">
+							<td></td>
+							<td>Sub Total</td>
+							<td></td>
+							<td></td>
+							<td> (₹) {{SUBTOTAL}}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>GST</td>
+							<td>18%</td>
+							<td></td>
+							<td> (₹) {{TOTALGST}}</td>
+						</tr>
+						<tr class="heading">
+							<td></td>
+							<td>GRAND Total</td>
+							<td></td>
+							<td></td>
+							<td> (₹) {{GRANDTOTAL}}</td>
+						</tr>
+						<tr class="heading">
+							<td colspan="5"><b>Total In Words(₹) : </b> {{TOTALINWORD}}</td>
+							
+						</tr>
+					</table>
 				</td>
 				</tr>
 				

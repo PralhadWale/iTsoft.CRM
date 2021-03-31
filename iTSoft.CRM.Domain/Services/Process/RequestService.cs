@@ -24,6 +24,7 @@ namespace iTSoft.CRM.Domain.Services.Process
         List<RequestDetails> SearchRequestServices(RequestSerchParameters requestSerchParameters);
         List<RequestSummery> SearchRequest(RequestSerchParameters requestSerchParameters);
         string GetNextrequestNumber(long requestTypeId);
+        Quote GetQuoteDetails(long requestId);
     }
     public class RequestService : GenericRepository<RequestMaster>, IRequestService
     {
@@ -141,6 +142,21 @@ namespace iTSoft.CRM.Domain.Services.Process
                 dbConnection.Execute(PROC_AssignRequest, param, commandType: CommandType.StoredProcedure);
                 return (ResponseCode)param.Get<int>("@Result");
             }
+        }
+
+        public Quote GetQuoteDetails(long requestId)
+        {
+            Quote quote = new Quote();
+            
+            quote.QuoteItemDetails = new List<QuoteItemDetails>();
+            
+            RequestViewModel requestViewModel = this.LoadRequest(requestId);
+            
+            quote.RequestNumber = requestViewModel.RequestMaster.RequestNo;
+            quote.RequestDate = requestViewModel.RequestMaster.RequestDate.GetValueOrDefault().ToString("dd-MMM-yyyy");
+
+
+            return quote;
         }
     }
 }

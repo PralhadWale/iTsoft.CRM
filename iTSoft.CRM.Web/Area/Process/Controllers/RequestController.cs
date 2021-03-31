@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using iTSoft.CRM.Core.Helpers;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Master;
 using iTSoft.CRM.Data.Entity.Process;
@@ -165,6 +167,31 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
                 _logger.Error(ex, "Request - LoadRequest");
             }
             return Ok(response);
+        }
+
+        [HttpGet("DownloadQuote")]
+        public HttpResponseMessage DownloadQuote(long requestId)
+        {
+
+
+            HTMLMapper hTMLMapper = new HTMLMapper();
+            Quote quote = requestService.GetQuoteDetails(requestId);
+
+            var response = hTMLMapper.ToPDF<Quote>(null, null);
+
+            var result = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(response.GetBuffer())
+            };
+
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+            {
+                Name = "Quote_" + quote.RequestNumber.Replace("/", "-").Replace("\\", "-") + ".pdf"
+            };
+
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+            return result;// 
         }
     }
 }

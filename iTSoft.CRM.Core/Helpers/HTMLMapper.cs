@@ -1,8 +1,10 @@
-﻿using System;
+﻿using iText.Kernel.Pdf;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Text;
 
 namespace iTSoft.CRM.Core.Helpers
@@ -10,7 +12,7 @@ namespace iTSoft.CRM.Core.Helpers
     public class HTMLMapper : MapperBase
     {
 
-        public string MapHTML<T>(T rawData ,string htmlTemplateData)
+        public MemoryStream ToPDF<T>(T rawData ,string htmlTemplateData)
         {
 
             PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
@@ -52,7 +54,11 @@ namespace iTSoft.CRM.Core.Helpers
                     }
                 }
             }
-             return htmlTemplateData;
+
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter pdfWriter = new PdfWriter(memoryStream);
+            iText.Html2pdf.HtmlConverter.ConvertToPdf(htmlTemplateData,pdfWriter);
+            return memoryStream;
         }
 
     }
