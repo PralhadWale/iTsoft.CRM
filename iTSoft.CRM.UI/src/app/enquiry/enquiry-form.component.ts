@@ -270,7 +270,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (response.ResponseCode == ResponseCode.Success) {
   
           if (response.ResponseData.RequestNo && response.ResponseData.RequestNo != '') {
-             this.alertService.showInfoMessage("Saved successfully. "+ this.requestTypeName +" numbered " + response.ResponseData.RequestNo + " created for converted services",
+             this.alertService.showInfoMessage("Saved successfully. "+ this.requestTypeName +" numbered " + response.ResponseData.RequestNo + " created.",
              10000);
           }
           else {

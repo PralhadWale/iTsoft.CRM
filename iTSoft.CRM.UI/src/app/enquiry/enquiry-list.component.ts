@@ -236,6 +236,7 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands },
         { ColumnField: "RequestNo", ColumnHeader: "Enquiry No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Enquiry Date", Type: "date" },
+        { ColumnField: "NextFollowupDate", ColumnHeader: "Follow up Date", Type: "date" } ,   
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
         { ColumnField: "ClientTypeName", ColumnHeader: "Enq. Type", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader: "Enq. Name", Type: "text" },
@@ -245,6 +246,7 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "DepartmentName" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "QuoatedPrice", ColumnHeader: "Service Rate", Type: "text" }     
+        
       ];
 
 

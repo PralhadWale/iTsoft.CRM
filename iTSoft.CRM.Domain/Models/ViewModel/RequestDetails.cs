@@ -53,6 +53,10 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
 
         public DateTime? AssignedOn { get; set; }
 
+        public DateTime? LastFollowupDate { get; set; }
+
+        public DateTime? NextFollowupDate { get; set; }
+
         public string ClientBehaviourName { get; set; }
 
         public string DepartmentName { get; set; }

@@ -13,6 +13,7 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long? ParentRequestId { get; set; }
         public long? RequestTypeId { get; set; }
         public string Subject { get; set; }
+        public string Message { get; set; }
         public string RequestNo { get; set; }
         public DateTime? RequestDate { get; set; }
         public long? OrganizationId { get; set; }

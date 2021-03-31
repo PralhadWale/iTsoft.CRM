@@ -4,6 +4,7 @@ export class RequestMaster
     ParentRequestId?: number;
     RequestTypeId?: number;
     Subject : string;
+    Message : string;
     RequestNo: string;
     RequestDate?: Date;
     OrganizationId?: number;
