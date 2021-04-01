@@ -45,6 +45,25 @@ export class APIService {
             ).catch(this.handleError).finally(() => this.loaderService.display(false));
     }
 
+    GetFile(apiURL:string ){
+        this.loaderService.display(true);
+       
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            }),
+            responseType: 'blob' as 'json'
+        };
+
+        let URL = ConfigurationSettings.BASE_API_URL + apiURL;
+        return this.http.get(URL,httpOptions)
+            .map((response: Response) => {
+                return { Value: response };
+            }
+            ).catch(this.handleError).finally(() => this.loaderService.display(false));
+    }
+
+
     private handleError(error: Response): Observable<any> {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console

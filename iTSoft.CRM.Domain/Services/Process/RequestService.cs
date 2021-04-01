@@ -1,7 +1,9 @@
 ﻿using Dapper;
+using iTSoft.CRM.Core.Helpers;
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
 using iTSoft.CRM.Data.Entity.Process;
+using iTSoft.CRM.Data.Enum;
 using iTSoft.CRM.Data.Shared;
 using iTSoft.CRM.Data.ViewModel;
 using iTSoft.CRM.Domain.Models.ViewModel;
@@ -155,6 +157,47 @@ namespace iTSoft.CRM.Domain.Services.Process
             quote.RequestNumber = requestViewModel.RequestMaster.RequestNo;
             quote.RequestDate = requestViewModel.RequestMaster.RequestDate.GetValueOrDefault().ToString("dd-MMM-yyyy");
 
+            NumberHelper numberHelper = new NumberHelper();
+      
+            if (requestViewModel.RequestMaster.ClientTypeId == (long)ClientType.Corporate)
+            {
+                quote.BuyerDetails = "Organization Name : " + requestViewModel.OrganizationMaster.OrganizationName + Environment.NewLine +
+                    "Contact Person :" + requestViewModel.ContactPersonMasters[0].LastName + ' ' + requestViewModel.ContactPersonMasters[0].FirstName + Environment.NewLine +
+                    "Address :" + requestViewModel.OrganizationMaster.Address + "  " + requestViewModel.OrganizationMaster.State + ' ' + requestViewModel.OrganizationMaster.Country + ' '+ requestViewModel.OrganizationMaster.Pincode + Environment.NewLine +
+                    "Email :" + requestViewModel.OrganizationMaster.EmailId + Environment.NewLine +
+                    "Phone No :" + requestViewModel.OrganizationMaster.PhoneNo + Environment.NewLine;
+            }
+            else
+            {
+                quote.BuyerDetails = "Client Name :" + requestViewModel.ContactPersonMasters[0].LastName + ' ' + requestViewModel.ContactPersonMasters[0].FirstName + Environment.NewLine +
+                   "Address :" + requestViewModel.ContactPersonMasters[0].Address + "  " + requestViewModel.ContactPersonMasters[0].State + ' ' + requestViewModel.ContactPersonMasters[0].Country +  Environment.NewLine +
+                   "Email :" + requestViewModel.ContactPersonMasters[0].Email + Environment.NewLine +
+                   "Phone No :" + requestViewModel.ContactPersonMasters[0].PhoneNo1 + Environment.NewLine;
+            }
+
+            var acceptedServices = requestViewModel.RequestServiceDetails.Where(r => r.LeadStatusId == (long)LeadStatus.Converted || r.LeadStatusId == (long)LeadStatus.ProposalAccepted).ToList();
+            int i = 1;
+
+            requestViewModel.RequestMaster.AgreedAmount = 0;
+            
+            foreach(var service in acceptedServices)
+            {
+                quote.QuoteItemDetails.Add(new QuoteItemDetails
+                {
+                    SRNo = i.ToString(),
+                    Description = service.ServiceName,
+                    QTY = "1",
+                   PRICE = service.AgreedPrice.GetValueOrDefault().ToString("#0.00"),
+                   TOTAL = service.AgreedPrice.GetValueOrDefault().ToString("#0.00")
+                }) ;
+                requestViewModel.RequestMaster.AgreedAmount += service.AgreedPrice.GetValueOrDefault();
+            }
+
+
+            quote.SUBTOTAL = requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault().ToString("#0.00");
+            quote.TOTALGST = ((double)requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault() * 0.18d).ToString("#0.00");
+            quote.GRANDTOTAL = ((double)requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault() + (double)requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault() * 0.18d).ToString("#0.00");
+            quote.TOTALINWORD = numberHelper.ToWords(Convert.ToDecimal(quote.GRANDTOTAL));
 
             return quote;
         }

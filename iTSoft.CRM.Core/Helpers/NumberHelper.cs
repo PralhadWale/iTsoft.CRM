@@ -6,7 +6,7 @@ namespace iTSoft.CRM.Core.Helpers
 {
     public class NumberHelper
     {
-        public static string ToWords(decimal? numbers, Boolean paisaconversion = false)
+        public string ToWords(decimal? numbers, Boolean paisaconversion = false)
         {
             var pointindex = numbers.ToString().IndexOf(".");
             long paisaamt = 0;

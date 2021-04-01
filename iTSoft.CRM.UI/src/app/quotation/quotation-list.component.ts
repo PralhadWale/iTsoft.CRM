@@ -91,6 +91,17 @@ export class QuotationListComponent implements OnInit {
         // this.addFollowUp.SetFollowUpDefaultData();
         // this.addFollowUp.sidenav.open();
       }
+      else if ($event.command.content == "download") {
+        let rowData: RequestDetails = Object.assign({}, $event.rowData);
+        this.requestService.DownloadQuote(rowData.RequestId).subscribe(
+          (result: any) => {
+              this.downloadPDF(result);
+          },
+          (error: any) => {
+              this.alertService.showErrorMessage("Failed to download due to service error");
+          }
+      );
+      }
     }
     else {
       if ($event.toolbarItem == ToolBarItems.Add) {
@@ -172,6 +183,8 @@ export class QuotationListComponent implements OnInit {
       );
   }
 
+  
+
   onDepartmentChanged($event: any) {
     if ($event != null) {
       let departmentId = $event.value;
@@ -218,7 +231,8 @@ export class QuotationListComponent implements OnInit {
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit },
       { click: null, commandType: CommandType.Other, icon: 'note_add', content: 'add', style: { 'background-color': 'skyblue', 'min-height': '25px', 'margin': '5px' } , customstyle : true , toolTip : 'Add followup note' },
-      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true  , toolTip : 'Single request transfer'}
+      { click: null, commandType: CommandType.Other, icon: 'transfer_within_a_station', content: 'transfer', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true  , toolTip : 'Single request transfer'},
+      { click: null, commandType: CommandType.Other, icon: 'download_for_offline', content: 'download', style: { 'background-color': 'green', 'min-height': '25px', 'margin': '5px' }, customstyle: true  , toolTip : 'Download Quote'}
     ];
 
     this.quotationTableSchema =
@@ -240,4 +254,12 @@ export class QuotationListComponent implements OnInit {
       this.quotationTableSchema.unshift({ ColumnField: "IsSelected", ColumnHeader: "", Type: "boolean" })
     }
   }
+
+  
+  downloadPDF(data: any){
+    var blob = new Blob([data.Value], { type: 'application/pdf' });
+    var url = window.URL.createObjectURL(blob);
+    window.open(url);
+  }
+  
 }

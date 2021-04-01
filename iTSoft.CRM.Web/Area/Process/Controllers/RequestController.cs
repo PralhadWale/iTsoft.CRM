@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using iTSoft.CRM.Domain.Models.ViewModel;
 using iTSoft.CRM.Domain.Services.Process;
 using iTSoft.CRM.Web.Controllers;
 using iTSoft.CRM.Web.Helpers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -24,9 +26,12 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
         private readonly ILogger _logger;
 
         IRequestService requestService = null;
-        public RequestController(IRequestService _requestService)
+        private readonly IWebHostEnvironment host = null;
+
+        public RequestController(IRequestService _requestService , IWebHostEnvironment _host)
         {
             _logger = Logger.GetLogger();
+            host = _host;
             requestService = _requestService;
         }
 
@@ -170,28 +175,18 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
         }
 
         [HttpGet("DownloadQuote")]
-        public HttpResponseMessage DownloadQuote(long requestId)
+        public IActionResult DownloadQuote(long requestId)
         {
-
 
             HTMLMapper hTMLMapper = new HTMLMapper();
             Quote quote = requestService.GetQuoteDetails(requestId);
 
-            var response = hTMLMapper.ToPDF<Quote>(null, null);
+            
+            string htmlPath = Path.Combine(host.ContentRootPath, "Static", "QuoteTemplate.html");
+            string htmlData = System.IO.File.ReadAllText(htmlPath);
 
-            var result = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-            {
-                Content = new ByteArrayContent(response.GetBuffer())
-            };
-
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
-            {
-                Name = "Quote_" + quote.RequestNumber.Replace("/", "-").Replace("\\", "-") + ".pdf"
-            };
-
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
-
-            return result;// 
+            var response = hTMLMapper.ToPDF<Quote>(quote, htmlData);
+            return new FileStreamResult(response, "application/pdf");
         }
     }
 }

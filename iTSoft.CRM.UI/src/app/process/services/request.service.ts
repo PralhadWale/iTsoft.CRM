@@ -14,6 +14,7 @@ import { UserProfilService } from 'src/app/_services/userProfile.Service';
 })
 export class RequestService {
  
+ 
 
   private RequestController = "/Request/";
   constructor(private apiService: APIService , private userProfileService : UserProfilService) {
@@ -111,9 +112,15 @@ export class RequestService {
     return this.apiService.GetData(url + "?requestTypeId=" + requestTypeId);
   }
 
-  getClientUrl: string = iTCRMSettings.Masters + "/client/findClient";
   FindClient(ClientId: number) {
-    return this.apiService.GetData(this.getClientUrl + "?clientId=" + ClientId);
+    
+    let getClientUrl: string = iTCRMSettings.Masters + "/client/findClient";
+    return this.apiService.GetData(getClientUrl + "?clientId=" + ClientId);
+  }
+
+  DownloadQuote(requestId: number) {
+    let url = this.RequestController + "DownloadQuote";
+    return this.apiService.GetFile(url + "?requestId=" + requestId);
   }
 
 }

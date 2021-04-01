@@ -32,6 +32,13 @@
     <ProjectReference Include="..\iTSoft.CRM.Domain\iTSoft.CRM.Domain.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Update="Static\QuoteTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

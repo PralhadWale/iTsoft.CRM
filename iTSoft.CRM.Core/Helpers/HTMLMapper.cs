@@ -1,4 +1,5 @@
-﻿using iText.Kernel.Pdf;
+﻿using iText.Html2pdf;
+using iText.Kernel.Pdf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,9 +25,9 @@ namespace iTSoft.CRM.Core.Helpers
                     if (inputDetails.Value is IList)
                     {
                         int detailStartIndex = htmlTemplateData.IndexOf("<tr class=\"detailRow\">");
-                        int detailEndIndex = htmlTemplateData.IndexOf("</tr",detailStartIndex);
+                        int detailEndIndex = htmlTemplateData.IndexOf("</tr",detailStartIndex) + 5;
 
-                        string originalDetailsRowString = string.Empty;
+                        string originalDetailsRowString = htmlTemplateData.Substring(detailStartIndex, detailEndIndex - detailStartIndex); ;
                         string tableData = string.Empty;
                         
                         DataTable results = ToDataTable(inputDetails.Value, string.Empty);
@@ -38,27 +39,42 @@ namespace iTSoft.CRM.Core.Helpers
                                 foreach(DataColumn column in results.Columns)
                                 {
                                     string val = Convert.ToString(row[column.ColumnName]);
-                                    htmlTemplateData.Replace("{{" + column.ColumnName + "}}", val);
+                                    if (val != null)
+                                    {
+                                        val = val.Replace(Environment.NewLine, "</br>");
+                                    }
+                                    rowData = rowData.Replace("{{" + column.ColumnName + "}}", val);
                                 }
                                 tableData += rowData;
                             }
                         }
 
-                        tableData.Remove(detailStartIndex, detailEndIndex - detailStartIndex);
-                        tableData.Insert(detailStartIndex, tableData);
+                       htmlTemplateData = htmlTemplateData.Remove(detailStartIndex, detailEndIndex - detailStartIndex);
+                        htmlTemplateData = htmlTemplateData.Insert(detailStartIndex, tableData);
 
                     }
                     else
                     {
-                        htmlTemplateData = htmlTemplateData.Replace("{{" + inputDetails.InputProperty.Name + "}}", Convert.ToString(inputDetails.Value));
+                        string val = Convert.ToString(inputDetails.Value);
+                        if (val != null)
+                        {
+                            val = val.Replace(Environment.NewLine, "</br>");
+                        }
+                        htmlTemplateData = htmlTemplateData.Replace("{{" + inputDetails.InputProperty.Name + "}}", val);
                     }
                 }
             }
 
-            MemoryStream memoryStream = new MemoryStream();
-            PdfWriter pdfWriter = new PdfWriter(memoryStream);
-            iText.Html2pdf.HtmlConverter.ConvertToPdf(htmlTemplateData,pdfWriter);
-            return memoryStream;
+            var workStream = new MemoryStream();
+            using (var pdfWriter = new PdfWriter(workStream))
+            {
+                pdfWriter.SetCloseStream(false);
+                using (var document = HtmlConverter.ConvertToDocument(htmlTemplateData, pdfWriter))
+                {
+                }
+            }
+            workStream.Position = 0;
+            return workStream;
         }
 
     }
