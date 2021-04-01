@@ -21,6 +21,7 @@ import { NgForm } from '@angular/forms/';
 import { UserProfilService } from '../_services/userProfile.Service';
 import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
 import { FollowUpDetails } from '../_models/followupdetails';
+import { LeadStatus } from '../_models/leadStatus';
 
 @Component({
   selector: 'quotation-list',
@@ -93,14 +94,20 @@ export class QuotationListComponent implements OnInit {
       }
       else if ($event.command.content == "download") {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
-        this.requestService.DownloadQuote(rowData.RequestId).subscribe(
-          (result: any) => {
+        if (rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.ProposalAccepted) {
+          this.requestService.DownloadQuote(rowData.RequestId).subscribe(
+            (result: any) => {
               this.downloadPDF(result);
-          },
-          (error: any) => {
+            },
+            (error: any) => {
               this.alertService.showErrorMessage("Failed to download due to service error");
-          }
-      );
+            }
+          );
+        }
+        else 
+        {
+          this.alertService.showWarningMessage("Not allowed");
+        }
       }
     }
     else {
