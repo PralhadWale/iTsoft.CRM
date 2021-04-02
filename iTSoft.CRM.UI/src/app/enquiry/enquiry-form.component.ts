@@ -262,6 +262,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.request.OrganizationMaster = new OrganizationMaster();
     }
 
+
+    if(this.request.RequestMaster.ParentRequestId > 0)
+    {
+      this.serviceTableSettings.ShowToolBar = false;
+      this.allowSave = false;
+    }
   }
 
   saveEnquiry(enquiryForm: NgForm) {
@@ -314,6 +320,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     if(!this.allowSave)
       return;
 
+   if(this.request.RequestMaster.ParentRequestId > 0)
+   {
+      this.alertService.showInfoMessage("Not allowed");
+      return;
+   }
+
     if ($event.toolbarItem) {
       if ($event.toolbarItem == ToolBarItems.Add) {
         this.OpenServiceDialog(null);
@@ -321,7 +333,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     else {
       let rowData: RequestServiceDetails = Object.assign({}, $event.rowData);
-      if (!(rowData.RequestServiceId > 0 && (rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.Dropped))) {
+      if (!(rowData.RequestServiceId > 0 && (rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.Dropped || rowData.LeadStatusId == LeadStatus.ProposalDropped))) {
         this.userProfileService.IsUserDepartment(rowData.DepartmentId).subscribe((result) => {
           if (result == true) {
             if ($event.command.commandType == CommandType.Edit) {
@@ -454,6 +466,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.followupTableSettings.HideFilter = true;
 
     this.serviceTableSettings = new TableDefaultSettings();
+
     this.serviceTableSettings.ShowToolBar = true;
     this.serviceTableSettings.ToolBarItems = [ToolBarItems.Add];
     this.serviceTableSettings.HideFilter = true;
