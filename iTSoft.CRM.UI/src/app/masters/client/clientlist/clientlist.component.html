@@ -51,13 +51,36 @@
         </mat-error>
       </mat-form-field>
     </mat-nav-list>
-    <mat-nav-list style="margin-left:50px;" *ngIf="userProfileService.IsAdmin == true">
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>PAN No</mat-label>
+        <input matInput type='text' [(ngModel)]="clientMaster.PANNO" name="PANNO"
+        #PANNO="ngModel" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+       <mat-error *ngIf="(PANNO.touched || clientForm.submitted) && PANNO.errors">
+         Please enter valid PAN Number
+       </mat-error>
+      </mat-form-field>
+    </mat-nav-list>
+    <!-- <mat-nav-list style="margin-left:50px;" *ngIf="userProfileService.IsAdmin == true">
       <mat-radio-group aria-labelledby="client-radio-group-label" class="client-radio-group" name="clientType"
         [(ngModel)]="selectedClientType" [(value)]="selectedClientType">
         <mat-radio-button class="client-radio-button" *ngFor="let clientType of clientTypes" [value]="clientType">
           {{clientType}}
         </mat-radio-button>
       </mat-radio-group>
+    </mat-nav-list> -->
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field class="form-field" appearance="outline">
+        <input matInput type='text' style="display:none;">
+        <mat-radio-group aria-label="Select an client type" [(ngModel)]="clientMaster.ClientTypeId"
+          [(value)]="clientMaster.ClientTypeId" name="ClientTypeId" #ClientTypeId="ngModel" required>
+          <mat-radio-button value="1">Corporate</mat-radio-button> &nbsp;&nbsp;&nbsp;
+          <mat-radio-button value="2">Non Corporate</mat-radio-button>
+        </mat-radio-group>
+        <mat-error *ngIf="(ClientTypeId.touched || clientForm.submitted) && ClientTypeId.errors?.required">
+          Please select valid client type
+        </mat-error>
+      </mat-form-field>
     </mat-nav-list>
     <mat-divider></mat-divider>
     <mat-card-header>
@@ -66,7 +89,7 @@
           (click)="searchClient(clientMaster);">
           <mat-icon>search</mat-icon>Search
         </button>
-        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;" (click)="reset()">
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;" (click)="Cancel()">
           <mat-icon>refresh</mat-icon>Cancel
         </button>
       </mat-action-list>

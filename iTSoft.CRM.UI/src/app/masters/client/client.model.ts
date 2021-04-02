@@ -3,7 +3,7 @@ export class ClientMaster {
     OrganizationId: number | null;
     ClientName: string;
     ClientTypeName : string;
-    ClientTypeId : number;
+    ClientTypeId : number | string;
     
     ContactPersonId: number;
     Salutation: string;

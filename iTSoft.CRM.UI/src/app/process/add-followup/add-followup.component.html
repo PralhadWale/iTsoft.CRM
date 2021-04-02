@@ -45,7 +45,7 @@
       </mat-form-field>
       <mat-form-field *ngIf="followUP.AgreedAmount > 0 || (followUP.LeadStatusId == 10010 || followUP.LeadStatusId == 10011 || followUP.LeadStatusId == 10012)" appearance="outline">
         <mat-label>Agreed Rate</mat-label>
-        <input matInput type="number" placeholder="Agreed Rate" name="AgreedAmount" [(ngModel)]="followUP.AgreedAmount" #AgreedAmount [required]="followUpDetails.RequestTypeId == 2"/>
+        <input matInput type="number" placeholder="Agreed Rate" name="AgreedAmount" [(ngModel)]="followUP.AgreedAmount"  oninput="validity.valid||(value='');" min="0" max="1000000000" #AgreedAmount [required]="followUpDetails.RequestTypeId == 2"/>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Follow up date</mat-label>

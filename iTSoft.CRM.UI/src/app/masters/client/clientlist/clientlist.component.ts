@@ -1,14 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
-import { AlertService } from 'src/app/_services';
-import { ClientService } from '../client.service';
-import { ClientMaster } from '../client.model';
-import { AddClientComponent } from '../add-client/add-client.component';
 import { NgForm } from '@angular/forms/';
 import { Router } from '@angular/router';
+
+import { ClientMaster } from '../client.model';
 import { RequestType } from 'src/app/_models/requesttype';
+import { CommandEventArgs, CommandModel, CommandType, TableColumnModel, TableDefaultSettings, ToolBarItems } from 'src/app/shared/table-layout/it-mat-table.component';
+
+import { AlertService, StorageService } from 'src/app/_services';
+import { ClientService } from '../client.service';
 import { UserProfilService } from 'src/app/_services/userProfile.Service';
+import { ClientType } from 'src/app/_models/clientType';
 
 @Component({
   selector: 'app-clientlist',
@@ -19,7 +21,7 @@ export class ClientlistComponent implements OnInit {
   @ViewChild("searchClientNav") searchNav: MatSidenav;
   @ViewChild("clientForm") clientForm: NgForm;
   pageTitle: string = "Client List"
-
+  storageKey = "CLIENTFILTER";
   clientList: Array<any>;
   clientTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
@@ -29,6 +31,7 @@ export class ClientlistComponent implements OnInit {
   selectedClientType: string = "Assigned";
   constructor(
      private clientService: ClientService,
+     private storageService: StorageService,
      public userProfileService : UserProfilService,
      private alertService: AlertService,
      private router: Router,
@@ -37,7 +40,7 @@ export class ClientlistComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reset();
+    this.SetFilter(false);
     this.SetTableSchema();
     this.Search(this.clientMaster);
   }
@@ -65,6 +68,7 @@ export class ClientlistComponent implements OnInit {
         this.searchNav.open();
       }
       else if ($event.toolbarItem == ToolBarItems.Refresh) {
+        this.SetFilter(true);
         this.searchClient(this.clientMaster);
       }
       else if ($event.toolbarItem == ToolBarItems.Add) {
@@ -75,10 +79,6 @@ export class ClientlistComponent implements OnInit {
 
   }
 
-  onClientSaved() {
-    this.searchClient(this.clientMaster);
-  }
-
   searchClient(clientMaster: ClientMaster) {
     if (this.clientForm && this.clientForm.valid) {
       if (clientMaster) {
@@ -87,11 +87,31 @@ export class ClientlistComponent implements OnInit {
     }
   }
 
-  reset() {
-    this.clientMaster = this.clientService.NewClient();
+
+  private SetFilter(resetToDefault: boolean = false) {
+    if (resetToDefault) {
+      this.clientMaster = this.clientService.NewClient();
+      this.clientMaster.ClientTypeId = ClientType.NonCorporate.toString();
+    }
+    else {
+      let filter = this.storageService.GetItem(this.storageKey);
+      if (filter != null) {
+        this.clientMaster = filter;
+      }
+      else {
+        this.clientMaster = this.clientService.NewClient();
+        this.clientMaster.ClientTypeId = ClientType.NonCorporate.toString();
+      }
+    }
+
     if (this.searchNav != null) {
       this.searchNav.close();
     }
+  }
+
+  Cancel()
+  {
+    this.searchNav.close();
   }
 
 
@@ -108,6 +128,7 @@ export class ClientlistComponent implements OnInit {
     }
 
     clientMaster.AdvisorId = this.userProfileService.CurrentUser.UserId;
+    this.storageService.SetItem(this.storageKey, this.clientMaster);
     this.clientService.SearchClient(clientMaster).subscribe(result => {
       this.clientList = result.Value.ResponseData;
       this.searchNav.close();

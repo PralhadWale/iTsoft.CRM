@@ -96,7 +96,7 @@
             <mat-divider *ngIf="request.RequestMaster.ClientTypeId == '1'"></mat-divider>
             <br />
             <mat-grid-list cols="12" rowHeight="80px" *ngIf="request.RequestMaster.ClientTypeId == '1'">
-              <mat-grid-tile [colspan]="fieldColspan < 6 ? fieldColspan * 2 : fieldColspan">
+              <mat-grid-tile [colspan]="fieldColspan">
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Company Name</mat-label>
                   <input matInput type='text' [(ngModel)]="request.OrganizationMaster.OrganizationName"
@@ -104,6 +104,16 @@
                   <mat-error
                     *ngIf="(OrganizationName.touched || enquiryForm.submitted) && OrganizationName.errors?.required">
                     Company Name Is required
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput type='text' [(ngModel)]="request.OrganizationMaster.EmailId" name="EmailId"
+                    #EmailId="ngModel" maxlength="150" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,4}$">
+                  <mat-error *ngIf="(EmailId.touched || enquiryForm.submitted) && EmailId.errors">
+                    Please enter valid email
                   </mat-error>
                 </mat-form-field>
               </mat-grid-tile>
@@ -156,9 +166,8 @@
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>PAN No</mat-label>
                   <input matInput type='text' [(ngModel)]="request.OrganizationMaster.PANNO" name="PANNO"
-                    #PANNO="ngModel">
-                  <mat-error *ngIf="(PANNO.touched || enquiryForm.submitted) && PANNO.errors"
-                    pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                    #PANNO="ngModel" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                  <mat-error *ngIf="(PANNO.touched || enquiryForm.submitted) && PANNO.errors">
                     Please enter valid PAN Number
                   </mat-error>
                 </mat-form-field>
@@ -271,6 +280,16 @@
                   <mat-datepicker #enquiryDOBId></mat-datepicker>
                   <mat-error>
                     Please select valid date
+                  </mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile [colspan]="fieldColspan" *ngIf="request.RequestMaster.ClientTypeId != '1'">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>PAN No</mat-label>
+                  <input matInput type='text' [(ngModel)]="request.ContactPersonMaster.PANNO" name="ContactPersonMasterPANNO"
+                   #ContactPersonMasterPANNO="ngModel" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                  <mat-error *ngIf="(ContactPersonMasterPANNO.touched || enquiryForm.submitted) && ContactPersonMasterPANNO.errors">
+                    Please enter valid PAN Number
                   </mat-error>
                 </mat-form-field>
               </mat-grid-tile>

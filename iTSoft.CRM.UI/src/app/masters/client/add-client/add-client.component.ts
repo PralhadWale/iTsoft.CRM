@@ -47,7 +47,6 @@ import { UserProfilService } from 'src/app/_services/userProfile.Service';
     `],
 })
 export class AddClientComponent implements OnInit {
-  @ViewChild("sidenav") sidenav: MatSidenav;
 
   errorMessage: any;
   public IsCompleted: boolean = false;
@@ -148,10 +147,14 @@ export class AddClientComponent implements OnInit {
 
   onSubmit(clientForm: NgForm) {
     if (clientForm && clientForm.valid) {
+
+        if (this.client.ClientMaster.ClientSourceId == null || this.client.ClientMaster.ClientSourceId < 1) {
+          this.client.ClientMaster.ClientSourceId = 2; // Website
+        }
+
         this.clientService.Save(this.client).subscribe(result => {
           {
             this.alertService.showSuccessMessage("Client Saved successfully");
-            this.sidenav.close();
             this.clearClientData(clientForm);
             this.router.navigate(['clients']);
           }

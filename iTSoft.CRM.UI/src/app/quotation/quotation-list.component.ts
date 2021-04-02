@@ -40,6 +40,7 @@ export class QuotationListComponent implements OnInit {
   searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Quotation);
 
   storageKey = "QUOTATIONFILTER";
+  
 
   quotationList: Array<any>;
   quotationTableSchema: Array<TableColumnModel> = [];
