@@ -5,6 +5,7 @@ $light-bg: #313D4F;
 
 .grid-container {
   margin: 20px;
+  width: 100% !important;
 }
 
 app-line-chart, app-bar-chart, app-radar-chart, app-pie-chart {

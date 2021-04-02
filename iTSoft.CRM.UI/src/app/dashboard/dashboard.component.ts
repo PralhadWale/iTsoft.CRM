@@ -36,6 +36,32 @@ interface InfoBox {
 })
 export class DashboardComponent implements OnInit {
 
+  single: any[] = [
+    {
+      "name": "Germany",
+      "value": 8940000
+    },
+    {
+      "name": "USA",
+      "value": 5000000
+    },
+    {
+      "name": "USA",
+      "value": 5000000
+    }
+  ];
+  view: any[] = [400, 300];
+
+  colorScheme = {
+    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+  };
+  cardColor: string = '#FFFFFF';
+ 
+
+  onSelect(event) {
+    console.log(event);
+  }
+
   cardLayout = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]).pipe(
     map(({ matches }) => {
       if (matches) { 
@@ -96,6 +122,10 @@ export class DashboardComponent implements OnInit {
     this.SetAdminDashboard();
   }
 
+  onResize(event) {
+    this.view = [event.target.innerWidth/3 , 200];
+}
+  
 
   SetAdminDashboard() {
     var date = new Date();

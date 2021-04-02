@@ -31,13 +31,14 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     AppComponent
   ],
   imports: [
+    NgxChartsModule,
     BrowserModule,
     BrowserAnimationsModule,
     NavLayoutModule,
     SharedModule,
     MaterialModule,
     HttpClientModule,
-    NgxChartsModule,
+   
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule
   ],
