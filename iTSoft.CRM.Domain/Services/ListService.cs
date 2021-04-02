@@ -1,4 +1,5 @@
 ﻿using iTSoft.CRM.Data.Entity;
+using iTSoft.CRM.Data.Entity.Master;
 using iTSoft.CRM.Data.Repository;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace iTSoft.HIMS.Service.Shared
         List<ListModelWithForeignKey> ListAll<T>(string textField, string valueField, string foreignKey);
         List<ListModel> GetAdvisors();
 
+        List<LeadStatusMaster> GetLeadStatusMasters();
         List<ListModel> GetDepartmentAdvisors(int departmentId);
         List<ListModel> GetUserDepartments(int userId);
     }
@@ -38,6 +40,11 @@ namespace iTSoft.HIMS.Service.Shared
         public List<ListModel> GetAdvisors()
         {
             return _listRepository.GetAdvisors();
+        }
+
+        public List<LeadStatusMaster> GetLeadStatusMasters()
+        {
+            return _listRepository.GetLeadStatusMasters();
         }
 
         public List<ListModel> GetDepartmentAdvisors(int departmentId)

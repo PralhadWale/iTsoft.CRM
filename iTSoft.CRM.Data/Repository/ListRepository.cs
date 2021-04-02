@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using iTSoft.CRM.Data.Core;
 using iTSoft.CRM.Data.Entity;
+using iTSoft.CRM.Data.Entity.Master;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,7 @@ namespace iTSoft.CRM.Data.Repository
         List<ListModel> GetAdvisors();
         List<ListModel> GetDepartmentAdvisors(int departmentId);
         List<ListModel> GetUserDepartments(int userId);
+        List<LeadStatusMaster> GetLeadStatusMasters();
     }
     public class ListRepository : BaseRepository , IListRepository
     {
@@ -43,6 +45,11 @@ namespace iTSoft.CRM.Data.Repository
             parameters.Add("Action", "UserDepartments");
             parameters.Add("EmployeeId", userId);
             return base.GetConnection().Query<ListModel>(PROC_EmployeeManager, parameters, commandType: System.Data.CommandType.StoredProcedure).AsList();
+        }
+
+        public  List<LeadStatusMaster> GetLeadStatusMasters()
+        {
+            return base.GetConnection().Query<LeadStatusMaster>("Select * From " + typeof(LeadStatusMaster).Name + " Where IsActive=1").AsList();
         }
 
         public List<ListModel> ListAll<T>(string textField, string valueField, dynamic filters)

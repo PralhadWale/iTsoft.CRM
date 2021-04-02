@@ -10,6 +10,7 @@ namespace iTSoft.CRM.Data.Entity.Master
         [Key]
         public long LeadStatusId { get; set; }
         public string LeadStatusName { get; set; }
+        public long RequestTypeId { get; set; }
         public bool? IsActive { get; set; }
         public long? AddedBy { get; set; }
         public DateTime? AddedOn { get; set; }

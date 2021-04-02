@@ -67,37 +67,41 @@ export class StatuslistComponent implements OnInit {
   saveStatus(statusForm: NgForm) {
     if (statusForm && statusForm.valid) {
 
-      this.statusService.Save(this.statusMaster).subscribe(result => {
-        this.alertService.showSuccessMessage("Record saved successfully");
-        this.reset();
-        this.getAll();
-      }, error => {
-        this.alertService.showErrorMessage(error.error);
-      })
+      // this.statusService.Save(this.statusMaster).subscribe(result => {
+      //   this.alertService.showSuccessMessage("Record saved successfully");
+      //   this.reset();
+      //   this.getAll();
+      // }, error => {
+      //   this.alertService.showErrorMessage(error.error);
+      // })
+
+      this.alertService.showInfoMessage("Not allowed");
     }
   }
 
   Delete(data: StatusMaster) {
 
-    let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to delete selected record ? " };
+    // let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to delete selected record ? " };
 
-    const dialogRef = this.dialog.open(ConfirmDialog, {
-      maxWidth: "400px",
-      data: dialogData
-    });
+    // const dialogRef = this.dialog.open(ConfirmDialog, {
+    //   maxWidth: "400px",
+    //   data: dialogData
+    // });
 
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      let result = dialogResult;
-      if (result == "CONFIRMED") {
-        this.statusService.Delete(data).subscribe(result => {
-          this.alertService.showSuccessMessage("Record Deleted successfully");
-          this.reset();
-          this.getAll();
-        }, error => {
-          this.alertService.showErrorMessage(error.error);
-        });
-      }
-    });
+    // dialogRef.afterClosed().subscribe(dialogResult => {
+    //   let result = dialogResult;
+    //   if (result == "CONFIRMED") {
+    //     this.statusService.Delete(data).subscribe(result => {
+    //       this.alertService.showSuccessMessage("Record Deleted successfully");
+    //       this.reset();
+    //       this.getAll();
+    //     }, error => {
+    //       this.alertService.showErrorMessage(error.error);
+    //     });
+    //   }
+    // });
+
+    this.alertService.showInfoMessage("Not allowed");
   }
 
   reset() {

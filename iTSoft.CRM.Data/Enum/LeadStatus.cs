@@ -14,5 +14,6 @@ namespace iTSoft.CRM.Data.Enum
         ProposalAccepted = 10011,
         Converted = 10012,
         Dropped = 10013,
+        ProposalDropped = 10014
     }
 }

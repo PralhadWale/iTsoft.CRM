@@ -95,8 +95,8 @@
                       <mat-label>Lead Status</mat-label>
                       <mat-select placeholder="Select Status" [(ngModel)]="requestServiceDetails.LeadStatusId" [(value)]="requestServiceDetails.LeadStatusId"
                       name="LeadStatusId" #LeadStatusId="ngModel" required>
-                        <mat-option *ngFor="let item of listService.ActiveNotDecisiveLeadStatusList | async" [value]="item.Value">
-                          {{item.Text}}
+                        <mat-option *ngFor="let item of listService.ActiveNotDecisiveLeadStatusList(requestTypeId) | async" [value]="item.LeadStatusId">
+                          {{item.LeadStatusName}}
                         </mat-option>
                       </mat-select>
                       <mat-error *ngIf="serviceForm.submitted">
@@ -132,7 +132,7 @@
                     <mat-form-field class="form-field" appearance="outline">
                         <mat-label>Remark</mat-label>
                         <textarea matInput type='text' [(ngModel)]="requestServiceDetails.Remark" name="Remark" #Remark="ngModel"
-                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"  [required]="requestServiceDetails.LeadStatusId == 10013" ></textarea>
+                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"  [required]="requestServiceDetails.LeadStatusId == 10013 || requestServiceDetails.LeadStatusId == 10014" ></textarea>
                         <mat-error *ngIf="(Remark.touched || serviceForm.submitted) && Remark.errors">
                              Please enter valid Remark
                         </mat-error>

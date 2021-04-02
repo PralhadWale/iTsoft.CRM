@@ -171,9 +171,13 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
 
     this.request = request;
     this.request.RequestServiceDetail = this.request.RequestServiceDetails[0];
-
-    if(this.request.RequestServiceDetail.LeadStatusId == LeadStatus.Dropped || this.request.RequestServiceDetail.LeadStatusId == LeadStatus.Converted)
-    {
+    this.requestTypeId = request.RequestMaster.RequestTypeId;
+    if (
+      (this.request.RequestMaster.RequestTypeId == RequestType.Enquiry &&
+        (this.request.RequestMaster.StatusId == LeadStatus.Converted || this.request.RequestMaster.StatusId == LeadStatus.Dropped))
+      || (this.request.RequestMaster.RequestTypeId == RequestType.Quotation &&
+        (this.request.RequestMaster.StatusId == LeadStatus.ProposalAccepted || this.request.RequestMaster.StatusId == LeadStatus.ProposalDropped))
+    ) {
       this.allowSave = false;
     }
     else {
@@ -198,21 +202,6 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
       }
   }
 
-  saveEnquiry(enquiryForm: NgForm) {
-    if (enquiryForm && enquiryForm.valid) {
-      this.request.RequestMaster.RequestTypeId = this.requestTypeId;
-      this.requestService.Save(this.request).subscribe(result => {
-        this.alertService.showSuccessMessage("Request Saved successfully");
-        this.SetDefaultRequest();
-        this.NavigateToList();
-      }, (error: any) => {
-        this.alertService.showSuccessMessage("Failed to save");
-      });
-    }
-    else {
-      this.selectedIndex = 0
-    }
-  }
 
   onFollowupClick() {
    
@@ -224,6 +213,7 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
     nextFollowUpDate.setDate(nextFollowUpDate.getDate() + 7);
     this.addFollowUp.followUpDetails.NextFollowupDate = nextFollowUpDate;
     this.addFollowUp.followUpDetails.FollowUpDate = new Date();
+    this.addFollowUp.followUpDetails.RequestTypeId = this.request.RequestMaster.RequestTypeId;
     this.addFollowUp.SetFollowUpDefaultData();
     this.addFollowUp.sidenav.open();
 
@@ -232,8 +222,10 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
 
 
   onFollowUpSaved() {
+  
+    this.addFollowUp.sidenav.close();
     this.getRequestService(this.request.RequestServiceDetail.RequestServiceId);
-    this.NavigateToList();
+    //this.NavigateToList();
   }
 
   SetDefaultRequest() {

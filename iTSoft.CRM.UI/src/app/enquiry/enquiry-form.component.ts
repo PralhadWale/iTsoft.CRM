@@ -247,8 +247,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     else
     {
       this.pageTitle = 'Update ' + this.requestTypeName + ' : ' + this.request.RequestMaster.RequestNo;
-      if(this.request.RequestMaster.StatusId == LeadStatus.Converted || this.request.RequestMaster.StatusId == LeadStatus.Dropped)
-      {
+      if (
+        (this.request.RequestMaster.RequestTypeId == RequestType.Enquiry &&
+          (this.request.RequestMaster.StatusId == LeadStatus.Converted || this.request.RequestMaster.StatusId == LeadStatus.Dropped))
+        || (this.request.RequestMaster.RequestTypeId == RequestType.Quotation &&
+          (this.request.RequestMaster.StatusId == LeadStatus.ProposalAccepted || this.request.RequestMaster.StatusId == LeadStatus.ProposalDropped))
+      ) {
         this.allowSave = false;
       }
     }
@@ -368,7 +372,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const dialogRef = this.dialog.open(AddServiceComponent, {
-      data: { ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: showPrice , ShowNumberOfEmployees : showNumberOfEmployees },
+      data: {requestTypeId : this.requestTypeId, ServiceDetails: serviceDetails, AllServiceList: this.request.RequestServiceDetails, ShowPrice: showPrice , ShowNumberOfEmployees : showNumberOfEmployees },
       disableClose: true
     });
 

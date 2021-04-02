@@ -46,8 +46,8 @@
           <mat-label>Lead Status</mat-label>
           <mat-select placeholder="Select Status" [(ngModel)]="searchFilter.LeadStatusId"
             [(value)]="searchFilter.LeadStatusId" name="LeadStatusId" #LeadStatusId="ngModel">
-            <mat-option *ngFor="let item of listService.ActiveLeadStatusList | async" [value]="item.Value">
-              {{item.Text}}
+            <mat-option *ngFor="let item of listService.ActiveLeadStatusList(2) | async" [value]="item.LeadStatusId">
+              {{item.LeadStatusName}}
             </mat-option>
           </mat-select>
         </mat-form-field>

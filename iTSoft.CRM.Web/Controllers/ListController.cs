@@ -36,7 +36,7 @@ namespace iTSoft.CRM.Web.Controllers
                
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
                 requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId), true);
-                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId),true);
+                requestSelectListModel.LeadStatuses = _listService.GetLeadStatusMasters();
                 requestSelectListModel.Sources = _listService.ListAll<LeadSourceMaster>(nameof(LeadSourceMaster.LeadSourceName), nameof(LeadSourceMaster.LeadSourceId),true);
                 requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId),true);
                 requestSelectListModel.Departments = _listService.ListAll<DepartmentMaster>(nameof(DepartmentMaster.DepartmentName), nameof(DepartmentMaster.DepartmentId),true);
@@ -61,7 +61,7 @@ namespace iTSoft.CRM.Web.Controllers
             {
                 RequestSelectListModel requestSelectListModel = new RequestSelectListModel();
                 requestSelectListModel.ClientBehaviour = _listService.ListAll<ClientBehaviourMaster>(nameof(ClientBehaviourMaster.ClientBehaviourName), nameof(ClientBehaviourMaster.ClientBehaviourId), true);
-                requestSelectListModel.LeadStatuses = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId),true);
+                requestSelectListModel.LeadStatuses = _listService.GetLeadStatusMasters();
                 requestSelectListModel.Stages = _listService.ListAll<StageMaster>(nameof(StageMaster.StageName), nameof(StageMaster.StageId), true);
 
                 response.ResponseData = requestSelectListModel;
@@ -180,7 +180,7 @@ namespace iTSoft.CRM.Web.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                response.ResponseData = _listService.ListAll<LeadStatusMaster>(nameof(LeadStatusMaster.LeadStatusName), nameof(LeadStatusMaster.LeadStatusId),activeOnly);
+                response.ResponseData = _listService.GetLeadStatusMasters();
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)

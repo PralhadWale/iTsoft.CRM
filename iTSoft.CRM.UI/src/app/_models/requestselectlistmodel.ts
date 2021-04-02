@@ -1,8 +1,9 @@
+import { StatusMaster } from '../masters/status/status.model';
 import { ListModel } from './listmodel';
 
 export class RequestSelectListModel
 {
-    LeadStatuses: ListModel[];
+    LeadStatuses: StatusMaster[];
     Stages: ListModel[];
     Sources: ListModel[];
     ClientBehaviour: ListModel[];

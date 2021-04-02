@@ -7,6 +7,7 @@ import { LeadStage } from 'src/app/_models/leadStage';
 import { LeadStatus } from 'src/app/_models/leadStatus';
 import { ListModel } from 'src/app/_models/listmodel';
 import { RequestServiceDetails } from 'src/app/_models/requestservice';
+import { RequestType } from 'src/app/_models/requesttype';
 import { AlertService } from 'src/app/_services';
 import { UserProfilService } from 'src/app/_services/userProfile.Service';
 import { ListService } from '../services/list.service';
@@ -31,7 +32,8 @@ export class AddServiceComponent implements OnInit {
   serviceList: Array<ServiceMaster> = [];
 
   isNew: boolean = true;
-  showPrice: boolean = false
+  showPrice: boolean = false;
+  requestTypeId : number = RequestType.Enquiry;
   showNumberOfEmployees : boolean = true;
 
   enqMinDate: Date = new Date();
@@ -52,6 +54,8 @@ export class AddServiceComponent implements OnInit {
 
     if (data) {
 
+      this.requestTypeId = data.requestTypeId;
+
       if (data.ServiceDetails != null) {
         this.requestServiceDetails = data.ServiceDetails;
         this.isNew = false;
@@ -61,6 +65,7 @@ export class AddServiceComponent implements OnInit {
         this.requestAllServiceList = data.AllServiceList;
       }
       this.showPrice = data.ShowPrice
+    
       this.showNumberOfEmployees = data.ShowNumberOfEmployees;
 
     }

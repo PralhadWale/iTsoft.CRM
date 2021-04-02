@@ -25,8 +25,8 @@
       <mat-form-field appearance="outline">
         <mat-label>Lead Status</mat-label>
         <mat-select placeholder="Deal Status"  [(ngModel)]="followUP.LeadStatusId" name="LeadStatusId" [(value)]="followUP.LeadStatusId" #LeadStatusId="ngModel" required>
-          <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.Value" >
-            {{item.Text}} 
+          <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.LeadStatusId">
+            {{item.LeadStatusName}}
           </mat-option>
         </mat-select>
         </mat-form-field>
@@ -56,7 +56,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Remark</mat-label>
-          <textarea matInput placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"  #Remark [required]="followUP.LeadStatusId == 10013"
+          <textarea matInput placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"  #Remark [required]="followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014"
             cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -65,7 +65,7 @@
           #ClientRating required/>
       </mat-form-field>
 
-    <mat-form-field *ngIf="(!(followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013))" appearance="outline">
+    <mat-form-field *ngIf="(!(followUP.LeadStatusId == 10011 || followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014))" appearance="outline">
       <mat-label>Next follow up date</mat-label>
       <input matInput [matDatepicker]="nextFollowupDate" [min]="nextMinDate" [(ngModel)]="followUP.NextFollowupDate" name="NextFollowupDate" required>
       <mat-datepicker-toggle matSuffix [for]="nextFollowupDate"></mat-datepicker-toggle>

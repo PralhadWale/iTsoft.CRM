@@ -274,7 +274,7 @@ export class QuotationFormComponent implements OnInit {
         else {
 
             let rowData: RequestServiceDetails = Object.assign({}, $event.rowData);
-            if (!(rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.Converted || rowData.LeadStatusId == LeadStatus.Dropped)) {
+            if (!(rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.ProposalDropped)) {
                 this.UserProfileService.IsUserDepartment(rowData.DepartmentId).subscribe((result) => {
                     if (result == true) {
                         if ($event.command.commandType == CommandType.Edit) {

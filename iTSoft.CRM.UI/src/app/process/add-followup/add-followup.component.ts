@@ -35,6 +35,8 @@ export class AddFollowupComponent implements OnInit {
     private listService: ListService,
     private alertService: AlertService,
   ) {
+
+    
     this.nextMinDate.setDate(this.nextMinDate.getDate() + 1);
     this.requestSelectList = new RequestSelectListModel();
     this.SetFollowUpDefaultData();
@@ -59,17 +61,24 @@ export class AddFollowupComponent implements OnInit {
       this.IsCompleted = false;
     }
     else {
-      this.requestType = this.followUpDetails.RequestTypeId;
+     // this.requestType = this.followUpDetails.RequestTypeId;
       this.requestNo = this.followUpDetails.RequestNo;
       this.followUP = Object.assign({}, this.followUpDetails);
       this.IsCompleted = this.followUpDetails.IsCompleted;
+
+      this.listService.ActiveLeadStatusList(this.followUpDetails.RequestTypeId).subscribe((result) => {
+        this.requestSelectList.LeadStatuses = result;
+      });
+
     }
 
     this.requestTypeName = "Add"
+
+   
   }
 
   clearFollowUpData() {
-    this.followUpDetails = null;
+    this.followUpDetails = new FollowUpDetails();
     this.requestNo = '';
     this.requestType = -1;
   }
@@ -107,8 +116,9 @@ export class AddFollowupComponent implements OnInit {
                 this.alertService.showSuccessMessage("Saved successfully");
               }
               this.sidenav.close();
-              this.clearFollowUpData();
               this.onFollowUpSaved.emit();
+              this.clearFollowUpData();
+              
             }
             else {
               this.alertService.showErrorMessage("Failed to save");
