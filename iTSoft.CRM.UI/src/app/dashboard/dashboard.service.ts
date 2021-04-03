@@ -54,9 +54,8 @@ export class LeadSourceDashboardViewModel {
 
 
 export class RevenueTargetDashboardViewModel {
-    MonthlyTarget: number;
-    TotalLeadGenerated: number;
-    TotalAchieved: number;
+    name: string;
+    value:string;
 }
 
 export class TopNEmployeeDashboardViewModel {

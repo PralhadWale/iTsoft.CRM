@@ -1,8 +1,7 @@
 <!-- <mat-sidenav-container> -->
 
 <hr />
-<div #containerRef class="card-body">
-  <ngx-charts-number-card  [view]="[containerRef.offsetWidth, 170]" [scheme]="colorScheme" [results]="single" [cardColor]="cardColor"
-    (select)="onSelect($event)"  (window:resize)="onResize($event)">
+<div #revenueTargetContainerRef class="card-body">
+  <ngx-charts-number-card  [view]="[revenueTargetContainerRef.offsetWidth, 120]" [scheme]="colorScheme" [results]="revenueTarget" cardColor="#FFFFFF">
 </ngx-charts-number-card>
 </div>
