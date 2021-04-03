@@ -53,9 +53,9 @@ export class DashboardComponent implements OnInit {
     dashbordSearchParam.FromDate = firstDay;
     dashbordSearchParam.ToDate = lastDay;
 
+    dashbordSearchParam.AdvisorId = this.userProfileService.CurrentUser.UserId;
     if (this.userProfileService.CurrentUser.RoleId == UserRole.Admin || this.userProfileService.CurrentUser.RoleId == UserRole.Manager) {
 
-      dashbordSearchParam.AdvisorId = this.userProfileService.CurrentUser.UserId;
 
       let sources = [];
       this.dashboardService.GetLeadSourceDashboard(dashbordSearchParam).subscribe(result => {
@@ -89,19 +89,6 @@ export class DashboardComponent implements OnInit {
         }
       }, (error => {    }));
 
-      this.leadStatus = [];
-      this.dashboardService.GetLeadStatusDashboard(dashbordSearchParam).subscribe(result => {
-        if (result.Value.ResponseCode == 1) {
-          let leadStatus: Array<NameNumber> = [];
-          let response = <Array<any>>result.Value.ResponseData;
-          response.forEach((l) => {
-            leadStatus.push({ name: l.LeadStatusName, value: l.RequestCount });
-          });
-
-          this.leadStatus = leadStatus;
-        }
-      }, (error => {    }));
-
       dashbordSearchParam.NumberOfEmployees = 5;
       this.dashboardService.GetTopNEmployeeDashboard(dashbordSearchParam).subscribe(result => {
         if (result.Value.ResponseCode == 1) {
@@ -122,6 +109,21 @@ export class DashboardComponent implements OnInit {
       }, (error => {  }));
 
     }
+
+    
+    this.leadStatus = [];
+    this.dashboardService.GetLeadStatusDashboard(dashbordSearchParam).subscribe(result => {
+      if (result.Value.ResponseCode == 1) {
+        let leadStatus: Array<NameNumber> = [];
+        let response = <Array<any>>result.Value.ResponseData;
+        response.forEach((l) => {
+          leadStatus.push({ name: l.LeadStatusName, value: l.RequestCount });
+        });
+
+        this.leadStatus = leadStatus;
+      }
+    }, (error => {    }));
+
 
     this.dashboardService.GetRevenueTargetDashboard(dashbordSearchParam).subscribe(result => {
       if (result.Value.ResponseCode == 1) {

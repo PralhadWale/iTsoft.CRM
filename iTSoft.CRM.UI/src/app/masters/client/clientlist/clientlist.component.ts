@@ -170,7 +170,7 @@ export class ClientlistComponent implements OnInit {
         { ColumnField: "ClientName", ColumnHeader: "Client Name", Type: "text" },
         { ColumnField: "Email", ColumnHeader: "Email", Type: "text" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
-        { ColumnField: "PANNo", ColumnHeader: "PAN", Type: "text" },
+        { ColumnField: "PANNO", ColumnHeader: "PAN", Type: "text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Address", ColumnHeader: "Adress", Type: "text" },
         { ColumnField: "State", ColumnHeader: "State", Type: "text" },

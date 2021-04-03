@@ -152,6 +152,10 @@ export class AddClientComponent implements OnInit {
           this.client.ClientMaster.ClientSourceId = 2; // Website
         }
 
+        if (this.client.ClientMaster.AdvisorId == null || this.client.ClientMaster.AdvisorId < 1) {
+          this.client.ClientMaster.AdvisorId = this.userProfileService.CurrentUser.UserId; // Website
+        }
+
         this.clientService.Save(this.client).subscribe(result => {
           {
             this.alertService.showSuccessMessage("Client Saved successfully");
