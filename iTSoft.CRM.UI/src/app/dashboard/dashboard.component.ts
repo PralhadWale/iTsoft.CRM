@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   }
 
   colorScheme = {
-    domain: ['#5AA454', '#E44D25', '#7aa3e5']
+    domain: ['#5AA454', '#E44D25', '#7aa3e5', '#a8385d', '#aae3f5', '#CFC0BB']
   };
 
   leadSources: Array<SeriesDashboardViewModel> = [];
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
   revenueTarget: Array<NameValue> = [];
 
   constructor(private dashboardService: DashboardService,
-    private userProfileService: UserProfilService
+    public userProfileService: UserProfilService
   ) {
     this.SetAdminDashboard();
   }
