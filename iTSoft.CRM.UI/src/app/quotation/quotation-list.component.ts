@@ -95,7 +95,7 @@ export class QuotationListComponent implements OnInit {
       }
       else if ($event.command.content == "download") {
         let rowData: RequestDetails = Object.assign({}, $event.rowData);
-        if (rowData.LeadStatusId == LeadStatus.ProposalAccepted) {
+        if (rowData.LeadStatusId == LeadStatus.ProposalAccepted || rowData.LeadStatusId == LeadStatus.ProposalDiscussion) {
           this.requestService.DownloadQuote(rowData.RequestId).subscribe(
             (result: any) => {
               this.downloadPDF(result);
