@@ -91,7 +91,7 @@ export class ClientlistComponent implements OnInit {
   private SetFilter(resetToDefault: boolean = false) {
     if (resetToDefault) {
       this.clientMaster = this.clientService.NewClient();
-      this.clientMaster.ClientTypeId = ClientType.NonCorporate.toString();
+      this.clientMaster.ClientTypeId = "0";
     }
     else {
       let filter = this.storageService.GetItem(this.storageKey);
@@ -100,7 +100,7 @@ export class ClientlistComponent implements OnInit {
       }
       else {
         this.clientMaster = this.clientService.NewClient();
-        this.clientMaster.ClientTypeId = ClientType.NonCorporate.toString();
+        this.clientMaster.ClientTypeId = "0";
       }
     }
 
