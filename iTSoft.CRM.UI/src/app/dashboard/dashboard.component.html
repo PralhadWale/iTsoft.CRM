@@ -1,7 +1,39 @@
 <!-- <mat-sidenav-container> -->
 
 <hr />
-<div #revenueTargetContainerRef class="card-body">
-  <ngx-charts-number-card  [view]="[revenueTargetContainerRef.offsetWidth, 120]" [scheme]="colorScheme" [results]="revenueTarget" cardColor="#FFFFFF">
-</ngx-charts-number-card>
+<div #revenueTargetContainerRef class="chart-container ng-star-inserted">
+  <ngx-charts-number-card [view]="[revenueTargetContainerRef.offsetWidth, 120]" [scheme]="colorScheme"
+    [results]="revenueTarget" cardColor="#FFFFFF">
+  </ngx-charts-number-card>
 </div>
+<hr />
+<mat-grid-list cols="2" rowHeight="330px">
+  <mat-grid-tile style="padding:5px;">
+    <ngx-charts-bar-vertical-2d [scheme]="colorScheme" [results]="leadSources" legendPosition="below"
+      showDataLabel="true" noBarWhenZero="true" gradient="true" xAxis="true" yAxis="true" legend="true"
+      showXAxisLabel="true" showYAxisLabel="true" legendTitle="Lead Source"
+      xAxisLabel="Lead Source Dashboard (Lead Source)" yAxisLabel="Lead Count">
+    </ngx-charts-bar-vertical-2d>
+  </mat-grid-tile>
+  <mat-grid-tile style="padding:5px;">
+    <ngx-charts-bar-horizontal [scheme]="colorScheme" [results]="departmentRevenue" legendPosition="below"
+      showDataLabel="true" noBarWhenZero="true" gradient="true" xAxis="true" yAxis="true" legend="true"
+      showXAxisLabel="true" showYAxisLabel="true" legendTitle="Departments"
+      xAxisLabel="Department Revenue Dashboard (Department)" yAxisLabel="Revenue">
+    </ngx-charts-bar-horizontal>
+  </mat-grid-tile>
+  <mat-grid-tile style="padding:5px;">
+    <ngx-charts-bar-horizontal [scheme]="colorScheme"
+      [results]="leadStatus" legendPosition="below" showDataLabel="true" noBarWhenZero="true" gradient="true"
+      xAxis="true" yAxis="true" legend="true" showXAxisLabel="true" showYAxisLabel="true" legendTitle="Lead Status"
+      xAxisLabel="Lead Status Count Dashboard (Lead Status)" yAxisLabel="Lead Count">
+    </ngx-charts-bar-horizontal>
+  </mat-grid-tile>
+  <mat-grid-tile style="padding:5px;">
+    <ngx-charts-bar-vertical-stacked [scheme]="colorScheme"
+      [results]="topEmployees" legendPosition="below" showDataLabel="true" noBarWhenZero="true" gradient="true"
+      xAxis="true" yAxis="true" legend="true" showXAxisLabel="true" showYAxisLabel="true" legendTitle="Employee"
+      xAxisLabel="Top Employee Dashboard (Employee)" yAxisLabel="Revenue Generated">
+    </ngx-charts-bar-vertical-stacked>
+  </mat-grid-tile>
+</mat-grid-list>

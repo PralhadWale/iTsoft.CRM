@@ -41,6 +41,7 @@ namespace iTSoft.CRM.Domain.Services.Process
                 DynamicParameters param = new DynamicParameters();
                 param.Add(nameof(searchParameters.FromDate), searchParameters.FromDate);
                 param.Add(nameof(searchParameters.ToDate), searchParameters.ToDate);
+                param.Add(nameof(searchParameters.AdvisorId), searchParameters.AdvisorId);
                 var result = await dbConnection.QueryAsync<DepartmentWiseRevenueDashboardViewModel>(PROC_DepartmentWiseRevenueDashboard, param, commandType: CommandType.StoredProcedure);
 
                 return await Task.FromResult(result.AsList<DepartmentWiseRevenueDashboardViewModel>());
@@ -68,6 +69,7 @@ namespace iTSoft.CRM.Domain.Services.Process
                 DynamicParameters param = new DynamicParameters();
                 param.Add(nameof(searchParameters.FromDate), searchParameters.FromDate);
                 param.Add(nameof(searchParameters.ToDate), searchParameters.ToDate);
+                param.Add(nameof(searchParameters.AdvisorId), searchParameters.AdvisorId);
                 var result = await dbConnection.QueryAsync<LeadStatusDashboardViewModel>(PROC_StatusWiseLeadDashboard, param, commandType: CommandType.StoredProcedure);
                 return await Task.FromResult(result.AsList<LeadStatusDashboardViewModel>());
             }
@@ -94,6 +96,7 @@ namespace iTSoft.CRM.Domain.Services.Process
                 param.Add(nameof(searchParameters.FromDate), searchParameters.FromDate);
                 param.Add(nameof(searchParameters.ToDate), searchParameters.ToDate);
                 param.Add(nameof(searchParameters.NumberOfEmployees), searchParameters.NumberOfEmployees);
+                param.Add(nameof(searchParameters.AdvisorId), searchParameters.AdvisorId);
                 var result = await dbConnection.QueryAsync<TopNEmployeeDashboardViewModel>(PROC_TopNEmployeeDashboard, param, commandType: CommandType.StoredProcedure);
                 return await Task.FromResult(result.AsList<TopNEmployeeDashboardViewModel>());
             }

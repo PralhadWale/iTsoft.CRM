@@ -6,7 +6,7 @@ import {
   OnInit
 } from '@angular/core';
 import { UserProfilService } from '../_services/userProfile.Service';
-import { DashboardSearchParameters, DashboardService, DepartmentWiseRevenueDashboardViewModel, LeadSourceDashboardViewModel, LeadStatusDashboardViewModel, RevenueTargetDashboardViewModel, TopNEmployeeDashboardViewModel } from './dashboard.service';
+import { DashboardSearchParameters, DashboardService, SeriesDashboardViewModel, NameNumber, NameValue } from './dashboard.service';
 import { ConfigurationSettings } from '../_models/configuration';
 import { UserRole } from '../_models/userRole';
 
@@ -22,7 +22,7 @@ import { UserRole } from '../_models/userRole';
 })
 export class DashboardComponent implements OnInit {
 
-  
+
   ngOnInit() {
 
   }
@@ -30,18 +30,17 @@ export class DashboardComponent implements OnInit {
   colorScheme = {
     domain: ['#5AA454', '#E44D25', '#7aa3e5']
   };
- 
 
-  onSelect(event) {
-    console.log(event);
-  }
+  leadSources: Array<SeriesDashboardViewModel> = [];
+  topEmployees: Array<SeriesDashboardViewModel> = [];
+  leadStatus: Array<NameNumber> = [];
 
-  leadSources: Array<LeadSourceDashboardViewModel> = [];
-  leadStatus : Array<LeadStatusDashboardViewModel> = [];
-  topEmployees : Array<TopNEmployeeDashboardViewModel> = [];
-  departmentRevenue : Array<DepartmentWiseRevenueDashboardViewModel> = [];
-  revenueTarget : Array<RevenueTargetDashboardViewModel> = [];
-  constructor(private dashboardService : DashboardService) {
+  departmentRevenue: Array<NameNumber> = [];
+  revenueTarget: Array<NameValue> = [];
+
+  constructor(private dashboardService: DashboardService,
+    private userProfileService: UserProfilService
+  ) {
     this.SetAdminDashboard();
   }
 
@@ -51,59 +50,100 @@ export class DashboardComponent implements OnInit {
     var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     let dashbordSearchParam = new DashboardSearchParameters();
-    dashbordSearchParam.FromDate  = firstDay;
+    dashbordSearchParam.FromDate = firstDay;
     dashbordSearchParam.ToDate = lastDay;
 
-    if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId == UserRole.Admin) {
+    if (this.userProfileService.CurrentUser.RoleId == UserRole.Admin || this.userProfileService.CurrentUser.RoleId == UserRole.Manager) {
+
+      dashbordSearchParam.AdvisorId = this.userProfileService.CurrentUser.UserId;
+
+      let sources = [];
       this.dashboardService.GetLeadSourceDashboard(dashbordSearchParam).subscribe(result => {
         if (result.Value.ResponseCode == 1) {
-          this.leadSources = result.Value.ResponseData;
-        }
-      }, (error => {
-      }));
+          let response = <Array<any>>result.Value.ResponseData;
+          response.forEach((l) => {
+            let leadSource = new SeriesDashboardViewModel();
+            leadSource.name = l.LeadSourceName;
+            leadSource.series = [];
+            leadSource.series.push({ name: 'Leads Created', value: l.LeadsCreated });
+            leadSource.series.push({ name: 'Converted To Clients', value: l.ConvertedToClients });
 
+            sources.push(leadSource);
+          });
+
+          this.leadSources = sources;
+        }
+      }, (error => {    }));
+
+
+      this.departmentRevenue = [];
       this.dashboardService.GetDepartmentWiseRevenueDashboard(dashbordSearchParam).subscribe(result => {
         if (result.Value.ResponseCode == 1) {
-          this.departmentRevenue = result.Value.ResponseData;
-        }
-      }, (error => {
-      }));
+          let revenue: Array<NameNumber> = [];
+          let response = <Array<any>>result.Value.ResponseData;
+          response.forEach((l) => {
+            revenue.push({ name: l.DepartmentName, value: l.RevenueGenerated });
+          });
 
+          this.departmentRevenue = revenue;
+        }
+      }, (error => {    }));
+
+      this.leadStatus = [];
       this.dashboardService.GetLeadStatusDashboard(dashbordSearchParam).subscribe(result => {
         if (result.Value.ResponseCode == 1) {
-          this.leadStatus = result.Value.ResponseData;
+          let leadStatus: Array<NameNumber> = [];
+          let response = <Array<any>>result.Value.ResponseData;
+          response.forEach((l) => {
+            leadStatus.push({ name: l.LeadStatusName, value: l.RequestCount });
+          });
+
+          this.leadStatus = leadStatus;
         }
-      }, (error => {
-      }));
+      }, (error => {    }));
 
       dashbordSearchParam.NumberOfEmployees = 5;
       this.dashboardService.GetTopNEmployeeDashboard(dashbordSearchParam).subscribe(result => {
-        if(result.Value.ResponseCode == 1)
-        {
-        this.topEmployees = result.Value.ResponseData;
+        if (result.Value.ResponseCode == 1) {
+          let employeees = [];
+          let response = <Array<any>>result.Value.ResponseData;
+          response.forEach((l) => {
+            let series = new SeriesDashboardViewModel();
+            series.name = l.EmployeeName;
+            series.series = [];
+            series.series.push({ name: 'Target Amount', value: l.TargetAmount });
+            series.series.push({ name: 'Revenue Generated', value: l.RevenueGenerated });
+
+            employeees.push(series);
+          });
+
+          this.topEmployees = employeees;
         }
-      },(error => {
-      }));
+      }, (error => {  }));
 
     }
 
     this.dashboardService.GetRevenueTargetDashboard(dashbordSearchParam).subscribe(result => {
-      if(result.Value.ResponseCode == 1)
-      {
+      if (result.Value.ResponseCode == 1) {
         this.revenueTarget = [];
         if (result.Value.ResponseCode == 1) {
-          this.revenueTarget.push({ name: "Monthly Target", value: "₹ " + result.Value.ResponseData.MonthlyTarget});
-          this.revenueTarget.push({ name: "Total Lead Generated", value: "₹ " + result.Value.ResponseData.TotalLeadGenerated});
-          this.revenueTarget.push({ name: "Total Achieved", value: "₹ " + result.Value.ResponseData.TotalAchieved});
+          this.revenueTarget.push({ name: "Monthly Target", value: "₹ " + result.Value.ResponseData.MonthlyTarget });
+          this.revenueTarget.push({ name: "Total Lead Generated", value: "₹ " + result.Value.ResponseData.TotalLeadGenerated });
+          this.revenueTarget.push({ name: "Total Achieved", value: "₹ " + result.Value.ResponseData.TotalAchieved });
         }
 
       }
-  },(error => {
-    }));
-
-   
+    }, (error => { }));
 
 
+
+
+  }
+
+  random(min = 0, max = 100) {
+    let num = Math.random() * (max - min) + min;
+
+    return Math.floor(num);
   }
 
 

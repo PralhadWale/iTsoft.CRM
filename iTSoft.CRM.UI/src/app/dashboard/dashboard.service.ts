@@ -44,18 +44,21 @@ export class DashboardSearchParameters {
 }
 
 
-export class LeadSourceDashboardViewModel {
-    LeadSourceId: number;
-    LeadSourceName: string;
-    LeadsCreated: number;
-    ConvertedToClients: number;
-    ConversionRateInPercent: number;
+export class SeriesDashboardViewModel {
+   
+    name : string ="";
+    series : Array<NameNumber> = [];
+
 }
 
-
-export class RevenueTargetDashboardViewModel {
+export class NameValue {
     name: string;
-    value:string;
+    value:string | number;
+}
+
+export class NameNumber {
+    name: string;
+    value: number;
 }
 
 export class TopNEmployeeDashboardViewModel {
