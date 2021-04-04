@@ -243,5 +243,22 @@ namespace iTSoft.CRM.Web.Controllers
             return Ok(response);
         }
 
+        [HttpGet("get-fiancialyear-list")]
+        public IActionResult GetFinancialYearList(bool activeOnly)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+                response.ResponseData = _listService.ListAll<FinancialYearMaster>(nameof(FinancialYearMaster.FinancialYear), nameof(FinancialYearMaster.FinancialYearId), activeOnly);
+                response.ResponseCode = ResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "List - GetFinancialYearList");
+            }
+            return Ok(response);
+        }
+
     }
 }

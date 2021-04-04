@@ -5,25 +5,26 @@ using System.Text;
 
 namespace iTSoft.CRM.Domain.Models.ViewModel
 {
-    public class FollowUpDetails : RequestMaster
+    public class FollowUpDetails : RequestSummery
     {
+        public long FollowUpId { get; set; }
         public string Department{ get; set; }
         public string LeadSourceName { get; set; }
-        public string LeadStatusName { get; set; }
         public string StageName { get; set; }
-        public string AdvisorName { get; set; }
-        public string ClientBehaviourName { get; set; }
         public string RequestTypeName { get; set; }
         public string Remark { get; set; }
         public DateTime FollowUpDate { get; set; }
         public int Attempt { get; set; }
         public int ClientRating { get; set; }
-        public long FollowUpId { get; set; }
         public long IsCompleted { get; set; }
         public string ServiceName { get; set; }
-        public decimal ServiceRate { get; set; }
-        public decimal ServiceAgreedRate { get; set; }
         public decimal NextFollowupDate { get; set; }
+        public decimal? ServiceQuotedDiscountPercent { get; set; }
+        public decimal? ServiceQuotedDicountAmount { get; set; }
+        public decimal? ServiceQuotedNetAmount { get; set; }
+        public decimal? ServiceAgreedDiscountPercent { get; set; }
+        public decimal? ServiceAgreedDiscountAmount { get; set; }
+        public decimal? ServiceAgreedNetAmount { get; set; }
 
     }
 }

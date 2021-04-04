@@ -20,8 +20,11 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long? ClientId { get; set; }
         public long? ClientTypeId { get; set; }
         public long? LeadStatusId { get; set; }
-        public decimal? Amount { get; set; }
-        public decimal? AgreedAmount { get; set; }
+        public decimal? TotalQuotedAmount { get; set; }
+        public decimal? TotalQuotedDiscountAmount { get; set; }
+        public decimal? TotalQuotedNetAmount { get; set; }
+        public decimal? TotalAgreedDiscountAmount { get; set; }
+        public decimal? TotalAgreedNetAmount { get; set; }
         public decimal? RevenueAmount { get; set; }
         public string TermsAndCondition { get; set; }
         public long? ClientBehaviourId { get; set; }
