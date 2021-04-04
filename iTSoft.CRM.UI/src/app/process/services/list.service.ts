@@ -23,6 +23,7 @@ export class ListService {
   followUpSelectList: RequestSelectListModel;
   requestSelectList: RequestSelectListModel;
   private leadsourceList: Array<ListModel> = [];
+  private financialYearList: Array<ListModel> = [];
   private leadStatusList: Array<StatusMaster> = [];
   private nonDecisiveLeadStatusList: Array<StatusMaster> = [];
   private stageList: Array<ListModel> = [];
@@ -128,6 +129,20 @@ export class ListService {
       this.nonDecisiveLeadStatusList = this.leadStatusList.filter(f => f.LeadStatusId <= 10010);
       this.nonDecisiveLeadStatusList = this.nonDecisiveLeadStatusList.filter(f => f.RequestTypeId == requestType);
       return of(this.nonDecisiveLeadStatusList)
+    }
+  }
+
+  
+  public get ActiveFinancialYearList(): Observable<Array<ListModel>> {
+    if (this.financialYearList == null || this.financialYearList.length == 0) {
+      let getUrl = this.listController + "get-fiancial-year-list?activeOnly=true";
+      return this.apiService.GetData(getUrl).map((result: any) => {
+        this.financialYearList = <Array<ListModel>>result.Value.ResponseData;
+        return this.financialYearList;
+      });
+    }
+    else {
+      return of(this.financialYearList)
     }
   }
 

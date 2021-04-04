@@ -4,6 +4,13 @@ export class FollowUp {
     RequestServiceId : number;
     FollowUpDate: Date;
     NextFollowupDate : Date;
+    ServiceQuotedDiscountPercent: number;
+    ServiceQuotedDicountAmount: number;
+    ServiceQuotedNetAmount: number;
+    ServiceAgreedDiscountPercent: number;
+    ServiceAgreedDiscountAmount: number;
+    ServiceAgreedNetAmount: number;
+    ServiceName : string;
     LeadStatusId: number;
     StageId: number;
     Remark: string;
@@ -15,8 +22,5 @@ export class FollowUp {
     UpdatedOn: Date;
     AdvisorId:number;
     IsCompleted:boolean;
-    Amount : number;
-    AgreedAmount : number;
-    ServiceName : string;
-    
+   
 }

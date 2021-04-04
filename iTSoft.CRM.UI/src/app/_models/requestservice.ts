@@ -10,10 +10,16 @@ export class RequestServiceMaster {
     DepartmentId: number;
     Quantity : number;
     NoOfEmployees:number;
-    QuoatedPrice: number;
-    AgreedPrice: number;
-    TotalQuoatedPrice: number;
-    TotalAgreedPrice: number;
+    ServiceDiscountType : number;
+    FinancialYearId:number;
+    ServiceQuotedDiscountPercent: number;
+    ServiceQuotedDicountAmount: number;
+    ServiceQuotedNetAmount: number;
+    ServiceAgreedDiscountPercent: number;
+    ServiceAgreedDiscountAmount: number;
+    ServiceAgreedNetAmount: number;
+    ParentRequestId: number;
+    ParentRequestServiceId : number;
     Remark: string;
     TermsAndConditions: string;
     AdvisorId: number;
@@ -27,6 +33,8 @@ export class RequestServiceMaster {
 
 
 export class RequestServiceDetails extends RequestServiceMaster {
+    FinancialYear : string;
+    DiscountType : string;
     ServiceName: string;
     LeadStatusName: string;
     LeadSourceName:string;

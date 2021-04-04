@@ -8,36 +8,49 @@ export class RequestDetails {
     Email: string;
     PANNO: string;
     RequestId: number;
-    RequestTypeId: number
+    RequestTypeId: number | null;
     RequestNo: string;
-    RequestDate: string
-    SourceId: number
-    ClientBehaviourId: number
-    AddedBy: number
-    AddedOn: string
-    UpdatedBy: number
-    UpdatedOn: string
+    RequestDate: string | null;
+    AdvisorId: number | null;
+    RequestServiceId: number;
+    SourceId: number | null;
+    ClientBehaviourId: number | null;
+    ServiceName: string;
+    FinancialYear: string;
+    DiscountType: string;
     LeadSourceName: string;
     LeadStatusName: string;
     StageName: string;
     AdvisorName: string;
-    AssignedOn: string
+    AssignedOn: string | null;
+    LastFollowupDate: string | null;
+    NextFollowupDate: string | null;
     ClientBehaviourName: string;
     DepartmentName: string;
-    ServiceName: string;
-    ServiceId: number
-    DepartmentId: number
-    LeadStatusId: number
-    ServiceRate: number
-    ServiceAgreedRate: number
+    ServiceQuotedPrice : number;
+    ServiceQuotedDiscountPercent: number | null;
+    ServiceQuotedDicountAmount: number | null;
+    ServiceQuotedNetAmount: number | null;
+    ServiceAgreedDiscountPercent: number | null;
+    ServiceAgreedDiscountAmount: number | null;
+    ServiceAgreedNetAmount: number | null;
+    TotalQuotedAmount: number | null;
+    TotalQuotedDiscountAmount: number | null;
+    TotalQuotedNetAmount: number | null;
+    TotalAgreedDiscountAmount: number | null;
+    TotalAgreedNetAmount: number | null;
+    RevenueAmount: number | null;
+    ServiceId: number | null;
+    DepartmentId: number | null;
+    LeadStatusId: number | null;
     Remark: string;
-    StageId: number
+    StageId: number | null;
     TermsAndConditions: string;
-    AdvisorId: number
-    RequestServiceId: number;
-    QuoatedPrice: number;
-    AgreedAmount: number;
-    RevenueAmount: number;
-    ClientTypeId: number;
-    TransferPendingFollowUp : boolean;
+    ClientTypeId: number | null;
+    ServiceDiscountType: number | null;
+    AddedBy: number | null;
+    AddedOn: string | null;
+    UpdatedBy: number | null;
+    UpdatedOn: string | null;
+  TransferPendingFollowUp: boolean;
 }

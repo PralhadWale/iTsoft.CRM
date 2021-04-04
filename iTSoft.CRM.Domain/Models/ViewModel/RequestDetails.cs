@@ -35,6 +35,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public DateTime? NextFollowupDate { get; set; }
         public string ClientBehaviourName { get; set; }
         public string DepartmentName { get; set; }
+        public decimal? ServiceQuotedPrice { get; set; }
+        public long? ServiceDiscountType { get; set; }
         public decimal? ServiceQuotedDiscountPercent { get; set; }
         public decimal? ServiceQuotedDicountAmount { get; set; }
         public decimal? ServiceQuotedNetAmount { get; set; }
@@ -54,8 +56,6 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public long? StageId { get; set; }
         public string TermsAndConditions { get; set; }
         public long? ClientTypeId { get; set; }
-        public decimal? ServiceQuotedPrice { get; set; }
-        public long? ServiceDiscountType { get; set; }
         public long? AddedBy { get; set; }
         public DateTime? AddedOn { get; set; }
         public long? UpdatedBy { get; set; }

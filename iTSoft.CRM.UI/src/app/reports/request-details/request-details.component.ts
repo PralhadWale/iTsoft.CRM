@@ -164,11 +164,16 @@ export class RequestDetailsReportComponent implements OnInit {
         { ColumnField: "ClientTypeName", ColumnHeader:  this.requestTypeName + " Type", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader:  this.requestTypeName + " Name", Type: "text" },
         { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
+        { ColumnField: "FinancialYear", ColumnHeader: "Financial Year", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader:  this.requestTypeName + " Status", Type: "text" },
         { ColumnField: "DepartmentName" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "QuoatedPrice", ColumnHeader: "Service Rate", Type: "text" }     
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Quoted Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" },    
+        { ColumnField: "ServiceAgreedDiscountAmount", ColumnHeader: "Agreed Discount", Type: "text" },
+        { ColumnField: "ServiceAgreedNetAmount", ColumnHeader: "Agreed Rate", Type: "text" }    
       ];
   }
 

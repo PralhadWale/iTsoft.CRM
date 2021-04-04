@@ -241,11 +241,14 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "ClientTypeName", ColumnHeader: "Enq. Type", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader: "Enq. Name", Type: "text" },
         { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
+        { ColumnField: "FinancialYear", ColumnHeader: "Financial Year", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Enq. Status", Type: "text" },
         { ColumnField: "DepartmentName" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "QuoatedPrice", ColumnHeader: "Service Rate", Type: "text" }     
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" }
         
       ];
 

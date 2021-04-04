@@ -256,11 +256,14 @@ export class QuotationListComponent implements OnInit {
         { ColumnField: "ClientTypeName", ColumnHeader: "Quotation Type", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader: "Quotation Name", Type: "text" },
         { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
+        { ColumnField: "FinancialYear", ColumnHeader: "Financial Year", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Quotation Status", Type: "text" },
         { ColumnField: "DepartmentName" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "QuoatedPrice", ColumnHeader: "Service Rate", Type: "text" }
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" }
       ];
 
     if (ConfigurationSettings.User && <UserRole>ConfigurationSettings.User.RoleId !== UserRole.Advisor) {

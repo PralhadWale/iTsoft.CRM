@@ -27,7 +27,6 @@ export class RequestSummeryReportComponent implements OnInit {
   searchFilter: RequestSerchParameters = new RequestSerchParameters(RequestType.Enquiry);
 
   enquiryList: Array<any>;
-  selectedEnquiryList:Array<RequestDetails>;
   enquiryTableSchema: Array<TableColumnModel> = [];
   tableSettings: TableDefaultSettings;
   requestSelectList: RequestSelectListModel = new RequestSelectListModel();
@@ -140,9 +139,9 @@ export class RequestSummeryReportComponent implements OnInit {
         { ColumnField: "ClientName", ColumnHeader:  this.requestTypeName + " Name", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader:  this.requestTypeName + " Status", Type: "text" },
-        { ColumnField: "Amount", ColumnHeader:  "Amount", Type: "text" },
-        { ColumnField: "AgreedAmount", ColumnHeader:  "Agreed Amount", Type: "text" },
-        
+        { ColumnField: "TotalQuotedAmount", ColumnHeader:  "Quoted Amount", Type: "text" },
+        { ColumnField: "TotalAgreedDiscountAmount", ColumnHeader:  "Agreed Discount Amount", Type: "text" },
+        { ColumnField: "TotalAgreedNetAmount", ColumnHeader:  "Agreed Amount", Type: "text" },
       ];
   }
 

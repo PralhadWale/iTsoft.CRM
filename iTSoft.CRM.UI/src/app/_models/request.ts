@@ -11,9 +11,12 @@ export class RequestMaster
     ClientId?: number;
     ClientTypeId: string;
     SourceId?: number;
-    Amount?: number;
-    AgreedAmount?: number;
-    RevenueAmount?: number;
+    TotalQuotedAmount : number;
+    TotalQuotedDiscountAmount : number;
+    TotalQuotedNetAmount : number;
+    TotalAgreedDiscountAmount : number;
+    TotalAgreedNetAmount: number;
+    RevenueAmount : number;
     TermsAndCondition: string;
     ClientBehaviourId?: number;
     AdvisorId?: number;

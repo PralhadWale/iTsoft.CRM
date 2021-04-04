@@ -243,7 +243,7 @@ namespace iTSoft.CRM.Web.Controllers
             return Ok(response);
         }
 
-        [HttpGet("get-fiancialyear-list")]
+        [HttpGet("get-fiancial-year-list")]
         public IActionResult GetFinancialYearList(bool activeOnly)
         {
             ServiceResponse response = new ServiceResponse();

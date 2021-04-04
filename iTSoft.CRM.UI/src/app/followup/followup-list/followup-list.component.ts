@@ -167,14 +167,16 @@ export class FollowupListComponent implements OnInit {
         { ColumnField: "RequestDate", ColumnHeader: "Request Date", Type: "date" },
         { ColumnField: "FollowUpDate", ColumnHeader: "FollowUp Date", Type: "date" },
         { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
-        { ColumnField: "ServiceRate", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Status", Type: "text" },
         { ColumnField: "Department" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
         { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
-        { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
+        { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" }
         
       ];
 
