@@ -247,7 +247,13 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
         { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
         { ColumnField: "ClientRating", ColumnHeader: "Rating", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+        { ColumnField: "Quantity", ColumnHeader: "Quantity", Type: "text" },
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedPrice", ColumnHeader: "Total Service Rate", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedDicountAmount", ColumnHeader: "Total Discount", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedNetAmount", ColumnHeader: "Total Quoted Rate", Type: "text" }
       ];
 
 

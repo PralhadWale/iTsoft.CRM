@@ -489,7 +489,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
         { ColumnField: "AdvisorName", ColumnHeader: "Employee Name", Type: "text" },
         { ColumnField: "Attempt", ColumnHeader: "Attempt", Type: "text" },
         { ColumnField: "ClientRating", ColumnHeader: "Client Rating", Type: "text" },
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" }
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedPrice", ColumnHeader: "Total Service Rate", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedDicountAmount", ColumnHeader: "Total Discount", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedNetAmount", ColumnHeader: "Total Quoted Rate", Type: "text" }
       ];
 
 
@@ -498,6 +503,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.serviceTableSchema =
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
+        { ColumnField: "FinancialYear", ColumnHeader: "Financial Year", Type: "text" },
         { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
         { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
         { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },

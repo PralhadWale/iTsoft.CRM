@@ -172,8 +172,13 @@ export class RequestDetailsReportComponent implements OnInit {
         { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
         { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Quoted Discount", Type: "text" },
         { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" },    
+        { ColumnField: "ServiceTotalQuotedPrice", ColumnHeader: "Total Service Rate", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedDicountAmount", ColumnHeader: "Total Discount", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedNetAmount", ColumnHeader: "Total Quoted Rate", Type: "text" },
         { ColumnField: "ServiceAgreedDiscountAmount", ColumnHeader: "Agreed Discount", Type: "text" },
-        { ColumnField: "ServiceAgreedNetAmount", ColumnHeader: "Agreed Rate", Type: "text" }    
+        { ColumnField: "ServiceAgreedNetAmount", ColumnHeader: "Agreed Rate", Type: "text" },    
+        { ColumnField: "ServiceTotalAgreedDiscountAmount", ColumnHeader: "Total Agreed Discount", Type: "text" },
+        { ColumnField: "ServiceTotalAgreedNetAmount", ColumnHeader: "Total Agreed Net Amount", Type: "text" }
       ];
   }
 
