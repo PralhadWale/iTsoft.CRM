@@ -34,6 +34,15 @@ export class RequestDetails {
     ServiceAgreedDiscountPercent: number | null;
     ServiceAgreedDiscountAmount: number | null;
     ServiceAgreedNetAmount: number | null;
+
+    ServiceTotalQuotedPrice : number;
+    ServiceTotalQuotedDiscountPercent: number | null;
+    ServiceTotalQuotedDicountAmount: number | null;
+    ServiceTotalQuotedNetAmount: number | null;
+    ServiceTotalAgreedDiscountPercent: number | null;
+    ServiceTotalAgreedDiscountAmount: number | null;
+    ServiceTotalAgreedNetAmount: number | null;
+
     TotalQuotedAmount: number | null;
     TotalQuotedDiscountAmount: number | null;
     TotalQuotedNetAmount: number | null;

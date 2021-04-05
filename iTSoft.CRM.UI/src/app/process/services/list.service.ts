@@ -216,4 +216,14 @@ export class ListService {
     }
   }
 
+  GetFinancialYear(financialYearId: number): string {
+    let d = this.financialYearList.filter(f => f.Value == financialYearId);
+    if (d && d.length > 0) {
+      return d[0].Text;
+    }
+    else {
+      return "";
+    }
+  }
+
 }

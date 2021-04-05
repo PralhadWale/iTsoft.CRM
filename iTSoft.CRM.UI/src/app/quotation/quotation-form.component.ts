@@ -329,19 +329,7 @@ export class QuotationFormComponent implements OnInit {
                     this.requestService.UpdateService(result.Data, this.request.RequestServiceDetails);
                 }
 
-                this.request.RequestMaster.Amount = 0;
-                this.request.RequestMaster.AgreedAmount = 0;
-
-                this.request.RequestServiceDetails.forEach(x => {
-                    if (x.QuoatedPrice && x.QuoatedPrice > 0) {
-                        this.request.RequestMaster.Amount += x.QuoatedPrice;
-                    }
-
-                    if (x.AgreedPrice && x.AgreedPrice > 0) {
-                        this.request.RequestMaster.AgreedAmount += x.AgreedPrice;
-                    }
-
-                });
+              
 
                 this.serviceTable.RefreshDataSource();
 

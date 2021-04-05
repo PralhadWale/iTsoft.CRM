@@ -30,6 +30,9 @@ export class AddFollowupComponent implements OnInit {
   public IsCompleted: boolean = false;
   minDate = new Date();
   nextMinDate = new Date();
+  fieldColspan = 6;
+  isCorporate = false;
+  fromQuotation : boolean = false;
   constructor(
     private followUpService: FollowupService,
     private listService: ListService,
@@ -96,7 +99,15 @@ export class AddFollowupComponent implements OnInit {
       );
   }
 
+  onLeadStatusChange($event:any)
+  {
+    this.fromQuotation =  (this.followUP.LeadStatusId == 10010 || this.followUP.LeadStatusId == 10011 || this.followUP.LeadStatusId == 10012);
+  }
 
+  calculatePrice()
+  {
+     this.followUpDetails.Calculate(this.fromQuotation);
+  }
 
   onSubmit(followUpForm: NgForm) {
     if (followUpForm && followUpForm.valid) {
@@ -104,6 +115,7 @@ export class AddFollowupComponent implements OnInit {
         this.alertService.showErrorMessage("Invalid request");
       }
       else {
+        this.calculatePrice();
         this.followUpService.Save(this.followUP).subscribe(result => {
           {
             var response = result.Value;

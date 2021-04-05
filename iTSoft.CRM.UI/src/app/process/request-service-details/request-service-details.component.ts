@@ -207,8 +207,6 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
    
     let rowData = this.request.RequestServiceDetail;
     this.addFollowUp.followUpDetails = <any>rowData;
-    this.addFollowUp.followUpDetails.Amount = rowData.QuoatedPrice;;
-    this.addFollowUp.followUpDetails.AgreedAmount = rowData.AgreedPrice;
     let nextFollowUpDate = new Date();
     nextFollowUpDate.setDate(nextFollowUpDate.getDate() + 7);
     this.addFollowUp.followUpDetails.NextFollowupDate = nextFollowUpDate;

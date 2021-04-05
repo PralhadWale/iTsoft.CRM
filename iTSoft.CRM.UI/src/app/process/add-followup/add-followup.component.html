@@ -1,5 +1,5 @@
 <form #followUpForm="ngForm">
-<mat-sidenav class="search-panel" position="end" position="end" dark #sidenav mode="push" opened="false">
+  <mat-sidenav class="big-search-panel" position="end" position="end" dark #sidenav mode="push" opened="false">
     <mat-card class="profile-card">
       <mat-card-header>
         <div mat-card-avatar class="avatar">
@@ -13,78 +13,164 @@
         </mat-card-title>
       </mat-card-header>
     </mat-card>
-    <mat-nav-list style="margin-left:20px;"> 
-      <input type="hidden" [(ngModel)]="followUP.FollowUpId" name="FollowUpId" />
-      <input type="hidden" [(ngModel)]="followUP.RequestId" name="RequestId" />
-      <input type="hidden" [(ngModel)]="followUP.RequestServiceId" name="RequestServiceId" />
-      <mat-form-field appearance="outline">
-        <mat-label>Service</mat-label>
-        <input matInput type="text" placeholder="Service Name" name="ServiceName" [(ngModel)]="followUP.ServiceName"
-          #Amount readonly />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Lead Status</mat-label>
-        <mat-select placeholder="Deal Status"  [(ngModel)]="followUP.LeadStatusId" name="LeadStatusId" [(value)]="followUP.LeadStatusId" #LeadStatusId="ngModel" required>
-          <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.LeadStatusId">
-            {{item.LeadStatusName}}
-          </mat-option>
-        </mat-select>
+    <mat-grid-list cols="12" rowHeight="80px">
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Service Name </mat-label>
+          <input matInput type='text' [(ngModel)]="followUP.ServiceName" name="ServiceName" #ServiceName="ngModel"
+            readonly>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Lead Status</mat-label>
+          <mat-select placeholder="Deal Status" [(ngModel)]="followUP.LeadStatusId" name="LeadStatusId"
+            [(value)]="followUP.LeadStatusId" #LeadStatusId="ngModel" required (selectionChange)="onLeadStatusChange($event)">
+            <mat-option *ngFor="let item of requestSelectList.LeadStatuses" [value]="item.LeadStatusId">
+              {{item.LeadStatusName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="followUpForm.submitted && LeadStatusId.errors">
+            Please select lead status
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
           <mat-label>Stage</mat-label>
-        <mat-select placeholder="Stage"  [(ngModel)]="followUP.StageId" name="StageId" [(value)]="followUP.StageId" #StageId="ngModel" required>
-          <mat-option *ngFor="let item of requestSelectList.Stages" [value]="item.Value" >
-            {{item.Text}} 
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Service Rate</mat-label>
-        <input matInput type="number" placeholder="Rate" name="Amount" [(ngModel)]="followUP.Amount" #Amount
-          readonly />
-      </mat-form-field>
-      <mat-form-field *ngIf="followUP.AgreedAmount > 0 || (followUP.LeadStatusId == 10010 || followUP.LeadStatusId == 10011 || followUP.LeadStatusId == 10012)" appearance="outline">
-        <mat-label>Agreed Rate</mat-label>
-        <input matInput type="number" placeholder="Agreed Rate" name="AgreedAmount" [(ngModel)]="followUP.AgreedAmount"  oninput="validity.valid||(value='');" min="0" max="1000000000" #AgreedAmount [required]="followUpDetails.RequestTypeId == 2"/>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Follow up date</mat-label>
-        <input matInput [matDatepicker]="followUpDate" [min]="minDate" [(ngModel)]="followUP.FollowUpDate" name="FollowUpDate" required>
-        <mat-datepicker-toggle matSuffix [for]="followUpDate"></mat-datepicker-toggle>
-        <mat-datepicker #followUpDate color="primary"></mat-datepicker>
-        <mat-error>FollowUp Date is required.</mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Remark</mat-label>
-          <textarea matInput placeholder="Remark" name="Remark" [(ngModel)]="followUP.Remark"  #Remark [required]="followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014"
-            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Client Rating</mat-label>
-        <input matInput type="number" placeholder="Client Rating" name="ClientRating" [(ngModel)]="followUP.ClientRating"
-          #ClientRating required/>
-      </mat-form-field>
-
-    <mat-form-field *ngIf="(!(followUP.LeadStatusId == 10011 || followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014))" appearance="outline">
-      <mat-label>Next follow up date</mat-label>
-      <input matInput [matDatepicker]="nextFollowupDate" [min]="nextMinDate" [(ngModel)]="followUP.NextFollowupDate" name="NextFollowupDate" required>
-      <mat-datepicker-toggle matSuffix [for]="nextFollowupDate"></mat-datepicker-toggle>
-      <mat-datepicker #nextFollowupDate color="primary"></mat-datepicker>
-      <mat-error>Next Date is required.</mat-error>
-    </mat-form-field>
-    <!-- <div class="form-group form-check" *ngIf="!IsCompleted">
-      <mat-checkbox name="IsCompleted" id="IsCompleted" class="form-check-input"
-        [(ngModel)]="followUP.IsCompleted" #IsCompleted="ngModel">Mark Completed</mat-checkbox>
-    </div>
-    <mat-form-field *ngIf="IsCompleted">
-      <input matInput type="text" placeholder="Follow up Status" name="IsCompleted" value="Completed"   #IsCompleted readonly/>
-    </mat-form-field> -->
-    </mat-nav-list>
+          <mat-select placeholder="Stage" [(ngModel)]="followUP.StageId" name="StageId" [(value)]="followUP.StageId"
+            #StageId="ngModel" required>
+            <mat-option *ngFor="let item of requestSelectList.Stages" [value]="item.Value">
+              {{item.Text}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="followUpForm.submitted && StageId.errors">
+            Please select Stage
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>No Of Employees</mat-label>
+          <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.NoOfEmployees" name="NoOfEmployees" #NoOfEmployees="ngModel"
+            (change)="calculatePrice()">
+          <mat-error *ngIf="(NoOfEmployees.touched || followUpForm.submitted) && NoOfEmployees.errors">
+            Please enter valid value
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Service Price</mat-label>
+          <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceQuotedPrice" name="ServiceQuotedPrice" #ServiceQuotedPrice="ngModel"
+            (change)="calculatePrice()">
+          <mat-error *ngIf="(ServiceQuotedPrice.touched || followUpForm.submitted) && ServiceQuotedPrice.errors">
+            Please enter valid value
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Discount Percent</mat-label>
+          <input matInput type='number' min="0" max="100" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceQuotedDiscountPercent" name="ServiceQuotedDiscountPercent"
+            #ServiceQuotedDiscountPercent="ngModel" (change)="calculatePrice()">
+          <mat-error
+            *ngIf="(ServiceQuotedDiscountPercent.touched || followUpForm.submitted) && ServiceQuotedDiscountPercent.errors">
+            Please enter valid Discount percent
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Discount Amount</mat-label>
+          <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceQuotedDicountAmount" name="ServiceQuotedDicountAmount"
+            #ServiceQuotedDicountAmount="ngModel" readonly>
+          <mat-error
+            *ngIf="(ServiceQuotedDicountAmount.touched || followUpForm.submitted) && ServiceQuotedDicountAmount.errors">
+            Please enter valid Discount Amount
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Net Amount</mat-label>
+          <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceQuotedNetAmount" name="ServiceQuotedNetAmount"
+            #ServiceQuotedNetAmount="ngModel" (change)="calculatePrice()">
+          <mat-error
+            *ngIf="(ServiceQuotedNetAmount.touched || followUpForm.submitted) && ServiceQuotedNetAmount.errors">
+            Please enter valid Net Amount
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan" *ngIf="fromQuotation">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Agreed Disc Percent</mat-label>
+          <input matInput type='number' min="0" max="100" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceAgreedDiscountPercent" name="ServiceAgreedDiscountPercent"
+            #ServiceAgreedDiscountPercent="ngModel" (change)="calculatePrice()">
+          <mat-error
+            *ngIf="(ServiceAgreedDiscountPercent.touched || followUpForm.submitted) && ServiceAgreedDiscountPercent.errors">
+            Please enter valid Discount percent
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan" *ngIf="fromQuotation">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Agreed Disc Amount</mat-label>
+          <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceAgreedDiscountAmount" name="ServiceAgreedDiscountAmount"
+            #ServiceAgreedDiscountAmount="ngModel" readonly>
+          <mat-error
+            *ngIf="(ServiceAgreedDiscountAmount.touched || followUpForm.submitted) && ServiceAgreedDiscountAmount.errors">
+            Please enter valid Discount Amount
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="fieldColspan" *ngIf="fromQuotation">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Agreed Net Amount</mat-label>
+          <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+            [(ngModel)]="followUP.ServiceAgreedNetAmount" name="ServiceAgreedNetAmount"
+            #ServiceAgreedNetAmount="ngModel">
+          <mat-error
+            *ngIf="(ServiceAgreedNetAmount.touched || followUpForm.submitted) && ServiceAgreedNetAmount.errors">
+            Please enter valid Net Amount
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      
+      <mat-grid-tile [colspan]="fieldColspan" *ngIf="(!(followUP.LeadStatusId == 10011 || followUP.LeadStatusId == 10012 || followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014))">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Next Follow up Date. </mat-label>
+          <input matInput [matDatepicker]="datepicker1" [min]="nextMinDate" [(ngModel)]="followUP.NextFollowupDate"
+            name="NextFollowupDate" #NextFollowupDate="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
+          <mat-error>Please select valid date.</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="6">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Remark</mat-label>
+          <textarea matInput type='text' [(ngModel)]="followUP.Remark" name="Remark" #Remark="ngModel"
+            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+            [required]="followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014"></textarea>
+          <mat-error *ngIf="(Remark.touched || followUpForm.submitted) && Remark.errors">
+            Please enter valid Remark
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
     <mat-divider></mat-divider>
     <mat-card-header>
       <mat-action-list>
         <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-          (click)="onSubmit(followUpForm)"  *ngIf="!IsCompleted">
+          (click)="onSubmit(followUpForm)" *ngIf="!IsCompleted">
           <mat-icon>save</mat-icon>Save
         </button>
         <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"

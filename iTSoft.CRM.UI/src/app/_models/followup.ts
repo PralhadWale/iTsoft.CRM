@@ -4,6 +4,9 @@ export class FollowUp {
     RequestServiceId : number;
     FollowUpDate: Date;
     NextFollowupDate : Date;
+    NoOfEmployees: number;
+    Quantity : number;
+    ServiceQuotedPrice : number;
     ServiceQuotedDiscountPercent: number;
     ServiceQuotedDicountAmount: number;
     ServiceQuotedNetAmount: number;

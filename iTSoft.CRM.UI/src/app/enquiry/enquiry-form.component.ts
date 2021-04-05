@@ -403,19 +403,20 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
           this.requestService.UpdateService(result.Data, this.request.RequestServiceDetails);
         }
 
-        this.request.RequestMaster.Amount = 0;
+        this.request.RequestMaster.TotalQuotedAmount = 0;
+        this.request.RequestMaster.TotalQuotedDiscountAmount = 0;
+        this.request.RequestMaster.TotalQuotedNetAmount = 0;
+        this.request.RequestMaster.TotalAgreedDiscountAmount = 0;
+        this.request.RequestMaster.TotalAgreedNetAmount = 0;
+
         this.request.RequestServiceDetails.forEach(x => {
-          if (x.QuoatedPrice && x.QuoatedPrice > 0) {
-            this.request.RequestMaster.Amount += x.QuoatedPrice;
-          }
+          this.request.RequestMaster.TotalQuotedAmount = x.ServiceTotalQuotedPrice;
+          this.request.RequestMaster.TotalQuotedDiscountAmount = x.ServiceTotalQuotedDicountAmount;
+          this.request.RequestMaster.TotalQuotedNetAmount = x.ServiceTotalQuotedNetAmount;
+          this.request.RequestMaster.TotalAgreedDiscountAmount = x.ServiceTotalAgreedDiscountAmount;
+          this.request.RequestMaster.TotalAgreedNetAmount = x.ServiceTotalAgreedNetAmount;
         });
 
-        this.request.RequestMaster.AgreedAmount = 0;
-        this.request.RequestServiceDetails.forEach(x => {
-          if (x.AgreedPrice && x.AgreedPrice > 0) {
-            this.request.RequestMaster.AgreedAmount += x.AgreedPrice;
-          }
-        });
 
         this.serviceTable.RefreshDataSource();
 
@@ -498,18 +499,29 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
       [
         { ColumnField: "ServiceName", ColumnHeader: "Service Name", Type: "text" },
         { ColumnField: "DepartmentName", ColumnHeader: "Department Name", Type: "text" },
-        { ColumnField: "QuoatedPrice", ColumnHeader: "Price", Type: "text" },
+        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
+        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
+        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" },
         { ColumnField: "NoOfEmployees", ColumnHeader: "No Of Employees", Type: "text" },
         { ColumnField: "LeadSourceName", ColumnHeader: "Lead Source", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Lead Status", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Lead Stage", Type: "text" },
         { ColumnField : "NextFollowupDate" , ColumnHeader:"Next Follow up date" , Type: "date"},
-        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" }
+        { ColumnField: "Remark", ColumnHeader: "Remark", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedPrice", ColumnHeader: "Total Service Rate", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedDicountAmount", ColumnHeader: "Total Discount", Type: "text" },
+        { ColumnField: "ServiceTotalQuotedNetAmount", ColumnHeader: "Total Quoted Rate", Type: "text" }
 
       ];
 
     if (this.requestTypeId == RequestType.Quotation) {
-      this.serviceTableSchema.splice(3, 0, { ColumnField: "AgreedPrice", ColumnHeader: "Agreed Price", Type: "text" },)
+
+      this.serviceTableSchema.splice(8, 0, { ColumnField: "ServiceAgreedDiscountAmount", ColumnHeader: "Agreed Discount", Type: "text" },)
+      this.serviceTableSchema.splice(9, 0, { ColumnField: "ServiceAgreedNetAmount", ColumnHeader: "Agreed Amount", Type: "text" },)
+
+      this.serviceTableSchema.push({ ColumnField: "ServiceTotalAgreedDiscountAmount", ColumnHeader: "Total Agreed Amount", Type: "text" },)
+      this.serviceTableSchema.push({ ColumnField: "ServiceTotalAgreedNetAmount", ColumnHeader: "Toal Agreed Discount", Type: "text" },)
+
     }
     
     if(this.allowSave)

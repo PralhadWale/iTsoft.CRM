@@ -249,7 +249,8 @@ namespace iTSoft.CRM.Web.Controllers
             ServiceResponse response = new ServiceResponse();
             try
             {
-                response.ResponseData = _listService.ListAll<FinancialYearMaster>(nameof(FinancialYearMaster.FinancialYear), nameof(FinancialYearMaster.FinancialYearId), activeOnly);
+                var listModels= _listService.ListAll<FinancialYearMaster>(nameof(FinancialYearMaster.FinancialYear), nameof(FinancialYearMaster.FinancialYearId), activeOnly);
+                response.ResponseData = listModels.OrderByDescending(x => x.Value).ToList();
                 response.ResponseCode = ResponseCode.Success;
             }
             catch (Exception ex)

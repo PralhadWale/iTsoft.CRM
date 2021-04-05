@@ -26,15 +26,16 @@ export class AddServiceComponent implements OnInit {
 
   public requestAllServiceList: Array<RequestServiceDetails>;
   public requestServiceDetails: RequestServiceDetails;
-  fieldColspan = 6;
+  fieldColspan = 4;
 
   departmentList: Array<ListModel> = [];
   serviceList: Array<ServiceMaster> = [];
 
   isNew: boolean = true;
-  showPrice: boolean = false;
+  fromQuotation: boolean = false;
+  isCorporate : boolean = true;
   requestTypeId : number = RequestType.Enquiry;
-  showNumberOfEmployees : boolean = true;
+ 
 
   enqMinDate: Date = new Date();
 
@@ -64,12 +65,22 @@ export class AddServiceComponent implements OnInit {
       if (data.AllServiceList != null) {
         this.requestAllServiceList = data.AllServiceList;
       }
-      this.showPrice = data.ShowPrice
-    
-      this.showNumberOfEmployees = data.ShowNumberOfEmployees;
+
+      this.fromQuotation = data.ShowPrice
+      this.isCorporate = data.ShowNumberOfEmployees;
 
     }
 
+    if(!this.isNew)
+    {
+      this.requestServiceDetails.Reset();
+    }
+
+    if(!this.isCorporate)
+    {
+      this.requestServiceDetails.NoOfEmployees = 1;
+      this.requestServiceDetails.Quantity =1;
+    }
 
   }
 
@@ -113,6 +124,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   private GetDepartmentServices(departmentId: number) {
+   
     let data: ListModel = this.departmentList.filter(f => f.Value == departmentId)[0];
     this.requestServiceDetails.DepartmentName = data.Text;
 
@@ -123,21 +135,32 @@ export class AddServiceComponent implements OnInit {
     }, error => {
       this.alertService.showErrorMessage(error.error);
     });
+
   }
 
   onServiceChanged($event: any) {
+
+    this.requestServiceDetails.Reset();
+   
     if ($event != null) {
       let serviceId = $event.value;
       let service: ServiceMaster = this.serviceList.filter(f => f.ServiceId == serviceId)[0];
       this.requestServiceDetails.ServiceName = service.ServiceName;
       this.requestServiceDetails.ServiceId = service.ServiceId;
-      this.requestServiceDetails.QuoatedPrice = service.Price;
+      this.requestServiceDetails.ServiceQuotedPrice = service.Price;
     }
     else {
       this.requestServiceDetails.ServiceName = null;
       this.requestServiceDetails.ServiceId = null;
-      this.requestServiceDetails.QuoatedPrice = null;
     }
+
+    
+  }
+
+  calculatePrice()
+  {
+     this.requestServiceDetails.Calculate(this.fromQuotation);
+
   }
 
   saveService(serviceForm: NgForm) {
@@ -152,7 +175,10 @@ export class AddServiceComponent implements OnInit {
         this.requestServiceDetails.LeadStatusName = this.listService.GetLeadStatusName(this.requestServiceDetails.LeadStatusId);
         this.requestServiceDetails.StageName = this.listService.GetStageName(this.requestServiceDetails.StageId);
         this.requestServiceDetails.LeadSourceName = this.listService.GetSourceName(this.requestServiceDetails.SourceId);
-      
+        this.requestServiceDetails.FinancialYear = this.listService.GetFinancialYear(this.requestServiceDetails.FinancialYearId);
+
+        this.requestServiceDetails.Calculate(this.fromQuotation);
+
         this.dialogRef.close({ Action: this.ACTION_SAVE, Data: this.requestServiceDetails });
       }
     }

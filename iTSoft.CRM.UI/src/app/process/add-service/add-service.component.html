@@ -1,145 +1,235 @@
 <form #serviceForm="ngForm">
-    <mat-card style="width: 600px;">
-        <mat-toolbar style="background-color: #FFF">
-            <mat-toolbar-row>
-                <span class="view-card-title">{{pageTitle}}</span>
-                <span class="title-spacer"></span>
-                <mat-card-actions>
-                    <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
-                        (click)="saveService(serviceForm)" [formGroup]="serviceForm">
-                        <mat-icon>save</mat-icon>
-                    </button>
-                    <button mat-mini-fab class="" style="margin-right:10px; " (click)="closeDialog(serviceForm)">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-card-actions>
-            </mat-toolbar-row>
-        </mat-toolbar>
-        <mat-divider class="title-Divider"></mat-divider>
-        <mat-card-content style="margin: 5 0 5 0px;">
-            <br/><br/>
-            <mat-grid-list cols="12" rowHeight="80px">
-                <mat-grid-tile [colspan]="fieldColspan">
-                    <mat-form-field class="form-field" appearance="outline">
-                      <mat-label>Department</mat-label>
-                      <mat-select *ngIf="isNew" placeholder="Select Department" [(ngModel)]="requestServiceDetails.DepartmentId" [(value)]="requestServiceDetails.DepartmentId"
-                      (selectionChange)="onDepartmentChanged($event)" name="DepartmentId" #DepartmentId="ngModel" required>
-                        <mat-option *ngFor="let item of departmentList" [value]="item.Value">
-                          {{item.Text}}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="serviceForm.submitted">
-                        Please select department
-                      </mat-error>
-                      <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.DepartmentName" name="DepartmentName" #DepartmentName="ngModel" readonly>
-                    </mat-form-field>
-                  </mat-grid-tile>
-                <mat-grid-tile [colspan]="fieldColspan">
-                    <mat-form-field class="form-field" appearance="outline">
-                        <mat-label>Service Name </mat-label>
-                        <mat-select *ngIf="isNew" placeholder="Select Service" [(ngModel)]="requestServiceDetails.ServiceId" name="ServiceId"
-                            #ServiceId="ngModel" (selectionChange)="onServiceChanged($event)" required>
-                            <mat-option *ngFor="let service of serviceList" [value]="service.ServiceId">
-                                {{service.ServiceName}}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="serviceForm.submitted">
-                            Please select service
-                        </mat-error>
-                        <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.ServiceName" name="ServiceName" #ServiceName="ngModel" readonly>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="fieldColspan">
-                    <mat-form-field class="form-field" appearance="outline">
-                        <mat-label>Service Price</mat-label>
-                        <input matInput type='number'  min="0" max="1000000000" oninput="validity.valid||(value='');" [(ngModel)]="requestServiceDetails.QuoatedPrice" name="QuoatedPrice" #QuoatedPrice="ngModel">
-                        <mat-error *ngIf="(QuoatedPrice.touched || serviceForm.submitted) && QuoatedPrice.errors">
-                             Please enter valid value
-                        </mat-error>
-                    </mat-form-field>
-                 </mat-grid-tile>
-                 <mat-grid-tile [colspan]="fieldColspan" *ngIf="showPrice">
-                    <mat-form-field class="form-field" appearance="outline">
-                        <mat-label>Agreed Price</mat-label>
-                        <input matInput type='number'  min="0" max="1000000000"  oninput="validity.valid||(value='');" [(ngModel)]="requestServiceDetails.AgreedPrice" name="AgreedPrice" #AgreedPrice="ngModel">
-                        <mat-error *ngIf="(AgreedPrice.touched || serviceForm.submitted) && AgreedPrice.errors">
-                             Please enter valid value
-                        </mat-error>
-                    </mat-form-field>
-                 </mat-grid-tile>
-                 <mat-grid-tile [colspan]="fieldColspan" *ngIf="showNumberOfEmployees">
-                  <mat-form-field class="form-field" appearance="outline">
-                      <mat-label>No Of Employees</mat-label>
-                      <input matInput type='number' [(ngModel)]="requestServiceDetails.NoOfEmployees" name="NoOfEmployees" #NoOfEmployees="ngModel">
-                      <mat-error *ngIf="(NoOfEmployees.touched || serviceForm.submitted) && NoOfEmployees.errors">
-                           Please enter valid value
-                      </mat-error>
-                  </mat-form-field>
-               </mat-grid-tile>
-                 <mat-grid-tile [colspan]="fieldColspan">
-                  <mat-form-field class="form-field" appearance="outline">
-                    <mat-label>Lead Source</mat-label>
-                    <mat-select SourceId="Select Source" [(ngModel)]="requestServiceDetails.SourceId" [(value)]="requestServiceDetails.SourceId"
-                    name="SourceId" #LeadStatusId="ngModel" required>
-                      <mat-option *ngFor="let item of listService.ActiveLeadSourceList | async" [value]="item.Value">
-                        {{item.Text}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="serviceForm.submitted">
-                      Please select lead status
-                    </mat-error>
-                  </mat-form-field>
-                </mat-grid-tile>
-                 <mat-grid-tile [colspan]="fieldColspan">
-                    <mat-form-field class="form-field" appearance="outline">
-                      <mat-label>Lead Status</mat-label>
-                      <mat-select placeholder="Select Status" [(ngModel)]="requestServiceDetails.LeadStatusId" [(value)]="requestServiceDetails.LeadStatusId"
-                      name="LeadStatusId" #LeadStatusId="ngModel" required>
-                        <mat-option *ngFor="let item of listService.ActiveNotDecisiveLeadStatusList(requestTypeId) | async" [value]="item.LeadStatusId">
-                          {{item.LeadStatusName}}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="serviceForm.submitted">
-                        Please select lead status
-                      </mat-error>
-                    </mat-form-field>
-                  </mat-grid-tile>
-                  <mat-grid-tile [colspan]="fieldColspan">
-                    <mat-form-field class="form-field" appearance="outline">
-                      <mat-label>Stage</mat-label>
-                      <mat-select placeholder="Select Stage" [(ngModel)]="requestServiceDetails.StageId" [(value)]="requestServiceDetails.StageId"
-                      name="StageId" #StageId="ngModel" required>
-                        <mat-option *ngFor="let item of listService.ActiveStageList | async" [value]="item.Value">
-                          {{item.Text}}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="serviceForm.submitted">
-                        Please select Stage
-                      </mat-error>
-                    </mat-form-field>
-                  </mat-grid-tile>
-                  <mat-grid-tile [colspan]="fieldColspan">
-                    <mat-form-field class="form-field" appearance="outline">
-                      <mat-label>Next Follow up Date. </mat-label>
-                      <input matInput [matDatepicker]="datepicker1" [min]="enqMinDate"
-                        [(ngModel)]="requestServiceDetails.NextFollowupDate" name="NextFollowupDate" #NextFollowupDate="ngModel" required>
-                      <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
-                      <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
-                      <mat-error>Please select valid date.</mat-error>
-                    </mat-form-field>
-                  </mat-grid-tile>
-                 <mat-grid-tile [colspan]="6">
-                    <mat-form-field class="form-field" appearance="outline">
-                        <mat-label>Remark</mat-label>
-                        <textarea matInput type='text' [(ngModel)]="requestServiceDetails.Remark" name="Remark" #Remark="ngModel"
-                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"  [required]="requestServiceDetails.LeadStatusId == 10013 || requestServiceDetails.LeadStatusId == 10014" ></textarea>
-                        <mat-error *ngIf="(Remark.touched || serviceForm.submitted) && Remark.errors">
-                             Please enter valid Remark
-                        </mat-error>
-                    </mat-form-field>
-                 </mat-grid-tile>
-                
-           </mat-grid-list>
-        </mat-card-content>
-    </mat-card>
+  <mat-card style="width: 900px;">
+    <mat-toolbar style="background-color: #FFF">
+      <mat-toolbar-row>
+        <span class="view-card-title">{{pageTitle}}</span>
+        <span class="title-spacer"></span>
+        <mat-card-actions>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
+            (click)="saveService(serviceForm)" [formGroup]="serviceForm">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-mini-fab class="" style="margin-right:10px; " (click)="closeDialog(serviceForm)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider class="title-Divider"></mat-divider>
+    <mat-card-content style="margin: 5 0 5 0px;">
+      <br /><br />
+      <mat-grid-list cols="12" rowHeight="80px">
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Financial Year</mat-label>
+            <mat-select *ngIf="isNew" placeholder="Select Financial Year" [(ngModel)]="requestServiceDetails.FinancialYearId"
+              [(value)]="requestServiceDetails.FinancialYearId"
+              name="FinancialYearId" #FinancialYearId="ngModel" required>
+              <mat-option *ngFor="let item of listService.ActiveFinancialYearList | async" [value]="item.Value">
+                {{item.Text}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="serviceForm.submitted">
+              Please select department
+            </mat-error>
+            <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.FinancialYear"
+              name="FinancialYear" #FinancialYear="ngModel" readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select *ngIf="isNew" placeholder="Select Department" [(ngModel)]="requestServiceDetails.DepartmentId"
+              [(value)]="requestServiceDetails.DepartmentId" (selectionChange)="onDepartmentChanged($event)"
+              name="DepartmentId" #DepartmentId="ngModel" required>
+              <mat-option *ngFor="let item of departmentList" [value]="item.Value">
+                {{item.Text}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="serviceForm.submitted">
+              Please select department
+            </mat-error>
+            <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.DepartmentName"
+              name="DepartmentName" #DepartmentName="ngModel" readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Service Name </mat-label>
+            <mat-select *ngIf="isNew" placeholder="Select Service" [(ngModel)]="requestServiceDetails.ServiceId"
+              name="ServiceId" #ServiceId="ngModel" (selectionChange)="onServiceChanged($event)" required>
+              <mat-option *ngFor="let service of serviceList" [value]="service.ServiceId">
+                {{service.ServiceName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="serviceForm.submitted">
+              Please select service
+            </mat-error>
+            <input *ngIf="!isNew" matInput type='text' [(ngModel)]="requestServiceDetails.ServiceName"
+              name="ServiceName" #ServiceName="ngModel" readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan" *ngIf="isCorporate">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>No Of Employees</mat-label>
+            <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.NoOfEmployees" name="NoOfEmployees" #NoOfEmployees="ngModel" (change)="calculatePrice()">
+            <mat-error *ngIf="(NoOfEmployees.touched || serviceForm.submitted) && NoOfEmployees.errors">
+              Please enter valid value
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Service Price</mat-label>
+            <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceQuotedPrice" name="ServiceQuotedPrice"
+              #ServiceQuotedPrice="ngModel" (change)="calculatePrice()">
+            <mat-error *ngIf="(ServiceQuotedPrice.touched || serviceForm.submitted) && ServiceQuotedPrice.errors">
+              Please enter valid value
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Discount Percent</mat-label>
+            <input matInput type='number' min="0" max="100" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceQuotedDiscountPercent" name="ServiceQuotedDiscountPercent"
+              #ServiceQuotedDiscountPercent="ngModel" (change)="calculatePrice()">
+            <mat-error
+              *ngIf="(ServiceQuotedDiscountPercent.touched || serviceForm.submitted) && ServiceQuotedDiscountPercent.errors">
+              Please enter valid Discount percent
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Discount Amount</mat-label>
+            <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceQuotedDicountAmount" name="ServiceQuotedDicountAmount"
+              #ServiceQuotedDicountAmount="ngModel" readonly>
+            <mat-error
+              *ngIf="(ServiceQuotedDicountAmount.touched || serviceForm.submitted) && ServiceQuotedDicountAmount.errors">
+              Please enter valid Discount Amount
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Net Amount</mat-label>
+            <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceQuotedNetAmount" name="ServiceQuotedNetAmount"
+              #ServiceQuotedNetAmount="ngModel" (change)="calculatePrice()">
+            <mat-error
+              *ngIf="(ServiceQuotedNetAmount.touched || serviceForm.submitted) && ServiceQuotedNetAmount.errors">
+              Please enter valid Net Amount
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan" *ngIf="fromQuotation">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Agreed Disc Percent</mat-label>
+            <input matInput type='number' min="0" max="100" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceAgreedDiscountPercent" name="ServiceAgreedDiscountPercent"
+              #ServiceAgreedDiscountPercent="ngModel" (change)="calculatePrice()">
+            <mat-error
+              *ngIf="(ServiceAgreedDiscountPercent.touched || serviceForm.submitted) && ServiceAgreedDiscountPercent.errors">
+              Please enter valid Discount percent
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan" *ngIf="fromQuotation">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Agreed Disc Amount</mat-label>
+            <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceAgreedDiscountAmount" name="ServiceAgreedDiscountAmount"
+              #ServiceAgreedDiscountAmount="ngModel" readonly>
+            <mat-error
+              *ngIf="(ServiceAgreedDiscountAmount.touched || serviceForm.submitted) && ServiceAgreedDiscountAmount.errors">
+              Please enter valid Discount Amount
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan" *ngIf="fromQuotation">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Agreed Net Amount</mat-label>
+            <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
+              [(ngModel)]="requestServiceDetails.ServiceAgreedNetAmount" name="ServiceAgreedNetAmount"
+              #ServiceAgreedNetAmount="ngModel">
+            <mat-error
+              *ngIf="(ServiceAgreedNetAmount.touched || serviceForm.submitted) && ServiceAgreedNetAmount.errors">
+              Please enter valid Net Amount
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Lead Source</mat-label>
+            <mat-select SourceId="Select Source" [(ngModel)]="requestServiceDetails.SourceId"
+              [(value)]="requestServiceDetails.SourceId" name="SourceId" #LeadStatusId="ngModel" required>
+              <mat-option *ngFor="let item of listService.ActiveLeadSourceList | async" [value]="item.Value">
+                {{item.Text}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="serviceForm.submitted">
+              Please select lead status
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Lead Status</mat-label>
+            <mat-select placeholder="Select Status" [(ngModel)]="requestServiceDetails.LeadStatusId"
+              [(value)]="requestServiceDetails.LeadStatusId" name="LeadStatusId" #LeadStatusId="ngModel" required>
+              <mat-option *ngFor="let item of listService.ActiveNotDecisiveLeadStatusList(requestTypeId) | async"
+                [value]="item.LeadStatusId">
+                {{item.LeadStatusName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="serviceForm.submitted">
+              Please select lead status
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Stage</mat-label>
+            <mat-select placeholder="Select Stage" [(ngModel)]="requestServiceDetails.StageId"
+              [(value)]="requestServiceDetails.StageId" name="StageId" #StageId="ngModel" required>
+              <mat-option *ngFor="let item of listService.ActiveStageList | async" [value]="item.Value">
+                {{item.Text}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="serviceForm.submitted">
+              Please select Stage
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="fieldColspan">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Next Follow up Date. </mat-label>
+            <input matInput [matDatepicker]="datepicker1" [min]="enqMinDate"
+              [(ngModel)]="requestServiceDetails.NextFollowupDate" name="NextFollowupDate" #NextFollowupDate="ngModel"
+              required>
+            <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker1 color="primary"></mat-datepicker>
+            <mat-error>Please select valid date.</mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="6">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Remark</mat-label>
+            <textarea matInput type='text' [(ngModel)]="requestServiceDetails.Remark" name="Remark" #Remark="ngModel"
+              cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+              [required]="requestServiceDetails.LeadStatusId == 10013 || requestServiceDetails.LeadStatusId == 10014"></textarea>
+            <mat-error *ngIf="(Remark.touched || serviceForm.submitted) && Remark.errors">
+              Please enter valid Remark
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
 </form>

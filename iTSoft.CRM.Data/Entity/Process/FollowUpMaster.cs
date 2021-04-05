@@ -13,6 +13,9 @@ namespace iTSoft.CRM.Data.Entity.Process
         public long? RequestId { get; set; }
         public long? RequestServiceId { get; set; }
         public DateTime? FollowUpDate { get; set; }
+        public int NoOfEmployees { get; set; }
+        public int Quantity { get; set; }
+        public decimal? ServiceQuotedPrice { get; set; }
         public decimal? ServiceQuotedDiscountPercent { get; set; }
         public decimal? ServiceQuotedDicountAmount { get; set; }
         public decimal? ServiceQuotedNetAmount { get; set; }

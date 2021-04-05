@@ -178,7 +178,7 @@ namespace iTSoft.CRM.Domain.Services.Process
             var acceptedServices = requestViewModel.RequestServiceDetails.Where(r => r.LeadStatusId == (long)LeadStatus.Converted || r.LeadStatusId == (long)LeadStatus.ProposalAccepted).ToList();
             int i = 1;
 
-            requestViewModel.RequestMaster.AgreedAmount = 0;
+            requestViewModel.RequestMaster.TotalAgreedNetAmount = 0;
             
             foreach(var service in acceptedServices)
             {
@@ -187,16 +187,16 @@ namespace iTSoft.CRM.Domain.Services.Process
                     SRNo = i.ToString(),
                     Description = service.ServiceName,
                     QTY = "1",
-                   PRICE = service.AgreedPrice.GetValueOrDefault().ToString("#0.00"),
-                   TOTAL = service.AgreedPrice.GetValueOrDefault().ToString("#0.00")
+                   PRICE = service.ServiceQuotedNetAmount.GetValueOrDefault().ToString("#0.00"),
+                   TOTAL = service.ServiceQuotedNetAmount.GetValueOrDefault().ToString("#0.00")
                 }) ;
-                requestViewModel.RequestMaster.AgreedAmount += service.AgreedPrice.GetValueOrDefault();
+                //requestViewModel.RequestMaster.AgreedAmount += service.AgreedPrice.GetValueOrDefault();
             }
 
 
-            quote.SUBTOTAL = requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault().ToString("#0.00");
-            quote.TOTALGST = ((double)requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault() * 0.18d).ToString("#0.00");
-            quote.GRANDTOTAL = ((double)requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault() + (double)requestViewModel.RequestMaster.AgreedAmount.GetValueOrDefault() * 0.18d).ToString("#0.00");
+            quote.SUBTOTAL = requestViewModel.RequestMaster.TotalAgreedNetAmount.GetValueOrDefault().ToString("#0.00");
+            quote.TOTALGST = ((double)requestViewModel.RequestMaster.TotalAgreedNetAmount.GetValueOrDefault() * 0.18d).ToString("#0.00");
+            quote.GRANDTOTAL = ((double)requestViewModel.RequestMaster.TotalAgreedNetAmount.GetValueOrDefault() + (double)requestViewModel.RequestMaster.TotalAgreedNetAmount.GetValueOrDefault() * 0.18d).ToString("#0.00");
             quote.TOTALINWORD = numberHelper.ToWords(Convert.ToDecimal(quote.GRANDTOTAL));
 
             return quote;

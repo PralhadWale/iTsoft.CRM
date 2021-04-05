@@ -35,14 +35,25 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public DateTime? NextFollowupDate { get; set; }
         public string ClientBehaviourName { get; set; }
         public string DepartmentName { get; set; }
-        public decimal? ServiceQuotedPrice { get; set; }
         public long? ServiceDiscountType { get; set; }
+
+        public int Quantity { get; set; }
+
+        public int NoOfEmployees { get; set; }
+        public decimal? ServiceQuotedPrice { get; set; }
         public decimal? ServiceQuotedDiscountPercent { get; set; }
         public decimal? ServiceQuotedDicountAmount { get; set; }
         public decimal? ServiceQuotedNetAmount { get; set; }
         public decimal? ServiceAgreedDiscountPercent { get; set; }
         public decimal? ServiceAgreedDiscountAmount { get; set; }
         public decimal? ServiceAgreedNetAmount { get; set; }
+        public decimal? ServiceTotalQuotedPrice { get { return ServiceQuotedPrice * Quantity; } }
+        public decimal? ServiceTotalQuotedDiscountPercent { get { return ServiceTotalQuotedDiscountPercent * Quantity; } }
+        public decimal? ServiceTotalQuotedDicountAmount { get { return ServiceTotalQuotedDicountAmount * Quantity; } }
+        public decimal? ServiceTotalQuotedNetAmount { get { return ServiceTotalQuotedNetAmount * Quantity; } }
+        public decimal? ServiceTotalAgreedDiscountPercent { get { return ServiceTotalAgreedDiscountPercent * Quantity; } }
+        public decimal? ServiceTotalAgreedDiscountAmount { get { return ServiceTotalAgreedDiscountAmount * Quantity; } }
+        public decimal? ServiceTotalAgreedNetAmount { get { return ServiceTotalAgreedNetAmount * Quantity; } }
         public decimal? TotalQuotedAmount { get; set; }
         public decimal? TotalQuotedDiscountAmount { get; set; }
         public decimal? TotalQuotedNetAmount { get; set; }
