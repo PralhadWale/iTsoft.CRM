@@ -29,8 +29,8 @@
         </mat-menu>
       </mat-card>
       <mat-nav-list>
-      <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
-    </mat-nav-list>
+        <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
+      </mat-nav-list>
     </mat-sidenav>
     <!-- <mat-sidenav-content [hidden]="!authService.isAuthenticated()"> -->
     <mat-sidenav-content class="sidenav-content">
@@ -43,7 +43,7 @@
           <a aria-label="GitHub Repository" style=" float:right" class="docs-button docs-navbar-hide-small mat-button"
             href="#" mat-button="" tabindex="0" aria-disabled="false">
             <span class="mat-button-wrapper">
-              <img _ngcontent-c1="" alt="angular" class="docs-angular-logo" src="../assets/img/taxblock-logo.png"> 
+              <img _ngcontent-c1="" alt="angular" class="docs-angular-logo" src="../assets/img/taxblock-logo.png">
             </span>
           </a>
         </span>
@@ -53,7 +53,11 @@
       </mat-toolbar>
       <div class="main-content">
         <!-- [hidden]="!authService.isAuthenticated()"> -->
-        <router-outlet></router-outlet>
+        <router-outlet>
+          <div *ngIf="showLoader" class="loading-indicator">
+            <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+          </div>
+        </router-outlet>
       </div>
       <!-- <footer class="footer" [ngStyle]="{'position': isMobile?'relative':'absolute'}">
         <span style="font-family:sans-serif">&copy; 2020 NG CRM </span>

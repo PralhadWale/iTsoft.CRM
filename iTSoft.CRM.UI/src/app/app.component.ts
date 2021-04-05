@@ -88,6 +88,7 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
 
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
+      this.isloading = val;
     });
 
     this.alertService.toast.subscribe((val: any) => {

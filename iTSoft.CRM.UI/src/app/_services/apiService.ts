@@ -7,6 +7,7 @@ import 'rxjs/Rx';
 
 import { LoaderService } from './loaderService';
 import { ConfigurationSettings } from '../_models/configuration';
+import { iTCRMLoaderService } from '../core/services/ITSoftLoaderService';
 
 @Injectable({ providedIn: 'root' })
 
@@ -15,7 +16,7 @@ export class APIService {
 
     constructor(private handler: HttpBackend,
         private http: HttpClient,
-        private loaderService: LoaderService) {
+        private loaderService: iTCRMLoaderService) {
         this.httpClientWithoutInterCeptor = new HttpClient(handler);
     }
 
