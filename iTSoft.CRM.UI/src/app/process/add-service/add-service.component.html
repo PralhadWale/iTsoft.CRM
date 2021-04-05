@@ -217,7 +217,7 @@
             <mat-error>Please select valid date.</mat-error>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="6">
+        <mat-grid-tile [colspan]="fieldColspan">
           <mat-form-field class="form-field" appearance="outline">
             <mat-label>Remark</mat-label>
             <textarea matInput type='text' [(ngModel)]="requestServiceDetails.Remark" name="Remark" #Remark="ngModel"

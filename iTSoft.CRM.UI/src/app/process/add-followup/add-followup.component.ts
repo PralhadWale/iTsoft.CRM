@@ -77,7 +77,8 @@ export class AddFollowupComponent implements OnInit {
 
     this.requestTypeName = "Add"
 
-   
+    this.fromQuotation = this.requestType == RequestType.Quotation;
+    this.followUP.LeadStatusId = null;
   }
 
   clearFollowUpData() {
@@ -102,11 +103,37 @@ export class AddFollowupComponent implements OnInit {
   onLeadStatusChange($event:any)
   {
     this.fromQuotation =  (this.followUP.LeadStatusId == 10010 || this.followUP.LeadStatusId == 10011 || this.followUP.LeadStatusId == 10012);
+    if(this.fromQuotation)
+    {
+      this.followUP.ServiceAgreedDiscountAmount = this.followUP.ServiceQuotedDicountAmount;
+      this.followUP.ServiceAgreedDiscountPercent = this.followUP.ServiceQuotedDiscountPercent;
+      this.followUP.ServiceAgreedNetAmount = this.followUP.ServiceQuotedNetAmount;
+    }
   }
 
   calculatePrice()
   {
-     this.followUpDetails.Calculate(this.fromQuotation);
+      
+    this.followUP.NoOfEmployees =  this.followUP.NoOfEmployees != null && this.followUP.NoOfEmployees > 0 ? this.followUP.NoOfEmployees : 1;
+    this.followUP.Quantity = this.followUP.NoOfEmployees;
+
+    this.followUP.ServiceQuotedDicountAmount = Math.round((this.followUP.ServiceQuotedDiscountPercent / 100) * this.followUP.ServiceQuotedPrice) 
+    this.followUP.ServiceQuotedNetAmount = this.followUP.ServiceQuotedPrice - this.followUP.ServiceQuotedDicountAmount;
+
+    this.followUP.ServiceTotalQuotedPrice= this.followUP.ServiceQuotedPrice * this.followUP.Quantity;
+    this.followUP.ServiceTotalQuotedDiscountPercent= this.followUP.ServiceTotalQuotedDiscountPercent;
+    this.followUP.ServiceTotalQuotedDicountAmount=this.followUP.ServiceQuotedDicountAmount * this.followUP.Quantity;
+    this.followUP.ServiceTotalQuotedNetAmount=this.followUP.ServiceQuotedNetAmount * this.followUP.Quantity;
+
+    if (this.fromQuotation) {
+       
+        this.followUP.ServiceAgreedDiscountAmount = Math.round((this.followUP.ServiceAgreedDiscountPercent / 100) * this.followUP.ServiceQuotedPrice)
+        this.followUP.ServiceAgreedNetAmount = this.followUP.ServiceQuotedPrice - this.followUP.ServiceAgreedDiscountAmount;
+       
+        this.followUP.ServiceTotalAgreedDiscountPercent = this.followUP.ServiceAgreedDiscountPercent;
+        this.followUP.ServiceTotalAgreedDiscountAmount = this.followUP.ServiceAgreedDiscountAmount * this.followUP.Quantity;
+        this.followUP.ServiceTotalAgreedNetAmount = this.followUP.ServiceAgreedNetAmount * this.followUP.Quantity;
+    }
   }
 
   onSubmit(followUpForm: NgForm) {

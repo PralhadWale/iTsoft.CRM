@@ -25,5 +25,14 @@ export class FollowUp {
     UpdatedOn: Date;
     AdvisorId:number;
     IsCompleted:boolean;
+    
+    ServiceTotalQuotedPrice : number;
+    ServiceTotalQuotedDiscountPercent: number | null;
+    ServiceTotalQuotedDicountAmount: number | null;
+    ServiceTotalQuotedNetAmount: number | null;
+    ServiceTotalAgreedDiscountPercent: number | null;
+    ServiceTotalAgreedDiscountAmount: number | null;
+    ServiceTotalAgreedNetAmount: number | null;
+   
    
 }
