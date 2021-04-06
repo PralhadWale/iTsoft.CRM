@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms/';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DepartmentMaster } from 'src/app/masters/department/department.model';
 import { ServiceMaster } from 'src/app/masters/service/service.model';
 import { UserService } from 'src/app/shared/services/UserService';
 import { LeadStage } from 'src/app/_models/leadStage';
@@ -33,9 +34,9 @@ export class AddServiceComponent implements OnInit {
 
   isNew: boolean = true;
   fromQuotation: boolean = false;
-  isCorporate : boolean = true;
-  requestTypeId : number = RequestType.Enquiry;
- 
+  isCorporate: boolean = true;
+  requestTypeId: number = RequestType.Enquiry;
+
 
   enqMinDate: Date = new Date();
 
@@ -45,7 +46,7 @@ export class AddServiceComponent implements OnInit {
     public listService: ListService,
     private userService: UserProfilService,
     private alertService: AlertService,
-    private changeDetector : ChangeDetectorRef 
+    private changeDetector: ChangeDetectorRef
 
   ) {
 
@@ -58,7 +59,13 @@ export class AddServiceComponent implements OnInit {
       this.requestTypeId = data.requestTypeId;
 
       if (data.ServiceDetails != null) {
-        this.requestServiceDetails = data.ServiceDetails;
+       // this.requestServiceDetails = data.ServiceDetails;
+        let keys = Object.keys(data.ServiceDetails);
+        keys.forEach((key) => {
+          if (!key.startsWith('__proto__')) {
+            this.requestServiceDetails[key] = data.ServiceDetails[key]
+          }
+        });
         this.isNew = false;
       }
 
@@ -71,15 +78,14 @@ export class AddServiceComponent implements OnInit {
 
     }
 
-    if(!this.isNew)
-    {
-      this.requestServiceDetails.Reset();
+    if (!this.isNew) {
+       //this.requestServiceDetails.Reset();
+       //this.requestServiceDetails.Calculate(this.fromQuotation);
     }
 
-    if(!this.isCorporate)
-    {
+    if (!this.isCorporate) {
       this.requestServiceDetails.NoOfEmployees = 1;
-      this.requestServiceDetails.Quantity =1;
+      this.requestServiceDetails.Quantity = 1;
     }
 
   }
@@ -89,7 +95,7 @@ export class AddServiceComponent implements OnInit {
     this.SetDefaultData();
   }
 
-  ngAfterViewChecked(){ this.changeDetector.detectChanges(); }
+  ngAfterViewChecked() { this.changeDetector.detectChanges(); }
 
 
   SetDefaultData() {
@@ -101,8 +107,8 @@ export class AddServiceComponent implements OnInit {
 
       this.requestServiceDetails.LeadStatusId = LeadStatus.NotAttended;
       this.requestServiceDetails.StageId = LeadStage.Warm;
-      this.userService.CurrentUserDepartments.subscribe((result: Array<ListModel>) => {
-        this.departmentList = result;
+      this.listService.GetActiveDepartments().subscribe((result) => {
+        this.departmentList = result.Value.ResponseData;
         if (this.requestServiceDetails.RequestServiceId > 0) {
           this.GetDepartmentServices(this.requestServiceDetails.DepartmentId);
         }
@@ -124,7 +130,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   private GetDepartmentServices(departmentId: number) {
-   
+
     let data: ListModel = this.departmentList.filter(f => f.Value == departmentId)[0];
     this.requestServiceDetails.DepartmentName = data.Text;
 
@@ -141,7 +147,7 @@ export class AddServiceComponent implements OnInit {
   onServiceChanged($event: any) {
 
     this.requestServiceDetails.Reset();
-   
+
     if ($event != null) {
       let serviceId = $event.value;
       let service: ServiceMaster = this.serviceList.filter(f => f.ServiceId == serviceId)[0];
@@ -154,20 +160,19 @@ export class AddServiceComponent implements OnInit {
       this.requestServiceDetails.ServiceId = null;
     }
 
-    
+
   }
 
-  calculatePrice()
-  {
-     this.requestServiceDetails.Calculate(this.fromQuotation);
+  calculatePrice() {
+    this.requestServiceDetails.Calculate(this.fromQuotation);
 
   }
 
   saveService(serviceForm: NgForm) {
     if (serviceForm && serviceForm.valid && this.requestServiceDetails.ServiceId > 0) {
 
-      if ((this.isNew && this.requestAllServiceList.filter(x => x.ServiceId == this.requestServiceDetails.ServiceId).length > 0) ||
-        (!this.isNew && this.requestAllServiceList.filter(x => x.ServiceId == this.requestServiceDetails.ServiceId && x.RequestServiceId != this.requestServiceDetails.RequestServiceId).length > 0)) {
+      if ((this.isNew && this.requestAllServiceList.filter(x => x.ServiceId == this.requestServiceDetails.ServiceId && x.FinancialYearId == this.requestServiceDetails.FinancialYearId).length > 0) ||
+        (!this.isNew && this.requestAllServiceList.filter(x => x.ServiceId == this.requestServiceDetails.ServiceId && x.FinancialYearId == this.requestServiceDetails.FinancialYearId && x.RequestServiceId != this.requestServiceDetails.RequestServiceId).length > 0)) {
         this.alertService.showErrorMessage("Service alreary present in list");
       }
       else {

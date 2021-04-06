@@ -31,7 +31,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 if (Stage.StageId == 0)
                 {
 
-                    if (base.genericService.GetAll().Where(c => c.StageName == Stage.StageName).Count() == 0)
+                    if (base.genericService.GetAll().Where(c => c.StageName.ToUpper() == Stage.StageName.ToUpper()).Count() == 0)
                     {
                         response.ResponseCode = base.genericService.Add(Stage) > 0 ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }
@@ -42,7 +42,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 }
                 else
                 {
-                    if (base.genericService.GetAll().Where(c => c.StageName == Stage.StageName && c.StageId != Stage.StageId).Count() == 0)
+                    if (base.genericService.GetAll().Where(c => c.StageName.ToUpper() == Stage.StageName.ToUpper() && c.StageId != Stage.StageId).Count() == 0)
                     {
                         response.ResponseCode = base.genericService.Update(Stage) == true ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }

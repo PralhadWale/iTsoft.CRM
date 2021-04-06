@@ -105,9 +105,11 @@ export class AddFollowupComponent implements OnInit {
     this.fromQuotation =  (this.followUP.LeadStatusId == 10010 || this.followUP.LeadStatusId == 10011 || this.followUP.LeadStatusId == 10012);
     if(this.fromQuotation)
     {
-      this.followUP.ServiceAgreedDiscountAmount = this.followUP.ServiceQuotedDicountAmount;
-      this.followUP.ServiceAgreedDiscountPercent = this.followUP.ServiceQuotedDiscountPercent;
-      this.followUP.ServiceAgreedNetAmount = this.followUP.ServiceQuotedNetAmount;
+      if (this.followUP.ServiceAgreedDiscountPercent == null || this.followUP.ServiceAgreedDiscountPercent < 1) {
+        this.followUP.ServiceAgreedDiscountAmount = this.followUP.ServiceQuotedDicountAmount;
+        this.followUP.ServiceAgreedDiscountPercent = this.followUP.ServiceQuotedDiscountPercent;
+        this.followUP.ServiceAgreedNetAmount = this.followUP.ServiceQuotedNetAmount;
+      }
     }
   }
 

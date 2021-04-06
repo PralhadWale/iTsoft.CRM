@@ -44,6 +44,7 @@ import { ContactPersonMaster } from "../_models/contactPerson";
 import { ClientType } from "../_models/clientType";
 import { ResponseCode } from "../core/models/ServiceResponse.model";
 import { OrganizationMaster } from "../_models/organization";
+import { ClientViewModel } from "../_models/clientViewModel";
 
 
 
@@ -102,9 +103,11 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   followupTableSettings: TableDefaultSettings;
   serviceTableSettings: TableDefaultSettings;
 
-  minDate: Date = new Date(1800, 1, 1);
+  minDate: Date = new Date(1900, 1, 1);
   maxDate: Date = new Date();
   enqMinDate: Date = new Date(2020, 1, 1);
+  dobMinDate:Date = new Date(1900,1,1);
+  dobMaxDate:Date = new Date();
   selectedIndex = 0;
   requestTypeName : string = "";
   constructor(
@@ -119,7 +122,7 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
 
     this.requestSelectList = new RequestSelectListModel();
-
+    this.dobMaxDate.setFullYear(this.dobMaxDate.getFullYear()-18);
     this.LoadSelectListData();
     this.SetDefaultRequest();
     this.SetTableSchema();
@@ -191,30 +194,14 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (clientId > 0) {
         this.requestService.FindClient(clientId).subscribe((result) => {
-          var clientDetails = <ClientMaster>result.Value.ResponseData;
-          if (clientDetails.ClientTypeId == ClientType.Corporate) {
-            this.request.OrganizationMaster.OrganizationName = clientDetails.OrganizationName;
-            this.request.OrganizationMaster.OrganizationId = clientDetails.OrganizationId;
-            this.request.OrganizationMaster.OrganizationTypeId = clientDetails.OrganizationTypeId;
-            this.request.OrganizationMaster.Website = clientDetails.Website;
-            this.request.OrganizationMaster.TotalEmployees = clientDetails.TotalEmployees;
-            this.request.OrganizationMaster.PANNO = clientDetails.PANNO;
-            this.request.OrganizationMaster.GSTNO = clientDetails.GSTNO;
-
+          var clientDetails = <ClientViewModel>result.Value.ResponseData;
+          if (clientDetails.ClientMaster.ClientTypeId == ClientType.Corporate) {
+            this.request.OrganizationMaster = clientDetails.OrganizationMaster;
           }
          
-          this.request.RequestMaster.ClientId = clientDetails.ClientId;
-          
-          this.request.ContactPersonMaster = new ContactPersonMaster();
-          this.request.ContactPersonMaster.ContactPersonId = clientDetails.ContactPersonId;
-          this.request.ContactPersonMaster.FirstName = clientDetails.FirstName;
-          this.request.ContactPersonMaster.MiddleName = clientDetails.MiddleName;
-          this.request.ContactPersonMaster.LastName = clientDetails.LastName;
-          this.request.ContactPersonMaster.PhoneNo1 = clientDetails.PhoneNo1;
-          this.request.ContactPersonMaster.PhoneNo2 = clientDetails.PhoneNo2;
-          this.request.ContactPersonMaster.Email = clientDetails.Email;
-          this.request.ContactPersonMaster.PANNO = clientDetails.PANNO;
-          this.request.ContactPersonMaster.Address = clientDetails.ContactPersonAddress;
+          this.request.RequestMaster.ClientId = clientDetails.ClientMaster.ClientId;
+          this.request.ContactPersonMaster = clientDetails.ContactPersonMasters[0];
+          this.request.RequestMaster.ClientTypeId = clientDetails.ClientMaster.ClientTypeId.toString();
 
           this.request.RequestMaster.SourceId = 2;
 
@@ -301,6 +288,10 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     else {
       this.selectedIndex = 0
+      if((<any>this.enquiryForm).first.controls.ClientTypeId.invalid)
+      {
+        this.alertService.showErrorMessage("Please select valid client type");
+      }
     }
   }
 

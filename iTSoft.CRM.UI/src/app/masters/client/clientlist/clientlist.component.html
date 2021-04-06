@@ -55,7 +55,8 @@
       <mat-form-field appearance="standard">
         <mat-label>PAN No</mat-label>
         <input matInput type='text' [(ngModel)]="clientMaster.PANNO" name="PANNO"
-        #PANNO="ngModel" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+        #PANNO="ngModel" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+        (ngModelChange)="clientMaster.PANNO = $event.toUpperCase()">
        <mat-error *ngIf="(PANNO.touched || clientForm.submitted) && PANNO.errors">
          Please enter valid PAN Number
        </mat-error>

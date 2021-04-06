@@ -1,7 +1,7 @@
 export class ClientMaster {
     ClientId: number;
     OrganizationId: number | null;
-    ClientTypeId: string;
+    ClientTypeId: number | string;
     ClientSourceId: number | null;
     IsDND: boolean | null;
     LoginName: string;

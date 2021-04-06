@@ -10,6 +10,10 @@
             *ngIf="allowSave">
             <mat-icon>add_ic_call</mat-icon>
           </button>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:palevioletred" type="reset"
+          (click)="Close()">
+          <mat-icon>cancel</mat-icon>
+        </button>
         </mat-card-actions>
       </mat-toolbar-row>
     </mat-toolbar>

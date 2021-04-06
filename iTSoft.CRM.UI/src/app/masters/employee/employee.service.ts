@@ -77,12 +77,12 @@ export class EmployeeService {
             IsActive: false,
             Role: null,
             Designation:null,
-            RoleId: 0,
-            DesignationId:0,
-            DepartmentId:0,
-            AddedBy: 0,
-            UpdatedBy: 0,
-            TargetAmount:0,
+            RoleId: null,
+            DesignationId:null,
+            DepartmentId:null,
+            AddedBy: null,
+            UpdatedBy: null,
+            TargetAmount:null,
             AddedDate: null,
             UpdatedDate: null
         };

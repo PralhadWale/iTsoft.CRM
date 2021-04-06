@@ -105,7 +105,8 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>PAN No</mat-label>
-              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.PANNO" name="PANNO" #PANNO="ngModel"  pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.PANNO" name="PANNO" #PANNO="ngModel"
+              (ngModelChange)="client.OrganizationMaster.PANNO = $event.toUpperCase()" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
               <mat-error *ngIf="(PANNO.touched || clientForm.submitted) && PANNO.errors">
                 Please enter valid PAN Number
               </mat-error>
@@ -114,9 +115,9 @@
           <mat-grid-tile [colspan]="fieldColspan">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>GST No</mat-label>
-              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.GSTNO" name="GSTNO" #GSTNO="ngModel">
-              <mat-error *ngIf="(GSTNO.touched || clientForm.submitted) && GSTNO.errors"
-                pattern="\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}">
+              <input matInput type='text' [(ngModel)]="client.OrganizationMaster.GSTNO" name="GSTNO" #GSTNO="ngModel"
+              (ngModelChange)="client.OrganizationMaster.GSTNO = $event.toUpperCase()" pattern="\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}">
+              <mat-error *ngIf="(GSTNO.touched || clientForm.submitted) && GSTNO.errors">
                 Please enter valid GST Number
               </mat-error>
             </mat-form-field>
@@ -212,7 +213,7 @@
           <mat-grid-tile [colspan]="fieldColspan" *ngIf="client.ClientMaster.ClientTypeId != '1'">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Date of birth</mat-label>
-              <input matInput [matDatepicker]="enquiryDOBId" [min]="minDate" [max]="maxDate"
+              <input matInput [matDatepicker]="enquiryDOBId" [min]="dobMinDate" [max]="dobMaxDate"
                 [(ngModel)]="client.ContactPersonMaster.DOB" name="DOB" #DOB="ngModel" required>
               <mat-datepicker-toggle matSuffix [for]="enquiryDOBId"></mat-datepicker-toggle>
               <mat-datepicker #enquiryDOBId></mat-datepicker>
@@ -225,7 +226,7 @@
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>PAN No</mat-label>
               <input matInput type='text' [(ngModel)]="client.ContactPersonMaster.PANNO" name="ContactPersonMasterPANNO" 
-              #ContactPersonMasterPANNO="ngModel"  pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+              #ContactPersonMasterPANNO="ngModel" (ngModelChange)="client.ContactPersonMaster.PANNO = $event.toUpperCase()" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
               <mat-error *ngIf="(ContactPersonMasterPANNO.touched || clientForm.submitted) && ContactPersonMasterPANNO.errors">
                 Please enter valid PAN Number
               </mat-error>

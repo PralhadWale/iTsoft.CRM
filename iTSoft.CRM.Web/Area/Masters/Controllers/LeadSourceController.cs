@@ -31,7 +31,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 if (base.genericService.GetAll().Where(c => c.LeadSourceId == LeadSource.LeadSourceId).Count() == 0)
                 {
 
-                    if (base.genericService.GetAll().Where(c => c.LeadSourceName == LeadSource.LeadSourceName).Count() == 0)
+                    if (base.genericService.GetAll().Where(c => c.LeadSourceName.ToUpper() == LeadSource.LeadSourceName.ToUpper()).Count() == 0)
                     {
                         response.ResponseCode = base.genericService.Add(LeadSource) > 0 ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }
@@ -42,7 +42,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 }
                 else
                 {
-                    if (base.genericService.GetAll().Where(c => c.LeadSourceName == LeadSource.LeadSourceName && c.LeadSourceId != LeadSource.LeadSourceId).Count() == 0)
+                    if (base.genericService.GetAll().Where(c => c.LeadSourceName.ToUpper() == LeadSource.LeadSourceName.ToUpper() && c.LeadSourceId != LeadSource.LeadSourceId).Count() == 0)
                     {
                         response.ResponseCode = base.genericService.Update(LeadSource) == true ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }

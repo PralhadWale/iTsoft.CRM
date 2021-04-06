@@ -103,16 +103,21 @@ export class EnquiryListComponent implements OnInit {
       }
       else if ($event.toolbarItem == ToolBarItems.Transfer) {
           this.selectedEnquiryList = $event.selectedItems;
-
+        
           if(this.selectedEnquiryList == null || this.selectedEnquiryList.length == null || this.selectedEnquiryList.length == 0)
           {
             this.alertService.showErrorMessage("Please select at least one enquiry to transfer");
           }
           else 
           {
-            this.requestDetails = new RequestDetails();
-            
-            this.assignAdvisor.sidenav.open();
+            let otherDeptService = this.selectedEnquiryList.filter(r => r.DepartmentId != this.selectedEnquiryList[0].DepartmentId);
+            if (otherDeptService.length == 0) {
+              this.requestDetails = new RequestDetails();
+              this.assignAdvisor.sidenav.open();
+            }
+            else {
+              this.alertService.showErrorMessage("Cannot assign different dept services to single dept");
+            }
           }
       }
     }

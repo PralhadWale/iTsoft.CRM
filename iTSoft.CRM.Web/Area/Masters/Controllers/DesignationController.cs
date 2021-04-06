@@ -30,7 +30,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 if (base.genericService.GetAll().Where(c => c.DesignationId == Designation.DesignationId).Count() == 0)
                 {
 
-                    if (base.genericService.GetAll().Where(c => c.DesignationName == Designation.DesignationName).Count() == 0)
+                    if (base.genericService.GetAll().Where(c => c.DesignationName.ToUpper() == Designation.DesignationName.ToUpper()).Count() == 0)
                     {
                         response.ResponseCode = base.genericService.Add(Designation) > 0 ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }
@@ -41,7 +41,7 @@ namespace iTSoft.CRM.Web.Area.Masters.Controllers
                 }
                 else
                 {
-                    if (base.genericService.GetAll().Where(c => c.DesignationName == Designation.DesignationName && c.DesignationId != Designation.DesignationId).Count() == 0)
+                    if (base.genericService.GetAll().Where(c => c.DesignationName.ToUpper() == Designation.DesignationName.ToUpper() && c.DesignationId != Designation.DesignationId).Count() == 0)
                     {
                         response.ResponseCode = base.genericService.Update(Designation) == true ? ResponseCode.Success : ResponseCode.DataBaseError;
                     }

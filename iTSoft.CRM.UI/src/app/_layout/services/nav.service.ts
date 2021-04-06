@@ -57,6 +57,11 @@ export class NavService {
           route: 'clients',
         },
         {
+          displayName: 'Employee',
+          iconName: 'person_pin',
+          route: 'employees',
+        },
+        {
           displayName: 'Masters',
           iconName: 'videocam',
           route: 'masters',
@@ -91,11 +96,7 @@ export class NavService {
               iconName: 'museum',
               route: 'masters/department',
             },
-            {
-              displayName: 'Employee',
-              iconName: 'person_pin',
-              route: 'employees',
-            },
+           
           ]
         },
         {

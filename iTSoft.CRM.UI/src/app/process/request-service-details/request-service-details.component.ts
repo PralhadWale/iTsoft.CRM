@@ -126,27 +126,8 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
 
   }
 
-  Close(employeeForm: NgForm) {
-    if (employeeForm.touched) {
-
-      let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to cancel editing ? " };
-      const dialogRef = this.dialog.open(ConfirmDialog, {
-        maxWidth: "400px",
-        data: dialogData
-      });
-
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        let result = dialogResult;
-        if (result == "CONFIRMED") {
-          this.NavigateToList();
-         
-        }
-      }
-      );
-    }
-    else {
+  Close() {
       this.NavigateToList();
-    }
   }
  
   getRequestService(requestServiceId: number): void {

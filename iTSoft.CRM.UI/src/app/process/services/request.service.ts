@@ -25,7 +25,12 @@ export class RequestService {
   UpdateService(data: any, requestServiceDetails: RequestServiceDetails[]) {
     let matchedIndex = -1;
     requestServiceDetails.forEach((item, index) => {
-      if (item.ServiceId == data.ServiceId) {
+
+      if(item.RequestServiceId == data.RequestServiceId)
+      {
+        matchedIndex = index;
+      }
+      else if (item.ServiceId == data.ServiceId && item.FinancialYearId == data.FinancialYearId) {
         matchedIndex = index;
       }
     });

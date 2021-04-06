@@ -119,7 +119,7 @@
             <mat-label>Net Amount</mat-label>
             <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
               [(ngModel)]="requestServiceDetails.ServiceQuotedNetAmount" name="ServiceQuotedNetAmount"
-              #ServiceQuotedNetAmount="ngModel" (change)="calculatePrice()">
+              #ServiceQuotedNetAmount="ngModel" (change)="calculatePrice()" readonly>
             <mat-error
               *ngIf="(ServiceQuotedNetAmount.touched || serviceForm.submitted) && ServiceQuotedNetAmount.errors">
               Please enter valid Net Amount
@@ -155,7 +155,7 @@
             <mat-label>Agreed Net Amount</mat-label>
             <input matInput type='number' min="0" max="1000000000" oninput="validity.valid||(value='0');"
               [(ngModel)]="requestServiceDetails.ServiceAgreedNetAmount" name="ServiceAgreedNetAmount"
-              #ServiceAgreedNetAmount="ngModel">
+              #ServiceAgreedNetAmount="ngModel" readonly>
             <mat-error
               *ngIf="(ServiceAgreedNetAmount.touched || serviceForm.submitted) && ServiceAgreedNetAmount.errors">
               Please enter valid Net Amount

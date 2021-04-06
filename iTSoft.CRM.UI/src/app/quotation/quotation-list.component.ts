@@ -128,9 +128,14 @@ export class QuotationListComponent implements OnInit {
           this.alertService.showErrorMessage("Please select at least one quotation to transfer");
         }
         else {
-          this.requestDetails = new RequestDetails();
-
-          this.assignAdvisor.sidenav.open();
+          let otherDeptService = this.selectedQuotationList.filter(r => r.DepartmentId != this.selectedQuotationList[0].DepartmentId);
+          if (otherDeptService.length == 0) {
+            this.requestDetails = new RequestDetails();
+            this.assignAdvisor.sidenav.open();
+          }
+          else {
+            this.alertService.showErrorMessage("Cannot assign different dept services to single dept");
+          }
         }
       }
     }

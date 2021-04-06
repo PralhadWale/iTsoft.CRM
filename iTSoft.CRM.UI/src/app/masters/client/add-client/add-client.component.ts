@@ -54,9 +54,10 @@ export class AddClientComponent implements OnInit {
 
   clientSelectListModel: any = new Object();
   fieldColspan: number = 3;
-  minDate: Date = new Date(1800, 1, 1);
+  minDate: Date = new Date(1900, 1, 1);
   maxDate: Date = new Date();
-
+  dobMinDate:Date = new Date(1900,1,1);
+  dobMaxDate:Date = new Date();
   client: ClientViewModel = new ClientViewModel();
   pageTitle: string;
   constructor(
@@ -68,6 +69,7 @@ export class AddClientComponent implements OnInit {
     public userProfileService: UserProfilService,
     private route: ActivatedRoute,
   ) {
+    this.dobMaxDate.setFullYear(this.dobMaxDate.getFullYear()-18);
     this.SetClientDefaultData();
     this.LoadSelectListData();
 
