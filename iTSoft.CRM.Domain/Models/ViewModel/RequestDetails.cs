@@ -68,6 +68,8 @@ namespace iTSoft.CRM.Domain.Models.ViewModel
         public string TermsAndConditions { get; set; }
         public long? ClientTypeId { get; set; }
         public long? AddedBy { get; set; }
+        public bool IsSent { get; set; }
+        public DateTime? SentOn { get; set; }
         public DateTime? AddedOn { get; set; }
         public long? UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }

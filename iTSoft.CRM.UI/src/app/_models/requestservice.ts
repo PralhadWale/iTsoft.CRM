@@ -55,6 +55,9 @@ export class RequestServiceDetails extends RequestServiceMaster {
     ServiceTotalAgreedDiscountPercent: number | null;
     ServiceTotalAgreedDiscountAmount: number | null;
     ServiceTotalAgreedNetAmount: number | null;
+    IsSent:boolean;
+    SentOn:Date;
+    SentBy:number;
     public constructor() {
         super();
         this.ServiceName = '';

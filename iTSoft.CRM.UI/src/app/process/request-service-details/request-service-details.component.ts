@@ -35,6 +35,7 @@ import { AlertService } from "src/app/_services";
 import { ContactPersonMaster } from "src/app/_models/contactPerson";
 import { FollowUpDetails } from "src/app/_models/followupdetails";
 import { LeadStatus } from "src/app/_models/leadStatus";
+import { ResponseCode } from "src/app/core/models/ServiceResponse.model";
 
 
 @Component({
@@ -199,6 +200,24 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
 
   }
 
+  onMarkSentClick()
+  {
+    if(confirm('Do you really want to mark service as sent ? '))
+    {
+      this.requestService.MarkSent(this.request.RequestServiceDetail).subscribe((result)=>{
+        if(result.Value.ResponseCode == ResponseCode.Success)
+        {
+          this.alertService.showSuccessMessage("Mark successfully");
+          this.getRequestService(this.request.RequestServiceDetail.RequestServiceId);
+        }
+        else 
+        {
+          this.alertService.showErrorMessage("Failed to mark");
+          this.request.RequestServiceDetail.IsSent = false;
+        }
+      })
+    }
+  }
 
   onFollowUpSaved() {
   

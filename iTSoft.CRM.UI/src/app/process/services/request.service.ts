@@ -15,6 +15,8 @@ import { UserProfilService } from 'src/app/_services/userProfile.Service';
 export class RequestService {
  
  
+ 
+ 
 
   private RequestController = "/Request/";
   constructor(private apiService: APIService , private userProfileService : UserProfilService) {
@@ -60,7 +62,7 @@ export class RequestService {
         TransferPendingFollowUp: item.TransferPendingFollowUp,
         RequestId: item.RequestId,
         DepartmentId : item.DepartmentId,
-        UpdatedBy: ConfigurationSettings.User.UserId,
+        UpdatedBy: this.userProfileService.CurrentUser.UserId,
         RequestServiceId : item.RequestServiceId
       });
     });
@@ -68,6 +70,15 @@ export class RequestService {
     let url = this.RequestController + "assign";
     return this.apiService.PostData(url, param);
   }
+
+  MarkSent(requestServiceDetail: RequestServiceDetails) {
+    requestServiceDetail.IsSent = true;
+    requestServiceDetail.SentBy = this.userProfileService.CurrentUser.UserId;
+    requestServiceDetail.SentOn = new Date();
+    let url = this.RequestController + "mark-sent";
+    return this.apiService.PostData(url, requestServiceDetail);
+  }
+ 
 
   Save(request: RequestViewModel) {
     // request.RequestMaster.RequestDate = moment(request.RequestMaster.RequestDate).format('dd-MMM-yyyy');

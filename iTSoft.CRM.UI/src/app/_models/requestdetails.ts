@@ -57,6 +57,9 @@ export class RequestDetails {
     TermsAndConditions: string;
     ClientTypeId: number | null;
     ServiceDiscountType: number | null;
+    IsSent:boolean;
+    SentOn:Date;
+    SentBy:number;
     AddedBy: number | null;
     AddedOn: string | null;
     UpdatedBy: number | null;

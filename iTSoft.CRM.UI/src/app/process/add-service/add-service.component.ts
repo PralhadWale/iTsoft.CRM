@@ -154,6 +154,7 @@ export class AddServiceComponent implements OnInit {
       this.requestServiceDetails.ServiceName = service.ServiceName;
       this.requestServiceDetails.ServiceId = service.ServiceId;
       this.requestServiceDetails.ServiceQuotedPrice = service.Price;
+      this.calculatePrice();
     }
     else {
       this.requestServiceDetails.ServiceName = null;

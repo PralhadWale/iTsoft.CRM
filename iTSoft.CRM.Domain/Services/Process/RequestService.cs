@@ -27,10 +27,12 @@ namespace iTSoft.CRM.Domain.Services.Process
         List<RequestSummery> SearchRequest(RequestSerchParameters requestSerchParameters);
         string GetNextrequestNumber(long requestTypeId);
         Quote GetQuoteDetails(long requestId);
+        ResponseCode MarkSent(RequestServiceDetails requestService);
     }
     public class RequestService : GenericRepository<RequestMaster>, IRequestService
     {
         public const string PROC_RequestManager = "PROC_RequestManager";
+        public const string PROC_RequestServiceManager = "PROC_RequestServiceManager";
         public const string PROC_RequestLookUpManager = "PROC_RequestLookUpManager";
         public const string PROC_RequestNoManager = "PROC_RequestNoManager";
         public const string PROC_AssignRequest= "PROC_AssignRequest";
@@ -206,6 +208,21 @@ namespace iTSoft.CRM.Domain.Services.Process
             quote.TOTALINWORD = numberHelper.ToWords(Convert.ToDecimal(quote.GRANDTOTAL));
 
             return quote;
+        }
+
+        public ResponseCode MarkSent(RequestServiceDetails requestService)
+        {
+            using (IDbConnection dbConnection = base.GetConnection())
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add(nameof(RequestServiceDetails.RequestServiceId), requestService.RequestServiceId);
+                param.Add(nameof(RequestServiceDetails.IsSent), requestService.IsSent);
+                param.Add(nameof(RequestServiceDetails.SentBy), requestService.SentBy);
+                param.Add(nameof(RequestServiceDetails.SentOn), requestService.SentOn);
+                param.Add("@Result", DbType.Int64, direction: ParameterDirection.InputOutput);
+                dbConnection.Execute(PROC_RequestServiceManager, param, commandType: CommandType.StoredProcedure);
+                return (ResponseCode)param.Get<int>("@Result");
+            }
         }
     }
 }

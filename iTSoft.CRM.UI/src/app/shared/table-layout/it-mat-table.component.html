@@ -72,7 +72,8 @@
                     [checked]="selection.isSelected(element)"></mat-checkbox>
                 </span>
                 <span *ngIf="col.Type == 'boolean' && col.ColumnField !== 'IsSelected'">
-                  <mat-checkbox class="form-check-input" [(ngModel)]="element[col.ColumnField]" readonly></mat-checkbox>
+                  <mat-checkbox class="form-check-input" [(ngModel)]="element[col.ColumnField]" [disableRipple]="true"
+                  (click)="$event.preventDefault()"></mat-checkbox>
                 </span>
       
               </ng-template>

@@ -10,6 +10,11 @@
             *ngIf="allowSave">
             <mat-icon>add_ic_call</mat-icon>
           </button>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:green" type="submit"
+          (click)="onMarkSentClick()"
+          *ngIf="allowSave == false && request.RequestServiceDetail.IsSent != true">
+          <mat-icon>send</mat-icon>
+        </button>
           <button mat-mini-fab class="primary" style="margin-right:10px; background-color:palevioletred" type="reset"
           (click)="Close()">
           <mat-icon>cancel</mat-icon>
@@ -52,10 +57,15 @@
                       <h4 matLine>{{request.RequestServiceDetail.LastFollowupDate| date :'medium'}}</h4>
                       <p matLine>Last Followup</p>
                     </mat-list-item>
-                    <mat-list-item>
+                    <mat-list-item *ngIf="request.RequestServiceDetail.IsSent == null || request.RequestServiceDetail.IsSent == false">
                       <mat-icon matListAvatar>today</mat-icon>
                       <h4 matLine>{{request.RequestServiceDetail.NextFollowupDate | date :'medium'}}</h4>
                       <p matLine>Next Follow up</p>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="request.RequestServiceDetail.IsSent == true">
+                      <mat-icon matListAvatar>today</mat-icon>
+                      <h4 matLine>{{request.RequestServiceDetail.SentOn | date :'medium'}}</h4>
+                      <p matLine>Sent Date</p>
                     </mat-list-item>
                   </mat-list>
                 </mat-card>

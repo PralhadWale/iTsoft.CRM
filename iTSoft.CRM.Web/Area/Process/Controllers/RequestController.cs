@@ -105,6 +105,25 @@ namespace iTSoft.CRM.Web.Area.Process.Controllers
             return Ok(response);
         }
 
+
+        [HttpPost("mark-sent")]
+        public IActionResult MarkSent(RequestServiceDetails requestServiceDetails)
+        {
+            ServiceResponse response = new ServiceResponse();
+            try
+            {
+
+                response.ResponseCode= requestService.MarkSent(requestServiceDetails);
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ResponseCode.ApplicationError;
+                _logger.Error(ex, "Request - SearchRequest");
+            }
+            return Ok(response);
+        }
+
+
         [HttpGet("load")]
         public IActionResult Load(long requestId)
         {

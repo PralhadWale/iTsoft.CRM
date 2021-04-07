@@ -53,6 +53,9 @@ namespace iTSoft.CRM.Data.Entity.Process
         public string StageName { get; set; }
         public string RelatedRequestNo { get; set; }
         public long RelatedRequestId { get; set; }
+        public bool IsSent { get; set; }
+        public DateTime? SentOn { get; set; }
+        public long SentBy { get; set; }
         public decimal? ServiceTotalQuotedPrice { get { return ServiceQuotedPrice * Quantity; } }
         public decimal? ServiceTotalQuotedDiscountPercent { get { return ServiceQuotedDiscountPercent * Quantity; } }
         public decimal? ServiceTotalQuotedDicountAmount { get { return ServiceQuotedDicountAmount * Quantity; } }
@@ -61,4 +64,6 @@ namespace iTSoft.CRM.Data.Entity.Process
         public decimal? ServiceTotalAgreedDiscountAmount { get { return ServiceAgreedDiscountAmount * Quantity; } }
         public decimal? ServiceTotalAgreedNetAmount { get { return ServiceAgreedNetAmount * Quantity; } }
     }
+
+   
 }
