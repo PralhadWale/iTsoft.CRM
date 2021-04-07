@@ -49,7 +49,7 @@ namespace iTSoft.CRM.Web
                   {
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                       options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                      options.SerializerSettings.DateFormatString = "yyyy-MMM-dd HH:mm:ss";
+                      //options.SerializerSettings.DateFormatString = "yyyy-MMM-dd HH:mm:ss";
 
                       // This prevents the json serializer from parsing dates
                       options.SerializerSettings.DateParseHandling = DateParseHandling.DateTime;
