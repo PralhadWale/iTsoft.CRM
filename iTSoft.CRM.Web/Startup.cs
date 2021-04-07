@@ -22,6 +22,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace iTSoft.CRM.Web
 {
@@ -48,6 +49,12 @@ namespace iTSoft.CRM.Web
                   {
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                       options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                      options.SerializerSettings.DateFormatString = "yyyy-MMM-dd HH:mm:ss";
+
+                      // This prevents the json serializer from parsing dates
+                      options.SerializerSettings.DateParseHandling = DateParseHandling.DateTime;
+                      // This changes how the timezone is converted - RoundtripKind keeps the timezone that was provided and doesn't convert it
+                      options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                   }
                    
             );

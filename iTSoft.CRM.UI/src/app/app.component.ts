@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewIni
     // private loadingBar: SlimLoadingBarService,
     private router: Router,
     public authService: AuthenticationService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
   ) {
     console.log(" constructor")
 

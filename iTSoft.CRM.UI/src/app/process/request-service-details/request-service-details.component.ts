@@ -202,21 +202,31 @@ export class RequestServiceDetailsComponent implements OnInit, AfterViewInit, On
 
   onMarkSentClick()
   {
-    if(confirm('Do you really want to mark service as sent ? '))
-    {
-      this.requestService.MarkSent(this.request.RequestServiceDetail).subscribe((result)=>{
-        if(result.Value.ResponseCode == ResponseCode.Success)
-        {
-          this.alertService.showSuccessMessage("Mark successfully");
-          this.getRequestService(this.request.RequestServiceDetail.RequestServiceId);
-        }
-        else 
-        {
-          this.alertService.showErrorMessage("Failed to mark");
-          this.request.RequestServiceDetail.IsSent = false;
-        }
-      })
+    let dialogData = { title: "Confirm Action", message: "Are you sure ? Do you really want to Mark Sent ? " };
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      let result = dialogResult;
+      if (result == "CONFIRMED") {
+        this.requestService.MarkSent(this.request.RequestServiceDetail).subscribe((result) => {
+          if (result.Value.ResponseCode == ResponseCode.Success) {
+            this.alertService.showSuccessMessage("Mark successfully");
+            this.getRequestService(this.request.RequestServiceDetail.RequestServiceId);
+          }
+          else {
+            this.alertService.showErrorMessage("Failed to mark");
+            this.request.RequestServiceDetail.IsSent = false;
+          }
+        });
+
+      }
     }
+    );
+     
+    
   }
 
   onFollowUpSaved() {
