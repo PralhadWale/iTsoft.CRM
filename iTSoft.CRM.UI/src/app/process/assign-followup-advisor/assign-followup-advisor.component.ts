@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { FollowUpDetails } from 'src/app/_models/followupdetails';
@@ -13,7 +13,7 @@ import { ListService } from '../services/list.service';
   templateUrl: './assign-followup-advisor.component.html',
   styleUrls: ['./assign-followup-advisor.component.scss']
 })
-export class AssignFollowUpAvisorComponent implements OnInit {
+export class AssignFollowUpAvisorComponent implements OnInit, OnChanges {
   @ViewChild("assignsidenav") sidenav: MatSidenav;
 
   @Input() followUpDetails: FollowUpDetails;
@@ -51,6 +51,16 @@ export class AssignFollowUpAvisorComponent implements OnInit {
       this.multipleFollowUpDetails = changes.multipleFollowUpDetails.currentValue;
     }
 
+    if(this.followUpDetails.DepartmentId >0)
+    {
+      this.GetDepartmentAdvisor(this.followUpDetails.DepartmentId);
+    }
+
+    if(this.multipleFollowUpDetails && this.multipleFollowUpDetails.length > 0)
+    {
+      this.GetDepartmentAdvisor(this.multipleFollowUpDetails[0].DepartmentId);
+    }
+
   }
 
   public SetRequestDefaultData() {
@@ -60,6 +70,10 @@ export class AssignFollowUpAvisorComponent implements OnInit {
     
     this.multipleFollowUpDetails =[];
     
+    if(this.followUpDetails.DepartmentId >0)
+    {
+      this.GetDepartmentAdvisor(this.followUpDetails.DepartmentId);
+    }
 
   }
 
@@ -80,6 +94,7 @@ export class AssignFollowUpAvisorComponent implements OnInit {
         (result) => {
           this.requestSelectList = new RequestSelectListModel();
           this.requestSelectList.Departments = <Array<ListModel>>result.Value.ResponseData;
+         
         },
         (error: any) => (this.errorMessage = <any>error)
       );

@@ -228,7 +228,12 @@ export class EnquiryListComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh , ToolBarItems.Search , ToolBarItems.Transfer];
+    if (this.userProfileService.CurrentUser.RoleId == UserRole.Admin || this.userProfileService.CurrentUser.RoleId == UserRole.Manager) {
+      this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search, ToolBarItems.Transfer];
+    }
+    else {
+      this.tableSettings.ToolBarItems = [ToolBarItems.Refresh, ToolBarItems.Search, ToolBarItems.Transfer];
+    }
     let gridCommands: Array<CommandModel> = [
       { commandType: CommandType.Edit},
       //{ commandType: CommandType.View},
@@ -238,7 +243,7 @@ export class EnquiryListComponent implements OnInit {
 
     this.enquiryTableSchema =
       [
-        { ColumnField: "$$edit", ColumnHeader: "", Type: "text" , Command : gridCommands },
+        { ColumnField: "$$edit", ColumnHeader: "Action", Type: "text" , Command : gridCommands },
         { ColumnField: "RequestNo", ColumnHeader: "Enquiry No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Enquiry Date", Type: "date" },
         { ColumnField: "NextFollowupDate", ColumnHeader: "Follow up Date", Type: "date" } ,   

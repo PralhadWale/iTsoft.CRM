@@ -239,7 +239,7 @@ export class QuotationListComponent implements OnInit {
   SetTableSchema() {
     this.tableSettings = new TableDefaultSettings();
     this.tableSettings.ShowToolBar = true;
-    if (this.userProfileService.CurrentUser.RoleId == UserRole.Admin) {
+    if (this.userProfileService.CurrentUser.RoleId == UserRole.Admin || this.userProfileService.CurrentUser.RoleId == UserRole.Manager) {
       this.tableSettings.ToolBarItems = [ToolBarItems.Add, ToolBarItems.Refresh, ToolBarItems.Search, ToolBarItems.Transfer];
     }
     else {
@@ -254,7 +254,7 @@ export class QuotationListComponent implements OnInit {
     ];
 
     this.quotationTableSchema =
-      [ { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands },
+      [ { ColumnField: "$$edit", ColumnHeader: "Action", Type: "text", Command: gridCommands },
         { ColumnField: "RequestNo", ColumnHeader: "Quotation No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Quotation Date", Type: "date" },
         { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
