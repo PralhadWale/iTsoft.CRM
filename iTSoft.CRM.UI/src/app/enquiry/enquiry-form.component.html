@@ -74,7 +74,7 @@
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Subject </mat-label>
                   <textarea matInput type='text' [(ngModel)]="request.RequestMaster.Subject" name="Subject"
-                    #Subject="ngModel" maxlength="2000"></textarea>
+                    #Subject="ngModel" maxlength="2000" rows="1"></textarea>
                   <mat-error *ngIf="(Subject.touched || enquiryForm.submitted) && Subject.errors">
                     Please enter valid Subject
                   </mat-error>
@@ -84,7 +84,7 @@
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Message </mat-label>
                   <textarea matInput type='text' [(ngModel)]="request.RequestMaster.Message" name="Message"
-                    #Message="ngModel" maxlength="2000"></textarea>
+                    #Message="ngModel" maxlength="2000" rows="1"></textarea>
                   <mat-error *ngIf="(Message.touched || enquiryForm.submitted) && Message.errors">
                     Please enter valid Message
                   </mat-error>

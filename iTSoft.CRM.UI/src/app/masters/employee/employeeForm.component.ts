@@ -182,7 +182,12 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.employeeService.Save(employee , this.selectedDepartments)
                     .subscribe(
                         () => this.onSaveComplete(),
-                        (error: any) => this.errorMessage = <any>error
+                        (error: any) =>
+                        {
+                             this.errorMessage = <any>error
+                             this.alertService.showErrorMessage("Failed to save");
+                        }
+
                     );
             }
             else {

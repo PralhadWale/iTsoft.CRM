@@ -48,47 +48,47 @@ export class NavService {
         },
         {
           displayName: 'Quotations',
-          iconName: 'account_tree',
+          iconName: 'library_books',
           route: 'quotations',
         },
         {
           displayName: 'Clients',
-          iconName: 'person_pin',
+          iconName: 'supervised_user_circle',
           route: 'clients',
         },
         {
           displayName: 'Employee',
-          iconName: 'person_pin',
+          iconName: 'assignment_ind',
           route: 'employees',
         },
         {
           displayName: 'Masters',
-          iconName: 'videocam',
+          iconName: 'admin_panel_settings',
           route: 'masters',
           children: [
             {
               displayName: 'Service',
-              iconName: 'group',
+              iconName: 'ballot',
               route: 'masters/service',
             },
             {
               displayName: 'Stage',
-              iconName: 'group',
+              iconName: 'pending_actions',
               route: 'masters/stage',
             },
             {
               displayName: 'Status',
-              iconName: 'group',
+              iconName: 'dns',
               route: 'masters/status',
             },
             {
               displayName: 'Source',
-              iconName: 'group',
+              iconName: 'assignment_returned',
               route: 'masters/source',
             },
             {
               displayName: 'Designation',
-              iconName: 'group',
+              iconName: 'badge',
               route: 'masters/designation',
             },
             {
@@ -101,27 +101,27 @@ export class NavService {
         },
         {
           displayName: 'Reports',
-          iconName: 'videocam',
+          iconName: 'insert_drive_file',
           route: 'reports',
           children: [
             {
               displayName: 'Enquiry Report',
-              iconName: 'account_tree',
+              iconName: 'assignment_in',
               route: 'reports/enquiry-report',
             },
             {
               displayName: 'Enquiry Service Report',
-              iconName: 'account_tree',
+              iconName: 'assignment_in',
               route: 'reports/enquiry-service-report',
             },
             {
               displayName: 'Quotation Report',
-              iconName: 'account_tree',
+              iconName: 'library_books',
               route: 'reports/quotation-report',
             },
             {
               displayName: 'Quotation Service Report',
-              iconName: 'account_tree',
+              iconName: 'library_books',
               route: 'reports/quotation-service-report',
             }
           ]
@@ -150,12 +150,12 @@ export class NavService {
         },
         {
           displayName: 'Quotations',
-          iconName: 'account_tree',
+          iconName: 'library_books',
           route: 'quotations',
         },
         {
           displayName: 'My Clients',
-          iconName: 'person_pin',
+          iconName: 'supervised_user_circle',
           route: 'clients',
         }
       ];

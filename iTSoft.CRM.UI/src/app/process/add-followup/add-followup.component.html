@@ -159,7 +159,7 @@
           <mat-label>Remark</mat-label>
           <textarea matInput type='text' [(ngModel)]="followUP.Remark" name="Remark" #Remark="ngModel"
             cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-            [required]="followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014"></textarea>
+            [required]="followUP.LeadStatusId == 10013 || followUP.LeadStatusId == 10014" rows="1"></textarea>
           <mat-error *ngIf="(Remark.touched || followUpForm.submitted) && Remark.errors">
             Please enter valid Remark
           </mat-error>

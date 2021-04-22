@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   isOTPVerified = false;
   isValidating = false;
   returnUrl: string;
+  hide:boolean=true;
   // isloading = true;
   // isAuthenticated = false;
 

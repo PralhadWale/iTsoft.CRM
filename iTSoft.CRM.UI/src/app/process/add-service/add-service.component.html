@@ -221,7 +221,7 @@
           <mat-form-field class="form-field" appearance="outline">
             <mat-label>Remark</mat-label>
             <textarea matInput type='text' [(ngModel)]="requestServiceDetails.Remark" name="Remark" #Remark="ngModel"
-              cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+              cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" rows="1"
               [required]="requestServiceDetails.LeadStatusId == 10013 || requestServiceDetails.LeadStatusId == 10014"></textarea>
             <mat-error *ngIf="(Remark.touched || serviceForm.submitted) && Remark.errors">
               Please enter valid Remark

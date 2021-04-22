@@ -23,7 +23,7 @@ namespace iTSoft.CRM.Data.Entity.Master
         public bool? IsActive { get; set; }
         public decimal TargetAmount { get; set; }
         public long DesignationId { get; set; }
-        public long DepartmentId { get; set; }
+        public long? DepartmentId { get; set; }
         public long RoleId { get; set; }
         public string Designation { get; set; }
         public string Department { get; set; }
