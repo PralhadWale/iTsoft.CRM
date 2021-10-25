@@ -151,7 +151,7 @@
                               </mat-option>
                             </mat-select>
                             <mat-error *ngIf="(RoleId.touched || employeeForm.submitted) && RoleId.errors">
-                                Please select valid designation
+                                Please select valid role
                              </mat-error>
                           </mat-form-field>
                     </mat-grid-tile>
@@ -168,6 +168,17 @@
                                 (ngModelChange)="onDepartmentSelectionChange($event)">
                                 <mat-list-option [value]="dept" *ngFor="let dept of employeeSelectList.Departments">
                                     {{dept.Text}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile [colspan]="fieldColspan" [rowspan]="2">
+                        <div>
+                            <p><small>Select Business Emails</small></p>
+                            <mat-selection-list appearance="outline" name="emails" #emails [(ngModel)]="selectedEmails"
+                                (ngModelChange)="onEmailSelectionChange($event)">
+                                <mat-list-option [value]="email" *ngFor="let email of employeeSelectList.Emails">
+                                    {{email.Text}}
                                 </mat-list-option>
                             </mat-selection-list>
                         </div>

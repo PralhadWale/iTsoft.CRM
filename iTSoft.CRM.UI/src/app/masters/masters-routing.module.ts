@@ -13,6 +13,11 @@ const routes: Routes = [
             import('./department/department.module').then(m => m.DepartmentModule)
     },
     {
+        path: "email",
+        loadChildren: () =>
+            import('./email/email.module').then(m => m.EmailModule)
+    },
+    {
         path: "service",
         loadChildren: () =>
             import('./service/service.module').then(m => m.ServiceModule)

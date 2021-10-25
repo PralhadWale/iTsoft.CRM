@@ -1,0 +1,51 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="view-card-title">
+            <h1>{{pageTitle}}</h1>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <it-mat-table [dataSource]="emailList" [tableSettings]="tableSettings" [tableSchema]="emailTableSchema"
+        (onCommandClick)='onCommandClick($event)'></it-mat-table>
+    </mat-card-content>
+</mat-card>
+
+
+<mat-sidenav class="search-panel" position="end" dark #emailNav mode="push" opened="false">
+  <form #emailForm="ngForm">
+  <mat-card class="profile-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          <mat-icon>queue</mat-icon>
+        </div>
+        <mat-card-title>
+          Add-Update Email
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+    <mat-nav-list style="margin-left:50px;">
+      <mat-form-field appearance="standard">
+        <mat-label>Email </mat-label>
+          <input matInput appearance="standard" placeholder="Email Name" name="Email" maxlength="200"
+          [(ngModel)]="emailMaster.Email" required #Email="ngModel"/>
+        <mat-error *ngIf="(Email.touched || emailForm.submitted) && Email.errors">
+          Please enter valid email name
+        </mat-error>
+      </mat-form-field>
+    
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <mat-card-header>
+      <mat-action-list>
+        <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+          (click)="saveEmail(emailForm);">
+          <mat-icon>save</mat-icon>Save
+        </button>
+        <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+          (click)="reset()">
+          <mat-icon>refresh</mat-icon>Cancel
+        </button>
+      </mat-action-list>
+    </mat-card-header>
+  </form>  
+  </mat-sidenav>

@@ -10,11 +10,13 @@ import { MaterialModule } from "../shared/material.module";
 import { ProcessModule } from '../process/process.module';
 import { FollowupModule } from '../followup/followup.module';
 import { RequestServiceDetailsComponent } from "../process/request-service-details/request-service-details.component";
+import { NgxEditorModule } from "ngx-editor";
 @NgModule({
   imports: [
     SharedModule,
     MaterialModule,
     ProcessModule,
+    NgxEditorModule,
     RouterModule.forChild([
       { path: "", component: EnquiryListComponent },
       {

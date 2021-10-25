@@ -1,4 +1,5 @@
 import { DepartmentMaster } from "../department/department.model";
+import { EmailMaster } from "../email/email.model";
 
 export class EmployeeMaster {
     EmployeeId: number;
@@ -33,4 +34,5 @@ export class EmployeeDetails
 {
     EmployeeMaster : EmployeeMaster;
     DepartmentMasters : Array<DepartmentMaster>;
+    EmailMasters : Array<EmailMaster>;
 }

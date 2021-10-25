@@ -106,10 +106,10 @@ export class EmployeeListComponent implements OnInit {
                 { ColumnField: "LastName", ColumnHeader: "Last Name", Type: "text" },
                 { ColumnField: "MobileNo1", ColumnHeader: "Mobile No 1", Type: "text" },
                 { ColumnField: "EmailId", ColumnHeader: "Email", Type: "text" },
-                { ColumnField: "TargetAmount", ColumnHeader: "Target Amount", Type: "text" },
                 { ColumnField: "LoginName", ColumnHeader: "Login Name", Type: "text" },
                 { ColumnField: "Designation", ColumnHeader: "Designation", Type: "text" },
                 { ColumnField: "Department", ColumnHeader: "Department", Type: "text" },
+                { ColumnField: "Email", ColumnHeader: "Assigned Mails", Type: "text" },
                 { ColumnField: "Role", ColumnHeader: "Role", Type: "text" },
                 { ColumnField: "IsActive", ColumnHeader: "Is Active", Type: "boolean" },
                 { ColumnField: "$$edit", ColumnHeader: "", Type: "text", Command: gridCommands }

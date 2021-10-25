@@ -9,6 +9,6 @@ export class iTCRMLoaderService {
     public status: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     display(value: boolean) {
-        this.status.next(value);
+        //this.status.next(value);
     }
 }

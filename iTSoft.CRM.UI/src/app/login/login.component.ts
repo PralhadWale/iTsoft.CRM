@@ -141,8 +141,8 @@ export class LoginComponent implements OnInit {
     this.isForgotPassword = false;
     this.loginModel = {};
     this.model = {};
-    this.model.username = "";
-    this.model.password = "";
+    this.model.username = "@meenakshimetal.com";
+    this.model.password = "Taxblock@01";
     this.model.confirmPassword = "";
   }
 }

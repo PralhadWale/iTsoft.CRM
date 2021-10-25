@@ -96,6 +96,11 @@ export class NavService {
               iconName: 'museum',
               route: 'masters/department',
             },
+            {
+              displayName: 'Email',
+              iconName: 'email',
+              route: 'masters/email',
+            },
            
           ]
         },

@@ -145,13 +145,17 @@ export class EnquiryListComponent implements OnInit {
     {
       this.GetDepartmentAdvisor(this.searchFilter.DepartmentId);
     }
+
+    
   }
+  
 
   resetSearchFilter(sidenav:any)
   {
     this.SetFilter();
     this.sidenav.toggle();
   }
+  
 
   onAssigned()
   {
@@ -246,19 +250,13 @@ export class EnquiryListComponent implements OnInit {
         { ColumnField: "$$edit", ColumnHeader: "Action", Type: "text" , Command : gridCommands },
         { ColumnField: "RequestNo", ColumnHeader: "Enquiry No", Type: "text" },
         { ColumnField: "RequestDate", ColumnHeader: "Enquiry Date", Type: "date" },
-        { ColumnField: "NextFollowupDate", ColumnHeader: "Follow up Date", Type: "date" } ,   
-        { ColumnField: "PhoneNo1", ColumnHeader: "Phone No", Type: "text" },
-        { ColumnField: "ClientTypeName", ColumnHeader: "Enq. Type", Type: "text" },
+        { ColumnField: "Subject", ColumnHeader: "Subject", Type: "text" },
+        { ColumnField: "Email", ColumnHeader: "From", Type: "text" },
         { ColumnField: "ClientName", ColumnHeader: "Enq. Name", Type: "text" },
-        { ColumnField: "ServiceName", ColumnHeader: "Service", Type: "text" },
         { ColumnField: "FinancialYear", ColumnHeader: "Financial Year", Type: "text" },
         { ColumnField: "StageName", ColumnHeader: "Stage", Type: "text" },
         { ColumnField: "LeadStatusName", ColumnHeader: "Enq. Status", Type: "text" },
-        { ColumnField: "DepartmentName" , ColumnHeader:"Department", Type:"text" },
         { ColumnField: "AdvisorName", ColumnHeader: "Advisor", Type: "text" },
-        { ColumnField: "ServiceQuotedPrice", ColumnHeader: "Service Rate", Type: "text" },
-        { ColumnField: "ServiceQuotedDicountAmount", ColumnHeader: "Discount", Type: "text" },
-        { ColumnField: "ServiceQuotedNetAmount", ColumnHeader: "Quoted Rate", Type: "text" }
         
       ];
 

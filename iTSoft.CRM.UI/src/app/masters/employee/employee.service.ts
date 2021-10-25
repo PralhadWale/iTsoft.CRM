@@ -25,7 +25,7 @@ export class EmployeeService {
         return this.apiService.PostData(this.getemployeeinfoURL, employee);
     }
 
-    Save(employee: EmployeeMaster , selectedDepartments : Array<ListModel>) {
+    Save(employee: EmployeeMaster , selectedDepartments : Array<ListModel> ,  selectedEmails : Array<ListModel>) {
 
         employee.AddedBy = this.userService.CurrentUser.UserId;
         employee.UpdatedBy = this.userService.CurrentUser.UserId;
@@ -36,10 +36,15 @@ export class EmployeeService {
             departments.push ({ DepartmentId: x.Value });
         });
 
+        let emails: Array<any> = [];
+        selectedEmails.forEach((x) => {
+            emails.push ({ EmailId: x.Value });
+        });
+
         let employeeDetails : EmployeeDetails = new EmployeeDetails();
         employeeDetails.EmployeeMaster= employee;
         employeeDetails.DepartmentMasters = departments;
-
+        employeeDetails.EmailMasters = emails;
         return this.apiService.PostData(this.URLSave, employeeDetails);
     }
 

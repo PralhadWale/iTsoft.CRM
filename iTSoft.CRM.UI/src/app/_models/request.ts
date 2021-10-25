@@ -21,6 +21,8 @@ export class RequestMaster
     ClientBehaviourId?: number;
     AdvisorId?: number;
     StatusId : number;
+    EmailId : number;
+    EmailHtmlPath?: string;
     AssignedOn?: string;
     AddedBy?: number;
     AddedOn?: Date;

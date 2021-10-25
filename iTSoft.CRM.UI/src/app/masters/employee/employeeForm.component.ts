@@ -53,7 +53,7 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     employeeSelectList : EmployeeSelectListModel = new EmployeeSelectListModel();
     selectedDepartments : Array<ListModel> = [];
-
+    selectedEmails : Array<ListModel> = [];
     constructor(private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
@@ -143,10 +143,20 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (employeeDetails != null) {
             this.employee = employeeDetails.EmployeeMaster;
             employeeDetails.DepartmentMasters.forEach((x) => {
-                let department = this.employeeSelectList.Departments.filter( y=> y.Value == x.DepartmentId);
-                if(department && department.length > 0)
+                let departments = this.employeeSelectList.Departments.filter( y=> y.Value == x.DepartmentId);
+                if(departments && departments.length > 0)
                 {
-                    this.selectedDepartments.push(department[0]);
+                    let department : any = departments[0];
+                    this.selectedDepartments.push(department);
+                }
+            });
+
+            employeeDetails.EmailMasters.forEach((x) => {
+                let emails = this.employeeSelectList.Emails.filter( y=> y.Value == x.EmailId);
+                if(emails && emails.length > 0)
+                {
+                    let email :any = emails[0];
+                    this.selectedEmails.push(email);
                 }
             });
         }
@@ -179,7 +189,7 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Copy the form values over the employee object values
                 const employee = Object.assign({}, this.employee, employeeForm.value);
 
-                this.employeeService.Save(employee , this.selectedDepartments)
+                this.employeeService.Save(employee , this.selectedDepartments , this.selectedEmails)
                     .subscribe(
                         () => this.onSaveComplete(),
                         (error: any) =>
@@ -206,6 +216,12 @@ export class EmployeeFormComponent implements OnInit, AfterViewInit, OnDestroy {
     {
         console.log($event);
         console.log(this.selectedDepartments);
+    }
+
+    onEmailSelectionChange($event)
+    {
+        console.log($event);
+        console.log(this.selectedEmails);
     }
 
     onScreensizeChange(result: any) {

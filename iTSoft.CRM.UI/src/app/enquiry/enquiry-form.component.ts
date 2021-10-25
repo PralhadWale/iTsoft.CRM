@@ -25,6 +25,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ConfirmDialog } from "../shared/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { CommandEventArgs, CommandModel, CommandType, ITMatTableComponent, TableColumnModel, TableDefaultSettings, ToolBarItems } from '../shared/table-layout/it-mat-table.component';
+import {  Editor, Toolbar } from "ngx-editor";
 
 import { AddFollowupComponent } from '../process/add-followup/add-followup.component';
 import { AddServiceComponent } from "../process/add-service/add-service.component";
@@ -53,33 +54,8 @@ import { ClientViewModel } from "../_models/clientViewModel";
 @Component({
   selector: 'enquiry-form',
   templateUrl: "./enquiry-form.component.html",
-  styles: [`
-  .title-spacer {
-      flex: 1 1 auto;
-    }
-  .form-field{
-      width: 100%;
-      margin-left: 20px;
-      margin-right: 20px;
-    }
-    .mat-tab-label {
-      border: 1px solid palevioletred;
-      border-top-left-radius: .95rem;
-      border-top-right-radius: .95rem;
-     width: 200px;
-  }
-  
-  .mat-tab-label-active {
-     color: #495057;
-      background-color: #fff;
-      border-color: #dee2e6 #dee2e6 #fff;
-     
-  }
-  
-  .mat-ink-bar {
-    display: none;
-  }
-    `],
+  styleUrls: ["./enquiry-form.component.scss"]
+ 
 })
 export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("addFollowUp") addFollowUp: AddFollowupComponent;
@@ -110,6 +86,21 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   dobMaxDate:Date = new Date();
   selectedIndex = 0;
   requestTypeName : string = "";
+  
+  editor: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
+  html = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -137,12 +128,12 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   ngOnInit(): void {
-
+    this.editor = new Editor();
 
   }
 
   ngOnDestroy(): void {
-    // this.sub.unsubscribe();
+    this.editor.destroy();
   }
 
   ngAfterViewInit(): void {
@@ -215,7 +206,9 @@ export class EnquiryFormComponent implements OnInit, AfterViewInit, OnDestroy {
   onEnquiryRetrieved(request: RequestViewModel): void {
 
     this.request = request;
-
+    this.html = request.RequestMaster.Message;
+    this.editor.enable();
+    this.editor.setContent(this.html);
     if(this.request.RequestMaster.ClientTypeId)
     {
       this.request.RequestMaster.ClientTypeId=this.request.RequestMaster.ClientTypeId.toString();

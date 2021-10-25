@@ -17,7 +17,7 @@ import { UserRole } from './_models/userRole';
 export class AppComponent implements OnInit, OnChanges, OnDestroy , AfterViewInit {
   @ViewChild('sidenav') appDrawer: ElementRef;
   
-  title = 'taxblock crm';
+  title = 'Meenakshi Metal crm';
   user: any = null;
   isMobile: boolean;
   mode = "side"

@@ -367,6 +367,19 @@
           </div>
 
         </mat-tab>
+        <mat-tab label="Email">
+          <mat-card>
+            <mat-card-content>
+              <div class="editor">
+                <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor
+                  [editor]="editor"
+                  [ngModel]="html"
+                ></ngx-editor>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
         <mat-tab label="Services">
           <mat-card>
             <mat-card-content>
