@@ -45,7 +45,7 @@ namespace iTSoft.CRM.Web
             {
                 do
                 {
-                    //EmailService emailService = new EmailService();
+                    EmailService emailService = new EmailService();
                     //emailService.ReadMails();
 
                     System.Threading.Thread.Sleep(5000);

@@ -56,10 +56,18 @@ namespace iTSoft.CRM.Domain.MailReader
                         oMail.SaveAs(emlPath,true);
                         ConvertMailToHtml(emlPath);
 
-                        var emp = employeeDetails.Where(e => e.Email.Contains(oMail.From.Address)).FirstOrDefault();
-                        if(emp == null)
+                        EmployeeMaster emp = null;
+                        foreach (EmployeeMaster employeeMaster in employeeDetails)
                         {
-                            continue;
+                            if (oMail.TextBody.Contains(employeeMaster.Email))
+                            {
+                                emp = employeeMaster;
+                            }
+                        }
+
+                        if (emp == null)
+                        {
+                            emp = employeeDetails.FirstOrDefault();
                         }
                         if (CreateRequest(emlPath, oMail , emp))
                         {
